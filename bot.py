@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
 from telegram import ForceReply, InlineKeyboardButton, InlineKeyboardMarkup, KeyboardButton, ReplyKeyboardMarkup, User
@@ -117,15 +117,15 @@ def inlineKey_seherin(game_id):
 
 def inlineKey_hexe_life(game_id):
 	keyboard = []
-	keyboard.append([InlineKeyboardButton("Retten", callback_data="hexe_life1_"+str(game_id))])
-	keyboard.append([InlineKeyboardButton("Sterben lassen", callback_data="hexe_life0_"+str(game_id))])
+	keyboard.append([InlineKeyboardButton(lore.hexe_save(), callback_data="hexe_life1_"+str(game_id))])
+	keyboard.append([InlineKeyboardButton(lore.hexe_let_die(), callback_data="hexe_life0_"+str(game_id))])
 	return InlineKeyboardMarkup(keyboard)
 
 def inlineKey_hexe_death(game_id):
 	keyboard = []
 	for player in game_dict[game_id]["player_list"]:
-		keyboard.append([InlineKeyboardButton(player.name + " töten", callback_data="hexedeath_" + str(player.user_id) + "_" +str(game_id))])
-	keyboard.append([InlineKeyboardButton("Niemanden töten", callback_data="hexedeath_0_" + str(game_id))])
+		keyboard.append([InlineKeyboardButton(player.name + lore.hexe_kill(), callback_data="hexedeath_" + str(player.user_id) + "_" +str(game_id))])
+	keyboard.append([InlineKeyboardButton("Niemanden" + lore.hexe_kill(), callback_data="hexedeath_0_" + str(game_id))])
 	return InlineKeyboardMarkup(keyboard)
 
 def draw_with_doubles(context, game_id):
@@ -215,7 +215,7 @@ def game_over(context, game_id):
 		if len(game_dict[game_id]["player_list"]) == 0:
 			game_dict[game_id]["admin_id"] = 0
 			game_dict[game_id]["running"] = False
-			context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text="Es sind alle tot.")
+			context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=lore.all_dead())
 			game_dict[game_id]["game_over_check"] = True
 			game_dict[game_id]["state"] = None
 			return True
@@ -229,8 +229,8 @@ def game_over(context, game_id):
 			if over:
 				game_dict[game_id]["admin_id"] = 0
 				game_dict[game_id]["running"] = False
-				if group == werwolf_group: context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text="Die Werwölfe gewinnen.")
-				else: context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text="Das Dorf gewinnt.")
+				if group == werwolf_group: context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=lore.werwoelfe_win())
+				else: context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=lore.dorf_win())
 				game_dict[game_id]["game_over_check"] = True
 				game_dict[game_id]["state"] = None
 				return True
@@ -547,12 +547,10 @@ def button_handler_anklage(update, context):
 						a.user_id = anklage_id
 						anklaeger_in_list = True
 						context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=anklaeger_name + lore.anklage_change(anklage_option, angeklagter_name))
-						#context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=anklaeger_name + " hat seine Anklage geändert auf " + angeklagter_name + ".")
 						break
 				if not anklaeger_in_list:
 					game_dict[game_id]["anklage_list"].append(Prosecuted(anklage_id, query.from_user.id))
 					context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=anklaeger_name + lore.anklage_new(anklage_option, angeklagter_name))
-					#context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=anklaeger_name + " klagt " + angeklagter_name + " an.")
 			break
 
 def button_handler_vote(update, context):
@@ -604,7 +602,6 @@ def button_handler_jaeger(update, context):
 			game_dict[game_id]["player_list"].remove(pl)
 			break 
 	context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=kill_name + lore.jaeger_shot(kill_option))
-	#context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=kill_name + " wurde vom Jäger erschossen!")
 	game_dict[game_id]["game_state"] = game_dict[game_id]["game_state_backup"]
 	game_dict[game_id]["game_state_backup"] = None
 

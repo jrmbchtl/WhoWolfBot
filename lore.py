@@ -1,25 +1,6 @@
 import random
-
-def desc_template():
-	desc_no = random.randrange(1,10)
-	if desc_no == 1:
-		pass
-	elif desc_no == 2:
-		pass
-	elif desc_no == 3:
-		pass
-	elif desc_no == 4:
-		pass
-	elif desc_no == 5:
-		pass
-	elif desc_no == 6:
-		pass
-	elif desc_no == 7:
-		pass
-	elif desc_no == 8:
-		pass
-	else:
-		pass
+import json
+import requests
 
 def get_lore():
 	desc_no = random.randrange(1,7)
@@ -257,3 +238,75 @@ def seherin_no_werwolf(option, name):
 	elif option == "4": return "Es stellt sich heraus: " + name + " gehört den Guten an."
 	elif option == "5": return "Du siehst es mit deinen eigenen Augen: " + name + " verwandelt sich Nachts nicht in einen Werwolf!"
 	else: return "Deine Ermittlungen haben ergeben: " + name + " ist kein Werwolf."
+
+def hexe_save():
+	desc_no = random.randrange(0,6)
+	if desc_no == 0: return "Retten"
+	elif desc_no == 1: return "Heilen"
+	elif desc_no == 2: return "Einen Lebenstrank verabreichen"
+	elif desc_no == 3: return "Erfolgreich die Verletzungen versorgen"
+	elif desc_no == 4: return "Wiederbeleben"
+	else: return "Wieder zusammennähen"
+
+def hexe_let_die():
+	desc_no = random.randrange(0,8)
+	if desc_no == 0: return "Sterben lassen"
+	elif desc_no == 1: return "Nicht beachten"
+	elif desc_no == 2: return "Dem Schicksal überlassen"
+	elif desc_no == 3: return "Ausversehen zu spät kommen"
+	elif desc_no == 4: return "Lieber schlafen"
+	elif desc_no == 5: return "Umdrehen und weiterschlafen"
+	elif desc_no == 6: return "Lebenstrank nicht für sojemanden verschwenden"
+	else: return "Eigensicherung vorziehen"
+
+def hexe_kill():
+	desc_no = random.randrange(0,10)
+	if desc_no == 0: return " vergiften"
+	elif desc_no == 1: return " den Todestrank einflößen"
+	elif desc_no == 2: return " eine ungesunde Substanz injezieren"
+	elif desc_no == 3: return " ausversehen eine Überdosis Morphium verabreichen"
+	elif desc_no == 4: return " mit radioaktivem Gemüse versorgen"
+	elif desc_no == 5: return "s innere Organe verätzen"
+	elif desc_no == 6: return " ausversehen Gift in das Getränk mischen"
+	elif desc_no == 7: return " ein Essen mit Fliegenpilzen zubereiten"
+	elif desc_no == 8: return " einen Kugelfisch falsch zubereiten"
+	else: return " Quecksilber in die Milch mischen"
+
+def all_dead():
+	desc_no = random.randrange(0,10)
+	if desc_no == 0: return "Es sind alle tot."
+	elif desc_no == 1: return "Das Dorf ist so lebendig wie Tschernobyl."
+	elif desc_no == 2: return "In Düsterwald könnte jetzt ein Vulkan ausbrechen und niemand würde sterben."
+	elif desc_no == 3: return "Düsterwald hat seine Letzte Ruhe gefunden."
+	elif desc_no == 4: return "Jetzt leben nur noch Tiere in Düsterwald."
+	elif desc_no == 5: return "Die Natur wird sich das kleine Örtchen ab jetzt Stück für Stück zurückholen."
+	elif desc_no == 6: return "Die Zivilisation in Düsterwald ist ausgelöscht."
+	elif desc_no == 7: return "Das Werwolfproblem ist beseitigt. Das Menschenproblem aber auch."
+	elif desc_no == 8: return "Düsterwald hat jetzt " + json.loads(requests.get("http://api.open-notify.org/astros.json").text)["number"] + " Einwohner weniger als das Weltall!"
+	else: return "Das Kapitel 'Düsterwald' ist jetzt endgültig abgeschlossen."
+
+def werwoelfe_win():
+	desc_no = random.randrange(0,10)
+	if desc_no == 0: return "Die Werwölfe gewinnen."
+	elif desc_no == 1: return "Es war ein langer Kampf, aber die Werwölfe haben sich durchgesetzt."
+	elif desc_no == 2: return "Es leben nur noch Werwölfe in Düsterwald!"
+	elif desc_no == 3: return "Es gibt keine Dorfbewohner mehr, die von den Werwölfen verspeißt werden können."
+	elif desc_no == 4: return "Es wird wieder friedlich in Düsterwald, da hier jetzt nur noch Werwölfe leben."
+	elif desc_no == 5: return "Die Werwölfe haben gesiegt."
+	elif desc_no == 6: return "Die Werwölfe haben ihre Dominanz bewiesen."
+	elif desc_no == 7: return "Die Werwölfe sind in Düsterwald anscheinend die stärkere Rasse."
+	elif desc_no == 8: return "Mit dem Tod des letzten Dorfbewohners haben die Werwölfe jetzt ihre Ruhe."
+	else: return "Die Werwölfe veranstalten zur Feier des Tages einen Fest und verspeißen genussvoll den letzten Dorfbewohner."
+
+def dorf_win():
+	desc_no = random.randrange(0,10)
+	if desc_no == 0: return "Das Dorf gewinnen."
+	elif desc_no == 1: return "Es war ein langer Kampf, aber die Dorfbewohner haben sich durchgesetzt."
+	elif desc_no == 2: return "Es leben keine Werwölfe mehr in Düsterwald!"
+	elif desc_no == 3: return "Es gibt keine Werwölfe mehr, die Dorfbewohner verspeißen wollen."
+	elif desc_no == 4: return "Es wird wieder friedlich in Düsterwald, da hier nur noch Dorfbewohner leben."
+	elif desc_no == 5: return "Die Dorfbewohner haben gesiegt."
+	elif desc_no == 6: return "Die Dorfbewohner haben ihre Dominanz bewiesen."
+	elif desc_no == 7: return "Die Werwölfe sind in Düsterwald anscheinend die unterlegene Rasse."
+	elif desc_no == 8: return "Mit dem Tod des letzten Werwolfes haben die Dorfbewohner jetzt ihre Ruhe."
+	else: return "Die Dorfbewohner veranstalten zur Feier des Tages einen Fest und stopfen den letzten Werwolf aus."
