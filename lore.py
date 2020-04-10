@@ -229,3 +229,31 @@ def jaeger_shot(option):
 	elif option == "7": return " endete als letzte Jagdtrophäe des Jägers!"
 	elif option == "8": return " wurde vom Jäger mit in den Tod gerissen."
 	else: return " hat einen Gnadenschuss erhalten."
+
+def seherin_options(name):
+	desc_no = random.randrange(0,7)
+	if desc_no == 0: return (0,name + " einsehen")
+	elif desc_no == 1: return (1,name + " von der Gestapo überwachen lassen")
+	elif desc_no == 2: return (1,"Informationen über " + name + " beim BND einholen")
+	elif desc_no == 3: return (1,name + " bespitzeln")
+	elif desc_no == 4: return (1,name + " beobachten")
+	elif desc_no == 5: return (1,"Ein Auge auf " + name + " werfen")
+	else: return (6,name + " ausspionieren")
+
+def seherin_werwolf(option, name):
+	if option == "0": return name + " gehört zu den Werwölfen."
+	elif option == "1": return "Die Gestapo hat herausgefunden: " + name + " ist ein Werwolf."
+	elif option == "2": return "Der BND steckt dir zu: " + name + " ist böse!"
+	elif option == "3": return name + " ist böse."
+	elif option == "4": return "Es stellt sich heraus: " + name + " gehört den Bösen an."
+	elif option == "5": return "Du siehst es mit deinen eigenen Augen: " + name + " verwandelt sich Nachts in einen Werwolf!"
+	else: return "Deine Ermittlungen haben ergeben: " + name + " ist ein Werwolf."
+
+def seherin_no_werwolf(option, name):
+	if option == "0": return name + " gehört nicht zu den Werwölfen."
+	elif option == "1": return "Die Gestapo hat herausgefunden: " + name + " ist kein Werwolf."
+	elif option == "2": return "Der BND steckt dir zu: " + name + " ist gut!"
+	elif option == "3": return name + " ist gut."
+	elif option == "4": return "Es stellt sich heraus: " + name + " gehört den Guten an."
+	elif option == "5": return "Du siehst es mit deinen eigenen Augen: " + name + " verwandelt sich Nachts nicht in einen Werwolf!"
+	else: return "Deine Ermittlungen haben ergeben: " + name + " ist kein Werwolf."

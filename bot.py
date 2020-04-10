@@ -110,7 +110,9 @@ def inlineKey_seherin(game_id):
 	keyboard = []
 	for player in game_dict[game_id]["player_list"]:
 		if player.role != "Seherin":
-			keyboard.append([InlineKeyboardButton(player.name + " einsehen", callback_data="seherin_" + str(player.user_id)+"_"+str(game_id))])
+			(text_id, text) = lore.seherin_options(player.name)
+			keyboard.append([InlineKeyboardButton(text, callback_data="seherin_" + str(player.user_id)+"_" + str(text_id) + "_" +str(game_id))])
+			#keyboard.append([InlineKeyboardButton(player.name + " einsehen", callback_data="seherin_" + str(player.user_id)+"_"+str(game_id))])
 	return InlineKeyboardMarkup(keyboard)
 
 def inlineKey_hexe_life(game_id):
@@ -609,7 +611,8 @@ def button_handler_jaeger(update, context):
 def button_handler_seherin(update, context):
 	global game_dict
 	query = update.callback_query
-	game_id = query.data.split("_")[2]
+	game_id = query.data.split("_")[3]
+	seherin_option = query.data.split("_")[2]
 	watch_id = query.data.split("_")[1]
 	if game_dict[game_id]["game_state"] != "seherin": return
 	watch_in_list = False
@@ -622,9 +625,11 @@ def button_handler_seherin(update, context):
 	for player in game_dict[game_id]["player_list"]:
 		if str(player.user_id) == watch_id:
 			if player.role in werwolf_group:
-				context.bot.send_message(chat_id=seherin_id, text=player.name + " gehört zu den Werwölfen.")
+				context.bot.send_message(chat_id=seherin_id, text=lore.seherin_werwolf(seherin_option, player.name))
+				#context.bot.send_message(chat_id=seherin_id, text=player.name + " gehört zu den Werwölfen.")
 			else:
-				context.bot.send_message(chat_id=seherin_id, text=player.name + " gehört nicht zu den Werwölfen.")
+				context.bot.send_message(chat_id=seherin_id, text=lore.seherin_no_werwolf(seherin_option, player.name))
+				#context.bot.send_message(chat_id=seherin_id, text=player.name + " gehört nicht zu den Werwölfen.")
 			game_dict[game_id]["game_state"] = "night"
 
 def button_handler_hexe_life(update, context):
