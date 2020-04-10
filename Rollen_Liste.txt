@@ -1,0 +1,19 @@
+Testen:
+
+
+Prio List:
+###ROLLENBESCHREIBUNGEN + TEXTE
+Wolfshund
+Terrorwolf
+Rotkaeppchen
+Amor
+Harter Bursche
+Berserker
+Psychopath
+#### Sitzreihenfolge ausgeben
+Superschurke (not draftable)
+Terrorist
+Kerkermeister
+Weisser Wolf - Alleingaenger
+Flittchen
+Parasit
