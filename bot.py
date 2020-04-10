@@ -101,7 +101,7 @@ def inlineKey_jaeger(p, game_id):
 	keyboard = []
 	for player in game_dict[game_id]["player_list"]:
 		if str(player.user_id) != str(p.user_id):
-			(text_id, text) = lore.inlineKey_jaeger_options():
+			(text_id, text) = lore.inlineKey_jaeger_options()
 			keyboard.append([InlineKeyboardButton(player.name + text, callback_data="jaeger_" + str(player.user_id)+"_" + str(text_id) + "_" +str(game_id))])
 			#keyboard.append([InlineKeyboardButton(player.name + " erschießen", callback_data="jaeger_" + str(player.user_id)+"_"+str(game_id))])
 	return InlineKeyboardMarkup(keyboard)
