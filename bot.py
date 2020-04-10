@@ -76,10 +76,8 @@ def inlineKey_werwolf(game_id):
 		(text_id, text) = lore.inlineKey_werwolf_options(player.name)
 		print("werwolf_" + str(player.user_id)+"_"+str(text_id)+"_"+str(game_id))
 		keyboard.append([InlineKeyboardButton(text, callback_data="werwolf_" + str(player.user_id)+"_"+str(text_id)+"_"+str(game_id))])
-		#keyboard.append([InlineKeyboardButton(player.name + " töten", callback_data="werwolf_" + str(player.user_id)+"_"+str(game_id))])
 	(text_id, text) = lore.inlineKey_werwolf_options("Niemanden")
 	keyboard.append([InlineKeyboardButton(text, callback_data="werwolf_-1_"+str(text_id)+"_"+str(game_id))])
-	#keyboard.append([InlineKeyboardButton("Niemanden töten\n", callback_data="werwolf_-1_"+str(game_id))])
 	return InlineKeyboardMarkup(keyboard)
 
 def inlineKey_anklage(game_id):
@@ -96,7 +94,6 @@ def inlineKey_abstimmung(game_id):
 			if str(p.user_id) == str(player.user_id):
 				(text_id, text) = lore.vote_options()
 				keyboard.append([InlineKeyboardButton(p.name + text, callback_data="vote_" + str(player.user_id)+"_" + str(text_id) + "_" +str(game_id))])
-				#keyboard.append([InlineKeyboardButton(p.name + " hängen", callback_data="vote_" + str(player.user_id)+"_"+str(game_id))])
 				break
 	return InlineKeyboardMarkup(keyboard)
 
@@ -104,7 +101,9 @@ def inlineKey_jaeger(p, game_id):
 	keyboard = []
 	for player in game_dict[game_id]["player_list"]:
 		if str(player.user_id) != str(p.user_id):
-			keyboard.append([InlineKeyboardButton(player.name + " erschießen", callback_data="jaeger_" + str(player.user_id)+"_"+str(game_id))])
+			(text_id, text) = lore.inlineKey_jaeger_options():
+			keyboard.append([InlineKeyboardButton(player.name + text, callback_data="jaeger_" + str(player.user_id)+"_" + str(text_id) + "_" +str(game_id))])
+			#keyboard.append([InlineKeyboardButton(player.name + " erschießen", callback_data="jaeger_" + str(player.user_id)+"_"+str(game_id))])
 	return InlineKeyboardMarkup(keyboard)
 
 def inlineKey_seherin(game_id):
@@ -582,20 +581,19 @@ def button_handler_vote(update, context):
 					v.user_id = vote_id
 					context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=voter_name + lore.vote_change(vote_option, voted_name))
 					game_dict[game_id]["last_vote_option"] = vote_option
-					#context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=voter_name + " stimmt nun für " + voted_name + ".")
 					break
 			if not already_voted:
 				game_dict[game_id]["vote_list"].append(Prosecuted(vote_id, query.from_user.id))
 				context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=voter_name + lore.vote_new(vote_option, voted_name))
 				game_dict[game_id]["last_vote_option"] = vote_option
-				#context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=voter_name + " stimmt für " + voted_name + ".")
 			break
 
 def button_handler_jaeger(update, context):
 	global game_dict
 	query = update.callback_query
-	game_id = query.data.split("_")[2]
+	game_id = query.data.split("_")[3]
 	if not game_dict[game_id]["game_state"] == "jaeger": return
+	kill_option = query.data.split("_")[2]
 	kill_id = query.data.split("_")[1]
 	kill_name = ""
 	for pl in game_dict[game_id]["player_list"]:
@@ -603,7 +601,8 @@ def button_handler_jaeger(update, context):
 			kill_name = pl.name
 			game_dict[game_id]["player_list"].remove(pl)
 			break 
-	context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=kill_name + " wurde vom Jäger erschossen!")
+	context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=kill_name + lore.jaeger_shot(kill_option))
+	#context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=kill_name + " wurde vom Jäger erschossen!")
 	game_dict[game_id]["game_state"] = game_dict[game_id]["game_state_backup"]
 	game_dict[game_id]["game_state_backup"] = None
 
