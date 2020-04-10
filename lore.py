@@ -109,7 +109,7 @@ def death_message():
 	elif desc_no == 11: return " hat leider ins Gras gebissen."
 	elif desc_no == 12: return " wird nie wieder an den Freuden des Dorfes teilhaben."
 	elif desc_no == 13: return " ist von uns gegangen."
-	elif desc_no == 14: return " ist über die Wupper geganen."
+	elif desc_no == 14: return " ist über die Wupper gegangen."
 	else:  return " hat das Zeitliche gesegnet."
 
 def anklage_options():
@@ -215,10 +215,10 @@ def seherin_options(name):
 	desc_no = random.randrange(0,7)
 	if desc_no == 0: return (0,name + " einsehen")
 	elif desc_no == 1: return (1,name + " von der Gestapo überwachen lassen")
-	elif desc_no == 2: return (1,"Informationen über " + name + " beim BND einholen")
-	elif desc_no == 3: return (1,name + " bespitzeln")
-	elif desc_no == 4: return (1,name + " beobachten")
-	elif desc_no == 5: return (1,"Ein Auge auf " + name + " werfen")
+	elif desc_no == 2: return (2,"Informationen über " + name + " beim BND einholen")
+	elif desc_no == 3: return (3,name + " bespitzeln")
+	elif desc_no == 4: return (4,name + " beobachten")
+	elif desc_no == 5: return (5,"Ein Auge auf " + name + " werfen")
 	else: return (6,name + " ausspionieren")
 
 def seherin_werwolf(option, name):
@@ -282,7 +282,7 @@ def all_dead():
 	elif desc_no == 5: return "Die Natur wird sich das kleine Örtchen ab jetzt Stück für Stück zurückholen."
 	elif desc_no == 6: return "Die Zivilisation in Düsterwald ist ausgelöscht."
 	elif desc_no == 7: return "Das Werwolfproblem ist beseitigt. Das Menschenproblem aber auch."
-	elif desc_no == 8: return "Düsterwald hat jetzt " + json.loads(requests.get("http://api.open-notify.org/astros.json").text)["number"] + " Einwohner weniger als das Weltall!"
+	elif desc_no == 8: return "Düsterwald hat jetzt " + str(json.loads(requests.get("http://api.open-notify.org/astros.json").text)["number"]) + " Einwohner weniger als das Weltall!"
 	else: return "Das Kapitel 'Düsterwald' ist jetzt endgültig abgeschlossen."
 
 def werwoelfe_win():
@@ -300,7 +300,7 @@ def werwoelfe_win():
 
 def dorf_win():
 	desc_no = random.randrange(0,10)
-	if desc_no == 0: return "Das Dorf gewinnen."
+	if desc_no == 0: return "Das Dorf gewinnt."
 	elif desc_no == 1: return "Es war ein langer Kampf, aber die Dorfbewohner haben sich durchgesetzt."
 	elif desc_no == 2: return "Es leben keine Werwölfe mehr in Düsterwald!"
 	elif desc_no == 3: return "Es gibt keine Werwölfe mehr, die Dorfbewohner verspeißen wollen."

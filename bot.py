@@ -83,7 +83,7 @@ def inlineKey_werwolf(game_id):
 def inlineKey_anklage(game_id):
 	keyboard = []
 	for player in game_dict[game_id]["player_list"]:
-		(text_id, text) = lore.anklage_options
+		(text_id, text) = lore.anklage_options()
 		keyboard.append([InlineKeyboardButton(player.name + text, callback_data="anklage_" + str(player.user_id)+"_" + str(text_id) + "_" +str(game_id))])
 	return InlineKeyboardMarkup(keyboard)
 
@@ -100,7 +100,7 @@ def inlineKey_abstimmung(game_id):
 def inlineKey_jaeger(p, game_id):
 	keyboard = []
 	for player in game_dict[game_id]["player_list"]:
-		if str(player.user_id) != str(p.user_id):
+		if str(player.user_id) != str(p.user_id) and str(player.user_id) != str(game_dict[game_id]["werwolf_target"]) and str(player.user_id) != str(game_dict[game_id]["hexe_target"]):
 			(text_id, text) = lore.inlineKey_jaeger_options()
 			keyboard.append([InlineKeyboardButton(player.name + text, callback_data="jaeger_" + str(player.user_id)+"_" + str(text_id) + "_" +str(game_id))])
 			#keyboard.append([InlineKeyboardButton(player.name + " erschießen", callback_data="jaeger_" + str(player.user_id)+"_"+str(game_id))])
@@ -303,12 +303,22 @@ def wake_hexe(context, game_id):
 
 def do_killing(context, game_id):
 	global game_dict
+	do_killing_list = []
 	for p in game_dict[game_id]["player_list"]:
-		if str(p.user_id) == game_dict[game_id]["werwolf_target"] or str(p.user_id) == game_dict[game_id]["hexe_target"]:
+		print(game_dict[game_id]["werwolf_target"])
+		print(game_dict[game_id]["hexe_target"])
+
+		if str(p.user_id) == str(game_dict[game_id]["werwolf_target"]) or str(p.user_id) == str(game_dict[game_id]["hexe_target"]):
+			print(p.name)
 			context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=p.name + lore.death_message())
 			if p.role == "Jäger":
 				activate_jaeger(context, p, game_id)
-			game_dict[game_id]["player_list"].remove(p)
+			#game_dict[game_id]["player_list"].remove(p)
+			do_killing_list.append(p)
+	game_dict[game_id]["werwolf_target"] = ""
+	game_dict[game_id]["hexe_target"] = ""
+	for kp in do_killing_list:
+		game_dict[game_id]["player_list"].remove(kp)
 
 def print_alive(context, game_id):
 	message = "Es leben noch: "
@@ -685,7 +695,7 @@ def new(update, context):
 	game_dict[game_id]["player_list"] = []
 	game_dict[game_id]["admin_id"] = update.message.from_user.id
 	game_dict[game_id]["game_chat_id"] = update.message.chat_id
-	message = "Viel Spass beim Werwolf spielen!\nBitte einen privaten Chat mit dem Bot starten, bevor das Spiel beginnt!\n\n"
+	message = "Viel Spass beim Werwolf spielen!\n\nBitte einen privaten Chat mit dem Bot starten, bevor das Spiel beginnt!\n\nUm das Spiel in seiner vollen Breite genießen zu können, empfiehlt es sich bei sehr schmalen Bildschirmen, diese quer zu verwenden.\n\n"
 	message += "Admin:\n" + update.message.from_user.first_name + "\n\n"
 	message += "Spieler:"
 	context.bot.send_message(chat_id=update.message.chat_id, text=message, reply_markup=inlineKey_menu(game_id))
