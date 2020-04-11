@@ -1,13 +1,12 @@
 Testen:
+Rotkaeppchen
+Wolfshund
+Harter Bursche
 
 
 Prio List:
-###ROLLENBESCHREIBUNGEN + TEXTE
-Wolfshund
 Terrorwolf
-Rotkaeppchen
 Amor
-Harter Bursche
 Berserker
 Psychopath
 #### Sitzreihenfolge ausgeben
