@@ -18,7 +18,7 @@ def description_dorfbewohner():
 	elif desc_no == 3: return "Du bist ein normaler Dorfbewohner, dessen einzige Waffe die Demokratie am Tage ist."
 	elif desc_no == 4: return "Dein Charakter ist ein braver Bürger."
 	elif desc_no == 5: return "Du bist ein Dorfbewohner, welcher nachts einfach in Ruhe durchschlafen darf."
-	else: return "Du bist ein normaler Dorfbewohner, welcher sein Überleben nur durch das lynchen der Werwölfe am Tage zu schützen weiß."
+	else: return "Du bist ein normaler Dorfbewohner, welcher sein Überleben nur durch das Lynchen der Werwölfe am Tage zu schützen weiß."
 
 def description_dorfbewohnerin():
 	desc_no = random.randrange(1,7)
@@ -27,7 +27,7 @@ def description_dorfbewohnerin():
 	elif desc_no == 3: return "Du bist eine normale Dorfbewohnerin, deren einzige Waffe die Demokratie am Tage ist."
 	elif desc_no == 4: return "Dein Charakter ist eine brave Bürgerin."
 	elif desc_no == 5: return "Du bist eine Dorfbewohnerin, welche nachts einfach in Ruhe durchschlafen darf."
-	else: return "Du bist eine normale Dorfbewohnerin, welche ihr Überleben nur durch das lynchen der Werwölfe am Tage zu schützen weiß."
+	else: return "Du bist eine normale Dorfbewohnerin, welche ihr Überleben nur durch das Lynchen der Werwölfe am Tage zu schützen weiß."
 
 def description_jaeger():
 	desc_no = random.randrange(1,7)
