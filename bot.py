@@ -46,7 +46,7 @@ game_library = {"single_player":False,
 				"harter_bursche_survive" : True}
 
 werwolf_group = ["Werwolf"]
-dorf_group = ["Dorfbewohner", "Dorfbewohnerin", "Jäger", "Seherin", "Hexe", "Rotkäppchen"]
+dorf_group = ["Dorfbewohner", "Dorfbewohnerin", "Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche"]
 
 class Target:
 	def __init__(self, wolf_id, target_id):
@@ -131,8 +131,8 @@ def inlineKey_hexe_death(game_id):
 
 def inlineKey_wolfshund(game_id):
 	keyboard = []
-	keyboard.append([InlineKeyboardButton(player.name + lore.wolfshund_choose_werwolf(), callback_data="wolfshund_werwolf_" +str(game_id))])
-	keyboard.append([InlineKeyboardButton(player.name + lore.wolfshund_choose_dorf(), callback_data="wolfshund_dorf_" +str(game_id))])
+	keyboard.append([InlineKeyboardButton(lore.wolfshund_choose_werwolf(), callback_data="wolfshund_werwolf_" +str(game_id))])
+	keyboard.append([InlineKeyboardButton(lore.wolfshund_choose_dorf(), callback_data="wolfshund_dorf_" +str(game_id))])
 	return InlineKeyboardMarkup(keyboard)
 
 def draw_with_doubles(context, game_id):
@@ -199,7 +199,7 @@ def draw_no_doubles(context, game_id):
 			role = random.randrange(0,len(werwolf_role_list))
 			p.role = werwolf_role_list[role]
 			if werwolf_role_list[role] in unique:
-				while p.role in dorf_role_list:
+				while p.role in werwolf_role_list:
 					werwolf_role_list.remove(p.role)
 		else:
 			role = random.randrange(0,len(dorf_role_list))
@@ -338,6 +338,7 @@ def wake_wolfshund(context, game_id):
 			context.bot.send_message(chat_id=player.user_id, text=lore.wolfshund_options(), reply_markup=inlineKey_wolfshund(game_id))
 	while game_dict[game_id]["game_state"] == "wolfshund":
 		time.sleep(1)
+		print("waiting")
 
 
 def do_killing(context, game_id):
@@ -710,13 +711,19 @@ def button_handler_wolfshund_choose(update, context):
 	if not game_dict[game_id]["game_state"] == "wolfshund": return
 	target = query.data.split("_")[1]
 	if target == "werwolf":
+		print("choose werwolf")
 		for player in game_dict[game_id]["player_list"]:
+			print(player.role)
 			if player.role == "Wolfshund":
-				player.role == "Werwolf"
+				print(player.name)
+				player.role = "Werwolf"
 	elif target == "dorf":
+		print("choose dorf")
 		for player in game_dict[game_id]["player_list"]:
+			print(player.role)
 			if player.role == "Wolfshund":
-				player.role == "Dorfbewohner"
+				print(player.name)
+				player.role = "Dorfbewohner"
 	game_dict[game_id]["game_state"] = "night"
 
 def button_handler(update, context):
@@ -736,6 +743,8 @@ def button_handler(update, context):
 		button_handler_hexe_life(update, context)
 	elif update.callback_query.data.startswith("hexedeath_"):
 		button_handler_hexe_death(update, context)
+	elif update.callback_query.data.startswith("wolfshund_"):
+		button_handler_wolfshund_choose(update, context)
 
 def new(update, context):
 	global game_dict
