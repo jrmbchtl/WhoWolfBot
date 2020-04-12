@@ -5,7 +5,7 @@ import requests
 def get_lore():
 	desc_no = random.randrange(1,7)
 	if desc_no == 1: return "Ein kleines Dorf in einem Wald wird unerwartet von Werwölfen heimgesucht. \nDie Dorfbewohner versuchen, die als Menschen getarnten Wölfe zu entlarven und aufzuhalten. \nWährenddessen wollen die Wölfe als einzige überleben und nachts einen Dorfbewohner nach dem anderen fressen."
-	elif desc_no == 2: return "Wir befinden uns in in dem malerischen Dörfchen Düsterwald. Doch die Idylle trügt.\nSeit geraumer Zeit treibt ein Rudel Werwölfe sein Unwesen und jede Nacht fällt seinem unstillbaren Hunger ein Dorfbewohner zum Opfer.\nIn dem Bestreben, das Übel auszurotten, greifen die Dorfbewohner ihrerseits zur Selbsthilfe und der einst beschauliche Ort wird zur Bühne für ein erbittert geführten Kampf ums nackte Sein."
+	elif desc_no == 2: return "Wir befinden uns in dem malerischen Dörfchen Düsterwald. Doch die Idylle trügt.\nSeit geraumer Zeit treibt ein Rudel Werwölfe sein Unwesen und jede Nacht fällt seinem unstillbaren Hunger ein Dorfbewohner zum Opfer.\nIn dem Bestreben, das Übel auszurotten, greifen die Dorfbewohner ihrerseits zur Selbsthilfe und der einst beschauliche Ort wird zur Bühne für ein erbittert geführten Kampf ums nackte Sein."
 	elif desc_no == 3: return "Es war einmal ein kleines Dorf namens Düsterwald. \nFür den Außenstehenden scheint hier alles in Ordnung zu sein. Doch sobald die Nacht hereinbricht, wird es gefährlich auf den Straßen von Düsterwald und nicht mal in seinem eigenen Haus ist man sicher: Ein halbblinder Jäger liegt auf der Lauer, eine Hexe braut unbekannte Tränke und darüber hinaus treiben gefährliche Werwölfe ihr unwesen. \nEs geht ums reine Überleben. \nSelbst tagsüber findet das Dorf keine Ruhe: Um dem nächtlichen Spuk ein Ende zu bereiten, wird ein Bewohner nach dem anderen gelyncht und auch manch Unschuldiger findet dadurch seine letzte Ruhe..."
 	elif desc_no == 4: return "Ein Ort: Düsterwald. Zwei Teams: Werwölfe und Dorfbewohner. Eine Mission: Als Gruppe zu überleben."
 	elif desc_no == 5: 	return "Der Ort ist unwichtig. Die Zeit: irrelevant. Die Realität: vollständig subjektiv. Die Deduktionsfähigkeit: unabdingbar. Verluste: an der Tagesordnung. Das Ende: unausweichlich. Der Sieger: offen."
@@ -58,9 +58,9 @@ def description_wolfshund():
 
 def description_seherin():
 	desc_no = random.randrange(1,7)
-	if desc_no == 1: return "Du bist die Serin. Diese erwacht jede Nacht, sucht sich einen Bewohner aus und erfährt, ob dieser zu den Werwölfen gehört oder nicht."
+	if desc_no == 1: return "Du bist die Seherin. Diese erwacht jede Nacht, sucht sich einen Bewohner aus und erfährt, ob dieser zu den Werwölfen gehört oder nicht."
 	elif desc_no == 2: return "Du bist die Seherin. Die Seherin hat die Fähigkeit, jede Nacht über einen Mitspieler zu erfahren, ob dieser zu den Werwölfen gehört."
-	elif desc_no == 3: return "Bei deinem Charakter handelt es sich um die Seherin. Jede Nacht darf erhält sie die Einsicht über einen Spieler, ob dieser zu den Werwölfen gehört."
+	elif desc_no == 3: return "Bei deinem Charakter handelt es sich um die Seherin. Jede Nacht erhält sie Einsicht über einen Spieler, ob dieser zu den Werwölfen gehört."
 	elif desc_no == 4: return "Du bist die Seherin. Die Seherin erwählt jede Nacht einen Spieler. Sie erfährt, ob dieser gut oder böse ist."
 	elif desc_no == 5: return "Du bist die Seherin. Die Seherin erwacht, während alle anderen schlafen und darf sich eine Person aussuchen, über die sie erfahren will, ob diese gut oder böse ist. Da die Seherin zu jeder Runde die Gruppenzugehörigkeit einer weiteren Person im Spiel kennt, kann sie großen Einfluss nehmen, muss aber ihr Wissen vorsichtig einsetzen."
 	else: return "Dein Charakter ist die Seherin. Als diese erhälst du die Fähigkeit, jede Nacht über eine ander Person zu erfahren, ob diese gut oder böse ist."
@@ -69,7 +69,7 @@ def description_hexe():
 	desc_no = random.randrange(1,7)
 	if desc_no == 1: return "Du bist die Hexe. Diese erwacht jede Nacht, erfährt das Opfer der Werwölfe und darf sich entscheiden, ob sie ihren einen Lebenstrank auf das Opfer anwendet. Anschließend hat sie die Möglichkeit, einmal im Spiel eine Person mit einem Todestrank zu ermorden."
 	elif desc_no == 2: return "Du bist die Hexe. Ihr stehen zwei Tränke zur Verfügung, ein Heil- und ein Gifttrank. \nDeren Bedeutung ist zwar selbsterklärend, aber dennoch: Mit dem Gifttrank kann sie einmal im Spiel einen Mitspieler vergiften, mit dem Heiltrank jemanden vor den Werwölfen erretten (auch sich selber)."
-	elif desc_no == 3: return "Deine Rolle ist die Hexe. Die Hexe erwacht immer direkt nachdem die Werwölfe ihr Opfer ausgesucht haben. Sie hat im Verlauf des gesamten Spiels einen Gift- und einen Heiltrank. Die Hexe erfährt das Mordopfer der Werwölfe und die Hexe kann diese mit ihrem Heiltrank heilen (auch sich selbst), so dass es am nächsten Morgen keinen Toten gibt. Sie kann aber auch den Gifttrank auf einen anderen Spieler anwenden; dann gibt es mehrere Tote."
+	elif desc_no == 3: return "Deine Rolle ist die Hexe. Die Hexe erwacht immer direkt nachdem die Werwölfe ihr Opfer ausgesucht haben. Sie hat im Verlauf des gesamten Spiels einen Gift- und einen Heiltrank. Die Hexe erfährt das Mordopfer der Werwölfe und kann dieses mit ihrem Heiltrank heilen (auch sich selbst), so dass es am nächsten Morgen keinen Toten gibt. Sie kann aber auch den Gifttrank auf einen anderen Spieler anwenden; dann gibt es mehrere Tote."
 	elif desc_no == 4: return "Dein Charakter ist die Hexe. Die Hexe bekommt jede Nacht das Opfer der Werwölfe angezeigt (sofern jemand durch die Werwölfe sterben würde) und kann einmal im Spiel das Opfer mit einem Heiltrank retten. Außerdem hat sie einen Todestrank, mit dem sie einmal im Spiel einen beliebigen Spieler töten kann."
 	elif desc_no == 5: return "Du bist die Hexe. Ihr stehen im gesamten Spiel zwei verschiedene Tränke zur Auswahl: Sie darf einmal im Spiel, nachdem sie das Opfer der Werwölfe erfahren hat, dieses mit dem Lebenstrank retten und einmal im Spiel einen beliebigen Mitspieler mit einem Gifttrank aus dem Leben schießen."
 	else: return "Bei deiner Rolle handelt es sich um die Hexe. Diese hat zwei Spezialfähigkeiten. Zum einen darf sie jede Nacht, sofern sie noch ihren einen Heiltrank besitzt, das Opfer der Werwölfe erfahren und ggf. heilen. Zum anderen darf sie einmal im Spiel Gift in das Getränk eines Mitspielers geben, welcher dann am nächsten Morgen nicht mehr erwacht."
@@ -383,7 +383,7 @@ def jaeger_choose_target():
 	elif desc_no == 1: return "Wen möchtest du erschießen?"
 	elif desc_no == 2: return "Wen willst du wegpusten?"
 	elif desc_no == 3: return "Wen willst du in Notwehr abknallen?"
-	elif desc_no == 4: return "Wen willst du Ausversehen mit 15 Schüssen in der Brust treffen?"
+	elif desc_no == 4: return "Wen willst du ausversehen mit 15 Schüssen in der Brust treffen?"
 	elif desc_no == 5: return "Wen möchtest du mit Blei ausstopfen?"
 	elif desc_no == 6: return "Wem möchtest du zu einer inneren Bleivergiftung verhelfen?"
 	elif desc_no == 7: return "Wen willst du als letzten Akt erschießen?"
@@ -436,11 +436,24 @@ def patt_revote():
 	elif desc_no == 2: return "Die Abstimmung geht unentschieden aus und muss wiederholt werden."
 	elif desc_no == 3: return "Die Dorfgemeinschaft kann sich für keinen Schuldigen entscheiden und setzt daher Neuwahlen an."
 	elif desc_no == 4: return "Zustände wie in der Türkei: Es wird sooft gewählt, bis den Oberen das Ergebnis gefällt. Es wurden Neuwahlen angesetzt!"
-	elif desc_no == 5: return "Es kann nur eine Person hingerichtet werden, irgendjemand sollte seine Meinung ändern"
+	elif desc_no == 5: return "Es kann nur eine Person hingerichtet werden, irgendjemand sollte seine Meinung ändern!"
 	elif desc_no == 6: return "Hier kommt die Demokratie an ihre Grenzen: Die Wahl muss wiederholt werden."
 	elif desc_no == 7: return "Eine Koalition ist bei der Hinrichtung nicht möglich. Bitte entscheidet euch für einen Schuldigen."
 	elif desc_no == 8: return "Auf dem elekrtischen Stuhl ist nur Platz für eine Person. Bitte nochmals abstimmen!"
 	else: return "Wenn ihr zwei halbe Menschen hinrichtet, habt ihr mathematisch auch nur eine Person hingerichtet. Das Problem ist, dass dann beide tot sind. Entscheidet euch!"
+
+def patt_no_kill():
+	desc_no = random.randrange(0,10)
+	if desc_no == 0: return "Da sich das Dorf nicht auf einen Schuldigen einigen kann, wird heute niemand gelyncht."
+	elif desc_no == 1: return "Die Demokratie ist überfordert un beschließt, niemanden hinzurichten."
+	elif desc_no == 2: return "Nach einer intensiven aber ergebnislosen Diskussion kehren alle nach hause zurück."
+	elif desc_no == 3: return "Mal wieder viel heiße Luft um Nichts - viel Anschuldigungen aber kein Ergebnis."
+	elif desc_no == 4: return "Bei dem versuch, alle Angeklagten zu hängen, reißt das Seil und das Dorf beschließt#, heute niemanden hinzurichten."
+	elif desc_no == 5: return "Da die Diskussion zu hitzig wird, ohne ein Ergebnis zu zeigen, löst die Polizei die Versammlung auf und schickt alle Beteiligten fort."
+	elif desc_no == 6: return "Am Ende des Tages sind alle genervt, da letztlich keiner seine Meinung durchsetzen konnte."
+	elif desc_no == 7: return "Dieser Tag geht ohne einen Toten vorbei. Dies sorgt für Unmut unter den Dorfbewohnern, da die Werwölfe auch nächste Nacht nicht ruhen werden."
+	elif desc_no == 8: return "Die Dorfbewohner nehmen sich vor: Beim nächsten Mal erzielen wir bei der Abstimmung ein klares Ergebnis, doch momentan will keiner seine Meinung ändern. Vielleicht kann die kommende Nacht gegen ein Patt helfen?"
+	else: return "Da sich das Dorf nicht einigen konnte, beschließt es, eine Nacht über die Meinungen zu schlafen. Vielleicht wird man sich ja morgen einig."
 
 def nightfall():
 	desc_no = random.randrange(0,10)

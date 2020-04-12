@@ -43,7 +43,8 @@ game_library = {"single_player":False,
 				"hexe_life_juice_used" : False,
 				"hexe_death_juice_used" : False,
 				"vote_options" : {},
-				"harter_bursche_survive" : True}
+				"harter_bursche_survive" : True,
+				"first_patt" : True}
 
 werwolf_group = ["Werwolf"]
 dorf_group = ["Dorfbewohner", "Dorfbewohnerin", "Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche"]
@@ -400,24 +401,31 @@ def vote(context, game_id):
 			if str(p.user_id) == str(kill_id):
 				kill_name = p.name
 				kill_player = p
-		context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=kill_name + lore.vote_judgement(game_dict[game_id]["vote_options"][str(kill_id)]))
+		sentence = lore.vote_judgement(game_dict[game_id]["vote_options"][str(kill_id)])
+		context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=kill_name + sentence)
+		context.bot.send_message(chat_id=gkill_id, text=kill_name + sentence)
 		if kill_player.role == "Jäger":
 			activate_jaeger(context, kill_player, game_id)
 		game_dict[game_id]["player_list"].remove(kill_player)
 	else:
-		context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=lore.patt_revote())
-		game_dict[game_id]["anklage_list"] = []
-		for v in game_dict[game_id]["vote_list"]:
-			if v.user_id in kill_list:
-				already_in = False
-				for a in game_dict[game_id]["anklage_list"]:
-					if str(v.user_id) == str(a.user_id):
-						already_in = True
-				if not already_in:
-					#if v not in game_dict[game_id]["anklage_list"]:
-					game_dict[game_id]["anklage_list"].append(v)
-		game_dict[game_id]["vote_list"] = []
-		vote(context, game_id)
+		if game_dict[game_id]["first_patt"]:
+			game_dict[game_id]["first_patt"] = False
+			context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=lore.patt_revote())
+			game_dict[game_id]["anklage_list"] = []
+			for v in game_dict[game_id]["vote_list"]:
+				if v.user_id in kill_list:
+					already_in = False
+					for a in game_dict[game_id]["anklage_list"]:
+						if str(v.user_id) == str(a.user_id):
+							already_in = True
+					if not already_in:
+						#if v not in game_dict[game_id]["anklage_list"]:
+						game_dict[game_id]["anklage_list"].append(v)
+			game_dict[game_id]["vote_list"] = []
+			vote(context, game_id)
+		else:
+			game_dict[game_id]["first_patt"] = True
+			context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=lore.patt_no_kill())
 
 def test_chats(context, user_id, name, game_id):
 	try:

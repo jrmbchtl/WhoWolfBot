@@ -1,7 +1,4 @@
 Testen:
-Rotkaeppchen
-Wolfshund
-Harter Bursche
 
 
 Prio List:
@@ -16,3 +13,4 @@ Kerkermeister
 Weisser Wolf - Alleingaenger
 Flittchen
 Parasit
+Bürgermeister
