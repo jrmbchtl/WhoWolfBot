@@ -448,7 +448,7 @@ def patt_no_kill():
 	elif desc_no == 1: return "Die Demokratie ist überfordert un beschließt, niemanden hinzurichten."
 	elif desc_no == 2: return "Nach einer intensiven aber ergebnislosen Diskussion kehren alle nach hause zurück."
 	elif desc_no == 3: return "Mal wieder viel heiße Luft um Nichts - viel Anschuldigungen aber kein Ergebnis."
-	elif desc_no == 4: return "Bei dem versuch, alle Angeklagten zu hängen, reißt das Seil und das Dorf beschließt#, heute niemanden hinzurichten."
+	elif desc_no == 4: return "Bei dem versuch, alle Angeklagten zu hängen, reißt das Seil und das Dorf beschließt, heute niemanden hinzurichten."
 	elif desc_no == 5: return "Da die Diskussion zu hitzig wird, ohne ein Ergebnis zu zeigen, löst die Polizei die Versammlung auf und schickt alle Beteiligten fort."
 	elif desc_no == 6: return "Am Ende des Tages sind alle genervt, da letztlich keiner seine Meinung durchsetzen konnte."
 	elif desc_no == 7: return "Dieser Tag geht ohne einen Toten vorbei. Dies sorgt für Unmut unter den Dorfbewohnern, da die Werwölfe auch nächste Nacht nicht ruhen werden."

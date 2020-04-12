@@ -9,6 +9,7 @@ import time
 import threading
 import secrets
 from telegram.error import Unauthorized
+from telegram import ParseMode
 import lore
 
 token = ''
@@ -254,8 +255,8 @@ def game_over(context, game_id):
 			if over:
 				game_dict[game_id]["admin_id"] = 0
 				game_dict[game_id]["running"] = False
-				if group == werwolf_group: context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=lore.werwoelfe_win())
-				else: context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=lore.dorf_win())
+				if group == werwolf_group: context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text="`" + lore.werwoelfe_win().upper() + "`", parse_mode=ParseMode.MARKDOWN_V2)
+				else: context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text="`" + lore.dorf_win().upper() + "`", parse_mode=ParseMode.MARKDOWN_V2)
 				game_dict[game_id]["game_over_check"] = True
 				game_dict[game_id]["state"] = None
 				return True
@@ -283,7 +284,9 @@ def wake_werwolf(context, game_id):
 			time.sleep(1)
 	for player in game_dict[game_id]["player_list"]:
 		if str(player.user_id) == str(game_dict[game_id]["werwolf_target"]) and player.role=="Rotkäppchen":
-			game_dict[game_id]["werwolf_target"] = "-1"
+			for p in game_dict[game_id]["player_list"]:
+				if p.role == "Jäger":
+					game_dict[game_id]["werwolf_target"] = "-1"
 		if str(player.user_id) == str(game_dict[game_id]["werwolf_target"]) and player.role=="HarterBursche" and game_dict[game_id]["harter_bursche_survive"]:
 			game_dict[game_id]["harter_bursche_survive"] = False
 			game_dict[game_id]["werwolf_target"] = "-1"
@@ -352,8 +355,8 @@ def do_killing(context, game_id):
 		if str(p.user_id) == str(game_dict[game_id]["werwolf_target"]) or str(p.user_id) == str(game_dict[game_id]["hexe_target"]):
 			print(p.name)
 			death_message = lore.death_message()
-			context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=p.name + death_message)
-			context.bot.send_message(chat_id=p.user_id, text=p.name + death_message)
+			context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text="`" + p.name + death_message + "`", parse_mode=ParseMode.MARKDOWN_V2)
+			context.bot.send_message(chat_id=p.user_id, text="`" + p.name + death_message + "`", parse_mode=ParseMode.MARKDOWN_V2)
 			if p.role == "Jäger":
 				activate_jaeger(context, p, game_id)
 			do_killing_list.append(p)
@@ -402,8 +405,8 @@ def vote(context, game_id):
 				kill_name = p.name
 				kill_player = p
 		sentence = lore.vote_judgement(game_dict[game_id]["vote_options"][str(kill_id)])
-		context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=kill_name + sentence)
-		context.bot.send_message(chat_id=gkill_id, text=kill_name + sentence)
+		context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text="`" + kill_name + sentence + "`", parse_mode=ParseMode.MARKDOWN_V2)
+		context.bot.send_message(chat_id=kill_id, text="`" + kill_name + sentence + "`", parse_mode=ParseMode.MARKDOWN_V2)
 		if kill_player.role == "Jäger":
 			activate_jaeger(context, kill_player, game_id)
 		game_dict[game_id]["player_list"].remove(kill_player)
@@ -659,8 +662,9 @@ def button_handler_jaeger(update, context):
 		if str(pl.user_id) == str(kill_id):
 			kill_name = pl.name
 			game_dict[game_id]["player_list"].remove(pl)
-			break 
-	context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=kill_name + lore.jaeger_shot(kill_option))
+			break
+	context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text="`" + kill_name + lore.jaeger_shot(kill_option) + "`", parse_mode=ParseMode.MARKDOWN_V2)
+	context.bot.send_message(chat_id=kill_id, text="`" + kill_name + lore.jaeger_shot(kill_option) + "`", parse_mode=ParseMode.MARKDOWN_V2) 
 	game_dict[game_id]["game_state"] = game_dict[game_id]["game_state_backup"]
 	game_dict[game_id]["game_state_backup"] = None
 
@@ -771,7 +775,7 @@ def new(update, context):
 	context.bot.send_message(chat_id=update.message.chat_id, text=message, reply_markup=inlineKey_menu(game_id))
 
 def start(update, context):
-	context.bot.send_message(chat_id=update.message.chat_id, text="Herzlich Wilkommen beim WerWolfBot!")
+	context.bot.send_message(chat_id=update.message.chat_id, text="Herzlich Wilkommen beim WerWolfBot\\!".upper(), parse_mode=ParseMode.MARKDOWN_V2)
 
 def main():
 	updater = Updater(token, use_context=True)
