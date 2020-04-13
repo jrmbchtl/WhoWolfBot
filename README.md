@@ -10,12 +10,15 @@ Seherin
 Rotkaeppchen
 Wolfshund
 Harter Bursche
+Terrorwolf
 
 Testing:
 None
 
+WIP:
+None
+
 Planned:
-Terrorwolf
 Amor
 Berserker
 Psychopath

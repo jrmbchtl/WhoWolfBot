@@ -92,6 +92,15 @@ def description_harter_bursche():
 	elif desc_no == 5: return "Du bist ein harter Bursche. Muskeln aus Stahl, breiter als der Türsteher. Damit kannst du den ersten Angriff der Werwölfe erfolgreich abwenden."
 	else: return "Du bist ein harter Bursche. Nein, du bist DER Harte Bursche von Düsterwald. Hart genug, um den ersten Werwolfangriff zu überleben, aber nicht hart genug, um dem Gift der Hexe oder der Hinrichtung des Dorfes zu standzuhalten."
 
+def description_terrorwolf():
+	desc_no = random.randrange(1,7)
+	if desc_no == 1: return "Du bist der Terrorwolf. Wenn der Terrorwolf stirbt, nimmt er noch einen Spieler seiner Wahl mit in den Tod."
+	elif desc_no == 2: return "Du bist der Terrorwolf. Der Terrorwolf ist der Jäger der Werwölfe: Sollte er sterben, kann er noch einen Charakter seiner Wahl mit in den Tod reißen."
+	elif desc_no == 3: return "Dein Carakter ist der Terrorwolf, welcher, sollte er zu Tode kommen, in letzter Sekunde noch ein Opfer reißen kann."
+	elif desc_no == 4: return "Du bist der Terrorwolf. Dieser ist ähnlich dem Jäger, mit dem Unterschied, dass er für die Werwölfe spielt: Stirbt der Terrorwolf, egal ob bei Tag oder Nacht, so bleibt ihm noch ausreichend Zeit, sich einen Dorfbewohner als Henkersmahlzeit zu schnappen."
+	elif desc_no == 5: return "Deine Rolle ist er Terrorwolf, welcher mittels eines Testaments den Tod eines Dorfbewohners einfordert."
+	else: return "Du bist der Terrorwolf. Dein Tod hat Konsequenzen. Zumindest für einen weiteren Dorfbewohner: Wenn du stirbst, steht er als letzte Mahlzeit auf deinem Speiseplan."
+
 def inlineKey_werwolf_options(name):
 	desc_no = random.randrange(0,12)
 	if desc_no == 0: return (0, name + " reißen")
@@ -213,6 +222,31 @@ def vote_judgement(option):
 	elif option == "8": return " wurde lebendig begraben\\."
 	else: return " hat die Steinigung nicht überlebt\\."
 
+def inlineKey_terrorwolf_options():
+	desc_no = random.randrange(0,10)
+	if desc_no == 0: return (0," reißen")
+	elif desc_no == 1: return (1," als Henkersmahlzeit verspeißen")
+	elif desc_no == 2: return (2," mit in den Tod reißen")
+	elif desc_no == 3: return (3," noch kurz verputzen")
+	elif desc_no == 4: return (4," im Vorbeilaufen die Zähne in den Hals rammen")
+	elif desc_no == 5: return (5," mit letzter Kraft zerbeißen")
+	elif desc_no == 6: return (6," noch kurz in der Luft zerfetzen")
+	elif desc_no == 7: return (7," bei einem Attentäter in Auftrag geben")
+	elif desc_no == 8: return (8," Schürfwunden verpassen. \nGroße Schürfwunden. \nSo groß, dass der Kopf abfällt.")
+	else: return (9," aus Mitleid noch kurz aufessen")
+
+def terrorwolf_kill(option):
+	if option == "0": return " wurde vom Terrorwolf gerissen\\."
+	elif option == "1": return " wurde als Henkersmahlzeit verspeißt\\!"
+	elif option == "2": return " wurde mit in den Tod gerissen\\."
+	elif option == "3": return " wurde noch kurz verputzt\\."
+	elif option == "4": return " hat sich im Vorbeilaufen die Zähne in den Hals rammen lassen\\."
+	elif option == "5": return " wurde mit der letzen Kraft des Terrowolfes zerbissen\\."
+	elif option == "6": return " wurde in der Luft zerfetzt\\."
+	elif option == "7": return " wurde bei einem Attentäter in Auftrag gegeben und konnte nicht entkommen\\."
+	elif option == "8": return " kann ohne seinen Kopf nicht weiterleben\\!"
+	else: return " wurde noch kurz aus Mitleid aufgegessen\\."
+
 def inlineKey_jaeger_options():
 	desc_no = random.randrange(0,10)
 	if desc_no == 0: return (0," erschießen")
@@ -227,16 +261,16 @@ def inlineKey_jaeger_options():
 	else: return (9," einen Gnadenschuss verpassen")
 
 def jaeger_shot(option):
-	if option == "0": return " wurde vom Jäger erschossen"
-	elif option == "1": return " wurde mit einer Nagelpistole an die Wand geheftet!"
-	elif option == "2": return " hat nun sehr viele Löcher in Kopf und Brust."
-	elif option == "3": return " wurde umgelegt."
-	elif option == "4": return " hat sich wegpusten lassen."
-	elif option == "5": return " wurde in der Notwehr des Jägers erschossen!"
-	elif option == "6": return " wurde niedergestreckt."
-	elif option == "7": return " endete als letzte Jagdtrophäe des Jägers!"
-	elif option == "8": return " wurde vom Jäger mit in den Tod gerissen."
-	else: return " hat einen Gnadenschuss erhalten."
+	if option == "0": return " wurde vom Jäger erschossen\\."
+	elif option == "1": return " wurde mit einer Nagelpistole an die Wand geheftet\\!"
+	elif option == "2": return " hat nun sehr viele Löcher in Kopf und Brust\\."
+	elif option == "3": return " wurde umgelegt\\."
+	elif option == "4": return " hat sich wegpusten lassen\\."
+	elif option == "5": return " wurde in der Notwehr des Jägers erschossen\\!"
+	elif option == "6": return " wurde niedergestreckt\\."
+	elif option == "7": return " endete als letzte Jagdtrophäe des Jägers\\!"
+	elif option == "8": return " wurde vom Jäger mit in den Tod gerissen\\."
+	else: return " hat einen Gnadenschuss erhalten\\."
 
 def seherin_options(name):
 	desc_no = random.randrange(0,7)
@@ -364,6 +398,32 @@ def werwolf_choose_target():
 	elif desc_no == 8: return "Mit wem lassen sich die hungrigen Werwolfsmäuler am besten stopfen?"
 	else: return "Die Werwolfsmägen knurren vor Hunger - Zeit, sich etwas zu Essen zu suchen!"
 
+def terrorwolf_reveal():
+	desc_no = random.randrange(0,10)
+	if desc_no == 0: return " war der Terrorwolf!"
+	elif desc_no == 1: return " will noch jemanden in seinem Testament zerfleischen lassen."
+	elif desc_no == 2: return " reißt sein Maul auf: Ihm bleibt noch genügend Zeit, jemanden zu fressen"
+	elif desc_no == 3: return " beißt einen Dorfbewohner!"
+	elif desc_no == 4: return " will seinen Freunden mit seinem Tod helfen und sucht sich eine Henkersmahlzeit."
+	elif desc_no == 5: return " kriegt vor seinem Tod nochmal Hunger."
+	elif desc_no == 6: return " will im Sterben noch jemanden versnacken!"
+	elif desc_no == 7: return " will nicht alleine sterben und fletscht die Zähne."
+	elif desc_no == 8: return " genießt es, jemanden zu sehen - und zerfetzt ihn!"
+	else: return " fordert sein Recht ein - vor dem Tod noch ein letztes Mal Beute fangen."
+
+def terrorwolf_choose_target():
+	desc_no = random.randrange(0,10)
+	if desc_no == 0: return "Wen möchtest du mit ins Grab nehmen?"
+	elif desc_no == 1: return "Wen möchtest du zerfleischen?"
+	elif desc_no == 2: return "Wen willst du versnacken?"
+	elif desc_no == 3: return "Wen willst du in Notwehr zerfetzen?"
+	elif desc_no == 4: return "Wen willst du 'ausversehen' mit deinen Zähnen füllen?"
+	elif desc_no == 5: return "Wem möchtest du wortwörtlich den Kopf abreißen?"
+	elif desc_no == 6: return "Wem möchtest du dazu verhelfen, an inneren Blutungen zu erliegen?"
+	elif desc_no == 7: return "Wen willst du als letzten Akt zerreißen?"
+	elif desc_no == 8: return "Wem gönnst du es nicht, ohne dich weiterzuleben?"
+	else: return "Wer soll durch deine Krallen seine ewige Ruhe finden?"
+
 def jaeger_reveal():
 	desc_no = random.randrange(0,10)
 	if desc_no == 0: return " war der Jäger!"
@@ -372,7 +432,7 @@ def jaeger_reveal():
 	elif desc_no == 3: return " zückt eine Schrotflinte!"
 	elif desc_no == 4: return " versucht mit Waffengewalt, kurz vor seinem Tod noch für Gerechtigkeit zu sorgen!"
 	elif desc_no == 5: return " hat einen Jagdschein!"
-	elif desc_no == 6: return " hat eine Jagdlizenez. Jetzt auch für Menschen!"
+	elif desc_no == 6: return " hat eine Jagdlizenz. Jetzt auch für Menschen!"
 	elif desc_no == 7: return " will nicht alleine sterben und zieht einen Revolver!"
 	elif desc_no == 8: return " genießt es, jemanden zu sehen - und erschießt ihn!"
 	else: return " fordert sein Recht ein - jemanden mit Waffengewalt in den Tod mitzunehmen."
