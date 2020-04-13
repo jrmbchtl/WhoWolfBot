@@ -203,14 +203,14 @@ def draw_no_doubles(context, game_id):
 	else:
 		for i in range(0,60):
 			werwolf_role_list.append("Werwolf")
-	for i in range(0,400):
+	for i in range(0,40):
 		werwolf_role_list.append("Terrorwolf")
 
 	dorf_role_list = []
 	for i in range(0,10):
 		dorf_role_list.append("Dorfbewohner")
 		dorf_role_list.append("Dorfbewohnerin")
-	for i in range(0,200):
+	for i in range(0,20):
 		dorf_role_list.append("Jäger")
 	for i in range(0,20):
 		dorf_role_list.append("Seherin")
