@@ -45,7 +45,12 @@ game_library = {"single_player":False,
 				"hexe_death_juice_used" : False,
 				"vote_options" : {},
 				"harter_bursche_survive" : True,
-				"first_patt" : True}
+				"first_patt" : True,
+				"werwolf_text" : {},
+				"anklage_message_id": 0,
+				"anklage_text" : {},
+				"vote_message_id": 0,
+				"vote_text" : {}}
 
 werwolf_group = ["Werwolf"]
 dorf_group = ["Dorfbewohner", "Dorfbewohnerin", "Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche"]
@@ -60,6 +65,7 @@ class Spieler:
 		self.name = name
 		self.user_id = user_id
 		self.role = None
+		self.werwolf_message_id = 0
 
 class Prosecuted:
 	def __init__(self, user_id, by_id):
@@ -255,8 +261,14 @@ def game_over(context, game_id):
 			if over:
 				game_dict[game_id]["admin_id"] = 0
 				game_dict[game_id]["running"] = False
-				if group == werwolf_group: context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text="`" + lore.werwoelfe_win().upper() + "`", parse_mode=ParseMode.MARKDOWN_V2)
-				else: context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text="`" + lore.dorf_win().upper() + "`", parse_mode=ParseMode.MARKDOWN_V2)
+				if group == werwolf_group: 
+					win_message = "`" + lore.werwoelfe_win().upper() + "`"
+
+				else: 
+					win_message = "`" + lore.dorf_win().upper() + "`"
+				context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
+				for player in game_dict[game_id]["player_list"]:
+					context.bot.send_message(chat_id=player.user_id, text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
 				game_dict[game_id]["game_over_check"] = True
 				game_dict[game_id]["state"] = None
 				return True
@@ -265,6 +277,8 @@ def game_over(context, game_id):
 def wake_werwolf(context, game_id):
 	global game_dict
 	game_dict[game_id]["game_state"] = "werwolf"
+	werwolf_keyboard = inlineKey_werwolf(game_id)
+	werwolf_introduction = lore.werwolf_choose_target()
 	for p in game_dict[game_id]["player_list"]:
 		if p.role in werwolf_group:
 			werwolf_tmp_list = []
@@ -279,7 +293,7 @@ def wake_werwolf(context, game_id):
 				context.bot.send_message(chat_id=p.user_id, text=message)
 			else:
 				context.bot.send_message(chat_id=p.user_id, text=lore.lonely_wolf())
-			context.bot.send_message(chat_id=p.user_id, text=lore.werwolf_choose_target(), reply_markup=inlineKey_werwolf(game_id))
+			context.bot.send_message(chat_id=p.user_id, text=werwolf_introduction, reply_markup=werwolf_keyboard)
 	while game_dict[game_id]["werwolf_target"] == "0":
 			time.sleep(1)
 	for player in game_dict[game_id]["player_list"]:
@@ -449,10 +463,17 @@ def start_game(context, game_id):
 		game_dict[game_id]["anklage_list"] = []
 		game_dict[game_id]["game_state"] = "night"
 		game_dict[game_id]["werwolf_target"] = "0"
+		for player in game_dict[game_id]["player_list"]:
+			player.werwolf_message_id = 0
+		game_dict[game_id]["werwolf_text"] = {}
+		game_dict[game_id]["anklgage_message_id"] = 0
+		game_dict[game_id]["vote_message_id"] = 0
+
 		text_nightfall = lore.nightfall()
 		context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=text_nightfall)
 		for p in game_dict[game_id]["player_list"]:
 			context.bot.send_message(chat_id=p.user_id, text=text_nightfall)
+
 		if game_dict[game_id]["round_number"] == 0:
 			wake_wolfshund(context, game_id)
 		wake_seherin(context, game_id)
@@ -527,10 +548,20 @@ def button_handler_menu(update, context):
 		else:
 			context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text="Abgebrochen")
 			game_dict.pop(game_id)
-			#game_dict[game_id].update({"admin_id": 0})
-			#game_dict[game_id].update({"running": False})
-			#game_dict[game_id].update({"player_list": []})
-			#game_dict[game_id].update({"game_over_check": True})
+
+def handler_send_message(update, context, game_id, lore_text, user_id, text_dict, saved_message_id):
+	global game_dict
+	if user_id in game_dict[game_id][text_dict]:
+		game_dict[game_id][text_dict] +=  lore_text + "\n"
+	else:
+		game_dict[game_id][text_dict] =  lore_text + "\n"
+	new_text = ""
+	for text in game_dict[game_id][text_dict]:
+		new_text += text + "\n"
+	if game_dict[game_id][saved_message_id] == 0:
+		game_dict[game_id][saved_message_id] = context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=new_text).message_id
+	else:
+		context.bot.edit_message_text(chat_id=game_dict[game_id]["game_chat_id"], message_id=game_dict[game_id][saved_message_id], text=new_text)
 
 def button_handler_werwolf(update, context):
 	global game_dict
@@ -544,7 +575,9 @@ def button_handler_werwolf(update, context):
 			werwolf_list.append(p)
 	if query.data.startswith("werwolf_-1"):
 		for w in werwolf_list:
-			context.bot.send_message(chat_id=w.user_id, text=query.from_user.first_name + " schlägt vor, " + lore.werwolf_response_options(killing_option, "niemanden"))
+			lore_text = query.from_user.first_name + " schlägt vor, " + lore.werwolf_response_options(killing_option, "niemanden")
+			handler_send_message(update, context, game_id, lore_text, w.user_id, "werwolf_text", "werwolf_message_id")
+			#context.bot.send_message(chat_id=w.user_id, text=query.from_user.first_name + " schlägt vor, " + lore.werwolf_response_options(killing_option, "niemanden"))
 		player_in_list = False
 		for t in game_dict[game_id]["werwolf_target_list"]:
 			if t.wolf_id == query.from_user.id:
@@ -566,7 +599,9 @@ def button_handler_werwolf(update, context):
 			if str(p.user_id) == target_id:
 				target_name = p.name
 		for w in werwolf_list:
-			context.bot.send_message(chat_id=w.user_id, text=query.from_user.first_name + " schlägt vor, " + lore.werwolf_response_options(killing_option, target_name))
+			lore_text = query.from_user.first_name + " schlägt vor, " + lore.werwolf_response_options(killing_option, target_name)
+			handler_send_message(update, context, game_id, lore_text, w.user_id, "werwolf_text", "werwolf_message_id")
+			#context.bot.send_message(chat_id=w.user_id, text=query.from_user.first_name + " schlägt vor, " + lore.werwolf_response_options(killing_option, target_name))
 	if len(werwolf_list) == len(game_dict[game_id]["werwolf_target_list"]) and len(werwolf_list) != 0:
 		same = True
 		first_target = game_dict[game_id]["werwolf_target_list"][0]
@@ -579,6 +614,7 @@ def button_handler_werwolf(update, context):
 			if game_dict[game_id]["werwolf_target"] == "-1": target_name = "niemanden"
 			for w in werwolf_list:
 				context.bot.send_message(chat_id=w.user_id, text="Die Werwölfe haben beschlossen, " + lore.werwolf_response_options(killing_option, target_name))
+
 
 def button_handler_anklage(update, context):
 	global game_dict
@@ -608,11 +644,15 @@ def button_handler_anklage(update, context):
 					if str(a.by_id) == str(query.from_user.id):
 						a.user_id = anklage_id
 						anklaeger_in_list = True
-						context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=anklaeger_name + lore.anklage_change(anklage_option, angeklagter_name))
+						lore_text = anklaeger_name + lore.anklage_change(anklage_option, angeklagter_name)
+						handler_send_message(update, context, game_id, lore_text, query.from_user.id, "anklage_text", "anklage_message_id")
+						#context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=anklaeger_name + lore.anklage_change(anklage_option, angeklagter_name))
 						break
 				if not anklaeger_in_list:
 					game_dict[game_id]["anklage_list"].append(Prosecuted(anklage_id, query.from_user.id))
-					context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=anklaeger_name + lore.anklage_new(anklage_option, angeklagter_name))
+					lore_text = anklaeger_name + lore.anklage_new(anklage_option, angeklagter_name)
+					handler_send_message(update, context, game_id, lore_text, query.from_user.id, "anklage_text", "anklage_message_id")
+					#context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=anklaeger_name + lore.anklage_new(anklage_option, angeklagter_name))
 			break
 
 def button_handler_vote(update, context):
@@ -641,12 +681,16 @@ def button_handler_vote(update, context):
 				if str(v.by_id) == str(query.from_user.id):
 					already_voted = True
 					v.user_id = vote_id
-					context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=voter_name + lore.vote_change(vote_option, voted_name))
+					lore_text = voter_name + lore.vote_change(vote_option, voted_name)
+					handler_send_message(update, context, game_id, lore_text, query.from_user.id, "vote_text", "vote_message_id")
+					#context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=voter_name + lore.vote_change(vote_option, voted_name))
 					game_dict[game_id]["last_vote_option"] = vote_option
 					break
 			if not already_voted:
 				game_dict[game_id]["vote_list"].append(Prosecuted(vote_id, query.from_user.id))
-				context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=voter_name + lore.vote_new(vote_option, voted_name))
+				lore_text = voter_name + lore.vote_new(vote_option, voted_name)
+				handler_send_message(update, context, game_id, lore_text, query.from_user.id, "vote_text", "vote_message_id")
+				#context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=voter_name + lore.vote_new(vote_option, voted_name))
 				game_dict[game_id]["last_vote_option"] = vote_option
 			break
 
@@ -775,7 +819,7 @@ def new(update, context):
 	context.bot.send_message(chat_id=update.message.chat_id, text=message, reply_markup=inlineKey_menu(game_id))
 
 def start(update, context):
-	context.bot.send_message(chat_id=update.message.chat_id, text="Herzlich Wilkommen beim WerWolfBot\\!".upper(), parse_mode=ParseMode.MARKDOWN_V2)
+	context.bot.send_message(chat_id=update.message.chat_id, text="Herzlich Wilkommen beim WerWolfBot\\!", parse_mode=ParseMode.MARKDOWN_V2).message_id
 
 def main():
 	updater = Updater(token, use_context=True)
