@@ -56,6 +56,7 @@ werwolf_group = ["Werwolf"]
 dorf_group = ["Dorfbewohner", "Dorfbewohnerin", "Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche"]
 
 markup_character = "`"
+markup_character = "__"
 
 class Target:
 	def __init__(self, wolf_id, target_id):
@@ -441,6 +442,8 @@ def vote(context, game_id):
 						#if v not in game_dict[game_id]["anklage_list"]:
 						game_dict[game_id]["anklage_list"].append(v)
 			game_dict[game_id]["vote_list"] = []
+			game_dict[game_id]["vote_message_id"] = 0
+			game_dict[game_id]["vote_text"] = {}
 			vote(context, game_id)
 		else:
 			game_dict[game_id]["first_patt"] = True
@@ -468,6 +471,8 @@ def start_game(context, game_id):
 		for player in game_dict[game_id]["player_list"]:
 			player.werwolf_message_id = 0
 		game_dict[game_id]["werwolf_text"] = {}
+		game_dict[game_id]["anklage_text"] = {}
+		game_dict[game_id]["vote_text"] = {}
 		game_dict[game_id]["anklgage_message_id"] = 0
 		game_dict[game_id]["vote_message_id"] = 0
 
@@ -553,17 +558,32 @@ def button_handler_menu(update, context):
 
 def handler_send_message(update, context, game_id, lore_text, user_id, text_dict, saved_message_id):
 	global game_dict
-	if user_id in game_dict[game_id][text_dict]:
-		game_dict[game_id][text_dict] +=  lore_text + "\n"
+	if str(user_id) in game_dict[game_id][text_dict]:
+		game_dict[game_id][text_dict][str(user_id)] += lore_text + "\n"
 	else:
-		game_dict[game_id][text_dict] =  lore_text + "\n"
+		game_dict[game_id][text_dict][str(user_id)] = lore_text + "\n"
 	new_text = ""
+	print(game_dict[game_id][text_dict])
+	print("\n\n")
 	for text in game_dict[game_id][text_dict]:
-		new_text += text + "\n"
-	if game_dict[game_id][saved_message_id] == 0:
-		game_dict[game_id][saved_message_id] = context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=new_text).message_id
+		new_text += game_dict[game_id][text_dict][text] + "\n"
+	if saved_message_id == "werwolf_message_id":
+		for player in game_dict[game_id]["player_list"]:
+			if str(player.user_id) == str(user_id):
+				if player.werwolf_message_id == 0:
+					player.werwolf_message_id = context.bot.send_message(chat_id=user_id, text=new_text).message_id
+				else:
+					context.bot.edit_message_text(chat_id=user_id, message_id=player.werwolf_message_id, text=new_text)
 	else:
-		context.bot.edit_message_text(chat_id=game_dict[game_id]["game_chat_id"], message_id=game_dict[game_id][saved_message_id], text=new_text)
+		print(saved_message_id)
+		print("\n\n")
+		print(game_dict[game_id][saved_message_id])
+		print("\n\n")
+		if game_dict[game_id][saved_message_id] == 0:
+			game_dict[game_id][saved_message_id] = context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=new_text).message_id
+		else:
+			context.bot.edit_message_text(chat_id=game_dict[game_id]["game_chat_id"], message_id=game_dict[game_id][saved_message_id], text=new_text)
+	
 
 def button_handler_werwolf(update, context):
 	global game_dict
