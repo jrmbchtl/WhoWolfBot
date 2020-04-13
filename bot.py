@@ -55,6 +55,8 @@ game_library = {"single_player":False,
 werwolf_group = ["Werwolf"]
 dorf_group = ["Dorfbewohner", "Dorfbewohnerin", "Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche"]
 
+markup_character = "`"
+
 class Target:
 	def __init__(self, wolf_id, target_id):
 		self.wolf_id = wolf_id
@@ -262,10 +264,10 @@ def game_over(context, game_id):
 				game_dict[game_id]["admin_id"] = 0
 				game_dict[game_id]["running"] = False
 				if group == werwolf_group: 
-					win_message = "`" + lore.werwoelfe_win().upper() + "`"
+					win_message = markup_character + lore.werwoelfe_win().upper() + markup_character
 
 				else: 
-					win_message = "`" + lore.dorf_win().upper() + "`"
+					win_message = markup_character + lore.dorf_win().upper() + markup_character
 				context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
 				for player in game_dict[game_id]["player_list"]:
 					context.bot.send_message(chat_id=player.user_id, text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
@@ -369,8 +371,8 @@ def do_killing(context, game_id):
 		if str(p.user_id) == str(game_dict[game_id]["werwolf_target"]) or str(p.user_id) == str(game_dict[game_id]["hexe_target"]):
 			print(p.name)
 			death_message = lore.death_message()
-			context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text="`" + p.name + death_message + "`", parse_mode=ParseMode.MARKDOWN_V2)
-			context.bot.send_message(chat_id=p.user_id, text="`" + p.name + death_message + "`", parse_mode=ParseMode.MARKDOWN_V2)
+			context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=markup_character + p.name + death_message + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
+			context.bot.send_message(chat_id=p.user_id, text=markup_character + p.name + death_message + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
 			if p.role == "Jäger":
 				activate_jaeger(context, p, game_id)
 			do_killing_list.append(p)
@@ -419,8 +421,8 @@ def vote(context, game_id):
 				kill_name = p.name
 				kill_player = p
 		sentence = lore.vote_judgement(game_dict[game_id]["vote_options"][str(kill_id)])
-		context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text="`" + kill_name + sentence + "`", parse_mode=ParseMode.MARKDOWN_V2)
-		context.bot.send_message(chat_id=kill_id, text="`" + kill_name + sentence + "`", parse_mode=ParseMode.MARKDOWN_V2)
+		context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=markup_character + kill_name + sentence + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
+		context.bot.send_message(chat_id=kill_id, text=markup_character + kill_name + sentence + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
 		if kill_player.role == "Jäger":
 			activate_jaeger(context, kill_player, game_id)
 		game_dict[game_id]["player_list"].remove(kill_player)
@@ -707,8 +709,8 @@ def button_handler_jaeger(update, context):
 			kill_name = pl.name
 			game_dict[game_id]["player_list"].remove(pl)
 			break
-	context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text="`" + kill_name + lore.jaeger_shot(kill_option) + "`", parse_mode=ParseMode.MARKDOWN_V2)
-	context.bot.send_message(chat_id=kill_id, text="`" + kill_name + lore.jaeger_shot(kill_option) + "`", parse_mode=ParseMode.MARKDOWN_V2) 
+	context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=markup_character + kill_name + lore.jaeger_shot(kill_option) + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
+	context.bot.send_message(chat_id=kill_id, text=markup_character + kill_name + lore.jaeger_shot(kill_option) + markup_character, parse_mode=ParseMode.MARKDOWN_V2) 
 	game_dict[game_id]["game_state"] = game_dict[game_id]["game_state_backup"]
 	game_dict[game_id]["game_state_backup"] = None
 
