@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+# own ignores
+token.txt
+test.py
+bot_stable.py
+lore_stable.py
