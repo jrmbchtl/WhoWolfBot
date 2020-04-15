@@ -342,7 +342,7 @@ def all_dead():
 	elif desc_no == 4: return "Jetzt leben nur noch Tiere in Düsterwald\\."
 	elif desc_no == 5: return "Die Natur wird sich das kleine Örtchen ab jetzt Stück für Stück zurückholen\\."
 	elif desc_no == 6: return "Die Zivilisation in Düsterwald ist ausgelöscht\\."
-	elif desc_no == 7: return "Das Werwolfproblem ist beseitigt. Das Menschenproblem aber auch\\."
+	elif desc_no == 7: return "Das Werwolfproblem ist beseitigt\\. Das Menschenproblem aber auch\\."
 	elif desc_no == 8: return "Düsterwald hat jetzt " + str(json.loads(requests.get("http://api.open-notify.org/astros.json").text)["number"]) + " Einwohner weniger als das Weltall\\."
 	else: return "Das Kapitel 'Düsterwald' ist jetzt endgültig abgeschlossen\\."
 
