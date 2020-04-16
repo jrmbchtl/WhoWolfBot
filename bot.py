@@ -161,21 +161,27 @@ def inlineKey_seherin(game_id):
 
 def inlineKey_hexe_life(game_id):
 	keyboard = []
-	keyboard.append([InlineKeyboardButton(lore.hexe_save(), callback_data="hexe_life1_"+str(game_id))])
-	keyboard.append([InlineKeyboardButton(lore.hexe_let_die(), callback_data="hexe_life0_"+str(game_id))])
+	(hexe_save_id, hexe_save_lore) = lore.hexe_save()
+	(hexe_let_die_id, hexe_let_die_lore) = lore.hexe_let_die()
+	keyboard.append([InlineKeyboardButton(hexe_save_lore, callback_data="hexe_life1_"+str(hexe_save_id)+"_"+str(game_id))])
+	keyboard.append([InlineKeyboardButton(hexe_let_die_lore, callback_data="hexe_life0_"+str(hexe_let_die_id)+"_"+str(game_id))])
 	return InlineKeyboardMarkup(keyboard)
 
 def inlineKey_hexe_death(game_id):
 	keyboard = []
 	for player in get_alive_player_list(game_id):
-		keyboard.append([InlineKeyboardButton(player.name + lore.hexe_kill(), callback_data="hexedeath_" + str(player.user_id) + "_" +str(game_id))])
-	keyboard.append([InlineKeyboardButton("Niemanden" + lore.hexe_kill(), callback_data="hexedeath_0_" + str(game_id))])
+		(hexe_kill_id, hexe_kill_lore) = lore.hexe_kill()
+		keyboard.append([InlineKeyboardButton(player.name + hexe_kill_lore, callback_data="hexedeath_" + str(player.user_id) + "_" +str(hexe_kill_id) + "_" + str(game_id))])
+	(hexe_kill_id, hexe_kill_lore) = lore.hexe_kill()
+	keyboard.append([InlineKeyboardButton("Niemanden" + hexe_kill_lore, callback_data="hexedeath_0_" +str(hexe_kill_id) + "_" +  str(game_id))])
 	return InlineKeyboardMarkup(keyboard)
 
 def inlineKey_wolfshund(game_id):
 	keyboard = []
-	keyboard.append([InlineKeyboardButton(lore.wolfshund_choose_werwolf(), callback_data="wolfshund_werwolf_" +str(game_id))])
-	keyboard.append([InlineKeyboardButton(lore.wolfshund_choose_dorf(), callback_data="wolfshund_dorf_" +str(game_id))])
+	(wolfshund_option_werwolf, wolfshund_lore_werwolf) = lore.wolfshund_choose_werwolf()
+	(wolfshund_option_dorf, wolfshund_lore_dorf) = lore.wolfshund_choose_dorf()
+	keyboard.append([InlineKeyboardButton(wolfshund_lore_werwolf, callback_data="wolfshund_werwolf_" + str(wolfshund_option_werwolf) + "_" + str(game_id))])
+	keyboard.append([InlineKeyboardButton(wolfshund_lore_dorf, callback_data="wolfshund_dorf_" + str(wolfshund_option_dorf) + "_" + str(game_id))])
 	return InlineKeyboardMarkup(keyboard)
 
 def draw_no_doubles(context, game_id):
@@ -728,39 +734,51 @@ def button_handler_seherin(update, context):
 def button_handler_hexe_life(update, context):
 	global game_dict
 	query = update.callback_query
-	game_id = query.data.split("_")[2]
+	game_id = query.data.split("_")[3]
+	save_option = query.data.split("_")[2]
 	if game_dict[game_id]["game_state"] != "hexe_life": return
+	for player in get_alive_player_list(game_id):
+		if player.marked_by_werwolf:
+			hit_player = player
 	if query.data.startswith("hexe_life0_"):
+		context.bot.send_message(chat_id=get_player_by_role("Hexe", game_id).user_id, text=lore.hexe_did_let_die(save_option, player.name))
 		game_dict[game_id]["game_state"] = "night"
 	elif query.data.startswith("hexe_life1_"):
 		game_dict[game_id]["hexe_life_juice_used"] = True
 		for player in get_alive_player_list(game_id):
 			player.marked_by_werwolf = False
+		context.bot.send_message(chat_id=get_player_by_role("Hexe", game_id).user_id, text=lore.hexe_did_save(save_option, player.name))
 		game_dict[game_id]["game_state"] = "night"
 
 def button_handler_hexe_death(update, context):
 	global game_dict
 	query = update.callback_query
-	game_id = query.data.split("_")[2]
+	game_id = query.data.split("_")[3]
+	kill_option = query.data.split("_")[2]
 	if game_dict[game_id]["game_state"] != "hexe_death": return
 	if query.data.startswith("hexedeath_0_"):
+		context.bot.send_message(chat_id=get_player_by_role("Hexe", game_id).user_id, text=lore.hexe_did_kill(kill_option, "niemanden"))
 		game_dict[game_id]["game_state"] = "night"
 		return
 	elif query.data.startswith("hexedeath_"):
 		hexe_target_id = query.data.split("_")[1]
 		get_player_by_id(hexe_target_id, game_id).marked_by_witch = True
+		context.bot.send_message(chat_id=get_player_by_role("Hexe", game_id).user_id, text=lore.hexe_did_kill(kill_option, get_player_by_id(hexe_target_id, game_id).name))
 		game_dict[game_id]["hexe_death_juice_used"] = True
 		game_dict[game_id]["game_state"] = "night"
 
 def button_handler_wolfshund_choose(update, context):
 	global game_dict
 	query = update.callback_query
-	game_id = query.data.split("_")[2]
+	game_id = query.data.split("_")[3]
+	wolfshund_option = query.data.split("_")[2]
 	if not game_dict[game_id]["game_state"] == "wolfshund": return
 	target = query.data.split("_")[1]
 	if target == "werwolf":
+		context.bot.send_message(chat_id=get_player_by_role("Wolfshund", game_id), text=lore.wolfshund_did_chose_werwolf(wolfshund_option))
 		get_player_by_role("Wolfshund", game_id).role = "Werwolf"
 	elif target == "dorf":
+		context.bot.send_message(chat_id=get_player_by_role("Wolfshund", game_id), text=lore.wolfshund_did_chose_dorf(wolfshund_option))
 		get_player_by_role("Wolfshund", game_id).role = "Dorfbewohner"
 	game_dict[game_id]["game_state"] = "night"
 

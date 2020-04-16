@@ -232,7 +232,7 @@ def inlineKey_terrorwolf_options():
 	elif desc_no == 5: return (5," mit letzter Kraft zerbeißen")
 	elif desc_no == 6: return (6," noch kurz in der Luft zerfetzen")
 	elif desc_no == 7: return (7," bei einem Attentäter in Auftrag geben")
-	elif desc_no == 8: return (8," Schürfwunden verpassen. \nGroße Schürfwunden. \nSo groß, dass der Kopf abfällt.")
+	elif desc_no == 8: return (8," tödliche Schürfwunden verpassen.")
 	else: return (9," aus Mitleid noch kurz aufessen")
 
 def terrorwolf_kill(option):
@@ -302,36 +302,66 @@ def seherin_no_werwolf(option, name):
 
 def hexe_save():
 	desc_no = random.randrange(0,6)
-	if desc_no == 0: return "Retten"
-	elif desc_no == 1: return "Heilen"
-	elif desc_no == 2: return "Einen Lebenstrank verabreichen"
-	elif desc_no == 3: return "Erfolgreich die Verletzungen versorgen"
-	elif desc_no == 4: return "Wiederbeleben"
-	else: return "Wieder zusammennähen"
+	if desc_no == 0: return (0,"Retten")
+	elif desc_no == 1: return (1,"Heilen")
+	elif desc_no == 2: return (2,"Einen Lebenstrank verabreichen")
+	elif desc_no == 3: return (3,"Erfolgreich die Verletzungen versorgen")
+	elif desc_no == 4: return (4,"Wiederbeleben")
+	else: return (5,"Wieder zusammennähen")
 
 def hexe_let_die():
 	desc_no = random.randrange(0,8)
-	if desc_no == 0: return "Sterben lassen"
-	elif desc_no == 1: return "Nicht beachten"
-	elif desc_no == 2: return "Dem Schicksal überlassen"
-	elif desc_no == 3: return "Ausversehen zu spät kommen"
-	elif desc_no == 4: return "Lieber schlafen"
-	elif desc_no == 5: return "Umdrehen und weiterschlafen"
-	elif desc_no == 6: return "Lebenstrank nicht für sojemanden verschwenden"
-	else: return "Eigensicherung vorziehen"
+	if desc_no == 0: return (0,"Sterben lassen")
+	elif desc_no == 1: return (1,"Nicht beachten")
+	elif desc_no == 2: return (2,"Dem Schicksal überlassen")
+	elif desc_no == 3: return (3,"Ausversehen zu spät kommen")
+	elif desc_no == 4: return (4,"Lieber schlafen")
+	elif desc_no == 5: return (5,"Umdrehen und weiterschlafen")
+	elif desc_no == 6: return (6,"Lebenstrank nicht für sojemanden verschwenden")
+	else: return (7,"Eigensicherung vorziehen")
+
+def hexe_did_save(option, name):
+	if option == "0": return "Du hast " + name + " gerettet."
+	elif option == "1": return "Die Hexe hat " + name + " geheilt."
+	elif option == "2": return "Die Hexe hat " + name + " einen Lebenstrank verabreicht."
+	elif option == "3": return "Du hast " + name + "s Verletzungen erfolgreich versorgt."
+	elif option == "4": return "Die Hexe hat " + name + " wiederbelebt."
+	else: return "Die Hexe hat " + name + " wieder zusammengenäht."
+
+def hexe_did_let_die(option, name):
+	if option == "0": return "Du hast " + name + " sterben gelassen."
+	elif option == "1": return "Die Hexe hat " + name + " nicht beachtet."
+	elif option == "2": return "Die Hexe hat " + name + " dem Schicksal überlassen."
+	elif option == "3": return "Du bist für " + name + " ausversehen zu spät gekommen."
+	elif option == "4": return "Die Hexe hat lieber geschlafen, als " + name + " zu helfen."
+	elif option == "5": return "Die Hexe hat sich einfach umgedreht und weitergeschlafen, als sie von " + name + "s Unfall hörte."
+	elif option == "6": return "Die Hexe wollte ihren Lebenstrank nicht für jemanden wie " + name + " verschwenden."
+	else: return "Die Hexe hat Eigensicherung vorgezogen statt " + name + " zur Hilfe zu eilen."
 
 def hexe_kill():
 	desc_no = random.randrange(0,10)
-	if desc_no == 0: return " vergiften"
-	elif desc_no == 1: return " den Todestrank einflößen"
-	elif desc_no == 2: return " eine ungesunde Substanz injezieren"
-	elif desc_no == 3: return " ausversehen eine Überdosis Morphium verabreichen"
-	elif desc_no == 4: return " mit radioaktivem Gemüse versorgen"
-	elif desc_no == 5: return "s innere Organe verätzen"
-	elif desc_no == 6: return " ausversehen Gift in das Getränk mischen"
-	elif desc_no == 7: return " ein Essen mit Fliegenpilzen zubereiten"
-	elif desc_no == 8: return " einen Kugelfisch falsch zubereiten"
-	else: return " Quecksilber in die Milch mischen"
+	if desc_no == 0: return (0," vergiften")
+	elif desc_no == 1: return (1," den Todestrank einflößen")
+	elif desc_no == 2: return (2," eine ungesunde Substanz injezieren")
+	elif desc_no == 3: return (3," ausversehen eine Überdosis Morphium verabreichen")
+	elif desc_no == 4: return (4," mit radioaktivem Gemüse versorgen")
+	elif desc_no == 5: return (5,"s innere Organe verätzen")
+	elif desc_no == 6: return (6," ausversehen Gift in das Getränk mischen")
+	elif desc_no == 7: return (7," ein Essen mit Fliegenpilzen zubereiten")
+	elif desc_no == 8: return (8," einen Kugelfisch falsch zubereiten")
+	else: return (9," Quecksilber in die Milch mischen")
+
+def hexe_did_kill(option, name):
+	if option == "0": return "Du hast " + name + " vergiftet."
+	elif option == "1": return "Die Hexe hat " + name + " den Todestrank eingeflöst."
+	elif option == "2": return "Die Hexe hat " + name + " eine ungesunde Substanz injeziert."
+	elif option == "3": return "Du hast " + name + " eine Überdosis Morphium verabreicht."
+	elif option == "4": return "Die Hexe hat  " + name + " mit radioaktivem Gemüse versorgt."
+	elif option == "5": return "Du hast " + name + "s innere Organe verätzt."
+	elif option == "6": return "Die Hexe hat ausversehen " + name + " Gift ins Getränk gemischt."
+	elif option == "7": return "Die Hexe hat " + name + " ein Essen mit Fliegenpilzen zubereitet."
+	elif option == "8": return "Du hast einen kleinen Fehler gemacht, asl du den Kugelfisch für " + name + " zubereitet hast."
+	else: return "Die Hexe hat " + name + " Quecksilber in die Milch gemischt."
 
 def all_dead():
 	desc_no = random.randrange(0,10)
@@ -540,20 +570,38 @@ def wolfshund_options():
 
 def wolfshund_choose_werwolf():
 	desc_no = random.randrange(0,7)
-	if desc_no == 0: return "in einen Werwolf verwandeln"
-	elif desc_no == 1: return "zum Werwolf mutieren"
-	elif desc_no == 2: return "Das Tier in dir vorkommen lassen"
-	elif desc_no == 3: return "Blutlust entwickeln"
-	elif desc_no == 4: return "Hunger auf Menschfleisch bekommen"
-	elif desc_no == 5: return "dem Dorf den Rücken zuwenden"
-	else: return "sich den Werwölfen anschließen"
+	if desc_no == 0: return (0,"in einen Werwolf verwandeln")
+	elif desc_no == 1: return (1,"zum Werwolf mutieren")
+	elif desc_no == 2: return (2,"das Tier in dir vorkommen lassen")
+	elif desc_no == 3: return (3,"Blutlust entwickeln")
+	elif desc_no == 4: return (4,"Hunger auf Menschfleisch bekommen")
+	elif desc_no == 5: return (5,"dem Dorf den Rücken zuwenden")
+	else: return (6,"sich den Werwölfen anschließen")
+
+def wolfshund_did_chose_werwolf(option):
+	if option == "0": return "Du hast dich in einen Werwolf verwandelt."
+	elif option == "1": return "Du bist zu einem Werwolf mutiert."
+	elif option == "2": return "Du hast das Tier in dir durchkommen lassen."
+	elif option == "3": return "Du hast Blutlust enwickelt."
+	elif option == "4": return "Du hast Hunger auf Menschfleisch bekommen."
+	elif option == "5": return "Du hast dem Dorf den Rücken zugewendet."
+	else: return "Du hast dich den Werwölfen angeschlossen."
 
 def wolfshund_choose_dorf():
 	desc_no = random.randrange(0,7)
-	if desc_no == 0: return "sich dem Dorf anschließen"
-	elif desc_no == 1: return "brav im Dorf leben"
-	elif desc_no == 2: return "harmloser Schoßhund werden"
-	elif desc_no == 3: return "doch lieber Vegetarier werden"
-	elif desc_no == 4: return "Wenn du Blut siehst, wird dir schlecht"
-	elif desc_no == 5: return "Demokratie der Gewalt vorziehen"
-	else: return "Humanität zeigen"
+	if desc_no == 0: return (0,"sich dem Dorf anschließen")
+	elif desc_no == 1: return (1,"brav im Dorf leben")
+	elif desc_no == 2: return (2,"harmloser Schoßhund werden")
+	elif desc_no == 3: return (3,"doch lieber Vegetarier werden")
+	elif desc_no == 4: return (4,"Wenn du Blut siehst, wird dir schlecht")
+	elif desc_no == 5: return (5,"Demokratie der Gewalt vorziehen")
+	else: return (6,"Humanität zeigen")
+
+def wolfshund_did_chose_dorf(option):
+	if option == "0": return "Du hast dich dem Dorf angeschlossen."
+	elif option == "1": return "Du lebst von nun an brav im Dorf."
+	elif option == "2": return "Du bist zu einem harmlosen Schoßhund geworden."
+	elif option == "3": return "Du hast beschlossen, doch lieber Vegetarier zu werden."
+	elif option == "4": return "Du hast Hämatophobie."
+	elif option == "5": return "Du ziehst die Demokratie der Gewalt vor."
+	else: return "Du zeigst Humanität."
