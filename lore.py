@@ -167,7 +167,18 @@ def amor_question():
 	elif desc_no == 5: return "Wer wird heute Nacht seinen Traumpartner finden?"
 	elif desc_no == 6: return "Wer wird sich gleich unsterblich verlieben?"
 	else: return "Wer findet die Liebe des Lebens?"
-	
+
+def get_loved_one_killed():
+	desc_no = random.randrange(0,8)
+	if desc_no == 0: return " stirbt aus Liebskummer\\."
+	elif desc_no == 1: return " will nicht ohne seinen Partner weiterleben\\."
+	elif desc_no == 2: return " kann alleine nicht überleben\\."
+	elif desc_no == 3: return " hängt sich aus Trauer\\."
+	elif desc_no == 4: return " wird todtraurig und stirbt\\."
+	elif desc_no == 5: return " überlebt den Herzschmerz nicht\\."
+	elif desc_no == 6: return " will nicht ohne Liebe leben\\."
+	else: return " hält es alleine nicht mehr aus und begeht Suizid\\."
+
 def inlineKey_werwolf_options(name):
 	desc_no = random.randrange(0,12)
 	if desc_no == 0: return (0, name + " reißen")
@@ -480,7 +491,7 @@ def love_win():
 	elif desc_no == 6: return "Die Liebe hat ihre Überlegenheit demonstriert\\."
 	elif desc_no == 7: return "Liebe überwindet alles\\."
 	elif desc_no == 8: return "Die Liebe hat sich durchgesetzt\\."
-	else: return "Das Leibespaar genießt die Ruhe zu zweit\\."
+	else: return "Das Liebespaar genießt die Ruhe zu zweit\\."
 
 def lonely_wolf():
 	desc_no = random.randrange(0,10)

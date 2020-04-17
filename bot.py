@@ -52,7 +52,7 @@ game_library = {"single_player":False,
 				"amor_target_list" : []}
 
 werwolf_group = ["Werwolf", "Terrorwolf"]
-dorf_group = ["Dorfbewohner", "Dorfbewohnerin", "Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Psychopath"]
+dorf_group = ["Dorfbewohner", "Dorfbewohnerin", "Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Psychopath", "Amor"]
 
 markup_character = "`"
 markup_character = "__"
@@ -80,6 +80,13 @@ class Spieler:
 			activate_jaeger(context, self, game_id)
 		elif self.role == "Terrorwolf":
 			activate_terrorwolf(context, self, game_id)
+		if self.verliebt:
+			for player in get_alive_player_list(game_id):
+				if player.verliebt:
+					message = markup_character + player.name + lore.get_loved_one_killed() + markup_character
+					context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=message, parse_mode=ParseMode.MARKDOWN_V2)
+					context.bot.send_message(chat_id=player.user_id, text=message, parse_mode=ParseMode.MARKDOWN_V2)
+					player.kill(context, game_id)
 
 def get_player_by_id(user_id, game_id):
 	for player in game_dict[game_id]["player_list"]:
@@ -227,12 +234,12 @@ def draw_no_doubles(context, game_id):
 		dorf_role_list.append("Seherin")
 	for i in range(0,12):
 		dorf_role_list.append("Hexe")
-	for i in range(0,12):
+	for i in range(0,1200):
 		dorf_role_list.append("HarterBursche")
-	for i in range(0,12):
+	for i in range(0,1200):
 		dorf_role_list.append("Psychopath")
-	for i in range(0,12):
-		dorf_role_list.append("Psychopath")
+	for i in range(0,1200):
+		dorf_role_list.append("Amor")
 
 	unique = ["Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Wolfshund", "Terrorwolf", "Psychopath", "Amor"]
 
@@ -276,7 +283,7 @@ def game_over(context, game_id):
 			game_dict[game_id]["admin_id"] = 0
 			game_dict[game_id]["running"] = False
 			all_dead_message = lore.all_dead()
-			context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=markup_character + lall_dead_message + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
+			context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=markup_character + all_dead_message + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
 			for player in game_dict[game_id]["player_list"]:
 				context.bot.send_message(chat_id=player.user_id, text=markup_character + all_dead_message + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
 			game_dict[game_id]["game_over_check"] = True
@@ -306,10 +313,14 @@ def game_over(context, game_id):
 				return True
 			all_in_love = True
 			for p in get_alive_player_list(game_id):
-				if not p.verliebt or p.role == "Amor":
+				print(p.name)
+				print(p.verliebt)
+				print(p.role)
+				if not p.verliebt:
 					all_in_love = False
+			print(all_in_love)
 			if all_in_love: 
-				win_message = lore.love_win()
+				win_message = markup_character + lore.love_win().upper() + markup_character
 				context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
 				for player in game_dict[game_id]["player_list"]:
 					context.bot.send_message(chat_id=player.user_id, text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
@@ -408,7 +419,7 @@ def wake_psychopath(context, game_id):
 	for player in get_alive_player_list(game_id):
 		if player.marked_by_werwolf or player.marked_by_witch: return
 	game_dict[game_id]["game_state"] = "psychopath"
-	context.bot.send_message(get_player_by_role("Psychopath", game_id), text=lore.psycho_intro(), reply_markup=inlineKey_psychopath(game_id))
+	context.bot.send_message(chat_id=get_player_by_role("Psychopath", game_id).user_id, text=lore.psycho_intro(), reply_markup=inlineKey_psychopath(game_id))
 	while game_dict[game_id]["game_state"] == "psychopath":
 		time.sleep(1)
 
@@ -416,10 +427,11 @@ def wake_amor(context, game_id):
 	global game_dict
 	if get_player_by_role("Amor", game_id) == None: return
 	game_dict[game_id]["game_state"] = "amor1"
-	context.bot.send_message(get_player_by_role("Amor", game_id), text=lore.amor_question(), reply_markup=inlineKey_amor1(game_id, first=True))
+	context.bot.send_message(chat_id=get_player_by_role("Amor", game_id).user_id, text=lore.amor_question(), reply_markup=inlineKey_amor(game_id, first=True))
 	while game_dict[game_id]["game_state"] == "amor1":
 		time.sleep(1)
-	context.bot.send_message(get_player_by_role("Amor", game_id), text="Wer ist der zweite Glückliche?", reply_markup=inlineKey_amor1(game_id, first=False))
+	print("first conplete")
+	context.bot.send_message(chat_id=get_player_by_role("Amor", game_id).user_id, text="Wer ist der zweite Glückliche?", reply_markup=inlineKey_amor(game_id, first=False))
 	while game_dict[game_id]["game_state"] == "amor2":
 		time.sleep(1)
 
@@ -848,7 +860,7 @@ def button_handler_psychopath(update, context):
 	target = query.data.split("_")[1]
 	get_player_by_id(target, game_id).marked_by_psychopath = True
 	context.bot.send_message(chat_id=get_player_by_role("Psychopath", game_id).user_id, text=lore.psyhopath_response_options(psychopath_option, get_player_by_id(target, game_id).name))
-	game_dict[game_id]["game_state"] = "psychopath"
+	game_dict[game_id]["game_state"] = "night"
 
 def button_handler_amor1(update, context):
 	global game_dict
@@ -857,8 +869,10 @@ def button_handler_amor1(update, context):
 	if not game_dict[game_id]["game_state"] == "amor1": return
 	target = query.data.split("_")[1]
 	game_dict[game_id]["amor_target_list"].append(target)
+	print(target)
 	get_player_by_id(target, game_id).verliebt = True
-	game_dict[game_id]["game_state"] == "amor2"
+	print(get_player_by_id(target, game_id).name)
+	game_dict[game_id]["game_state"] = "amor2"
 
 def button_handler_amor2(update, context):
 	global game_dict
@@ -872,9 +886,9 @@ def button_handler_amor2(update, context):
 	get_player_by_id(target, game_id).verliebt = True
 	verliebt_text = get_player_by_id(game_dict[game_id]["amor_target_list"][0], game_id).name + " und "
 	verliebt_text += get_player_by_id(game_dict[game_id]["amor_target_list"][1], game_id).name + " haben sich unsterblich ineinander verliebt."
-	context.bot.send_message(chat_id=get_player_by_role("Amor", game_id), text=verliebt_text)
-	context.bot.send_message(chat_id=game_dict[game_id]["amor_target_list"][0], text="Du hast dich in " + get_player_by_id(game_dict[game_id]["amor_target_list"][1]).name + " verliebt.")
-	context.bot.send_message(chat_id=game_dict[game_id]["amor_target_list"][1], text="Du hast dich in " + get_player_by_id(game_dict[game_id]["amor_target_list"][0]).name + " verliebt.")
+	context.bot.send_message(chat_id=get_player_by_role("Amor", game_id).user_id, text=verliebt_text)
+	context.bot.send_message(chat_id=game_dict[game_id]["amor_target_list"][0], text="Du hast dich in " + get_player_by_id(game_dict[game_id]["amor_target_list"][1], game_id).name + " verliebt.")
+	context.bot.send_message(chat_id=game_dict[game_id]["amor_target_list"][1], text="Du hast dich in " + get_player_by_id(game_dict[game_id]["amor_target_list"][0], game_id).name + " verliebt.")
 	game_dict[game_id]["game_state"] = "night"
 
 def button_handler(update, context):
