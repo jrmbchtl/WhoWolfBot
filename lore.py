@@ -101,6 +101,53 @@ def description_terrorwolf():
 	elif desc_no == 5: return "Deine Rolle ist er Terrorwolf, welcher mittels eines Testaments den Tod eines Dorfbewohners einfordert."
 	else: return "Du bist der Terrorwolf. Dein Tod hat Konsequenzen. Zumindest für einen weiteren Dorfbewohner: Wenn du stirbst, steht er als letzte Mahlzeit auf deinem Speiseplan."
 
+def description_psychopath():
+	desc_no = random.randrange(1,7)
+	if desc_no == 1: return "Du bist der Psychopath. Der Psychopath erwacht als letzter Spieler. Wenn in der Nacht niemand gestorben wäre, muss er einen Spieler töten."
+	elif desc_no == 2: return "Du bist ein Psychopath, der Menschen sterben sehen will. Sollte in einer Nacht niemand gestorben sein, so erwachst du und musst einen Dorfbewohner töten."
+	elif desc_no == 3: return "Du bist ein Psychopath. Wenn du am morgen kein Blut siehst, stimmt dich das traurig. Deshalb erwachst du als letzter Spieler, wenn keiner gestorben ist, und sucht dir dein Opfer."
+	elif desc_no == 4: return "Du ist ein Psychopath. Also so ein richtig harter. Eigentich gehörst du in die Klapse, aber bisher ist dir noch niemand auf die Schliche gekommen. Wenn in einer Nacht niemand gestorben ist, so schreckt du kurz vor dem Morgengrauen auf und erdrosselst noch kurz einen Mitspieler."
+	elif desc_no == 5: return "Deine Rolle ist der Psychopath. Sollte in einer Nacht niemand gestorben sein, so wirst du geweckt und musst noch jemanden töten."
+	else: return "Du bist ein Psychopath. Du hast Lust am morden. Und am Menschen sterben sehen. Deshalb willst du, das jede Nacht jemand stirbt. Un wenn niemand stirbt, stehst du kurz vor Morgendämmerung auf und ermordest noch jemanden."
+
+def psycho_intro():
+	desc_no = random.randrange(0,10)
+	if desc_no == 0: return "Es ist bisher niemand gestorben. Das wird sich jetzt ändern..."
+	elif desc_no == 1: return "Der Psychopath erwacht und verspürt Lust auf einen Mord."
+	elif desc_no == 2: return "Der Psychopath hat das Verlangen, jemanden zu töten."
+	elif desc_no == 3: return "Du schaust dich in der Morgendämmerung im Dorf um un siehst: Bisher ist niemand gestorben. Das kannst du nicht so lassen."
+	elif desc_no == 4: return "Der Psychopath erwacht im Angstschweiß: Bisher ist diese Nacht noch niemand gestorben..."
+	elif desc_no == 5: return "Wähle dein Opfer, Psychopath!"
+	elif desc_no == 6: return "Es ist Zeit für dich, jemanden zu töten!"
+	elif desc_no == 7: return "Du denkst dir: Man kann ja so eine Nacht nicht ohne einen Toten beenden..."
+	elif desc_no == 8: return "In den frühen Morgenstunden machst du dich auf und suchst dein Opfer..."
+	else: return "Eine Nacht ohne Blut ist doch keine Nacht..."
+
+def inlineKey_psychopath_options(name):
+	desc_no = random.randrange(0,10)
+	if desc_no == 0: return (0, name + " strangulieren")
+	elif desc_no == 1: return (1, name + " ermorden")
+	elif desc_no == 2: return (2, name + " kaltblütig zerstückeln")
+	elif desc_no == 3: return (3, name + " überfahren")
+	elif desc_no == 4: return (4, name + " von einer Klippe stoßen")
+	elif desc_no == 5: return (5, name + " einmauern")
+	elif desc_no == 6: return (6, name + " ein Messer in die Brust rammen")
+	elif desc_no == 7: return (7, name + " in eine Sprengfalle locken")
+	elif desc_no == 8: return (8, name + " mit einem Löffel erschlagen")
+	else: return (10, name + " in den Backofen stecken")
+
+def psyhopath_response_options(option, name):
+	if option == "0": return "Du hast " + name + " stranguliert."
+	elif option == "1": return "Der Psychopath hat " + name + " ermordet."
+	elif option == "2": return "Du hast " + name + " kaltblütig zerstückelt."
+	elif option == "3": return "Der Psychopath hat " + name + " überfahren."
+	elif option == "4": return "Der Psychopath hat " + name + " von einer Klippe gestoßen."
+	elif option == "5": return "Der Psychopath hat " + name + " eingemauert."
+	elif option == "6": return "Der Psychopath hat " + name + " ein Messer in die Brust gerammt."
+	elif option == "7": return "Du hast " + name + " in eine Sprengfalle gelockt."
+	elif option == "8": return "Du hast " + name + " mit einem Löffel erschlagen."
+	else: return "Der Psychopath hat " + name + " in den Backofen gesteckt."
+
 def inlineKey_werwolf_options(name):
 	desc_no = random.randrange(0,12)
 	if desc_no == 0: return (0, name + " reißen")

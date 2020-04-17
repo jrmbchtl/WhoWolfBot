@@ -13,7 +13,7 @@ Harter Bursche
 Terrorwolf
 
 Testing:
-None
+Psychopath
 
 WIP:
 None
@@ -21,7 +21,6 @@ None
 Planned:
 Amor
 Berserker
-Psychopath
 Superschurke (not draftable)
 Terrorist
 Kerkermeister

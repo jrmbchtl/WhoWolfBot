@@ -51,7 +51,7 @@ game_library = {"single_player":False,
 				"vote_text" : {}}
 
 werwolf_group = ["Werwolf", "Terrorwolf"]
-dorf_group = ["Dorfbewohner", "Dorfbewohnerin", "Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche"]
+dorf_group = ["Dorfbewohner", "Dorfbewohnerin", "Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Psychopath"]
 
 markup_character = "`"
 markup_character = "__"
@@ -70,6 +70,7 @@ class Spieler:
 		self.alive = True
 		self.marked_by_werwolf = False
 		self.marked_by_witch = False
+		self.marked_by_psychopath = False
 
 	def kill(self, context, game_id):
 		self.alive = False
@@ -184,6 +185,13 @@ def inlineKey_wolfshund(game_id):
 	keyboard.append([InlineKeyboardButton(wolfshund_lore_dorf, callback_data="wolfshund_dorf_" + str(wolfshund_option_dorf) + "_" + str(game_id))])
 	return InlineKeyboardMarkup(keyboard)
 
+def inlineKey_psychopath(game_id):
+	keyboard = []
+	for player in get_alive_player_list(game_id):
+		(psychopath_kill_option, psychopath_kill_lore) = lore.inlineKey_psychopath_options(player.name)
+		keyboard.append([InlineKeyboardButton(psychopath_kill_lore, callback_data="psychopath_" + str(player.user_id) + "_" +str(psychopath_kill_option) + "_" + str(game_id))])
+	return InlineKeyboardMarkup(keyboard)
+
 def draw_no_doubles(context, game_id):
 	global game_dict
 	random.shuffle(game_dict[game_id]["player_list"])
@@ -196,23 +204,25 @@ def draw_no_doubles(context, game_id):
 	else:
 		for i in range(0,60):
 			werwolf_role_list.append("Werwolf")
-	for i in range(0,4000):
+	for i in range(0,40):
 		werwolf_role_list.append("Terrorwolf")
 
 	dorf_role_list = []
-	for i in range(0,10):
+	for i in range(0,12):
 		dorf_role_list.append("Dorfbewohner")
 		dorf_role_list.append("Dorfbewohnerin")
-	for i in range(0,2000):
+	for i in range(0,15):
 		dorf_role_list.append("Jäger")
-	for i in range(0,20):
+	for i in range(0,15):
 		dorf_role_list.append("Seherin")
-	for i in range(0,200):
+	for i in range(0,16):
 		dorf_role_list.append("Hexe")
-	for i in range(0,20):
+	for i in range(0,15):
 		dorf_role_list.append("HarterBursche")
+	for i in range(0,15):
+		dorf_role_list.append("Psychopath")
 
-	unique = ["Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Wolfshund", "Terrorwolf"]
+	unique = ["Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Wolfshund", "Terrorwolf", "Psychopath"]
 
 	for i,p in enumerate(game_dict[game_id]["player_list"]):
 		group_mod = random.random()*0.2+0.9
@@ -243,6 +253,7 @@ def draw_no_doubles(context, game_id):
 		elif p.role == "Jäger": context.bot.send_message(chat_id=p.user_id, text=lore.description_jaeger())
 		elif p.role == "Rotkäppchen": context.bot.send_message(chat_id=p.user_id, text=lore.description_rotkaeppchen())
 		elif p.role == "HarterBursche": context.bot.send_message(chat_id=p.user_id, text=lore.description_harter_bursche())
+		elif p.role == "Psychopath": context.bot.send_message(chat_id=p.user_id, text=lore.description_psychopath())
 	random.shuffle(game_dict[game_id]["player_list"])
 
 def game_over(context, game_id):
@@ -368,17 +379,28 @@ def wake_wolfshund(context, game_id):
 	while game_dict[game_id]["game_state"] == "wolfshund":
 		time.sleep(1)
 
+def wake_psychopath(context, game_id):
+	global game_dict
+	if get_player_by_role("Psychopath", game_id) == None: return
+	for player in get_alive_player_list(game_id):
+		if player.marked_by_werwolf or player.marked_by_witch: return
+	game_dict[game_id]["game_state"] = "psychopath"
+	context.bot.send_message(get_player_by_role("Psychopath", game_id), text=lore.psycho_intro(), reply_markup=inlineKey_psychopath(game_id))
+	while game_dict[game_id]["game_state"] == "psychopath":
+		time.sleep(1)
+
 def do_killing(context, game_id):
 	global game_dict
 	do_killing_list = []
 	for p in get_alive_player_list(game_id):
-		if p.marked_by_werwolf or p.marked_by_witch:
+		if p.marked_by_werwolf or p.marked_by_witch or p.marked_by_psychopath:
 			death_message = lore.death_message()
 			context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=markup_character + p.name + death_message + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
 			context.bot.send_message(chat_id=p.user_id, text=markup_character + p.name + death_message + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
 			p.kill(context, game_id)
 			p.marked_by_werwolf = False
 			p.marked_by_witch = False
+			p.marked_by_psychopath = False
 
 def print_alive(context, game_id):
 	message = "Es leben noch: "
@@ -430,7 +452,6 @@ def vote(context, game_id):
 						if str(v.user_id) == str(a.user_id):
 							already_in = True
 					if not already_in:
-						#if v not in game_dict[game_id]["anklage_list"]:
 						game_dict[game_id]["anklage_list"].append(v)
 			game_dict[game_id]["vote_list"] = []
 			game_dict[game_id]["vote_message_id"] = 0
@@ -479,6 +500,7 @@ def start_game(context, game_id):
 		wake_seherin(context, game_id)
 		wake_werwolf(context, game_id)
 		wake_hexe(context, game_id)
+		wake_psychopath(context, game_id)
 		do_killing(context, game_id)
 
 		#night is over
@@ -775,12 +797,23 @@ def button_handler_wolfshund_choose(update, context):
 	if not game_dict[game_id]["game_state"] == "wolfshund": return
 	target = query.data.split("_")[1]
 	if target == "werwolf":
-		context.bot.send_message(chat_id=get_player_by_role("Wolfshund", game_id), text=lore.wolfshund_did_chose_werwolf(wolfshund_option))
+		context.bot.send_message(chat_id=get_player_by_role("Wolfshund", game_id).user_id, text=lore.wolfshund_did_chose_werwolf(wolfshund_option))
 		get_player_by_role("Wolfshund", game_id).role = "Werwolf"
 	elif target == "dorf":
-		context.bot.send_message(chat_id=get_player_by_role("Wolfshund", game_id), text=lore.wolfshund_did_chose_dorf(wolfshund_option))
+		context.bot.send_message(chat_id=get_player_by_role("Wolfshund", game_id).user_id, text=lore.wolfshund_did_chose_dorf(wolfshund_option))
 		get_player_by_role("Wolfshund", game_id).role = "Dorfbewohner"
 	game_dict[game_id]["game_state"] = "night"
+
+def button_handler_psychopath(update, context):
+	global game_dict
+	query = update.callback_query
+	game_id = query.data.split("_")[3]
+	psychopath_option = query.data.split("_")[2]
+	if not game_dict[game_id]["game_state"] == "psychopath": return
+	target = query.data.split("_")[1]
+	get_player_by_id(target, game_id).marked_by_psychopath = True
+	context.bot.send_message(chat_id=get_player_by_role("Psychopath", game_id).user_id, text=lore.psyhopath_response_options(psychopath_option, get_player_by_id(target, game_id).name))
+	game_dict[game_id]["game_state"] = "psychopath"
 
 def button_handler(update, context):
 	if update.callback_query.data.startswith("menu_"):
