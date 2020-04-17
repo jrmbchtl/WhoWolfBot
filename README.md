@@ -14,12 +14,12 @@ Terrorwolf
 
 Testing:
 Psychopath
+Amor
 
 WIP:
 None
 
 Planned:
-Amor
 Berserker
 Superschurke (not draftable)
 Terrorist

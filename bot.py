@@ -48,7 +48,8 @@ game_library = {"single_player":False,
 				"anklage_message_id": 0,
 				"anklage_text" : {},
 				"vote_message_id": 0,
-				"vote_text" : {}}
+				"vote_text" : {},
+				"amor_target_list" : []}
 
 werwolf_group = ["Werwolf", "Terrorwolf"]
 dorf_group = ["Dorfbewohner", "Dorfbewohnerin", "Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Psychopath"]
@@ -71,6 +72,7 @@ class Spieler:
 		self.marked_by_werwolf = False
 		self.marked_by_witch = False
 		self.marked_by_psychopath = False
+		self.verliebt = False
 
 	def kill(self, context, game_id):
 		self.alive = False
@@ -192,6 +194,14 @@ def inlineKey_psychopath(game_id):
 		keyboard.append([InlineKeyboardButton(psychopath_kill_lore, callback_data="psychopath_" + str(player.user_id) + "_" +str(psychopath_kill_option) + "_" + str(game_id))])
 	return InlineKeyboardMarkup(keyboard)
 
+def inlineKey_amor(game_id, first):
+	keyboard = []
+	for player in get_alive_player_list(game_id):
+		if not player.verliebt:
+			if first: keyboard.append([InlineKeyboardButton(player.name, callback_data="amor1_" + str(player.user_id) + "_" + str(game_id))])
+			else: keyboard.append([InlineKeyboardButton(player.name, callback_data="amor2_" + str(player.user_id) + "_" + str(game_id))])
+	return InlineKeyboardMarkup(keyboard)
+
 def draw_no_doubles(context, game_id):
 	global game_dict
 	random.shuffle(game_dict[game_id]["player_list"])
@@ -208,21 +218,23 @@ def draw_no_doubles(context, game_id):
 		werwolf_role_list.append("Terrorwolf")
 
 	dorf_role_list = []
-	for i in range(0,12):
+	for i in range(0,14):
 		dorf_role_list.append("Dorfbewohner")
 		dorf_role_list.append("Dorfbewohnerin")
-	for i in range(0,15):
+	for i in range(0,12):
 		dorf_role_list.append("Jäger")
-	for i in range(0,15):
+	for i in range(0,12):
 		dorf_role_list.append("Seherin")
-	for i in range(0,16):
+	for i in range(0,12):
 		dorf_role_list.append("Hexe")
-	for i in range(0,15):
+	for i in range(0,12):
 		dorf_role_list.append("HarterBursche")
-	for i in range(0,15):
+	for i in range(0,12):
+		dorf_role_list.append("Psychopath")
+	for i in range(0,12):
 		dorf_role_list.append("Psychopath")
 
-	unique = ["Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Wolfshund", "Terrorwolf", "Psychopath"]
+	unique = ["Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Wolfshund", "Terrorwolf", "Psychopath", "Amor"]
 
 	for i,p in enumerate(game_dict[game_id]["player_list"]):
 		group_mod = random.random()*0.2+0.9
@@ -254,6 +266,7 @@ def draw_no_doubles(context, game_id):
 		elif p.role == "Rotkäppchen": context.bot.send_message(chat_id=p.user_id, text=lore.description_rotkaeppchen())
 		elif p.role == "HarterBursche": context.bot.send_message(chat_id=p.user_id, text=lore.description_harter_bursche())
 		elif p.role == "Psychopath": context.bot.send_message(chat_id=p.user_id, text=lore.description_psychopath())
+		elif p.role == "Amor": context.bot.send_message(chat_id=p.user_id, text=lore.description_amor())
 	random.shuffle(game_dict[game_id]["player_list"])
 
 def game_over(context, game_id):
@@ -290,6 +303,16 @@ def game_over(context, game_id):
 				game_dict[game_id]["game_over_check"] = True
 				game_dict[game_id]["state"] = None
 				game_dict[game_id]["player_list"] = []
+				return True
+			all_in_love = True
+			for p in get_alive_player_list(game_id):
+				if not p.verliebt or p.role == "Amor":
+					all_in_love = False
+			if all_in_love: 
+				win_message = lore.love_win()
+				context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
+				for player in game_dict[game_id]["player_list"]:
+					context.bot.send_message(chat_id=player.user_id, text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
 				return True
 		return False
 
@@ -387,6 +410,17 @@ def wake_psychopath(context, game_id):
 	game_dict[game_id]["game_state"] = "psychopath"
 	context.bot.send_message(get_player_by_role("Psychopath", game_id), text=lore.psycho_intro(), reply_markup=inlineKey_psychopath(game_id))
 	while game_dict[game_id]["game_state"] == "psychopath":
+		time.sleep(1)
+
+def wake_amor(context, game_id):
+	global game_dict
+	if get_player_by_role("Amor", game_id) == None: return
+	game_dict[game_id]["game_state"] = "amor1"
+	context.bot.send_message(get_player_by_role("Amor", game_id), text=lore.amor_question(), reply_markup=inlineKey_amor1(game_id, first=True))
+	while game_dict[game_id]["game_state"] == "amor1":
+		time.sleep(1)
+	context.bot.send_message(get_player_by_role("Amor", game_id), text="Wer ist der zweite Glückliche?", reply_markup=inlineKey_amor1(game_id, first=False))
+	while game_dict[game_id]["game_state"] == "amor2":
 		time.sleep(1)
 
 def do_killing(context, game_id):
@@ -496,6 +530,7 @@ def start_game(context, game_id):
 			context.bot.send_message(chat_id=p.user_id, text=text_nightfall)
 
 		if game_dict[game_id]["round_number"] == 0:
+			wake_amor(context, game_id)
 			wake_wolfshund(context, game_id)
 		wake_seherin(context, game_id)
 		wake_werwolf(context, game_id)
@@ -815,6 +850,33 @@ def button_handler_psychopath(update, context):
 	context.bot.send_message(chat_id=get_player_by_role("Psychopath", game_id).user_id, text=lore.psyhopath_response_options(psychopath_option, get_player_by_id(target, game_id).name))
 	game_dict[game_id]["game_state"] = "psychopath"
 
+def button_handler_amor1(update, context):
+	global game_dict
+	query = update.callback_query
+	game_id = query.data.split("_")[2]
+	if not game_dict[game_id]["game_state"] == "amor1": return
+	target = query.data.split("_")[1]
+	game_dict[game_id]["amor_target_list"].append(target)
+	get_player_by_id(target, game_id).verliebt = True
+	game_dict[game_id]["game_state"] == "amor2"
+
+def button_handler_amor2(update, context):
+	global game_dict
+	query = update.callback_query
+	game_id = query.data.split("_")[2]
+	if not game_dict[game_id]["game_state"] == "amor2": return
+	target = query.data.split("_")[1]
+	game_dict[game_id]["amor_target_list"].append(target)
+	get_player_by_id(target, game_id).verliebt = True
+	game_dict[game_id]["amor_target_list"].append(target)
+	get_player_by_id(target, game_id).verliebt = True
+	verliebt_text = get_player_by_id(game_dict[game_id]["amor_target_list"][0], game_id).name + " und "
+	verliebt_text += get_player_by_id(game_dict[game_id]["amor_target_list"][1], game_id).name + " haben sich unsterblich ineinander verliebt."
+	context.bot.send_message(chat_id=get_player_by_role("Amor", game_id), text=verliebt_text)
+	context.bot.send_message(chat_id=game_dict[game_id]["amor_target_list"][0], text="Du hast dich in " + get_player_by_id(game_dict[game_id]["amor_target_list"][1]).name + " verliebt.")
+	context.bot.send_message(chat_id=game_dict[game_id]["amor_target_list"][1], text="Du hast dich in " + get_player_by_id(game_dict[game_id]["amor_target_list"][0]).name + " verliebt.")
+	game_dict[game_id]["game_state"] = "night"
+
 def button_handler(update, context):
 	if update.callback_query.data.startswith("menu_"):
 		threading.Thread(target=button_handler_menu, args=(update,context,)).start()
@@ -836,6 +898,12 @@ def button_handler(update, context):
 		threading.Thread(target=button_handler_hexe_death, args=(update,context,)).start()
 	elif update.callback_query.data.startswith("wolfshund_"):
 		threading.Thread(target=button_handler_wolfshund_choose, args=(update,context,)).start()
+	elif update.callback_query.data.startswith("psychopath_"):
+		threading.Thread(target=button_handler_psychopath, args=(update,context,)).start()
+	elif update.callback_query.data.startswith("amor1_"):
+		threading.Thread(target=button_handler_amor1, args=(update,context,)).start()
+	elif update.callback_query.data.startswith("amor2_"):
+		threading.Thread(target=button_handler_amor2, args=(update,context,)).start()
 
 def new(update, context):
 	global game_dict

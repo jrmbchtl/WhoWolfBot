@@ -101,6 +101,15 @@ def description_terrorwolf():
 	elif desc_no == 5: return "Deine Rolle ist er Terrorwolf, welcher mittels eines Testaments den Tod eines Dorfbewohners einfordert."
 	else: return "Du bist der Terrorwolf. Dein Tod hat Konsequenzen. Zumindest für einen weiteren Dorfbewohner: Wenn du stirbst, steht er als letzte Mahlzeit auf deinem Speiseplan."
 
+def description_amor():
+	desc_no = random.randrange(1,7)
+	if desc_no == 1: return "Du bist Amor. Amor bestimmt in der ersten Nacht zwei Spieler, die sich unsterblich ineinander verlieben. Diese spielen von nun an zusammen und können gemeinsam gewinnen, auch wenn sie in unterschiedlichen Teams sind."
+	elif desc_no == 2: return "Du bist Amor. Mit seinem Bogen und seinen Herzpfeilen sorgt Amor für die Liebe im Düsterwald. Er schießt seine Pfeile auf zwei Dorfbewohner, die sich sofort unsterblich ineinander verlieben und einander bis in den Tod folgen würden. Ihre Liebe ist sogar stärker als ihr Zugehörigkeitsgefühl zu ihrer jeweiligen Partei."
+	elif desc_no == 3: return "Dein Charakter ist Amor. Zu Beginn des Spieles bestimmt er zwei Spieler, die sofort in inniger Liebe zueinander entflammen (das kann auch er selbst sein). Stirbt im Laufe des Spiels einer der beiden Liebenden, so auch der andere aus Gram. Achtung: Ist einer der beiden Liebenden ein Werwolf und der andere ein Bürger, so haben sie ein gemeinsames neues Ziel: Überleben sie als einzige so gewinnen sie allein."
+	elif desc_no == 4: return "Deine Rolle ist der Amor. Amor erwacht nur einmal in der allerersten Nacht, um zwei Spieler seiner Wahl miteinander zu verkuppeln (eventuell auch sich selbst). Danach schläft er wieder ein. Anschließend lernt sich das frisch verliebte Paar kennen. Die Verliebten haben im Laufe des Spiels die Aufgabe, den Partner zu beschützen, denn wenn einer der beiden stirbt, macht es ihm der Partner trauernd nach; sie dürfen nie gegeneinander stimmen."
+	elif desc_no == 5: return "Du bist Amor, welcher dafür sorgt, dass sich zwei Spieler unsterblich ineinander verlieben. Sollte einer von beiden zu Tode kommen, so nimmt sich der andere aus Trauer das Leben. Das Liebespaar kann gemeinsam gewinnen, auch wenn sie von unterschiedlichen Teams sind."
+	else: return "Du bist Amor und machst dich in der ersten Nacht auf die Jagd nach einem Liebspaar, welches du verkuppelst. Dieses verliebt sich sofort und will sich nie wieder trennen. Sollte einer von beiden sterben, so bringt der Kummer des Anderen auch ihn ins Grab."
+
 def description_psychopath():
 	desc_no = random.randrange(1,7)
 	if desc_no == 1: return "Du bist der Psychopath. Der Psychopath erwacht als letzter Spieler. Wenn in der Nacht niemand gestorben wäre, muss er einen Spieler töten."
@@ -148,6 +157,17 @@ def psyhopath_response_options(option, name):
 	elif option == "8": return "Du hast " + name + " mit einem Löffel erschlagen."
 	else: return "Der Psychopath hat " + name + " in den Backofen gesteckt."
 
+def amor_question():
+	desc_no = random.randrange(0,8)
+	if desc_no == 0: return "Wer soll sich dieses Spiel verlieben?"
+	elif desc_no == 1: return "Wen willst du mit deinen Liebespfeilen treffen?"
+	elif desc_no == 2: return "Wer gibt ein schönes Liebespaar ab?"
+	elif desc_no == 3: return "Wen willst du verkuppeln?"
+	elif desc_no == 4: return "Wer soll sich heute Nacht verlieben?"
+	elif desc_no == 5: return "Wer wird heute Nacht seinen Traumpartner finden?"
+	elif desc_no == 6: return "Wer wird sich gleich unsterblich verlieben?"
+	else: return "Wer findet die Liebe des Lebens?"
+	
 def inlineKey_werwolf_options(name):
 	desc_no = random.randrange(0,12)
 	if desc_no == 0: return (0, name + " reißen")
@@ -448,6 +468,19 @@ def dorf_win():
 	elif desc_no == 7: return "Die Werwölfe sind in Düsterwald anscheinend die unterlegene Rasse\\."
 	elif desc_no == 8: return "Mit dem Tod des letzten Werwolfes haben die Dorfbewohner jetzt ihre Ruhe\\."
 	else: return "Die Dorfbewohner veranstalten zur Feier des Tages einen Fest und stopfen den letzten Werwolf aus\\."
+
+def love_win():
+	desc_no = random.randrange(0,10)
+	if desc_no == 0: return "Das Liebespaar gewinnt\\."
+	elif desc_no == 1: return "Die Liebe hat in Düsterwald gesiegt\\."
+	elif desc_no == 2: return "Die Liebe bringt nun Licht nach Düsterwald\\!"
+	elif desc_no == 3: return "Es lebt nur noch das Liebespaar\\."
+	elif desc_no == 4: return "Es wird wieder friedlich in Düsterwald, da das Liebespaar als letztes überlebt.\\."
+	elif desc_no == 5: return "Die Liebe bringt nun Frieden nach Düsterwald\\."
+	elif desc_no == 6: return "Die Liebe hat ihre Überlegenheit demonstriert\\."
+	elif desc_no == 7: return "Liebe überwindet alles\\."
+	elif desc_no == 8: return "Die Liebe hat sich durchgesetzt\\."
+	else: return "Das Leibespaar genießt die Ruhe zu zweit\\."
 
 def lonely_wolf():
 	desc_no = random.randrange(0,10)
