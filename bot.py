@@ -92,7 +92,7 @@ class Spieler():
 			for player in get_alive_player_list(game_id):
 				if player.verliebt:
 					message = markup_character + player.name + lore.get_loved_one_killed() + markup_character
-					context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], tJSONEncoderext=message, parse_mode=ParseMode.MARKDOWN_V2)
+					context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=message, parse_mode=ParseMode.MARKDOWN_V2)
 					context.bot.send_message(chat_id=player.user_id, text=message, parse_mode=ParseMode.MARKDOWN_V2)
 					player.kill(context, game_id)
 
@@ -127,9 +127,6 @@ class Prosecuted:
 
 def save_game_dict():
 	global game_dict
-	print("\n\n")
-	print(game_dict)
-	print("\n\n")
 	with open('game_dict.json', 'w') as fp:
 		json.dump(game_dict, fp, indent=4, cls=CustomEncoder)
 
@@ -167,7 +164,7 @@ def load_game_dict():
 			game_dict[game_id]["vote_list"].append(new_Prosecuted)
 		game_dict[game_id]["werwolf_target_list"] = []
 		for player in tmp_game_dict[game_id]["werwolf_target_list"]:
-			new_Target = Prosecuted(player["wolf_id"], player["target_id"])
+			new_Target = Target(player["wolf_id"], player["target_id"])
 			game_dict[game_id]["werwolf_target_list"].append(new_Target)
 		game_dict[game_id]["werwolf_target"] = tmp_game_dict[game_id]["werwolf_target"]
 		game_dict[game_id]["hexe_target"] = tmp_game_dict[game_id]["hexe_target"]
@@ -311,9 +308,9 @@ def draw_no_doubles(context, game_id):
 		dorf_role_list.append("Seherin")
 	for i in range(0,12):
 		dorf_role_list.append("Hexe")
-	for i in range(0,1200):
+	for i in range(0,12):
 		dorf_role_list.append("HarterBursche")
-	for i in range(0,1200):
+	for i in range(0,12):
 		dorf_role_list.append("Psychopath")
 	for i in range(0,1200):
 		dorf_role_list.append("Amor")
@@ -359,7 +356,7 @@ def game_over(context, game_id):
 		if len(get_alive_player_list(game_id)) == 0:
 			game_dict[game_id]["admin_id"] = 0
 			game_dict[game_id]["running"] = False
-			all_dead_message = lore.all_dead()
+			all_dead_message = lore.all_dead().upper()
 			context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=markup_character + all_dead_message + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
 			for player in game_dict[game_id]["player_list"]:
 				context.bot.send_message(chat_id=player.user_id, text=markup_character + all_dead_message + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
@@ -383,7 +380,7 @@ def game_over(context, game_id):
 				else: 
 					win_message = markup_character + lore.dorf_win().upper() + markup_character
 				context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
-				for player in game_game_dictdict[game_id]["player_list"]:
+				for player in game_dict[game_id]["player_list"]:
 					context.bot.send_message(chat_id=player.user_id, text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
 				game_dict[game_id]["game_over_check"] = True
 				game_dict[game_id]["state"] = None
@@ -392,12 +389,8 @@ def game_over(context, game_id):
 				return True
 			all_in_love = True
 			for p in get_alive_player_list(game_id):
-				print(p.name)
-				print(p.verliebt)
-				print(p.role)
 				if not p.verliebt:
 					all_in_love = False
-			print(all_in_love)
 			if all_in_love: 
 				win_message = markup_character + lore.love_win().upper() + markup_character
 				context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
@@ -523,6 +516,10 @@ def wake_amor(context, game_id):
 	context.bot.send_message(chat_id=get_player_by_role("Amor", game_id).user_id, text="Wer ist der zweite Glückliche?", reply_markup=inlineKey_amor(game_id, first=False))
 	while game_dict[game_id]["game_state"] == "amor2":
 		time.sleep(1)
+	print("verliebt")
+	for p in get_alive_player_list(game_id):
+		if p.verliebt:
+			print(p.name)
 	save_game_dict()
 
 def do_killing(context, game_id):
@@ -607,7 +604,7 @@ def vote(context, game_id):
 			game_dict[game_id]["first_patt"] = True
 			context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=lore.patt_no_kill())
 	save_game_dict()
-	context.bot.edit_message_text(chat_id=game_dict[game_id]["game_chat_id"], message_id=game_dict[game_id]["remember_message_id"], text=game_dict[game_id]["remember_message_text"])
+	context.bot.edit_message_text(chat_id=game_dict[game_id]["game_chat_id"], message_id=game_dict[game_id]["remember_message_id"], text=game_dict[game_id]["remember_message_text"], reply_markup=InlineKeyboardMarkup([]))
 
 def test_chats(context, game_id):
 	success = True
@@ -644,6 +641,7 @@ def start_game(context, game_id):
 		game_dict[game_id]["vote_text"] = {}
 		game_dict[game_id]["anklgage_message_id"] = 0
 		game_dict[game_id]["vote_message_id"] = 0
+		game_dict[game_id]["amor_target_list"] = []
 		save_game_dict()
 
 		text_nightfall = lore.nightfall()
@@ -667,13 +665,14 @@ def start_game(context, game_id):
 				prosecute(context, game_id)
 			else:
 				for p in get_alive_player_list(game_id):
-					game_dict[game_id]["anklage_list"].append(p)
+					game_dict[game_id]["anklage_list"].append(Prosecuted(p.user_id, "0"))
 			game_dict[game_id]["game_state"] = "vote"
 			vote(context, game_id)
 			game_dict[game_id]["round_number"] += 1
 
 def remove_buttons_from_message(update, context):
 	save_game_dict()
+	query = update.callback_query
 	context.bot.edit_message_text(chat_id=query.message.chat.id, message_id=query.message.message_id, text=query.message.text)
 
 def button_handler_menu(update, context):
@@ -798,8 +797,6 @@ def button_handler_werwolf(update, context):
 			if not t.target_id == first_target.target_id:
 				same = False
 				break
-		print("same")
-		print(same)
 		if same:
 			get_player_by_id(first_target.target_id, game_id).marked_by_werwolf = True
 			if first_target.target_id == "-1": target_name = "niemanden"
@@ -807,7 +804,7 @@ def button_handler_werwolf(update, context):
 				context.bot.send_message(chat_id=w.user_id, text="Die Werwölfe haben beschlossen, " + lore.werwolf_response_options(killing_option, target_name))
 			game_dict[game_id]["game_state"] = "night"
 			for wer in werwolf_list:
-				context.bot.edit_message_text(chat_id=p.user_id, message_id=p.message_id, text=p.message_text)
+				context.bot.edit_message_text(chat_id=wer.user_id, message_id=wer.message_id, text=wer.message_text)
 	save_game_dict()
 
 
@@ -819,10 +816,6 @@ def button_handler_anklage(update, context):
 	if not game_dict[game_id]["game_state"] == "anklage": return
 	p = get_player_by_id(query.from_user.id, game_id)
 	anklage_id = query.data.split("_")[1]
-	for player in game_dict[game_id]["player_list"]:
-		print(player.user_id)
-	print("anklaeger")
-	print(anklage_id)
 	anklage_in_list = False
 	for a in game_dict[game_id]["anklage_list"]:
 		if str(a.user_id) == anklage_id: anklage_in_list = True
@@ -875,7 +868,6 @@ def button_handler_terrorwolf(update, context):
 	global game_dict
 	query = update.callback_query
 	game_id = query.data.split("_")[3]
-	print(game_dict[game_id]["game_state"])
 	if not game_dict[game_id]["game_state"] == "terrorwolf": return
 	kill_option = query.data.split("_")[2]
 	kill_id = query.data.split("_")[1]
@@ -888,15 +880,12 @@ def button_handler_terrorwolf(update, context):
 
 	game_dict[game_id]["game_state"] = game_dict[game_id]["game_state_backup"]
 	game_dict[game_id]["game_state_backup"] = None
-	print(game_dict[game_id]["game_state"])
-	print(game_dict[game_id]["game_state_backup"])
 	remove_buttons_from_message(update, context)
 
 def button_handler_jaeger(update, context):
 	global game_dict
 	query = update.callback_query
 	game_id = query.data.split("_")[3]
-	print(game_dict[game_id]["game_state"])
 	if not game_dict[game_id]["game_state"] == "jaeger": return
 	kill_option = query.data.split("_")[2]
 	kill_id = query.data.split("_")[1]
@@ -909,8 +898,6 @@ def button_handler_jaeger(update, context):
 
 	game_dict[game_id]["game_state"] = game_dict[game_id]["game_state_backup"]
 	game_dict[game_id]["game_state_backup"] = None
-	print(game_dict[game_id]["game_state"])
-	print(game_dict[game_id]["game_state_backup"])
 	remove_buttons_from_message(update, context)
 
 def button_handler_seherin(update, context):
@@ -1003,9 +990,7 @@ def button_handler_amor1(update, context):
 	if not game_dict[game_id]["game_state"] == "amor1": return
 	target = query.data.split("_")[1]
 	game_dict[game_id]["amor_target_list"].append(target)
-	print(target)
 	get_player_by_id(target, game_id).verliebt = True
-	print(get_player_by_id(target, game_id).name)
 	remove_buttons_from_message(update, context)
 	game_dict[game_id]["game_state"] = "amor2"
 
@@ -1015,8 +1000,6 @@ def button_handler_amor2(update, context):
 	game_id = query.data.split("_")[2]
 	if not game_dict[game_id]["game_state"] == "amor2": return
 	target = query.data.split("_")[1]
-	game_dict[game_id]["amor_target_list"].append(target)
-	get_player_by_id(target, game_id).verliebt = True
 	game_dict[game_id]["amor_target_list"].append(target)
 	get_player_by_id(target, game_id).verliebt = True
 	verliebt_text = get_player_by_id(game_dict[game_id]["amor_target_list"][0], game_id).name + " und "
@@ -1058,7 +1041,6 @@ def button_handler(update, context):
 def new(update, context):
 	global game_dict
 	game_id = secrets.token_hex(16)
-	print(game_id)
 	new_game = {}
 	for key in game_library:
 		new_game.update({key:game_library[key]})

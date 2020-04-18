@@ -626,7 +626,7 @@ def patt_revote():
 def patt_no_kill():
 	desc_no = random.randrange(0,10)
 	if desc_no == 0: return "Da sich das Dorf nicht auf einen Schuldigen einigen kann, wird heute niemand gelyncht."
-	elif desc_no == 1: return "Die Demokratie ist überfordert un beschließt, niemanden hinzurichten."
+	elif desc_no == 1: return "Die Demokratie ist überfordert und beschließt, niemanden hinzurichten."
 	elif desc_no == 2: return "Nach einer intensiven aber ergebnislosen Diskussion kehren alle nach hause zurück."
 	elif desc_no == 3: return "Mal wieder viel heiße Luft um Nichts - viel Anschuldigungen aber kein Ergebnis."
 	elif desc_no == 4: return "Bei dem versuch, alle Angeklagten zu hängen, reißt das Seil und das Dorf beschließt, heute niemanden hinzurichten."
