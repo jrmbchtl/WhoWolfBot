@@ -11,6 +11,8 @@ import secrets
 from telegram.error import Unauthorized
 from telegram import ParseMode
 import lore
+import json
+import os.path
 
 token = ''
 with open('token.txt', 'r') as token_file:
@@ -25,6 +27,8 @@ logging.basicConfig(level=logging.DEBUG,
 game_dict={}
 
 game_library = {"single_player":False,
+				"game_main_message_id": 0,
+				"game_main_message_text": "",
 				"player_list":[],
 				"anklage_list":[],
 				"vote_list" : [],
@@ -35,7 +39,6 @@ game_library = {"single_player":False,
 				"game_chat_id" : 0,
 				"running" : False,
 				"round_number" : 0,
-				"game_thread" : 0,
 				"game_over_check" : False,
 				"game_state" : None,
 				"game_state_backup" : None,
@@ -49,7 +52,9 @@ game_library = {"single_player":False,
 				"anklage_text" : {},
 				"vote_message_id": 0,
 				"vote_text" : {},
-				"amor_target_list" : []}
+				"amor_target_list" : [],
+				"remember_message_id": 0,
+				"remember_message_chat" : ""}
 
 werwolf_group = ["Werwolf", "Terrorwolf"]
 dorf_group = ["Dorfbewohner", "Dorfbewohnerin", "Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Psychopath", "Amor"]
@@ -62,7 +67,7 @@ class Target:
 		self.wolf_id = wolf_id
 		self.target_id = target_id
 
-class Spieler:
+class Spieler():
 	def __init__(self, user_id, name):
 		self.name = name
 		self.user_id = user_id
@@ -73,6 +78,9 @@ class Spieler:
 		self.marked_by_witch = False
 		self.marked_by_psychopath = False
 		self.verliebt = False
+		self.message_id = 0
+		self.message_text = ""
+
 
 	def kill(self, context, game_id):
 		self.alive = False
@@ -84,9 +92,13 @@ class Spieler:
 			for player in get_alive_player_list(game_id):
 				if player.verliebt:
 					message = markup_character + player.name + lore.get_loved_one_killed() + markup_character
-					context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=message, parse_mode=ParseMode.MARKDOWN_V2)
+					context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], tJSONEncoderext=message, parse_mode=ParseMode.MARKDOWN_V2)
 					context.bot.send_message(chat_id=player.user_id, text=message, parse_mode=ParseMode.MARKDOWN_V2)
 					player.kill(context, game_id)
+
+class CustomEncoder(json.JSONEncoder):
+	def default(self,o):
+		return o.__dict__
 
 def get_player_by_id(user_id, game_id):
 	for player in game_dict[game_id]["player_list"]:
@@ -112,6 +124,71 @@ class Prosecuted:
 		self.user_id = user_id
 		self.by_id = by_id
 		self.option = ""
+
+def save_game_dict():
+	global game_dict
+	print("\n\n")
+	print(game_dict)
+	print("\n\n")
+	with open('game_dict.json', 'w') as fp:
+		json.dump(game_dict, fp, indent=4, cls=CustomEncoder)
+
+def load_game_dict():
+	global game_dict
+	with open('game_dict.json', 'r') as fp:
+		tmp_game_dict = json.load(fp)
+	for game_id in tmp_game_dict:
+		game_dict[game_id] = {}
+		game_dict[game_id]["single_player"] = tmp_game_dict[game_id]["single_player"]
+		game_dict[game_id]["game_main_message_id"] = tmp_game_dict[game_id]["game_main_message_id"]
+		game_dict[game_id]["game_main_message_text"] = tmp_game_dict[game_id]["game_main_message_text"]
+		game_dict[game_id]["player_list"] = []
+		for player in tmp_game_dict[game_id]["player_list"]:
+			new_Spieler = Spieler(player["user_id"], player["name"])
+			new_Spieler.role = player["role"]
+			new_Spieler.werwolf_message_id = player["werwolf_message_id"]
+			new_Spieler.alive = player["alive"]
+			new_Spieler.marked_by_werwolf = player["marked_by_werwolf"]
+			new_Spieler.marked_by_witch = player["marked_by_witch"]
+			new_Spieler.marked_by_psychopath = player["marked_by_psychopath"]
+			new_Spieler.verliebt = player["verliebt"]
+			new_Spieler.message_id = player["message_id"]
+			new_Spieler.message_text = player["message_id"]
+			game_dict[game_id]["player_list"].append(new_Spieler)
+		game_dict[game_id]["anklage_list"] = []
+		for player in tmp_game_dict[game_id]["anklage_list"]:
+			new_Prosecuted = Prosecuted(player["user_id"], player["by_id"])
+			new_Prosecuted.option = player["option"]
+			game_dict[game_id]["anklage_list"].append(new_Prosecuted)
+		game_dict[game_id]["vote_list"] = []
+		for player in tmp_game_dict[game_id]["vote_list"]:
+			new_Prosecuted = Prosecuted(player["user_id"], player["by_id"])
+			new_Prosecuted.option = player["option"]
+			game_dict[game_id]["vote_list"].append(new_Prosecuted)
+		game_dict[game_id]["werwolf_target_list"] = []
+		for player in tmp_game_dict[game_id]["werwolf_target_list"]:
+			new_Target = Prosecuted(player["wolf_id"], player["target_id"])
+			game_dict[game_id]["werwolf_target_list"].append(new_Target)
+		game_dict[game_id]["werwolf_target"] = tmp_game_dict[game_id]["werwolf_target"]
+		game_dict[game_id]["hexe_target"] = tmp_game_dict[game_id]["hexe_target"]
+		game_dict[game_id]["admin_id"] = tmp_game_dict[game_id]["admin_id"]
+		game_dict[game_id]["game_chat_id"] = tmp_game_dict[game_id]["game_chat_id"]
+		game_dict[game_id]["running"] = tmp_game_dict[game_id]["running"]
+		game_dict[game_id]["round_number"] = tmp_game_dict[game_id]["round_number"]
+		game_dict[game_id]["game_over_check"] = tmp_game_dict[game_id]["game_over_check"]
+		game_dict[game_id]["game_state"] = tmp_game_dict[game_id]["game_state"]
+		game_dict[game_id]["game_state_backup"] = tmp_game_dict[game_id]["game_state_backup"]
+		game_dict[game_id]["hexe_life_juice_used"] = tmp_game_dict[game_id]["hexe_life_juice_used"]
+		game_dict[game_id]["vote_options"] = tmp_game_dict[game_id]["vote_options"]
+		game_dict[game_id]["harter_bursche_survive"] = tmp_game_dict[game_id]["harter_bursche_survive"]
+		game_dict[game_id]["first_patt"] = tmp_game_dict[game_id]["first_patt"]
+		game_dict[game_id]["werwolf_text"] = tmp_game_dict[game_id]["werwolf_text"]
+		game_dict[game_id]["anklage_message_id"] = tmp_game_dict[game_id]["anklage_message_id"]
+		game_dict[game_id]["anklage_text"] = tmp_game_dict[game_id]["anklage_text"]
+		game_dict[game_id]["vote_message_id"] = tmp_game_dict[game_id]["vote_message_id"]
+		game_dict[game_id]["amor_target_list"] = tmp_game_dict[game_id]["amor_target_list"]
+		game_dict[game_id]["remember_message_id"] = tmp_game_dict[game_id]["remember_message_id"]
+		game_dict[game_id]["remember_message_chat"] = tmp_game_dict[game_id]["remember_message_chat"]
 
 def inlineKey_menu(game_id):
 	keyboard = [[InlineKeyboardButton("Mitspielen/Aussteigen", callback_data='menu_1_'+str(game_id))],
@@ -289,6 +366,7 @@ def game_over(context, game_id):
 			game_dict[game_id]["game_over_check"] = True
 			game_dict[game_id]["state"] = None
 			game_dict[game_id]["player_list"] = []
+			save_game_dict()
 			return True
 		if not game_dict[game_id]["single_player"]:
 			if get_alive_player_list(game_id)[0].role in werwolf_group: group = werwolf_group
@@ -305,11 +383,12 @@ def game_over(context, game_id):
 				else: 
 					win_message = markup_character + lore.dorf_win().upper() + markup_character
 				context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
-				for player in game_dict[game_id]["player_list"]:
+				for player in game_game_dictdict[game_id]["player_list"]:
 					context.bot.send_message(chat_id=player.user_id, text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
 				game_dict[game_id]["game_over_check"] = True
 				game_dict[game_id]["state"] = None
 				game_dict[game_id]["player_list"] = []
+				save_game_dict()
 				return True
 			all_in_love = True
 			for p in get_alive_player_list(game_id):
@@ -324,7 +403,9 @@ def game_over(context, game_id):
 				context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
 				for player in game_dict[game_id]["player_list"]:
 					context.bot.send_message(chat_id=player.user_id, text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
+				save_game_dict()
 				return True
+		save_game_dict()
 		return False
 
 def wake_werwolf(context, game_id):
@@ -347,15 +428,17 @@ def wake_werwolf(context, game_id):
 				context.bot.send_message(chat_id=p.user_id, text=message)
 			else:
 				context.bot.send_message(chat_id=p.user_id, text=lore.lonely_wolf())
-			context.bot.send_message(chat_id=p.user_id, text=werwolf_introduction, reply_markup=werwolf_keyboard)
+			p.message_id = context.bot.send_message(chat_id=p.user_id, text=werwolf_introduction, reply_markup=werwolf_keyboard).message_id
+			p.message_text = werwolf_introduction
 	while game_dict[game_id]["game_state"] == "werwolf":
 			time.sleep(1)
 			print("waiting")
-	if get_player_by_role("Rotkäppchen", game_id) != None and get_player_by_role("Rotkäppchen", game_id).marked_by_werwolf and get_player_by_role("Jäger", game_id).alive:
+	if get_player_by_role("Rotkäppchen", game_id) != None and get_player_by_role("Rotkäppchen", game_id).marked_by_werwolf and get_player_by_role("Jäger", game_id) != None and get_player_by_role("Jäger", game_id).alive:
 		get_player_by_role("Rotkäppchen", game_id).marked_by_werwolf = False
 	if get_player_by_role("HarterBursche", game_id) != None and game_dict[game_id]["harter_bursche_survive"] and get_player_by_role("HarterBursche", game_id).marked_by_werwolf:
 		game_dict[game_id]["harter_bursche_survive"] = False
 		get_player_by_role("HarterBursche", game_id).marked_by_werwolf = False
+	save_game_dict()
 
 def activate_jaeger(context, p, game_id):
 	global game_dict
@@ -366,6 +449,7 @@ def activate_jaeger(context, p, game_id):
 	while game_dict[game_id]["game_state"] == "jaeger" or game_dict[game_id]["game_state_backup"] == "jaeger":
 		time.sleep(1)
 		print("jaeger_waiting")
+	save_game_dict()
 
 def activate_terrorwolf(context, p, game_id):
 	global game_dict
@@ -376,6 +460,7 @@ def activate_terrorwolf(context, p, game_id):
 	while game_dict[game_id]["game_state"] == "terrorwolf" or game_dict[game_id]["game_state_backup"] == "terrorwolf":
 		time.sleep(1)
 		print("terrorwolf_waiting")
+	save_game_dict()
 
 def wake_seherin(context, game_id):
 	global game_dict
@@ -385,6 +470,7 @@ def wake_seherin(context, game_id):
 	game_dict[game_id]["game_state"] = "seherin"
 	while game_dict[game_id]["game_state"] == "seherin":
 		time.sleep(1)
+	save_game_dict()
 
 def wake_hexe(context, game_id):
 	if get_player_by_role("Hexe", game_id) == None: return
@@ -404,6 +490,7 @@ def wake_hexe(context, game_id):
 		context.bot.send_message(chat_id=get_player_by_role("Hexe", game_id).user_id, text="Willst du noch jemanden töten?", reply_markup=inlineKey_hexe_death(game_id))
 		while game_dict[game_id]["game_state"] == "hexe_death":
 				time.sleep(1)
+	save_game_dict()
 
 def wake_wolfshund(context, game_id):
 	global game_dict
@@ -412,6 +499,7 @@ def wake_wolfshund(context, game_id):
 	context.bot.send_message(chat_id=get_player_by_role("Wolfshund", game_id).user_id, text=lore.wolfshund_options(), reply_markup=inlineKey_wolfshund(game_id))
 	while game_dict[game_id]["game_state"] == "wolfshund":
 		time.sleep(1)
+	save_game_dict()
 
 def wake_psychopath(context, game_id):
 	global game_dict
@@ -422,6 +510,7 @@ def wake_psychopath(context, game_id):
 	context.bot.send_message(chat_id=get_player_by_role("Psychopath", game_id).user_id, text=lore.psycho_intro(), reply_markup=inlineKey_psychopath(game_id))
 	while game_dict[game_id]["game_state"] == "psychopath":
 		time.sleep(1)
+	save_game_dict()
 
 def wake_amor(context, game_id):
 	global game_dict
@@ -434,6 +523,7 @@ def wake_amor(context, game_id):
 	context.bot.send_message(chat_id=get_player_by_role("Amor", game_id).user_id, text="Wer ist der zweite Glückliche?", reply_markup=inlineKey_amor(game_id, first=False))
 	while game_dict[game_id]["game_state"] == "amor2":
 		time.sleep(1)
+	save_game_dict()
 
 def do_killing(context, game_id):
 	global game_dict
@@ -447,9 +537,13 @@ def do_killing(context, game_id):
 			p.marked_by_werwolf = False
 			p.marked_by_witch = False
 			p.marked_by_psychopath = False
+	save_game_dict()
 
 def print_alive(context, game_id):
 	message = "Es leben noch: "
+	print("\n\n")
+	print("print alive")
+	print("\n\n")
 	if len(get_alive_player_list(game_id)) == 1:
 		message = "Es lebt noch: "
 	for p in get_alive_player_list(game_id):
@@ -458,14 +552,20 @@ def print_alive(context, game_id):
 
 def prosecute(context, game_id):
 	global game_dict
-	context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=lore.time_to_prosecute(), reply_markup=inlineKey_anklage(game_id))
+	lore_prosecute = lore.time_to_prosecute()
+	game_dict[game_id]["remember_message_text"] = lore_prosecute
+	game_dict[game_id]["remember_message_id"] = context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=lore_prosecute, reply_markup=inlineKey_anklage(game_id)).message_id
 	while len(game_dict[game_id]["anklage_list"]) < 3 and len(game_dict[game_id]["anklage_list"]) < len(get_alive_player_list(game_id)):
 		time.sleep(1)
+	save_game_dict()
+	context.bot.edit_message_text(chat_id=game_dict[game_id]["game_chat_id"], message_id=game_dict[game_id]["remember_message_id"], text=game_dict[game_id]["remember_message_text"])
 
 def vote(context, game_id):
 	global game_dict
 	kill_list = []
-	context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=lore.time_to_vote(), reply_markup=inlineKey_abstimmung(game_id))
+	lore_vote = lore.time_to_vote()
+	game_dict[game_id]["remember_message_text"] = lore_vote
+	game_dict[game_id]["remember_message_id"] = context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=lore_vote, reply_markup=inlineKey_abstimmung(game_id)).message_id
 	while len(game_dict[game_id]["vote_list"]) < len(get_alive_player_list(game_id)):
 		time.sleep(1)
 	vote_dict = {}
@@ -506,6 +606,8 @@ def vote(context, game_id):
 		else:
 			game_dict[game_id]["first_patt"] = True
 			context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=lore.patt_no_kill())
+	save_game_dict()
+	context.bot.edit_message_text(chat_id=game_dict[game_id]["game_chat_id"], message_id=game_dict[game_id]["remember_message_id"], text=game_dict[game_id]["remember_message_text"])
 
 def test_chats(context, game_id):
 	success = True
@@ -520,8 +622,15 @@ def test_chats(context, game_id):
 
 def start_game(context, game_id):
 	global game_dict
+	for player in get_alive_player_list(game_id):
+		try:
+			print(player.name)
+		except Exception as e:
+			print(player.user_id)
+
 	game_dict[game_id]["game_over_check"] = False
 	draw_no_doubles(context, game_id)
+	save_game_dict()
 	while not game_over(context, game_id) and not game_dict[game_id]["game_over_check"]:
 		game_dict[game_id]["werwolf_target_list"] = []
 		game_dict[game_id]["vote_list"] = []
@@ -535,6 +644,7 @@ def start_game(context, game_id):
 		game_dict[game_id]["vote_text"] = {}
 		game_dict[game_id]["anklgage_message_id"] = 0
 		game_dict[game_id]["vote_message_id"] = 0
+		save_game_dict()
 
 		text_nightfall = lore.nightfall()
 		context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text=text_nightfall)
@@ -549,7 +659,7 @@ def start_game(context, game_id):
 		wake_hexe(context, game_id)
 		wake_psychopath(context, game_id)
 		do_killing(context, game_id)
-
+		print_alive(context, game_id)
 		#night is over
 		if not game_over(context, game_id):
 			if len(get_alive_player_list(game_id))>3:
@@ -561,6 +671,10 @@ def start_game(context, game_id):
 			game_dict[game_id]["game_state"] = "vote"
 			vote(context, game_id)
 			game_dict[game_id]["round_number"] += 1
+
+def remove_buttons_from_message(update, context):
+	save_game_dict()
+	context.bot.edit_message_text(chat_id=query.message.chat.id, message_id=query.message.message_id, text=query.message.text)
 
 def button_handler_menu(update, context):
 	global game_dict
@@ -578,6 +692,7 @@ def button_handler_menu(update, context):
 					game_dict[game_id]["player_list"].append(Spieler(query.from_user.id, query.from_user.first_name))
 					message = query.message.text
 					message += "\n" + query.from_user.first_name
+					game_dict[game_id]["game_main_message_text"] = message
 					context.bot.edit_message_text(text=message, chat_id=game_dict[game_id]["game_chat_id"], message_id=query.message.message_id, reply_markup=inlineKey_menu(game_id))
 				else:
 					for p in game_dict[game_id]["player_list"]:
@@ -595,6 +710,7 @@ def button_handler_menu(update, context):
 					for p in game_dict[game_id]["player_list"]:
 						new_message+= p.name + "\n"
 					new_message = new_message[0:-1]
+					game_dict[game_id]["game_main_message_text"] = new_message
 					context.bot.edit_message_text(text=new_message, chat_id=game_dict[game_id]["game_chat_id"], message_id=query.message.message_id, reply_markup=inlineKey_menu(game_id))
 	elif query.data.startswith("menu_2"):
 		if query.from_user.id != game_dict[game_id]["admin_id"]:
@@ -614,8 +730,10 @@ def button_handler_menu(update, context):
 		if query.from_user.id != game_dict[game_id]["admin_id"]:
 			context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text="Du bist nicht der Administrator dieses Spieles")
 		else:
+			context.bot.edit_message_text(chat_id=game_dict[game_id]["game_chat_id"], message_id=game_dict[game_id]["game_main_message_id"], text=game_dict[game_id]["game_main_message_text"])
 			context.bot.send_message(chat_id=game_dict[game_id]["game_chat_id"], text="Abgebrochen")
 			game_dict.pop(game_id)
+	save_game_dict()
 
 def handler_send_message(update, context, game_id, lore_text, user_id, text_dict, saved_message_id):
 	global game_dict
@@ -688,6 +806,9 @@ def button_handler_werwolf(update, context):
 			for w in werwolf_list:
 				context.bot.send_message(chat_id=w.user_id, text="Die Werwölfe haben beschlossen, " + lore.werwolf_response_options(killing_option, target_name))
 			game_dict[game_id]["game_state"] = "night"
+			for wer in werwolf_list:
+				context.bot.edit_message_text(chat_id=p.user_id, message_id=p.message_id, text=p.message_text)
+	save_game_dict()
 
 
 def button_handler_anklage(update, context):
@@ -698,6 +819,10 @@ def button_handler_anklage(update, context):
 	if not game_dict[game_id]["game_state"] == "anklage": return
 	p = get_player_by_id(query.from_user.id, game_id)
 	anklage_id = query.data.split("_")[1]
+	for player in game_dict[game_id]["player_list"]:
+		print(player.user_id)
+	print("anklaeger")
+	print(anklage_id)
 	anklage_in_list = False
 	for a in game_dict[game_id]["anklage_list"]:
 		if str(a.user_id) == anklage_id: anklage_in_list = True
@@ -716,6 +841,7 @@ def button_handler_anklage(update, context):
 			game_dict[game_id]["anklage_list"].append(Prosecuted(anklage_id, query.from_user.id))
 			lore_text = anklaeger_name + lore.anklage_new(anklage_option, angeklagter_name)
 			handler_send_message(update, context, game_id, lore_text, query.from_user.id, "anklage_text", "anklage_message_id")
+	save_game_dict()
 
 def button_handler_vote(update, context):
 	global game_dict
@@ -743,6 +869,7 @@ def button_handler_vote(update, context):
 		lore_text = voter_name + lore.vote_new(vote_option, voted_name)
 		handler_send_message(update, context, game_id, lore_text, query.from_user.id, "vote_text", "vote_message_id")
 		game_dict[game_id]["last_vote_option"] = vote_option
+	save_game_dict()
 
 def button_handler_terrorwolf(update, context):
 	global game_dict
@@ -763,6 +890,7 @@ def button_handler_terrorwolf(update, context):
 	game_dict[game_id]["game_state_backup"] = None
 	print(game_dict[game_id]["game_state"])
 	print(game_dict[game_id]["game_state_backup"])
+	remove_buttons_from_message(update, context)
 
 def button_handler_jaeger(update, context):
 	global game_dict
@@ -783,6 +911,7 @@ def button_handler_jaeger(update, context):
 	game_dict[game_id]["game_state_backup"] = None
 	print(game_dict[game_id]["game_state"])
 	print(game_dict[game_id]["game_state_backup"])
+	remove_buttons_from_message(update, context)
 
 def button_handler_seherin(update, context):
 	global game_dict
@@ -798,6 +927,7 @@ def button_handler_seherin(update, context):
 		context.bot.send_message(chat_id=seherin.user_id, text=lore.seherin_werwolf(seherin_option, get_player_by_id(watch_id, game_id).name))
 	else:
 		context.bot.send_message(chat_id=seherin.user_id, text=lore.seherin_no_werwolf(seherin_option, get_player_by_id(watch_id, game_id).name))
+	remove_buttons_from_message(update, context)
 	game_dict[game_id]["game_state"] = "night"		
 
 def button_handler_hexe_life(update, context):
@@ -818,6 +948,7 @@ def button_handler_hexe_life(update, context):
 			player.marked_by_werwolf = False
 		context.bot.send_message(chat_id=get_player_by_role("Hexe", game_id).user_id, text=lore.hexe_did_save(save_option, player.name))
 		game_dict[game_id]["game_state"] = "night"
+	remove_buttons_from_message(update, context)
 
 def button_handler_hexe_death(update, context):
 	global game_dict
@@ -835,6 +966,7 @@ def button_handler_hexe_death(update, context):
 		context.bot.send_message(chat_id=get_player_by_role("Hexe", game_id).user_id, text=lore.hexe_did_kill(kill_option, get_player_by_id(hexe_target_id, game_id).name))
 		game_dict[game_id]["hexe_death_juice_used"] = True
 		game_dict[game_id]["game_state"] = "night"
+	remove_buttons_from_message(update, context)
 
 def button_handler_wolfshund_choose(update, context):
 	global game_dict
@@ -849,6 +981,7 @@ def button_handler_wolfshund_choose(update, context):
 	elif target == "dorf":
 		context.bot.send_message(chat_id=get_player_by_role("Wolfshund", game_id).user_id, text=lore.wolfshund_did_chose_dorf(wolfshund_option))
 		get_player_by_role("Wolfshund", game_id).role = "Dorfbewohner"
+	remove_buttons_from_message(update, context)
 	game_dict[game_id]["game_state"] = "night"
 
 def button_handler_psychopath(update, context):
@@ -860,6 +993,7 @@ def button_handler_psychopath(update, context):
 	target = query.data.split("_")[1]
 	get_player_by_id(target, game_id).marked_by_psychopath = True
 	context.bot.send_message(chat_id=get_player_by_role("Psychopath", game_id).user_id, text=lore.psyhopath_response_options(psychopath_option, get_player_by_id(target, game_id).name))
+	remove_buttons_from_message(update, context)
 	game_dict[game_id]["game_state"] = "night"
 
 def button_handler_amor1(update, context):
@@ -872,6 +1006,7 @@ def button_handler_amor1(update, context):
 	print(target)
 	get_player_by_id(target, game_id).verliebt = True
 	print(get_player_by_id(target, game_id).name)
+	remove_buttons_from_message(update, context)
 	game_dict[game_id]["game_state"] = "amor2"
 
 def button_handler_amor2(update, context):
@@ -889,6 +1024,7 @@ def button_handler_amor2(update, context):
 	context.bot.send_message(chat_id=get_player_by_role("Amor", game_id).user_id, text=verliebt_text)
 	context.bot.send_message(chat_id=game_dict[game_id]["amor_target_list"][0], text="Du hast dich in " + get_player_by_id(game_dict[game_id]["amor_target_list"][1], game_id).name + " verliebt.")
 	context.bot.send_message(chat_id=game_dict[game_id]["amor_target_list"][1], text="Du hast dich in " + get_player_by_id(game_dict[game_id]["amor_target_list"][0], game_id).name + " verliebt.")
+	remove_buttons_from_message(update, context)
 	game_dict[game_id]["game_state"] = "night"
 
 def button_handler(update, context):
@@ -933,12 +1069,17 @@ def new(update, context):
 	message = "Viel Spass beim Werwolf spielen!\n\nBitte einen privaten Chat mit dem Bot starten, bevor das Spiel beginnt!\n\nUm das Spiel in seiner vollen Breite genießen zu können, empfiehlt es sich bei sehr schmalen Bildschirmen, diese quer zu verwenden.\n\n"
 	message += "Admin:\n" + update.message.from_user.first_name + "\n\n"
 	message += "Spieler:"
-	context.bot.send_message(chat_id=update.message.chat_id, text=message, reply_markup=inlineKey_menu(game_id))
+	save_game_dict()
+	game_dict[game_id]["game_main_message_text"] = message
+	game_dict[game_id]["game_main_message_id"] = context.bot.send_message(chat_id=update.message.chat_id, text=message, reply_markup=inlineKey_menu(game_id)).message_id
+	save_game_dict()
 
 def start(update, context):
 	test = context.bot.send_message(chat_id=update.message.chat_id, text="Herzlich Wilkommen beim WerWolfBot\\!", parse_mode=ParseMode.MARKDOWN_V2).message_id
 
 def main():
+	if os.path.isfile('game_dict.json'):
+		load_game_dict()
 	updater = Updater(token, use_context=True)
 	dispatcher = updater.dispatcher
 	dispatcher.add_handler(CommandHandler('start',start))

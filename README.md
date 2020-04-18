@@ -11,10 +11,9 @@ Rotkaeppchen
 Wolfshund
 Harter Bursche
 Terrorwolf
-Psychopath
-Amor
 
 Testing:
+None
 
 WIP:
 None
