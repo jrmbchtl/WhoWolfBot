@@ -312,7 +312,7 @@ def draw_no_doubles(context, game_id):
 		dorf_role_list.append("Hexe")
 	for i in range(0,12):
 		dorf_role_list.append("HarterBursche")
-	for i in range(0,0):
+	for i in range(0,12):
 		dorf_role_list.append("Psychopath")
 	for i in range(0,12):
 		dorf_role_list.append("Amor")
