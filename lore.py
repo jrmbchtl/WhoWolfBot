@@ -119,6 +119,43 @@ def description_psychopath():
 	elif desc_no == 5: return "Deine Rolle ist der Psychopath. Sollte in einer Nacht niemand gestorben sein, so wirst du geweckt und musst noch jemanden töten."
 	else: return "Du bist ein Psychopath. Du hast Lust am morden. Und am Menschen sterben sehen. Deshalb willst du, das jede Nacht jemand stirbt. Un wenn niemand stirbt, stehst du kurz vor Morgendämmerung auf und ermordest noch jemanden."
 
+def description_berserker():
+	desc_no = random.randrange(1,7)
+	if desc_no == 1: return "Du bist der Berserker. Der Berserker hat ein Extraleben gegen Werwolfangriffe. Zusätzlich kann er jede Nacht einen Spieler töten, verliert dabei aber auch selbst ein Leben!"
+	elif desc_no == 2: return "Du bist ein Berserker, welcher den ersten Werwolfangriff überlebt. Außerdem kann er jede Nacht jemanden töten, allerdings für einen Preis: Für seinen ersten Mord verliert er den Schutz vor den Werölfen, nach seinem zweiten Mord stirbt er vor Erschöpfung."
+	elif desc_no == 3: return "Du bist ein Berserker. Du kämpfst in deinem Rausch. Du bist unverwundbar. Naja so fast. Du hast ein Extraleben gegen Werwolfangriffe. Und wenn du willst, kannst du auch jemanden mit deinen Äxten zerstückeln, allerdings verlierst du dann deinen Schutz gegen die Werwölfe."
+	elif desc_no == 4: return "Du ist ein Berserker. Ein ziemlich harter und brutaler Zeitgenosse. Du hast ein Extraleben gegen Werwolfangriffe und kannst jede Nacht jemanden töten. Aber Vorsicht: Es gilt Leben für Leben, für jedes Leben, dass du nimmst, verlierst auch du eines!"
+	elif desc_no == 5: return "Deine Rolle ist der Berserker. Dieser hat ein Extraleben gegen Werwolfangriffe und schreckt jede Nacht aus seinem Schlaf hoch, mit der Möglichkeit jemanden zu töten. Allerdings verliert der Berserker für jeden Angriff selbst ein Leben."
+	else: return "Du bist ein Berserker. Du versuchst, mit Brutalität Gerechtigkeit zu schaffen. Mit deiner Härte, die Werwölfe zu vernichten. Mit deinem Geschick, dem ersten Angriff der Werwölfe zu entkommen. Oder mit deiner Eiseskälte, jemanden zu ermorden. Aber kein Verbrechen, für das nicht bezahlt werden müsste! Beschließt du jemanden zu töten, so verlöierst du deinem Schutz gegen die Werwölfe. Und solltest du keinen Schutz mehr haben, so stirbst du in deinem Wahn, nachdem du dein Opfer erfolgreich erschlagen hast."
+
+def berserker_question(extra_life):
+	base_text = ""
+	if extra_life: base_text = "Du hast 2 Leben. "
+	else: base_text = "Du hast nur noch ein Leben."
+	desc_no = random.randrange(0,10)
+	if desc_no == 0: return (0, base_text + "Wen möchtest du ermorden?")
+	elif desc_no == 1: return (1, base_text + "Wen willst du mit deinen Äxten besuchen?")
+	elif desc_no == 2: return (2, base_text + "Wer soll morgens mit einer Axt im Kopf aufgefunden werden")
+	elif desc_no == 3: return (3, base_text + "Wer könnte ein Werwolf sein und muss dafür sterben?")
+	elif desc_no == 4: return (4, base_text + "Du erhälst die Möglichkeit, jemanden zu töten. Wer wird es sein?")
+	elif desc_no == 5: return (5, base_text + "Wer wird heute Nacht dem Berserker zum Opfer fallen?")
+	elif desc_no == 6: return (6, base_text + "Es ist Zeit für dich, jemanden zu töten!")
+	elif desc_no == 7: return (7, base_text + "Wer dient als Zielscheibe für dein nächtliches Axtwerfen?")
+	elif desc_no == 8: return (8, base_text + "Wen greifst du diese Nacht im Rausch an?")
+	else: return (9, base_text + "Wen willst du wie ein wildes Tier anfallen?")
+
+def berserker_response(option, name):
+	if option == "0": return "Du hast " + name + " ermordet."
+	elif option == "1": return "Der Berserker hat " + name + " mit seinen Äxten besucht."
+	elif option == "2": return "Du hast " + name + " eine Axt in den Kopf geschlagen."
+	elif option == "3": return "Du hast " + name + " sterben lassen."
+	elif option == "4": return "Der Berserker hat vermutet, dass " + name + " ein Werwolf ist, kurzen Prozess gemacht und ihn schnell enthauptet."
+	elif option == "5": return "Der Berserker hat " + name + " überfallen."
+	elif option == "6": return "Der Berserker hat " + name + " getötet."
+	elif option == "7": return "Der Berserker hat " + name + " als Zielscheibe genutzt."
+	elif option == "8": return "Du hast " + name + " in deinem Rausch angegriffen."
+	else: return "Der Berserker hat " + name + " wie ein wildes Tier angefallen."
+
 def psycho_intro():
 	desc_no = random.randrange(0,10)
 	if desc_no == 0: return "Es ist bisher niemand gestorben. Das wird sich jetzt ändern..."

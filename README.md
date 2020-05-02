@@ -13,13 +13,12 @@ Harter Bursche
 Terrorwolf
 
 Testing:
-None
+Berserker
 
 WIP:
 None
 
 Planned:
-Berserker
 Superschurke (not draftable)
 Terrorist
 Kerkermeister
