@@ -61,6 +61,7 @@ game_library = {"single_player":False,
 
 werwolf_group = ["Werwolf", "Terrorwolf"]
 dorf_group = ["Dorfbewohner", "Dorfbewohnerin", "Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Psychopath", "Amor", "Berserker"]
+female_roles = ["Dorfbewohnerin", "Seherin", "Hexe", "Rotkäppchen"]
 
 markup_character = "`"
 markup_character = "__"
@@ -127,7 +128,11 @@ class Spieler():
 		self.marked_by_werwolf = False
 		self.marked_by_witch = False
 		self.marked_by_psychopath = False
-		self.marked_by_berserker = False	
+		self.marked_by_berserker = False
+
+	def get_gender(self):
+		if self.role in female_roles: return "female"
+		else: return "male"
 
 class CustomEncoder(json.JSONEncoder):
 	def default(self,o):
@@ -591,7 +596,7 @@ def do_killing(context, game_id):
 	do_killing_list = []
 	for p in get_alive_player_list(game_id):
 		if p.marked_by_werwolf or p.marked_by_witch or p.marked_by_psychopath or p.marked_by_berserker:
-			death_message = lore.death_message()
+			death_message = lore.death_message(p.get_gender())
 			bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=markup_character + p.name + death_message + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
 			bot_send_message(context=context, chat_id=p.user_id, text=markup_character + p.name + death_message + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
 			p.kill(context, game_id)
@@ -937,8 +942,8 @@ def button_handler_terrorwolf(update, context):
 	kill_id = query.data.split("_")[1]
 	kill_player = get_player_by_id(kill_id, game_id)
 
-	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=markup_character + kill_player.name + lore.terrorwolf_kill(kill_option) + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
-	bot_send_message(context=context, chat_id=kill_id, text=markup_character + kill_player.name + lore.terrorwolf_kill(kill_option) + markup_character, parse_mode=ParseMode.MARKDOWN_V2) 
+	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=markup_character + kill_player.name + lore.terrorwolf_kill(kill_option, kill_player.get_gender()) + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
+	bot_send_message(context=context, chat_id=kill_id, text=markup_character + kill_player.name + lore.terrorwolf_kill(kill_option, kill_player.get_gender()) + markup_character, parse_mode=ParseMode.MARKDOWN_V2) 
 	
 	kill_player.kill(context, game_id)
 

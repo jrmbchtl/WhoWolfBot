@@ -245,7 +245,7 @@ def werwolf_response_options(option, name):
 	elif option == "10": return name + " in die Lasagne zu mischen."
 	else: return name + " mit einer Torte zu verwechseln."
 
-def death_message():
+def death_message(gender):
 	desc_no = random.randrange(1,16)
 	if desc_no == 1: return " ist diese Nacht leider gestorben\\."
 	elif desc_no == 2: return " erblickt das Licht des neuen Tages nicht mehr\\."
@@ -253,7 +253,9 @@ def death_message():
 	elif desc_no == 4: return " existiert nur noch in Stücken\\."
 	elif desc_no == 5: return " hat die letzten Stunden nicht überlebt\\."
 	elif desc_no == 6: return " ist nicht mehr aufzufinden\\."
+	elif desc_no == 7 and gender == "female" : return " war eine gute Kameradin\\."
 	elif desc_no == 7: return " war ein guter Kamerad\\."
+	elif desc_no == 8 and gender == "female" : return " hat ihren letzten Kampf verloren\\."
 	elif desc_no == 8: return " hat seinen letzten Kampf verloren\\."
 	elif desc_no == 9: return " hat den Löffel abgegeben\\."
 	elif desc_no == 10: return " besucht nun die ewigen Jagdgründe\\."
@@ -350,15 +352,16 @@ def inlineKey_terrorwolf_options():
 	elif desc_no == 8: return (8," tödliche Schürfwunden verpassen.")
 	else: return (9," aus Mitleid noch kurz aufessen")
 
-def terrorwolf_kill(option):
+def terrorwolf_kill(option, gender):
 	if option == "0": return " wurde vom Terrorwolf gerissen\\."
 	elif option == "1": return " wurde als Henkersmahlzeit verspeißt\\!"
 	elif option == "2": return " wurde mit in den Tod gerissen\\."
 	elif option == "3": return " wurde noch kurz verputzt\\."
 	elif option == "4": return " hat sich im Vorbeilaufen die Zähne in den Hals rammen lassen\\."
-	elif option == "5": return " wurde mit der letzen Kraft des Terrowolfes zerbissen\\."
+	elif option == "5": return " wurde mit der letzen Kraft des Terrorwolfes zerbissen\\."
 	elif option == "6": return " wurde in der Luft zerfetzt\\."
 	elif option == "7": return " wurde bei einem Attentäter in Auftrag gegeben und konnte nicht entkommen\\."
+	elif option == "8" and gender == "female": return " kann ohne ihren Kopf nicht weiterleben\\!"
 	elif option == "8": return " kann ohne seinen Kopf nicht weiterleben\\!"
 	else: return " wurde noch kurz aus Mitleid aufgegessen\\."
 
@@ -475,7 +478,7 @@ def hexe_did_kill(option, name):
 	elif option == "5": return "Du hast " + name + "s innere Organe verätzt."
 	elif option == "6": return "Die Hexe hat ausversehen " + name + " Gift ins Getränk gemischt."
 	elif option == "7": return "Die Hexe hat " + name + " ein Essen mit Fliegenpilzen zubereitet."
-	elif option == "8": return "Du hast einen kleinen Fehler gemacht, asl du den Kugelfisch für " + name + " zubereitet hast."
+	elif option == "8": return "Du hast einen kleinen Fehler gemacht, als du den Kugelfisch für " + name + " zubereitet hast."
 	else: return "Die Hexe hat " + name + " Quecksilber in die Milch gemischt."
 
 def all_dead():
