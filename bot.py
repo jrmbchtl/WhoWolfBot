@@ -360,7 +360,7 @@ def draw_no_doubles(context, game_id):
 		dorf_role_list.append("Psychopath")
 	for i in range(0,12):
 		dorf_role_list.append("Amor")
-	for i in range(0,1200):
+	for i in range(0,12):
 		dorf_role_list.append("Berserker")
 
 	unique = ["Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Wolfshund", "Terrorwolf", "Psychopath", "Amor", "Berserker"]
@@ -814,11 +814,6 @@ def handler_send_message(update, context, game_id, lore_text, user_id, text_dict
 					player.werwolf_message_id = bot_send_message(context=context, chat_id=user_id, text=new_text).message_id
 				else:
 					bot_edit_message(context=context, chat_id=user_id, message_id=player.werwolf_message_id, text=new_text)
-	#elif saved_message_id=="anklage_message_id":
-	#	if game_dict[game_id][saved_message_id] == 0:
-	#		game_dict[game_id][saved_message_id] = bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=new_text, reply_markup=inlineKey_anklage(game_id)).message_id
-	#	else:
-	#		bot_edit_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], message_id=game_dict[game_id][saved_message_id], text=new_text, reply_markup=inlineKey_anklage(game_id))
 	else:
 		if game_dict[game_id][saved_message_id] == 0:
 			game_dict[game_id][saved_message_id] = bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=new_text).message_id

@@ -11,9 +11,10 @@ Rotkaeppchen
 Wolfshund
 Harter Bursche
 Terrorwolf
+Berserker
 
 Testing:
-Berserker
+None
 
 WIP:
 None
