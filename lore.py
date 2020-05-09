@@ -137,6 +137,36 @@ def description_berserker():
 	elif desc_no == 5: return "Deine Rolle ist der Berserker. Dieser hat ein Extraleben gegen Werwolfangriffe und schreckt jede Nacht aus seinem Schlaf hoch, mit der Möglichkeit jemanden zu töten. Allerdings verliert der Berserker für jeden Angriff selbst ein Leben."
 	else: return "Du bist ein Berserker. Du versuchst, mit Brutalität Gerechtigkeit zu schaffen. Mit deiner Härte, die Werwölfe zu vernichten. Mit deinem Geschick, dem ersten Angriff der Werwölfe zu entkommen. Oder mit deiner Eiseskälte, jemanden zu ermorden. Aber kein Verbrechen, für das nicht bezahlt werden müsste! Beschließt du jemanden zu töten, so verlöierst du deinem Schutz gegen die Werwölfe. Und solltest du keinen Schutz mehr haben, so stirbst du in deinem Wahn, nachdem du dein Opfer erfolgreich erschlagen hast."
 
+def description_terrorist():
+	desc_no = random.randrange(1,7)
+	if desc_no == 1: return "Du bist der Terrorist. Der Terrorist kann sich zu einem beliebigen Zeitpunkt am Tag in die Luft sprengen und dadurch sich selbst und seine beiden Nachbarn töten. Er kann sich auch noch in die Luft sprengen wenn das Dorf ihn lynchen will, jedoch nicht in seinem Testament."
+	elif desc_no == 2: return "Du bist der Terrorist. Dieser kann sich zu jedem beliebigen Zeitpunkt am Tag in die Luft sprengen, solange er lebt und damit sich selbst und seine beiden Nebensitzer töten."
+	elif desc_no == 3: return "Deine Rolle ist der Terrorist, welcher einen Sprengstoffgürtel trägt. Diesen kann er jederzeit am Tag zünden, solange er lebt und damit sich selbst und seine direkten Nachbarn zerfetzen."
+	elif desc_no == 4: return "Dein Charakter ist der Terrorist, welcher mit einem Sprengstoffgürtel ausgestattet ist. Er kann sich tagsüber dazu entscheiden, den Gürtel zu aktivieren und damit sich selbst und seine zwei Nebensitzer in die Luft zu jagen."
+	elif desc_no == 5: return "Du bist der Terrorist, ein selbstloser Selbstmordattetntäter, ausgestattet mit einem explosiven Gürtel, bereit dazu, diesen zu zünden und dich selbst und deine beiden Nachbarn ins Jenseits zu befördern."
+	else: return "Deine Kontakte im Nahen Osten haben dir einen Bombengürtel zugespielt und dich zum Terrorist ernannt. Tagsüber kannst du dich in die Luft sprengen, um dich selbst und deine Nebensitzer bei einem Selbtmoranschlag zu töten."
+
+def terrorist_options():
+	desc_no = random.randrange(0,8)
+	if desc_no == 0: return (0, "Allahu Akbar")
+	elif desc_no == 1: return (1, "Sprengstoffgürtel zünden")
+	elif desc_no == 2: return (2, "in die Luft sprengen")
+	elif desc_no == 3: return (3, "Selbstmord begehen")
+	elif desc_no == 4: return (4, "BOOOOOOM")
+	elif desc_no == 5: return (5, "ein paar Leben beenden")
+	elif desc_no == 6: return (6, "Triple Kill")
+	else: return (7, "Let's fetz")
+
+def terrorist_announce(option):
+	if option == "0": return "Allahu Akbar!"
+	elif option == "1": return "Der Terrorist hat seinen Sprengstoffgürtel gezündet."
+	elif option == "2": return "Der Terrorist hat sich in die Luft gesprengt."
+	elif option == "3": return "Der Terrorist ist in die Luft geflogen."
+	elif option == "4": return "BOOOOOOM!"
+	elif option == "5": return "Der Terrorist hat ein paar Leben beendet!"
+	elif option == "6": return "Troiple Kill!"
+	else: return "Let's fetz!"
+
 def berserker_question(extra_life):
 	base_text = ""
 	if extra_life: base_text = "Du hast 2 Leben. "
@@ -278,6 +308,19 @@ def werwolf_response_options(option, name):
 	elif option == "9": return name + " zu Salami zu verarbeiten."
 	elif option == "10": return name + " in die Lasagne zu mischen."
 	else: return name + " mit einer Torte zu verwechseln."
+
+def terrorist_death_message():
+	desc_no = random.randrange(1,11)
+	if desc_no == 1: return " wurden von dem Terrorist erwischt\\."
+	elif desc_no == 2: return " bestehen aus mehr Einzelteilen als eine Lego Sternsterörer\\."
+	elif desc_no == 3: return " sind im ganzen Dorf verteilt\\."
+	elif desc_no == 4: return " garnieren den Dorfplatz mit einer Ketchupähnlichen Substanz\\."
+	elif desc_no == 5: return " hat es im wahrsten Sinne des Wortes verrissen\\."
+	elif desc_no == 6: return " wurden pulverisiert\\."
+	elif desc_no == 7: return " waren ungesund nahe an einer größeren Menge explodierendem Schwarzpulver\\."
+	elif desc_no == 8: return " wurden von einer Sprengstoffgürtel getroffen\\."
+	elif desc_no == 9: return " überlebten die Explosion eines Sprengstoffgürtels nicht\\."
+	else: return " können den Diskussionen des Dorfes nur noch in Stücken folgen\\."
 
 def bomb_death_message():
 	desc_no = random.randrange(1,11)

@@ -59,10 +59,11 @@ game_library = {"single_player":False,
 				"remember_message_id": 0,
 				"remember_message_chat" : "",
 				"bomb_carrier": "0",
-				"bomb_new": False}
+				"bomb_new": False,
+				"terrorist_message_id": 0}
 
 werwolf_group = ["Werwolf", "Terrorwolf"]
-dorf_group = ["Dorfbewohner", "Dorfbewohnerin", "Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Psychopath", "Amor", "Berserker", "Superschurke"]
+dorf_group = ["Dorfbewohner", "Dorfbewohnerin", "Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Psychopath", "Amor", "Berserker", "Superschurke", "Terrorist"]
 female_roles = ["Dorfbewohnerin", "Seherin", "Hexe", "Rotkäppchen"]
 
 markup_character = "`"
@@ -235,6 +236,7 @@ def load_game_dict():
 		game_dict[game_id]["remember_message_chat"] = tmp_game_dict[game_id]["remember_message_chat"]
 		game_dict[game_id]["bomb_carrier"] = tmp_game_dict[game_id]["bomb_carrier"]
 		game_dict[game_id]["bomb_new"] = tmp_game_dict[game_id]["bomb_new"]
+		game_dict[game_id]["terrorist_message_id"] = tmp_game_dict[game_id]["terrorist_message_id"]
 
 def inlineKey_menu(game_id):
 	keyboard = [[InlineKeyboardButton("Mitspielen/Aussteigen", callback_data='menu_1_'+str(game_id))],
@@ -346,6 +348,12 @@ def inlineKey_superschurke(game_id, option):
 		keyboard.append([InlineKeyboardButton(player.name, callback_data="superschurke_" + str(player.user_id) + "_" + str(option) + "_" + str(game_id))])
 	return InlineKeyboardMarkup(keyboard)
 
+def inlineKey_terrorist(game_id):
+	keyboard = []
+	option, text = lore.terrorist_options()
+	keyboard.append([InlineKeyboardButton(text, callback_data="terrorist_" + str(option) + "_" + str(game_id))])
+	return InlineKeyboardMarkup(keyboard)
+
 def draw_no_doubles(context, game_id):
 	global game_dict
 	random.shuffle(game_dict[game_id]["player_list"])
@@ -379,10 +387,12 @@ def draw_no_doubles(context, game_id):
 		dorf_role_list.append("Amor")
 	for i in range(0,12):
 		dorf_role_list.append("Berserker")
-	for i in range(0,1200):
+	for i in range(0,12):
 		dorf_role_list.append("Superschurke")
+	for i in range(0,1200):
+		dorf_role_list.append("Terrorist")
 
-	unique = ["Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Wolfshund", "Terrorwolf", "Psychopath", "Amor", "Berserker", "Superschurke"]
+	unique = ["Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Wolfshund", "Terrorwolf", "Psychopath", "Amor", "Berserker", "Superschurke", "Terrorist"]
 
 	for i,p in enumerate(game_dict[game_id]["player_list"]):
 		group_mod = random.random()*0.2+0.9
@@ -417,6 +427,7 @@ def draw_no_doubles(context, game_id):
 		elif p.role == "Amor": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_amor())
 		elif p.role == "Berserker": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_berserker())
 		elif p.role == "Superschurke": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_superschurke())
+		elif p.role == "Terrorist": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_terrorist())
 	random.shuffle(game_dict[game_id]["player_list"])
 
 def game_over(context, game_id):
@@ -432,6 +443,7 @@ def game_over(context, game_id):
 			game_dict[game_id]["game_over_check"] = True
 			game_dict[game_id]["state"] = None
 			game_dict[game_id]["player_list"] = []
+			game_dict[game_id]["game_chat_id"] = 0
 			save_game_dict()
 			return True
 		if not game_dict[game_id]["single_player"]:
@@ -454,6 +466,7 @@ def game_over(context, game_id):
 				game_dict[game_id]["game_over_check"] = True
 				game_dict[game_id]["state"] = None
 				game_dict[game_id]["player_list"] = []
+				game_dict[game_id]["game_chat_id"] = 0
 				save_game_dict()
 				return True
 			all_in_love = True
@@ -537,6 +550,20 @@ def activate_bomb(context, game_id):
 	death_message = markup_character + player.name + lore.bomb_death_message() + markup_character
 	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=death_message, parse_mode=ParseMode.MARKDOWN_V2)
 	bot_send_message(context=context, chat_id=player.user_id, text=death_message, parse_mode=ParseMode.MARKDOWN_V2)
+	save_game_dict()
+
+def enable_terrorist(context, game_id):
+	global game_dict
+	if get_player_by_role("Terrorist", game_id) == None: return
+	terrorist = get_player_by_role("Terrorist", game_id)
+	game_dict[game_id]["terrorist_message_id"] = bot_send_message(context=context, chat_id=terrorist.user_id, text="Du hälst dich bereit!", reply_markup=inlineKey_terrorist(game_id)).message_id
+	save_game_dict()
+
+def disable_terrorist(context, game_id):
+	global game_dict
+	if game_dict[game_id]["terrorist_message_id"] == 0: return
+	context.bot.delete_message(chat_id=get_player_by_role("Terrorist", game_id).user_id, message_id=game_dict[game_id]["terrorist_message_id"])
+	game_dict[game_id]["terrorist_message_id"] = 0	
 	save_game_dict()
 
 def wake_seherin(context, game_id):
@@ -798,6 +825,7 @@ def start_game(context, game_id):
 			game_dict[game_id]["bomb_new"] = False
 		do_killing(context, game_id)
 		print_alive(context, game_id)
+		enable_terrorist(context, game_id)
 		if not game_over(context, game_id):
 			if len(get_alive_player_list(game_id))>3:
 				game_dict[game_id]["game_state"] = "anklage"
@@ -810,6 +838,7 @@ def start_game(context, game_id):
 			save_game_dict()
 			vote(context, game_id)
 			pass_bomb(context, game_id)
+			disable_terrorist(context, game_id)
 			game_dict[game_id]["round_number"] += 1
 
 def remove_buttons_from_message(update, context):
@@ -1145,7 +1174,7 @@ def button_handler_berserker(update, context):
 	remove_buttons_from_message(update, context)
 	game_dict[game_id]["game_state"] = "night"
 
-def button_handler_superschurke(update, context): #Todo
+def button_handler_superschurke(update, context):
 	global game_dict
 	query = update.callback_query
 	game_id = query.data.split("_")[3]
@@ -1157,6 +1186,39 @@ def button_handler_superschurke(update, context): #Todo
 	bot_send_message(context=context, chat_id=get_player_by_role("Superschurke", game_id).user_id, text=lore.superschurke_response(superschurke_option, get_player_by_id(target, game_id).name))
 	remove_buttons_from_message(update, context)
 	game_dict[game_id]["game_state"] = "night"
+
+def button_handler_terrorist(update, context):
+	global game_dict
+	query = update.callback_query
+	game_id = query.data.split("_")[2]
+	terrorist_option = query.data.split("_")[1]
+	disable_terrorist(context, game_id)
+	if not get_player_by_role("Terrorist", game_id).alive: return
+	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=lore.terrorist_announce(terrorist_option))
+	player_list = get_alive_player_list(game_id)
+	index = 0
+	for i, player in enumerate(player_list):
+		if player.role == "Terrorist": index = i
+	terrorist = get_player_by_role("Terrorist", game_id)
+	if index == 0:
+		player_1 = player_list[len(player_list)-1]
+		player_2 = player_list[1]
+	elif index == len(player_list)-1:
+		player_1 = player_list[0]
+		player_2 = player_list[len(player_list)-2]
+	else:
+		player_1 = player_list[index - 1]
+		player_2 = player_list[index + 1]
+	kill_list = [player_1, player_2, terrorist]
+	random.shuffle(kill_list)
+	message = markup_character + kill_list[0].name + ", " + kill_list[1].name + " und " + kill_list[2].name + lore.terrorist_death_message() + markup_character
+	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=message, parse_mode=ParseMode.MARKDOWN_V2)
+	for p in kill_list:
+		bot_send_message(context=context, chat_id=p.user_id, text=message, parse_mode=ParseMode.MARKDOWN_V2)
+	for p in kill_list:
+		p.kill(context, game_id)
+	save_game_dict()
+	game_over(context, game_id)
 
 def button_handler_amor1(update, context):
 	global game_dict
@@ -1216,6 +1278,8 @@ def button_handler(update, context):
 		threading.Thread(target=button_handler_berserker, args=(update,context,)).start()
 	elif update.callback_query.data.startswith("superschurke_"):
 		threading.Thread(target=button_handler_superschurke, args=(update,context,)).start()
+	elif update.callback_query.data.startswith("terrorist_"):
+		threading.Thread(target=button_handler_terrorist, args=(update,context,)).start()
 
 def new(update, context):
 	global game_dict

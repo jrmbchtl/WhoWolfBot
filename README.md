@@ -15,12 +15,12 @@ Berserker
 Superschurke
 
 Testing:
-
-WIP:
 None
 
-Planned:
+WIP:
 Terrorist
+
+Planned:
 Kerkermeister
 Parasit
 Weisser Wolf
