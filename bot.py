@@ -379,7 +379,7 @@ def draw_no_doubles(context, game_id):
 		dorf_role_list.append("Amor")
 	for i in range(0,12):
 		dorf_role_list.append("Berserker")
-	for i in range(0,12):
+	for i in range(0,1200):
 		dorf_role_list.append("Superschurke")
 
 	unique = ["Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Wolfshund", "Terrorwolf", "Psychopath", "Amor", "Berserker", "Superschurke"]
@@ -416,6 +416,7 @@ def draw_no_doubles(context, game_id):
 		elif p.role == "Psychopath": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_psychopath())
 		elif p.role == "Amor": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_amor())
 		elif p.role == "Berserker": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_berserker())
+		elif p.role == "Superschurke": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_superschurke())
 	random.shuffle(game_dict[game_id]["player_list"])
 
 def game_over(context, game_id):
@@ -529,8 +530,13 @@ def activate_terrorwolf(context, p, game_id):
 def activate_bomb(context, game_id):
 	global game_dict
 	player = get_player_by_id(game_dict[game_id]["bomb_carrier"], game_id)
+	game_dict[game_id]["bomb_carrier"] = "0"
+	if not player.alive: return
 	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text="Die herzförmige Bombe explodiert!")
 	player.kill(context, game_id)
+	death_message = markup_character + player.name + lore.bomb_death_message() + markup_character
+	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=death_message, parse_mode=ParseMode.MARKDOWN_V2)
+	bot_send_message(context=context, chat_id=player.user_id, text=death_message, parse_mode=ParseMode.MARKDOWN_V2)
 	save_game_dict()
 
 def wake_seherin(context, game_id):
@@ -573,7 +579,7 @@ def print_bomb(context, game_id):
 def pass_bomb(context, game_id):
 	global game_dict
 	if str(game_dict[game_id]["bomb_carrier"]) == "0": return
-	player_list = game_dict[game_id][player_list]
+	player_list = game_dict[game_id]["player_list"]
 	index = 0
 	for i, player in enumerate(player_list):
 		if str(player.user_id) == str(game_dict[game_id]["bomb_carrier"]):
@@ -584,7 +590,7 @@ def pass_bomb(context, game_id):
 			index = 0
 		else:
 			index += 1
-		if player_list[game_id].alive: break
+		if player_list[index].alive: break
 	game_dict[game_id]["bomb_carrier"] = player_list[index].user_id
 	save_game_dict()
 	print_bomb(context, game_id)
@@ -755,6 +761,7 @@ def start_game(context, game_id):
 	game_dict[game_id]["game_over_check"] = False
 	draw_no_doubles(context, game_id)
 	save_game_dict()
+	print_order(context, game_id)
 	while not game_over(context, game_id) and not game_dict[game_id]["game_over_check"]:
 		game_dict[game_id]["werwolf_target_list"] = []
 		game_dict[game_id]["vote_list"] = []
@@ -771,7 +778,6 @@ def start_game(context, game_id):
 		game_dict[game_id]["vote_message_id"] = 0
 		game_dict[game_id]["amor_target_list"] = []
 		save_game_dict()
-
 		text_nightfall = lore.nightfall()
 		bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=text_nightfall)
 		for p in get_alive_player_list(game_id):
@@ -786,12 +792,12 @@ def start_game(context, game_id):
 		wake_werwolf(context, game_id)
 		wake_hexe(context, game_id)
 		wake_psychopath(context, game_id)
-		do_killing(context, game_id)
-		print_alive(context, game_id)
 		#night is over
 		if game_dict[game_id]["bomb_new"]:
 			print_bomb(context, game_id)
 			game_dict[game_id]["bomb_new"] = False
+		do_killing(context, game_id)
+		print_alive(context, game_id)
 		if not game_over(context, game_id):
 			if len(get_alive_player_list(game_id))>3:
 				game_dict[game_id]["game_state"] = "anklage"
@@ -803,6 +809,7 @@ def start_game(context, game_id):
 			game_dict[game_id]["game_state"] = "vote"
 			save_game_dict()
 			vote(context, game_id)
+			pass_bomb(context, game_id)
 			game_dict[game_id]["round_number"] += 1
 
 def remove_buttons_from_message(update, context):

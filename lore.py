@@ -279,6 +279,19 @@ def werwolf_response_options(option, name):
 	elif option == "10": return name + " in die Lasagne zu mischen."
 	else: return name + " mit einer Torte zu verwechseln."
 
+def bomb_death_message():
+	desc_no = random.randrange(1,11)
+	if desc_no == 1: return " wurde von der Bombe erwischt\\."
+	elif desc_no == 2: return " besteht aus mehr Einzelteilen als eine Lego Sternsterörer\\."
+	elif desc_no == 3: return " verteilt sich im ganzen Dorf\\."
+	elif desc_no == 4: return " garniert den Dorfplatz mit einer Ketchupähnlichen Substanz\\."
+	elif desc_no == 5: return " hat es im wahrsten Sinne des Wortes verrissen\\."
+	elif desc_no == 6: return " wurde pulverisiert\\."
+	elif desc_no == 7: return " war ungesund nahe an einer größeren Menge explodierendem Schwarzpulver\\."
+	elif desc_no == 8: return " wurde von einer Nagelbombe getroffen\\."
+	elif desc_no == 9: return " überlebte die Explosion einer schnutzigen Bombe in seinem Rucksack nicht\\."
+	else: return " kann den Diskussionen des Dorfes nur noch in Stücken folgen\\."
+
 def death_message(gender):
 	desc_no = random.randrange(1,16)
 	if desc_no == 1: return " ist diese Nacht leider gestorben\\."
