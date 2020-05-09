@@ -12,9 +12,9 @@ Wolfshund
 Harter Bursche
 Terrorwolf
 Berserker
+Superschurke
 
 Testing:
-Superschurke
 
 WIP:
 None
