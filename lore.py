@@ -110,6 +110,15 @@ def description_amor():
 	elif desc_no == 5: return "Du bist Amor, welcher dafür sorgt, dass sich zwei Spieler unsterblich ineinander verlieben. Sollte einer von beiden zu Tode kommen, so nimmt sich der andere aus Trauer das Leben. Das Liebespaar kann gemeinsam gewinnen, auch wenn sie von unterschiedlichen Teams sind."
 	else: return "Du bist Amor und machst dich in der ersten Nacht auf die Jagd nach einem Liebspaar, welches du verkuppelst. Dieses verliebt sich sofort und will sich nie wieder trennen. Sollte einer von beiden sterben, so bringt der Kummer des Anderen auch ihn ins Grab."
 
+def description_superschurke():
+	desc_no = random.randrange(1,7)
+	if desc_no == 1: return "Du bist der Superschurke! Der Superschurke gibt in der ersten Nacht einem Spieler seine herzförmige Bombe. Die Bombe wird am Ende jedes Tages im Uhrzeigersinn weitergegeben. Wenn der Superschurke stirbt, explodiert die Bombe und töten den Spieler, vor dem sie gerade liegt."
+	elif desc_no == 2: return "Du bist gewitzt. Du bist brutal. Du bist der Superschurke. Als dieser verdonnerst du in der ersten Nacht mittels einer \"Halt mal kurz\" einen Mitspieler zum Halten einer herzförmigen Bome. Diese wird am Ende jedes Tages im Kreis weitergegeben. Solltest du wider Erwartens zu Tode kommen, so explodiert auch deine herzförmige Bombe und tötet den Spieler, vor dem sie liegt." 
+	elif desc_no == 3: return "Dein Charakter ist der Superschurke. Du versteckst in der ersten Nacht eine herzförmige Bombe bei einem Spieler. Dieser findet sie am Ende des Tages und versteckt diese beim nächsten Spieler im Uhrzeigersinn. Wenn du stirbst, detoniert auch die Bombe und sorgt für einen weiteren Toten."
+	elif desc_no == 4: return "Bei deiner Rolle handelt es sich um den Superschurken. Dieser kann einem Mitspieler in der ersten nacht eine herzförmige Bombe unterjubeln. Diese wird wie eine heiße Kartoffel am Ende jedes Tages im Uhrzeigersinn weitergeworfen. Wenn dein Herz nicht mehr schlägt, tickt die Bombe ein letztes Mal und tötet den Spieler, der diese momentan hält."
+	elif desc_no == 5: return "Dein Charakter ist der Superschurke. Dieser zwingt in der ersten Nacht jemanden dazu, seine herzförmige Bombe zu halten. Dieser ist nicht sonderlich davon begeistert und gibt sie am Ende des Tages im Uhrzeigersinn weiter. Soltest du sterben, so explodiert die Bombe und töten den Halter."
+	else: return "Du bist der Superschurke und ein riesiger Fan von Russischem Roulette. Daher bastelst du dir eine herzförmige Bombe, welche du in der ersten Nacht einen Mitspieler gibst. Am Ende jedes Tages wird die Bombe im Uhrzeigersinn weitergegeben. Im Falle deines Ablebens detoniert die Bombe und sorgt dafür, dass der Halter danach aus mehr Einzelteilen besteht als eine Glaswand, die soeben von einem Panzer durchbrochen wurde."
+
 def description_psychopath():
 	desc_no = random.randrange(1,7)
 	if desc_no == 1: return "Du bist der Psychopath. Der Psychopath erwacht als letzter Spieler. Wenn in der Nacht niemand gestorben wäre, muss er einen Spieler töten."
@@ -180,7 +189,7 @@ def inlineKey_psychopath_options(name):
 	elif desc_no == 6: return (6, name + " ein Messer in die Brust rammen")
 	elif desc_no == 7: return (7, name + " in eine Sprengfalle locken")
 	elif desc_no == 8: return (8, name + " mit einem Löffel erschlagen")
-	else: return (10, name + " in den Backofen stecken")
+	else: return (9, name + " in den Backofen stecken")
 
 def psyhopath_response_options(option, name):
 	if option == "0": return "Du hast " + name + " stranguliert."
@@ -193,6 +202,31 @@ def psyhopath_response_options(option, name):
 	elif option == "7": return "Du hast " + name + " in eine Sprengfalle gelockt."
 	elif option == "8": return "Du hast " + name + " mit einem Löffel erschlagen."
 	else: return "Der Psychopath hat " + name + " in den Backofen gesteckt."
+
+def superschurke_options():
+	desc_no = random.randrange(0,10)
+	if desc_no == 0: return (0, "Wem willst du die herzförmige Bombe geben?")
+	elif desc_no == 1: return (1, "Wem möchtest du mit einer herzförmigen Bombe deine Liebe vorspielen")
+	elif desc_no == 2: return (2, "Wem willst du mit der herzförmigen Bombe zu einem \"Halt mal kurz\" verdonnern?")
+	elif desc_no == 3: return (3, "Wer muss die herzförmige Bombe zu Beginn halten?")
+	elif desc_no == 4: return (4, "Wer darf als erstes bei deiner Version von russischem Roulette die Bombe halten?")
+	elif desc_no == 5: return (5, "Wer bekommt die heiße Kartoffel?")
+	elif desc_no == 6: return (6, "Wer soll der erste stolze Besitzer der herzförmigen Bombe werden?")
+	elif desc_no == 7: return (7, "Wem willst du die herzförmige Bombe unterjubeln?")
+	elif desc_no == 8: return (8, "Wessen Kissen tauschst du diese Nacht gegen die herzförmige Bombe aus?")
+	else: return (9, "Wer bekommt die Ehre, Halter der herzförmigen Bombe zu werden?")
+
+def superschurke_response(option, name):
+	if option == "0": return "Du hast " + name + " die Bombe gegeben."
+	elif option == "1": return "Der Superschurke hat " + name + " seine Liebe mit einer herzförmigen Bombe vorgespielt."
+	elif option == "2": return "Du hast " + name + " mit einem \"Halt mal kurz\" erwischt."
+	elif option == "3": return "Der Superschurke hat " + name + " die Bombe gegeben."
+	elif option == "4": return "Der Superschurke hat " + name + " als ersten Mitspieler von russischem Roulette ausgesucht."
+	elif option == "5": return "Der Superschurke hat " + name + " die heiße Kartoffel gegeben."
+	elif option == "6": return "Der Superschurke hat " + name + " zum stolzen Besitzer der herzförmigen Bombe ernannt."
+	elif option == "7": return "Du hast " + name + " die Bombe untergejubelt."
+	elif option == "8": return "Du hast " + name + "s Kissen mit der herzförmigen Bombe ausgetauscht."
+	else: return "Der Superschurke hat " + name + " die Bombe in die Hand gedrückt."
 
 def amor_question():
 	desc_no = random.randrange(0,8)

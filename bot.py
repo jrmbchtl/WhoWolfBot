@@ -50,17 +50,19 @@ game_library = {"single_player":False,
 				"first_patt" : True,
 				"werwolf_text" : {},
 				"anklage_message_id": 0,
-				"anklage_message_id_for_removal": 0, # to save
+				"anklage_message_id_for_removal": 0,
 				"anklage_text" : {},
 				"anklage_remember_text" : "",
 				"vote_message_id": 0,
 				"vote_text" : {},
 				"amor_target_list" : [],
 				"remember_message_id": 0,
-				"remember_message_chat" : ""}
+				"remember_message_chat" : "",
+				"bomb_carrier": "0",
+				"bomb_new": False}
 
 werwolf_group = ["Werwolf", "Terrorwolf"]
-dorf_group = ["Dorfbewohner", "Dorfbewohnerin", "Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Psychopath", "Amor", "Berserker"]
+dorf_group = ["Dorfbewohner", "Dorfbewohnerin", "Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Psychopath", "Amor", "Berserker", "Superschurke"]
 female_roles = ["Dorfbewohnerin", "Seherin", "Hexe", "Rotkäppchen"]
 
 markup_character = "`"
@@ -118,6 +120,8 @@ class Spieler():
 			activate_jaeger(context, self, game_id)
 		elif self.role == "Terrorwolf":
 			activate_terrorwolf(context, self, game_id)
+		if self.role == "Superschurke":
+			activate_bomb(context, game_id)
 		if self.verliebt:
 			for player in get_alive_player_list(game_id):
 				if player.verliebt:
@@ -229,6 +233,8 @@ def load_game_dict():
 		game_dict[game_id]["amor_target_list"] = tmp_game_dict[game_id]["amor_target_list"]
 		game_dict[game_id]["remember_message_id"] = tmp_game_dict[game_id]["remember_message_id"]
 		game_dict[game_id]["remember_message_chat"] = tmp_game_dict[game_id]["remember_message_chat"]
+		game_dict[game_id]["bomb_carrier"] = tmp_game_dict[game_id]["bomb_carrier"]
+		game_dict[game_id]["bomb_new"] = tmp_game_dict[game_id]["bomb_new"]
 
 def inlineKey_menu(game_id):
 	keyboard = [[InlineKeyboardButton("Mitspielen/Aussteigen", callback_data='menu_1_'+str(game_id))],
@@ -334,6 +340,12 @@ def inlineKey_amor(game_id, first):
 			else: keyboard.append([InlineKeyboardButton(player.name, callback_data="amor2_" + str(player.user_id) + "_" + str(game_id))])
 	return InlineKeyboardMarkup(keyboard)
 
+def inlineKey_superschurke(game_id, option):
+	keyboard = []
+	for player in get_alive_player_list(game_id):
+		keyboard.append([InlineKeyboardButton(player.name, callback_data="superschurke_" + str(player.user_id) + "_" + str(option) + "_" + str(game_id))])
+	return InlineKeyboardMarkup(keyboard)
+
 def draw_no_doubles(context, game_id):
 	global game_dict
 	random.shuffle(game_dict[game_id]["player_list"])
@@ -367,8 +379,10 @@ def draw_no_doubles(context, game_id):
 		dorf_role_list.append("Amor")
 	for i in range(0,12):
 		dorf_role_list.append("Berserker")
+	for i in range(0,12):
+		dorf_role_list.append("Superschurke")
 
-	unique = ["Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Wolfshund", "Terrorwolf", "Psychopath", "Amor", "Berserker"]
+	unique = ["Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Wolfshund", "Terrorwolf", "Psychopath", "Amor", "Berserker", "Superschurke"]
 
 	for i,p in enumerate(game_dict[game_id]["player_list"]):
 		group_mod = random.random()*0.2+0.9
@@ -512,6 +526,13 @@ def activate_terrorwolf(context, p, game_id):
 		time.sleep(1)
 	save_game_dict()
 
+def activate_bomb(context, game_id):
+	global game_dict
+	player = get_player_by_id(game_dict[game_id]["bomb_carrier"], game_id)
+	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text="Die herzförmige Bombe explodiert!")
+	player.kill(context, game_id)
+	save_game_dict()
+
 def wake_seherin(context, game_id):
 	global game_dict
 	if get_player_by_role("Seherin", game_id) == None: return
@@ -543,6 +564,41 @@ def wake_hexe(context, game_id):
 		bot_send_message(context=context, chat_id=get_player_by_role("Hexe", game_id).user_id, text="Willst du noch jemanden töten?", reply_markup=inlineKey_hexe_death(game_id))
 		while game_dict[game_id]["game_state"] == "hexe_death":
 				time.sleep(1)
+	save_game_dict()
+
+def print_bomb(context, game_id):
+	name = get_player_by_id(game_dict[game_id]["bomb_carrier"], game_id).name
+	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=name + " ist der Halter der Bombe!")
+
+def pass_bomb(context, game_id):
+	global game_dict
+	if str(game_dict[game_id]["bomb_carrier"]) == "0": return
+	player_list = game_dict[game_id][player_list]
+	index = 0
+	for i, player in enumerate(player_list):
+		if str(player.user_id) == str(game_dict[game_id]["bomb_carrier"]):
+			index = i
+			break
+	while True:
+		if index +1 == len(player_list):
+			index = 0
+		else:
+			index += 1
+		if player_list[game_id].alive: break
+	game_dict[game_id]["bomb_carrier"] = player_list[index].user_id
+	save_game_dict()
+	print_bomb(context, game_id)
+
+def wake_superschurke(context, game_id):
+	global game_dict
+	if get_player_by_role("Superschurke", game_id) == None: return
+	if str(game_dict[game_id]["bomb_carrier"]) != "0": return
+	game_dict[game_id]["game_state"] = "superschurke"
+	save_game_dict()
+	option, text = lore.superschurke_options()
+	bot_send_message(context=context, chat_id=get_player_by_role("Superschurke", game_id).user_id, text=text, reply_markup=inlineKey_superschurke(game_id, option))
+	while game_dict[game_id]["game_state"] == "superschurke":
+		time.sleep(1)
 	save_game_dict()
 
 def wake_wolfshund(context, game_id):
@@ -612,6 +668,12 @@ def print_alive(context, game_id):
 		message = "Es lebt noch: "
 	for p in get_alive_player_list(game_id):
 		message += p.name + ", "
+	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=message[0:-2])
+
+def print_order(context, game_id):
+	message = "Die Sitzreihenfolge ist:\n"
+	for player in get_alive_player_list(game_id):
+		message += player.name + ", "
 	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=message[0:-2])
 
 def prosecute(context, game_id):
@@ -718,6 +780,7 @@ def start_game(context, game_id):
 		if game_dict[game_id]["round_number"] == 0:
 			wake_amor(context, game_id)
 			wake_wolfshund(context, game_id)
+		wake_superschurke(context, game_id)
 		wake_seherin(context, game_id)
 		wake_berserker(context, game_id)
 		wake_werwolf(context, game_id)
@@ -726,6 +789,9 @@ def start_game(context, game_id):
 		do_killing(context, game_id)
 		print_alive(context, game_id)
 		#night is over
+		if game_dict[game_id]["bomb_new"]:
+			print_bomb(context, game_id)
+			game_dict[game_id]["bomb_new"] = False
 		if not game_over(context, game_id):
 			if len(get_alive_player_list(game_id))>3:
 				game_dict[game_id]["game_state"] = "anklage"
@@ -1072,6 +1138,19 @@ def button_handler_berserker(update, context):
 	remove_buttons_from_message(update, context)
 	game_dict[game_id]["game_state"] = "night"
 
+def button_handler_superschurke(update, context): #Todo
+	global game_dict
+	query = update.callback_query
+	game_id = query.data.split("_")[3]
+	superschurke_option = query.data.split("_")[2]
+	if not game_dict[game_id]["game_state"] == "superschurke":	return
+	target = query.data.split("_")[1]
+	game_dict[game_id]["bomb_carrier"] = target
+	game_dict[game_id]["bomb_new"] = True
+	bot_send_message(context=context, chat_id=get_player_by_role("Superschurke", game_id).user_id, text=lore.superschurke_response(superschurke_option, get_player_by_id(target, game_id).name))
+	remove_buttons_from_message(update, context)
+	game_dict[game_id]["game_state"] = "night"
+
 def button_handler_amor1(update, context):
 	global game_dict
 	query = update.callback_query
@@ -1126,8 +1205,10 @@ def button_handler(update, context):
 		threading.Thread(target=button_handler_amor1, args=(update,context,)).start()
 	elif update.callback_query.data.startswith("amor2_"):
 		threading.Thread(target=button_handler_amor2, args=(update,context,)).start()
-	elif update.callback_query.data.startswith("berserker"):
+	elif update.callback_query.data.startswith("berserker_"):
 		threading.Thread(target=button_handler_berserker, args=(update,context,)).start()
+	elif update.callback_query.data.startswith("superschurke_"):
+		threading.Thread(target=button_handler_superschurke, args=(update,context,)).start()
 
 def new(update, context):
 	global game_dict
@@ -1149,7 +1230,6 @@ def new(update, context):
 
 def start(update, context):
 	bot_send_message(context=context, chat_id=update.message.chat_id, text="Herzlich Wilkommen beim WerWolfBot\\!", parse_mode=ParseMode.MARKDOWN_V2)
-
 
 def main():
 	if os.path.isfile('game_dict.json'):

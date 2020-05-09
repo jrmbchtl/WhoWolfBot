@@ -14,16 +14,15 @@ Terrorwolf
 Berserker
 
 Testing:
-None
+Superschurke
 
 WIP:
 None
 
 Planned:
-Superschurke (not draftable)
 Terrorist
 Kerkermeister
+Parasit
 Weisser Wolf
 Flittchen
-Parasit
 Bürgermeister
