@@ -164,7 +164,7 @@ def terrorist_announce(option):
 	elif option == "3": return "Der Terrorist ist in die Luft geflogen."
 	elif option == "4": return "BOOOOOOM!"
 	elif option == "5": return "Der Terrorist hat ein paar Leben beendet!"
-	elif option == "6": return "Troiple Kill!"
+	elif option == "6": return "Triple Kill!"
 	else: return "Let's fetz!"
 
 def berserker_question(extra_life):
