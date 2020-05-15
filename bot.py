@@ -389,7 +389,7 @@ def draw_no_doubles(context, game_id):
 		dorf_role_list.append("Berserker")
 	for i in range(0,12):
 		dorf_role_list.append("Superschurke")
-	for i in range(0,1200):
+	for i in range(0,12):
 		dorf_role_list.append("Terrorist")
 
 	unique = ["Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Wolfshund", "Terrorwolf", "Psychopath", "Amor", "Berserker", "Superschurke", "Terrorist"]
@@ -542,9 +542,12 @@ def activate_terrorwolf(context, p, game_id):
 
 def activate_bomb(context, game_id):
 	global game_dict
-	player = get_player_by_id(game_dict[game_id]["bomb_carrier"], game_id)
+	for p in game_dict[game_id]["player_list"]:
+		if str(p.user_id) == str(game_dict[game_id]["bomb_carrier"]):
+			player = p
+	#player = get_player_by_id(game_dict[game_id]["bomb_carrier"], game_id)
 	game_dict[game_id]["bomb_carrier"] = "0"
-	if not player.alive: return
+	#if not player.alive: return
 	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text="Die herzförmige Bombe explodiert!")
 	player.kill(context, game_id)
 	death_message = markup_character + player.name + lore.bomb_death_message() + markup_character
