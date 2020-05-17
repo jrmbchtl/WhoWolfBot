@@ -66,8 +66,16 @@ werwolf_group = ["Werwolf", "Terrorwolf"]
 dorf_group = ["Dorfbewohner", "Dorfbewohnerin", "Jäger", "Seherin", "Hexe", "Rotkäppchen", "HarterBursche", "Psychopath", "Amor", "Berserker", "Superschurke", "Terrorist"]
 female_roles = ["Dorfbewohnerin", "Seherin", "Hexe", "Rotkäppchen"]
 
-markup_character = "`"
 markup_character = "__"
+illegal_chars = ['.', '!', '#', '(', ')', '-', '=', '+', ']', '[', '{', '}', '>', '<', '|', '_', '*', '`', '~']
+
+def highlight_message(text):
+	r_text = markup_character
+	for t in text:
+		if t in illegal_chars: r_text += "\\" + t
+		else: r_text += t
+	r_text += markup_character
+	return r_text
 
 def bot_send_message(context, chat_id, text, reply_markup=InlineKeyboardMarkup([]), parse_mode=None):
 	try:
@@ -81,7 +89,17 @@ def bot_send_message(context, chat_id, text, reply_markup=InlineKeyboardMarkup([
 	except TimedOut:
 		time.sleep(15)
 		bot_send_message(context, chat_id, text, parse_mode)
-	
+
+def bot_send_photo(context, chat_id, caption, photo):
+	try:
+		return context.bot.send_photo(chat_id=chat_id, caption=caption, photo=photo)
+	except RetryAfter:
+		time.sleep(15)
+		bot_send_photo(context, chat_id, caption, photo)
+	except TimedOut:
+		time.sleep(15)
+		bot_send_photo(context, chat_id, caption, photo)
+
 def bot_edit_message(context, chat_id, message_id, text, reply_markup=InlineKeyboardMarkup([]), parse_mode=None):
 	try:
 		if parse_mode == None:
@@ -126,7 +144,7 @@ class Spieler():
 		if self.verliebt:
 			for player in get_alive_player_list(game_id):
 				if player.verliebt:
-					message = markup_character + player.name + lore.get_loved_one_killed() + markup_character
+					message = highlight_message(player.name + lore.get_loved_one_killed())
 					bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=message, parse_mode=ParseMode.MARKDOWN_V2)
 					bot_send_message(context=context, chat_id=player.user_id, text=message, parse_mode=ParseMode.MARKDOWN_V2)
 					player.kill(context, game_id)
@@ -413,21 +431,21 @@ def draw_no_doubles(context, game_id):
 				while p.role in dorf_role_list:
 					dorf_role_list.remove(p.role)
 
-		if p.role == "Werwolf": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_werwolf())
+		if p.role == "Werwolf": bot_send_photo(context=context, chat_id=p.user_id, caption=lore.description_werwolf(), photo="https://www.werwolf-wien.at/cards/images/werwolf.jpg")
 		elif p.role == "Wolfshund": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_wolfshund())
-		elif p.role == "Terrorwolf": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_terrorwolf())
-		elif p.role == "Dorfbewohner": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_dorfbewohner())
-		elif p.role == "Dorfbewohnerin": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_dorfbewohnerin())
-		elif p.role == "Hexe": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_hexe())
-		elif p.role == "Seherin": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_seherin())
-		elif p.role == "Jäger": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_jaeger())
-		elif p.role == "Rotkäppchen": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_rotkaeppchen())
-		elif p.role == "HarterBursche": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_harter_bursche())
-		elif p.role == "Psychopath": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_psychopath())
-		elif p.role == "Amor": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_amor())
-		elif p.role == "Berserker": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_berserker())
-		elif p.role == "Superschurke": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_superschurke())
-		elif p.role == "Terrorist": bot_send_message(context=context, chat_id=p.user_id, text=lore.description_terrorist())
+		elif p.role == "Terrorwolf": bot_send_photo(context=context, chat_id=p.user_id, caption=lore.description_terrorwolf(), photo="https://www.werwolf-wien.at/cards/images/terrorwolf.jpg")
+		elif p.role == "Dorfbewohner": bot_send_photo(context=context, chat_id=p.user_id, caption=lore.description_dorfbewohner(), photo="https://www.werwolf-wien.at/cards/images/dorfbewohner.jpg")
+		elif p.role == "Dorfbewohnerin": bot_send_photo(context=context, chat_id=p.user_id, caption=lore.description_dorfbewohnerin(), photo="https://www.werwolf-wien.at/cards/images/dorfbewohnerin.jpg")
+		elif p.role == "Hexe": bot_send_photo(context=context, chat_id=p.user_id, caption=lore.description_hexe(), photo="https://www.werwolf-wien.at/cards/images/hexe.jpg")
+		elif p.role == "Seherin": bot_send_photo(context=context, chat_id=p.user_id, caption=lore.description_seherin(), photo="https://www.werwolf-wien.at/cards/images/seherin.jpg")
+		elif p.role == "Jäger": bot_send_photo(context=context, chat_id=p.user_id, caption=lore.description_jaeger(), photo="https://www.werwolf-wien.at/cards/images/jaeger.jpg")
+		elif p.role == "Rotkäppchen": bot_send_photo(context=context, chat_id=p.user_id, caption=lore.description_rotkaeppchen(), photo="https://www.werwolf-wien.at/cards/images/rotkaeppchen.jpg")
+		elif p.role == "HarterBursche": bot_send_photo(context=context, chat_id=p.user_id, caption=lore.description_harter_bursche(), photo="https://www.werwolf-wien.at/cards/images/harterbursche.jpg")
+		elif p.role == "Psychopath": bot_send_photo(context=context, chat_id=p.user_id, caption=lore.description_psychopath(), photo="https://www.werwolf-wien.at/cards/images/psycho.jpg")
+		elif p.role == "Amor": bot_send_photo(context=context, chat_id=p.user_id, caption=lore.description_amor(), photo="https://www.werwolf-wien.at/cards/images/amor.jpg")
+		elif p.role == "Berserker": bot_send_photo(context=context, chat_id=p.user_id, caption=lore.description_berserker(), photo="https://www.werwolf-wien.at/cards/images/berserker.jpg")
+		elif p.role == "Superschurke": bot_send_photo(context=context, chat_id=p.user_id, caption=lore.description_superschurke(), photo="https://www.werwolf-wien.at/cards/images/superschurke.jpg")
+		elif p.role == "Terrorist": bot_send_photo(context=context, chat_id=p.user_id, caption=lore.description_terrorist(), photo="https://www.werwolf-wien.at/cards/images/terrorist.jpg")
 	random.shuffle(game_dict[game_id]["player_list"])
 
 def game_over(context, game_id):
@@ -437,9 +455,9 @@ def game_over(context, game_id):
 			game_dict[game_id]["admin_id"] = 0
 			game_dict[game_id]["running"] = False
 			all_dead_message = lore.all_dead().upper()
-			bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=markup_character + all_dead_message + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
+			bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=highlight_message(all_dead_message), parse_mode=ParseMode.MARKDOWN_V2)
 			for player in game_dict[game_id]["player_list"]:
-				bot_send_message(context=context, chat_id=player.user_id, text=markup_character + all_dead_message + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
+				bot_send_message(context=context, chat_id=player.user_id, text=highlight_message(all_dead_message), parse_mode=ParseMode.MARKDOWN_V2)
 			game_dict[game_id]["game_over_check"] = True
 			game_dict[game_id]["state"] = None
 			game_dict[game_id]["player_list"] = []
@@ -457,9 +475,9 @@ def game_over(context, game_id):
 				game_dict[game_id]["admin_id"] = 0
 				game_dict[game_id]["running"] = False
 				if group == werwolf_group: 
-					win_message = markup_character + lore.werwoelfe_win().upper() + markup_character
+					win_message = highlight_message(lore.werwoelfe_win().upper())
 				else: 
-					win_message = markup_character + lore.dorf_win().upper() + markup_character
+					win_message = highlight_message(lore.dorf_win().upper())
 				bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
 				for player in game_dict[game_id]["player_list"]:
 					bot_send_message(context=context, chat_id=player.user_id, text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
@@ -474,7 +492,7 @@ def game_over(context, game_id):
 				if not p.verliebt:
 					all_in_love = False
 			if all_in_love: 
-				win_message = markup_character + lore.love_win().upper() + markup_character
+				win_message = highlight_message(lore.love_win().upper())
 				bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
 				for player in game_dict[game_id]["player_list"]:
 					bot_send_message(context=context, chat_id=player.user_id, text=win_message, parse_mode=ParseMode.MARKDOWN_V2)
@@ -542,15 +560,12 @@ def activate_terrorwolf(context, p, game_id):
 
 def activate_bomb(context, game_id):
 	global game_dict
-	for p in game_dict[game_id]["player_list"]:
-		if str(p.user_id) == str(game_dict[game_id]["bomb_carrier"]):
-			player = p
-	#player = get_player_by_id(game_dict[game_id]["bomb_carrier"], game_id)
+	player = get_player_by_id(game_dict[game_id]["bomb_carrier"], game_id)
 	game_dict[game_id]["bomb_carrier"] = "0"
-	#if not player.alive: return
+	if player == None: return
 	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text="Die herzförmige Bombe explodiert!")
 	player.kill(context, game_id)
-	death_message = markup_character + player.name + lore.bomb_death_message() + markup_character
+	death_message = highlight_message(player.name + lore.bomb_death_message())
 	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=death_message, parse_mode=ParseMode.MARKDOWN_V2)
 	bot_send_message(context=context, chat_id=player.user_id, text=death_message, parse_mode=ParseMode.MARKDOWN_V2)
 	save_game_dict()
@@ -689,8 +704,8 @@ def do_killing(context, game_id):
 	for p in get_alive_player_list(game_id):
 		if p.marked_by_werwolf or p.marked_by_witch or p.marked_by_psychopath or p.marked_by_berserker:
 			death_message = lore.death_message(p.get_gender())
-			bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=markup_character + p.name + death_message + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
-			bot_send_message(context=context, chat_id=p.user_id, text=markup_character + p.name + death_message + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
+			bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=highlight_message(p.name + death_message), parse_mode=ParseMode.MARKDOWN_V2)
+			bot_send_message(context=context, chat_id=p.user_id, text=highlight_message(p.name + death_message), parse_mode=ParseMode.MARKDOWN_V2)
 			p.kill(context, game_id)
 			p.marked_by_werwolf = False
 			p.marked_by_witch = False
@@ -699,6 +714,7 @@ def do_killing(context, game_id):
 	save_game_dict()
 
 def print_alive(context, game_id):
+	if len(get_alive_player_list(game_id)) == 0: return
 	message = "Es leben noch: "
 	if len(get_alive_player_list(game_id)) == 1:
 		message = "Es lebt noch: "
@@ -746,7 +762,7 @@ def vote(context, game_id):
 	if len(kill_list) == 1:
 		kill_player = get_player_by_id(kill_list[0], game_id)
 		sentence = lore.vote_judgement(game_dict[game_id]["vote_options"][str(kill_player.user_id)])
-		bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=markup_character + kill_player.name + sentence + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
+		bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=highlight_message(kill_player.name + sentence), parse_mode=ParseMode.MARKDOWN_V2)
 		kill_player.kill(context, game_id)
 	else:
 		if game_dict[game_id]["first_patt"]:
@@ -918,12 +934,12 @@ def handler_send_message(update, context, game_id, lore_text, user_id, text_dict
 	for text in game_dict[game_id][text_dict]:
 		new_text += game_dict[game_id][text_dict][text] + "\n"
 	if saved_message_id == "werwolf_message_id":
-		for player in get_alive_player_list(game_id):
-			if str(player.user_id) == str(user_id):
+			for player in get_alive_player_list(game_id):
+			if player.role in werwolf_group:
 				if player.werwolf_message_id == 0:
-					player.werwolf_message_id = bot_send_message(context=context, chat_id=user_id, text=new_text).message_id
+					player.werwolf_message_id = bot_send_message(context=context, chat_id=player.user_id, text=new_text).message_id
 				else:
-					bot_edit_message(context=context, chat_id=user_id, message_id=player.werwolf_message_id, text=new_text)
+					bot_edit_message(context=context, chat_id=player.user_id, message_id=player.werwolf_message_id, text=new_text)
 	else:
 		if game_dict[game_id][saved_message_id] == 0:
 			game_dict[game_id][saved_message_id] = bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=new_text).message_id
@@ -941,9 +957,9 @@ def button_handler_werwolf(update, context):
 		if p.role in werwolf_group:
 			werwolf_list.append(p)
 	if query.data.startswith("werwolf_-1"):
-		for w in werwolf_list:
-			lore_text = query.from_user.first_name + " schlägt vor, " + lore.werwolf_response_options(killing_option, "niemanden")
-			handler_send_message(update, context, game_id, lore_text, w.user_id, "werwolf_text", "werwolf_message_id")
+		#for w in werwolf_list:
+		lore_text = query.from_user.first_name + " schlägt vor, " + lore.werwolf_response_options(killing_option, "niemanden")
+		handler_send_message(update, context, game_id, lore_text, query.from_user.id, "werwolf_text", "werwolf_message_id")
 		player_in_list = False
 		for t in game_dict[game_id]["werwolf_target_list"]:
 			if t.wolf_id == query.from_user.id:
@@ -961,9 +977,9 @@ def button_handler_werwolf(update, context):
 		if not player_in_list:
 			game_dict[game_id]["werwolf_target_list"].append(Target(query.from_user.id, target_id))
 		target_name = get_player_by_id(target_id, game_id).name
-		for w in werwolf_list:
-			lore_text = query.from_user.first_name + " schlägt vor, " + lore.werwolf_response_options(killing_option, target_name)
-			handler_send_message(update, context, game_id, lore_text, w.user_id, "werwolf_text", "werwolf_message_id")
+		#for w in werwolf_list:
+		lore_text = query.from_user.first_name + " schlägt vor, " + lore.werwolf_response_options(killing_option, target_name)
+		handler_send_message(update, context, game_id, lore_text, query.from_user.id, "werwolf_text", "werwolf_message_id")
 	if len(werwolf_list) == len(game_dict[game_id]["werwolf_target_list"]) and len(werwolf_list) != 0:
 		same = True
 		first_target = game_dict[game_id]["werwolf_target_list"][0]
@@ -1047,8 +1063,8 @@ def button_handler_terrorwolf(update, context):
 	kill_id = query.data.split("_")[1]
 	kill_player = get_player_by_id(kill_id, game_id)
 
-	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=markup_character + kill_player.name + lore.terrorwolf_kill(kill_option, kill_player.get_gender()) + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
-	bot_send_message(context=context, chat_id=kill_id, text=markup_character + kill_player.name + lore.terrorwolf_kill(kill_option, kill_player.get_gender()) + markup_character, parse_mode=ParseMode.MARKDOWN_V2) 
+	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=highlight_message(kill_player.name + lore.terrorwolf_kill(kill_option, kill_player.get_gender())), parse_mode=ParseMode.MARKDOWN_V2)
+	bot_send_message(context=context, chat_id=kill_id, text=highlight_message(kill_player.name + lore.terrorwolf_kill(kill_option, kill_player.get_gender())), parse_mode=ParseMode.MARKDOWN_V2) 
 	
 	kill_player.kill(context, game_id)
 
@@ -1065,8 +1081,8 @@ def button_handler_jaeger(update, context):
 	kill_id = query.data.split("_")[1]
 	kill_player = get_player_by_id(kill_id, game_id)
 
-	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=markup_character + kill_player.name + lore.jaeger_shot(kill_option) + markup_character, parse_mode=ParseMode.MARKDOWN_V2)
-	bot_send_message(context=context, chat_id=kill_id, text=markup_character + kill_player.name + lore.jaeger_shot(kill_option) + markup_character, parse_mode=ParseMode.MARKDOWN_V2) 
+	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=highlight_message(kill_player.name + lore.jaeger_shot(kill_option)), parse_mode=ParseMode.MARKDOWN_V2)
+	bot_send_message(context=context, chat_id=kill_id, text=highlight_message(kill_player.name + lore.jaeger_shot(kill_option)), parse_mode=ParseMode.MARKDOWN_V2) 
 	
 	kill_player.kill(context, game_id)
 
@@ -1214,7 +1230,7 @@ def button_handler_terrorist(update, context):
 		player_2 = player_list[index + 1]
 	kill_list = [player_1, player_2, terrorist]
 	random.shuffle(kill_list)
-	message = markup_character + kill_list[0].name + ", " + kill_list[1].name + " und " + kill_list[2].name + lore.terrorist_death_message() + markup_character
+	message = highlight_message(kill_list[0].name + ", " + kill_list[1].name + " und " + kill_list[2].name + lore.terrorist_death_message())
 	bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=message, parse_mode=ParseMode.MARKDOWN_V2)
 	for p in kill_list:
 		bot_send_message(context=context, chat_id=p.user_id, text=message, parse_mode=ParseMode.MARKDOWN_V2)
@@ -1303,7 +1319,7 @@ def new(update, context):
 	save_game_dict()
 
 def start(update, context):
-	bot_send_message(context=context, chat_id=update.message.chat_id, text="Herzlich Wilkommen beim WerWolfBot\\!", parse_mode=ParseMode.MARKDOWN_V2)
+	bot_send_message(context=context, chat_id=update.message.chat_id, text="Herzlich willkommen beim WerWolfBot\\!", parse_mode=ParseMode.MARKDOWN_V2)
 
 def main():
 	if os.path.isfile('game_dict.json'):
