@@ -135,4 +135,4 @@ test.py
 bot_stable.py
 lore_stable.py
 game_dict.json
-pic/
+#pic/
