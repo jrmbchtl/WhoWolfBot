@@ -29,6 +29,6 @@ pylama:
     pymake pylama_main
     pymake pylama_systemtest
 pylama_main:
-    pylama -i W191 src/main
+    pylama -i W191,E501 src/main
 pylama_systemtest:
-    pylama -i W191 src/systemtest
+    pylama -i W191,E501 src/systemtest
