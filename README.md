@@ -2,6 +2,12 @@
 Telegram Bot for playing Werwolf
 
 Implemented Roles:
+
+Testing:
+
+WIP:
+
+Planned:
 Dorfbewohner
 Dorfbewohnerin
 Hexe
@@ -13,14 +19,7 @@ Harter Bursche
 Terrorwolf
 Berserker
 Superschurke
-
-Testing:
-None
-
-WIP:
 Terrorist
-
-Planned:
 Kerkermeister
 Parasit
 Weisser Wolf
