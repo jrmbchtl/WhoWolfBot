@@ -935,11 +935,11 @@ def handler_send_message(update, context, game_id, lore_text, user_id, text_dict
 		new_text += game_dict[game_id][text_dict][text] + "\n"
 	if saved_message_id == "werwolf_message_id":
 			for player in get_alive_player_list(game_id):
-			if player.role in werwolf_group:
-				if player.werwolf_message_id == 0:
-					player.werwolf_message_id = bot_send_message(context=context, chat_id=player.user_id, text=new_text).message_id
-				else:
-					bot_edit_message(context=context, chat_id=player.user_id, message_id=player.werwolf_message_id, text=new_text)
+				if player.role in werwolf_group:
+					if player.werwolf_message_id == 0:
+						player.werwolf_message_id = bot_send_message(context=context, chat_id=player.user_id, text=new_text).message_id
+					else:
+						bot_edit_message(context=context, chat_id=player.user_id, message_id=player.werwolf_message_id, text=new_text)
 	else:
 		if game_dict[game_id][saved_message_id] == 0:
 			game_dict[game_id][saved_message_id] = bot_send_message(context=context, chat_id=game_dict[game_id]["game_chat_id"], text=new_text).message_id
