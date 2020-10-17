@@ -1,7 +1,7 @@
 class Character(object):
 
 	def __init__(self, team, role, isAlive):
-		super(Character, self).__init__()
+		super(Character, self)
 		self.isAlive = isAlive
 		self.team = team
 		self.role = role

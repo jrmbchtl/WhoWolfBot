@@ -20,15 +20,21 @@ analyze:
     pymake pylama
 flake:
     pymake flake_main
+    pymake flake_client
     pymake flake_systemtest
 flake_main:
     flake8 --format=html --htmldir=flake-report src/main
+flake_client:
+    flake8 --format=html --htmldir=flake-report src/client
 flake_systemtest:
     flake8 --format=html --htmldir=flake-report src/systemtest
 pylama:
     pymake pylama_main
+    pymake pylama_client
     pymake pylama_systemtest
 pylama_main:
     pylama -i W191,E501 src/main
+pylama_client:
+    pylama -i W191,E501 src/client
 pylama_systemtest:
     pylama -i W191,E501 src/systemtest

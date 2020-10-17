@@ -5,7 +5,7 @@ from random import randrange
 
 class Dorfbewohner(VillagerTeam):
 	def __init__(self, role=CharacterType.DORFBEWOHNER, isAlive=True):
-		super(Dorfbewohner, self).__init__(role, isAlive)
+		super(self, role, isAlive)
 		self.descriptions = {
 			0: "Du bist ein Dorfbewohner, ein normaler Charakter mit keinerlei besonderen Fähigkeiten.",
 			1: """Bei deiner Rolle handelt es sich um den Dorfbewohner, einem wehrlosen Charakter, \
@@ -23,7 +23,7 @@ class Dorfbewohner(VillagerTeam):
 
 class Dorfbewohnerin(Dorfbewohner):
 	def __init__(self, isAlive=True):
-		super(Dorfbewohnerin, self).__init__(CharacterType.DORFBEWOHNERIN, isAlive)
+		super(self, CharacterType.DORFBEWOHNERIN, isAlive)
 		self.descriptions = {
 			0: "Du bist eine Dorfbewohnerin, ein normaler Charakter mit keinerlei besonderen Fähigkeiten.",
 			1: """Bei deiner Rolle handelt es sich um die Dorfbewohnerin, einem wehrlosen Charakter, \
