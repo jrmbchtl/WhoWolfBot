@@ -4,8 +4,8 @@ from random import randrange
 
 
 class Hexe(VillagerTeam):
-	def __init__(self, role=CharacterType.HEXE, isAlive=True):
-		super(Hexe, self).__init__(role, isAlive)
+	def __init__(self, isAlive=True):
+		super(self, CharacterType.HEXE, isAlive)
 		self.descriptions = {
 			0: """Du bist die Hexe. Diese erwacht jede Nacht, erfährt das Opfer der Werwölfe und darf sich \
 			entscheiden, ob sie ihren einen Lebenstrank auf das Opfer anwendet. Anschließend hat sie die \

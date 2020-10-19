@@ -4,10 +4,10 @@ Message:
 {
 	"eventType": "message",
 	"message": {
-		"text": "test1234"
+		"text": "test1234",//only needed for write and edit
+		"messageId": 112233//only needed for edit and delete
 	},
 	"target": 1234,
-	"id": 123456,
 	"mode": "write"
 }
 
@@ -21,28 +21,9 @@ ChoiceField:
 			"option2",
 			"option3",
 			"option4"
-		]
+		],
+		"messageId": 112233//only needed for edit and delete
 	},
 	"target": 1234,
-	"id": 123456,
 	"mode": "edit"
 }
-
-AcceptNewGame:
-{
-	"eventType": "acceptNewGame",
-	"acceptNewGame": {
-		"gameId": 12345,
-		"port": 32000
-	},
-	"target": 1234
-}
-
-AcceptRegister:
-{
-	"eventType": "acceptRegister",
-	"acceptRegister": {
-		"id": 12345678
-	}
-}
-

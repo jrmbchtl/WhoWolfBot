@@ -33,8 +33,8 @@ pylama:
     pymake pylama_client
     pymake pylama_systemtest
 pylama_main:
-    pylama -i W191,E501 src/main
+    pylama -i W191,E501,E128,W503 src/main
 pylama_client:
-    pylama -i W191,E501 src/client
+    pylama -i W191,E501,E128,W503 src/client
 pylama_systemtest:
-    pylama -i W191,E501 src/systemtest
+    pylama -i W191,E501,E128,W503 src/systemtest

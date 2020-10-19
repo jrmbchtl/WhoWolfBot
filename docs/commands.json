@@ -17,6 +17,7 @@ Register:
 		"id": 12345678
 	},
 	"origin": 1234,
+	"gameId": 12345
 }
 
 StartGame:
@@ -25,7 +26,8 @@ StartGame:
 	"startGame":{
 		"senderId": 12345678
 	},
-	"origin": 1234
+	"origin": 1234,
+	"gameId": 12345
 }
 
 Reply:
@@ -37,13 +39,16 @@ Reply:
 		"choiceIndex": 0
 	},
 	"origin": 1234,
-	"id": 123456
+	"id": 123456,
+	"gameId": 12345
 }
 
 Feedback: (success can be 0 = False or 1 = True)
 {
 	"commandType": "feedback",
 	"feedback": {
-		"success": 1
-	}
+		"success": 1,
+		"messageId": 1222
+	},
+	"gameId": 12345	
 }
