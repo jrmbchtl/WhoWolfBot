@@ -35,11 +35,9 @@ Reply:
 	"commandType": "reply",
 	"reply": {
 		"fromId": 12345678,
-		"choiceFieldId": 123456,
 		"choiceIndex": 0
 	},
 	"origin": 1234,
-	"id": 123456,
 	"gameId": 12345
 }
 

@@ -1,9 +1,10 @@
 class Character(object):
 
-	def __init__(self, role, isAlive=True):
+	def __init__(self, team, role, isAlive=True):
 		super(Character, self)
 		self.isAlive = isAlive
 		self.role = role
+		self.team = None
 
 	def isAlive(self):
 		return self.isAlive
@@ -14,8 +15,14 @@ class Character(object):
 	def getTeam(self):
 		return self.team
 
+	def setTeam(self, team):
+		self.team = team
+
 	def getRole(self):
-		return self.role.getTeam
+		return self.role
+
+	def setRole(self, role):
+		self.role = role
 
 	def getDescription(self):
 		pass
@@ -23,7 +30,10 @@ class Character(object):
 	def kill(self):
 		self.isAlive = False
 
-	def wakeUp(self):
+	def wakeUp(self, sc):
+		pass
+
+	def initialWake(self, gameData):
 		pass
 
 	def getCharacterType(self):

@@ -8,7 +8,7 @@ class TeamType(Enum):
 
 
 class CharacterType(Enum):
-	WERWOLF = 1,
+	WERWOLF = 20,
 	WOLFSHUND = 2,
 	TERRORWOLF = 3,
 	DORFBEWOHNER = 4,

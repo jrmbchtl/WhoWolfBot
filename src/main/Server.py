@@ -1,4 +1,3 @@
-from enum import Enum
 import random
 from Player import Player
 from characters.Types import CharacterType
@@ -9,94 +8,69 @@ from characters.vilage.Seherin import Seherin
 from characters.werwolf.Werwolf import Werwolf
 from characters.werwolf.Wolfshund import Wolfshund
 from characters.werwolf.Terrorwolf import Terrorwolf
-import Factory
-
-
-class State(Enum):
-	REGISTER = 0,
-	NIGHT = 1,
-	ACCUSE = 2,
-	VOTE = 3,
-	GAMEEND = 10
+from Factory import Factory
+from GameData import GameData
 
 
 class Server(object):
 	def __init__(self, sc, admin, origin, gameQueue):
 		super(Server, self)
-		self.gameOver = False
-		self.players = {}
-		self.sc = sc
-		self.admin = admin
-		self.origin = origin
-		self.gameQueue = gameQueue
-		self.menuMessageId = None
+		self.gameData = GameData(gameOver=False, players={}, sc=sc, admin=admin,
+			origin=origin, gameQueue=gameQueue, menuMessagId=None)
 
 	def start(self):
-		self.state = State.REGISTER
 		self.register()
 		self.rollRoles()
-		while(not self.state != State.GAMEEND):
-			self.state = State.NIGHT
+		while(not self.gameData.getGameOver()):
 			self.night()
-			if (self.state == State.GAMEEND):
+			if (self.gameData.getGameOver()):
 				break
-			self.state = State.ACCUSE
 			self.accuse()
-			self.state = State.VOTE
 			self.vote()
-
-	def getNextMessageDict(self):
-		while self.gameQueue.empty():
-			pass
-		return self.gameQueue.get()
-
-	def dumpNextMessageDict(self):
-		while self.gameQueue.empty():
-			pass
-		print("Dumped: " + self.gameQueue.get())
 
 	def updateRegisterMenu(self):
 		message = """Viel Spass beim Werwolf spielen!\n\nBitte einen privaten Chat mit dem Bot starten, \
 		bevor das Spiel beginnt!\n\nUm das Spiel in seiner vollen Breite genießen zu können, \
 		empfiehlt es sich bei sehr schmalen Bildschirmen, diese quer zu verwenden.\n\n"""
 		message += "Spieler:\n"
-		for player in self.players:
+		for player in self.gameData.getPlayers():
 			message += player.getName() + "\n"
 		options = ["Mitspielen/Aussteigen", "Start", "Cancel"]
 		sendDict = {}
-		if self.menuMessageId is None:
-			sendDict = Factory.createChoiceField(self.origin, message, options)
+		if self.gameData.getMenuMessageId() is None:
+			sendDict = Factory.createChoiceField(self.gameData.getOrigin(), message, options)
 		else:
-			sendDict = Factory.createChoiceField(self.origin,
-				message, options, self.menuMessageId, Factory.EditMode.EDIT)
-		self.sc.sendJSON(sendDict)
+			sendDict = Factory.createChoiceField(self.gameData.getOrigin(),
+				message, options, self.gameData.getMenuMessageId(), Factory.EditMode.EDIT)
+		self.gameData.getServerConnection.sendJSON(sendDict)
 
-		rec = self.getNextMessageDict()
-		self.menuMessageId = rec["feedback"]["messageId"]
+		rec = self.gameData.getNextMessageDict()
+		self.gameData.setMenuMessageId(rec["feedback"]["messageId"])
 
 	def register(self):
-		rec = self.getNextMessageDict()
-		while (rec["commandType"] != "startGame" or rec["startGame"]["senderId"] != self.admin
-			or self.players.len() < 4):
+		rec = self.gameData.getNextMessageDict()
+		while (rec["commandType"] != "startGame"
+			or rec["startGame"]["senderId"] != self.gameData.getAdmin()
+			or self.gameData.getPlayers().len() < 4):
 			if rec["commandType"] == "register":
-				if rec["register"]["id"] not in self.players:
+				if rec["register"]["id"] not in self.gameData.getPlayers():
 					Factory.createMessage(rec["register"]["id"], "Ich bin der Werwolfbot")
-					tmp = self.getNextMessageDict()
+					tmp = self.gameData.getNextMessageDict()
 					if tmp["feedback"]["success"] == 0:
-						self.sc.sendJSON(Factory.createMessage(self.origin,
+						self.sc.sendJSON(Factory.createMessage(self.gameData.getOrigin(),
 							"@" + rec["register"]["name"] + ", bitte öffne einen privaten Chat mit mir"))
-						self.dumpNextMessageDict()
+						self.gameData.dumpNextMessageDict()
 						continue
 					else:
 						player = Player(rec["register"]["name"])
-						self.players[rec["register"]["id"]] = player
+						self.gameData.getPlayers()[rec["register"]["id"]] = player
 				else:
-					self.players.pop(rec["register"]["id"], None)
+					self.gameData.getPlayers().pop(rec["register"]["id"], None)
 				self.updateRegisterMenu()
-				rec = self.getNextMessageDict()
+				rec = self.gameData.getNextMessageDict()
 
 	def getPlayerList(self):
-		return self.players.keys()
+		return self.gameData.getPlayers().keys()
 
 	def removeCharacterTypeFromList(self, ls, ct):
 		i = 0
@@ -134,7 +108,7 @@ class Server(object):
 		return dorfRoleList
 
 	def rollRoles(self):
-		playerList = self.gtePlayerList()
+		playerList = self.getPlayerList()
 		random.shuffle(playerList)
 
 		werwolfRoleList = self.getWerwolfRoleList(len(playerList))
@@ -148,16 +122,17 @@ class Server(object):
 		for i, p in enumerate(playerList):
 			if i < werwolf_amount:
 				role = random.randrange(0, len(werwolfRoleList))
-				self.players[p].setCharacter(role)
+				self.gameData.getPlayers()[p].setCharacter(role)
 				if role.getCharacterType() in unique:
 					self.removeCharacterTypeFromList(werwolfRoleList, role.getCharacterType())
 			else:
 				role = random.randrange(0, len(dorfRoleList))
-				self.players[p].setCharacter(role)
+				self.gameData.getPlayers()[p].setCharacter(role)
 				if role.getCharacterType() in unique:
-					self.emoveCharacterTypeFromList(dorfRoleList, role.getCharacterType())
-			self.sc.sendJSON(Factory.createMessageEvent(p, self.players[p].getDescription()))
-			self.dumpNextMessageDict()
+					self.removeCharacterTypeFromList(dorfRoleList, role.getCharacterType())
+			self.gameData.getServerConnection().sendJSON(
+				Factory.createMessageEvent(p, self.gameData.getPlayers()[p].getDescription()))
+			self.gameData.dumpNextMessageDict()
 
 	def night(self):
 		pass

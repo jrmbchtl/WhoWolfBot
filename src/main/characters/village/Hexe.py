@@ -36,5 +36,5 @@ class Hexe(VillagerTeam):
 	def getDescription(self):
 		return self.descriptions.get(randrange(0, 5))
 
-	def wakeUp(self):
+	def wakeUp(self, sc):
 		pass
