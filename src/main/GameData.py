@@ -2,15 +2,16 @@
 
 class GameData(object):
 	"""stores data for each game"""
-	def __init__(self, gameOver, players, sc, admin, origin, gameQueue, menuMessageId):
+	def __init__(self, gameOver, players, sc, admin, origin, gameQueue, gameId, menuMessageId):
 		super(GameData, self).__init__()
-		self.gameOver = False
-		self.players = {}
+		self.gameOver = gameOver
+		self.players = players
 		self.sc = sc
 		self.admin = admin
 		self.origin = origin
 		self.gameQueue = gameQueue
-		self.menuMessageId = None
+		self.gameId = gameId
+		self.menuMessageId = menuMessageId
 
 	def getNextMessageDict(self):
 		while self.gameQueue.empty():
@@ -34,11 +35,22 @@ class GameData(object):
 	def getPlayers(self):
 		return self.players
 
-	def setServerConnection(self, sc):
-		self.sc = sc
+	def getPlayerList(self):
+		return self.getPlayers().keys()
 
-	def getServerConnection(self):
-		return self.sc
+	def getAlivePlayers(self):
+		alivePlayers = {}
+		for player in self.players:
+			if self.players[player].isAlive():
+				alivePlayers[player] = self.players[player]
+		return alivePlayers
+
+	def getAlivePlayerList(self):
+		return self.getAlivePlayers().keys()
+
+	def sendJSON(self, dc):
+		dc["gameId"] = self.gameId
+		self.sc.sendJSON()
 
 	def setAdmin(self, admin):
 		self.admin = admin

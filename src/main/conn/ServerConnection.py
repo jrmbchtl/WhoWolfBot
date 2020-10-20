@@ -9,6 +9,9 @@ class ServerConnection(object):
 		self.port = port
 		self.host = host
 		self.recQueue = SimpleQueue()
+		self.s = None
+		self.conn = None
+		self.addr = None
 
 	def startServer(self):
 		self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -32,9 +35,9 @@ class ServerConnection(object):
 				continue
 		raise ValueError("Expected valid json but got :\n" + fromServer)
 
-	def sendJSON(self, dict):
-		print("Sending: " + json.dumps(dict))
-		self.conn.send(json.dumps(dict).encode('utf-8'))
+	def sendJSON(self, dc):
+		print("Sending: " + json.dumps(dc))
+		self.conn.send(json.dumps(dc).encode('utf-8'))
 
 	def closeServer(self):
 		self.s.close()

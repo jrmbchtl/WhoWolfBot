@@ -1,11 +1,11 @@
-from Types import CharacterType
-from Teams import VillagerTeam
+from ..Types import CharacterType
+from ..Teams import VillagerTeam
 from random import randrange
 
 
 class Hexe(VillagerTeam):
 	def __init__(self, isAlive=True):
-		super(self, CharacterType.HEXE, isAlive)
+		super(Hexe, self).__init__(CharacterType.HEXE, isAlive)
 		self.descriptions = {
 			0: """Du bist die Hexe. Diese erwacht jede Nacht, erfährt das Opfer der Werwölfe und darf sich \
 			entscheiden, ob sie ihren einen Lebenstrank auf das Opfer anwendet. Anschließend hat sie die \
@@ -36,5 +36,5 @@ class Hexe(VillagerTeam):
 	def getDescription(self):
 		return self.descriptions.get(randrange(0, 5))
 
-	def wakeUp(self, sc):
+	def wakeUp(self, gameData, playerId):
 		pass

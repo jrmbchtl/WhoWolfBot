@@ -1,11 +1,11 @@
-from Types import CharacterType
-from Teams import VillagerTeam
+from ..Types import CharacterType
+from ..Teams import VillagerTeam
 from random import randrange
 
 
 class Jaeger(VillagerTeam):
 	def __init__(self, isAlive=True):
-		super(self, CharacterType.JAEGER, isAlive)
+		super(Jaeger, self).__init__(CharacterType.JAEGER, isAlive)
 		self.descriptions = {
 			0: """Du bist der Jäger: Sollte er zu Tode kommen, kann er einen letzten Schuss \
 			abgeben und einen Mitspieler mit ins Verderben reißen.""",

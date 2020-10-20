@@ -8,11 +8,8 @@ class EditMode(Enum):
 
 
 def createMessageEvent(target, text="", messageId=0, mode=EditMode.WRITE):
-	dc = {}
-	dc["eventType"] = "message"
-	message = {}
-	message["text"] = text
-	message["messageId"] = messageId
+	dc = {"eventType": "message"}
+	message = {"text": text, "messageId": messageId}
 	dc["message"] = message
 	dc["mode"] = mode
 	dc["target"] = target
@@ -20,13 +17,11 @@ def createMessageEvent(target, text="", messageId=0, mode=EditMode.WRITE):
 	return dc
 
 
-def createChoiceFieldEvent(target, text="", options=[], messageId=0, mode=EditMode.WRITE):
-	dc = {}
-	dc["eventType"] = "choiceField"
-	choiceField = {}
-	choiceField["text"] = text
-	choiceField["options"] = options
-	choiceField["messageId"] = messageId
+def createChoiceFieldEvent(target, text="", options=None, messageId=0, mode=EditMode.WRITE):
+	if options is None:
+		options = []
+	dc = {"eventType": "choiceField"}
+	choiceField = {"text": text, "options": options, "messageId": messageId}
 	dc["choiceField"] = choiceField
 	dc["mode"] = mode
 	dc["target"] = target

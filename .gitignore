@@ -136,3 +136,4 @@ bot_stable.py
 lore_stable.py
 game_dict.json
 flake-report/
+.idea/

@@ -8,7 +8,8 @@ Message:
 		"messageId": 112233//only needed for edit and delete
 	},
 	"target": 1234,
-	"mode": "write"
+	"mode": "write",
+	"gameId": 12345//handled by gameData
 }
 
 ChoiceField:
@@ -25,5 +26,6 @@ ChoiceField:
 		"messageId": 112233//only needed for edit and delete
 	},
 	"target": 1234,
-	"mode": "edit"
+	"mode": "edit",
+	"gameId": 12345//handled by gameData
 }
