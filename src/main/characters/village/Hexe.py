@@ -1,6 +1,5 @@
 from ..Types import CharacterType
 from ..Teams import VillagerTeam
-from random import randrange
 
 
 class Hexe(VillagerTeam):
@@ -33,8 +32,8 @@ class Hexe(VillagerTeam):
 			in das Getränk eines Mitspielers geben, welcher dann am nächsten Morgen nicht mehr erwacht."""
 		}
 
-	def getDescription(self):
-		return self.descriptions.get(randrange(0, 5))
+	def getDescription(self, gameData):
+		return self.descriptions.get(gameData.randrange(0, 6))
 
 	def wakeUp(self, gameData, playerId):
 		pass

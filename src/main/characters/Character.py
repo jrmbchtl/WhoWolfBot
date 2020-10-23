@@ -26,7 +26,7 @@ class Character(object):
     def setRole(self, role):
         self.role = role
 
-    def getDescription(self):
+    def getDescription(self, gameData):
         pass
 
     def kill(self, gameData, playerId, dm=None):

@@ -1,5 +1,3 @@
-import random
-
 from ..Types import CharacterType
 from ..Teams import WerwolfTeam
 
@@ -26,21 +24,22 @@ class Terrorwolf(WerwolfTeam):
             Dorfbewohner: Wenn du stirbst, steht er als letzte Mahlzeit auf deinem Speiseplan."""
         }
 
-    def getDescription(self):
-        return self.descriptions.get(random.randrange(0, 5))
+    def getDescription(self, gameData):
+        return self.descriptions.get(gameData.randrange(0, 5))
 
     def kill(self, gameData, playerId, dm=None):
         super(Terrorwolf, self).kill(gameData, playerId)
-        gameData.sendJSON(Factory.createMessageEvent(gameData.getOrigin(),
-                                                     gameData.getPlayers()[
-                                                         playerId].getName() + terrorwolf_reveal()))
+        gameData.sendJSON(
+            Factory.createMessageEvent(gameData.getOrigin(),
+                                       gameData.getPlayers()[playerId].getName()
+                                       + terrorwolfReveal(gameData)))
         gameData.dumpNextMessageDict()
 
         options = []
         for player in gameData.getAlivePlayers():
             options.append(player.getName())
 
-        text = terrorwolf_choose_target()
+        text = terrorwolfChooseTarget(gameData)
         gameData.sendJSON(Factory.createChoiceFieldEvent(playerId, text, options))
         messageId = gameData.getNextMessageDict()["feedback"]["messageId"]
 
@@ -51,52 +50,54 @@ class Terrorwolf(WerwolfTeam):
 
         target = gameData.getAlivePlayers()[rec["reply"]["choiceIndex"]]
 
-        gameData.getAlivePlayers()[target].kill(gameData, target)
+        gameData.getAlivePlayers()[target].getCharacter()\
+            .kill(gameData, target,
+                  gameData.getAlivePlayers()[target].getName() + terrorwolfKill(gameData))
 
 
-def terrorwolf_reveal():
-    desc_no = random.randrange(0, 10)
-    if desc_no == 0:
-        return " war der Terrorwolf!"
-    elif desc_no == 1:
-        return " will noch jemanden in seinem Testament zerfleischen lassen."
-    elif desc_no == 2:
-        return " reißt sein Maul auf: Ihm bleibt noch genügend Zeit, jemanden zu fressen"
-    elif desc_no == 3:
-        return " beißt einen Dorfbewohner!"
-    elif desc_no == 4:
-        return " will seinen Freunden mit seinem Tod helfen und sucht sich eine Henkersmahlzeit."
-    elif desc_no == 5:
-        return " kriegt vor seinem Tod nochmal Hunger."
-    elif desc_no == 6:
-        return " will im Sterben noch jemanden versnacken!"
-    elif desc_no == 7:
-        return " will nicht alleine sterben und fletscht die Zähne."
-    elif desc_no == 8:
-        return " genießt es, jemanden zu sehen - und zerfetzt ihn!"
-    else:
-        return " fordert sein Recht ein - vor dem Tod noch ein letztes Mal Beute fangen."
+def terrorwolfReveal(gameData):
+    switcher = {
+        0: " war der Terrorwolf!",
+        1: " will noch jemanden in seinem Testament zerfleischen lassen.",
+        2: " reißt sein Maul auf: Ihm bleibt noch genügend Zeit, jemanden zu fressen",
+        3: " beißt einen Dorfbewohner!",
+        4: " will seinen Freunden mit seinem Tod helfen und sucht sich eine Henkersmahlzeit.",
+        5: " kriegt vor seinem Tod nochmal Hunger.",
+        6: " will im Sterben noch jemanden versnacken!",
+        7: " will nicht alleine sterben und fletscht die Zähne.",
+        8: " genießt es, jemanden zu sehen - und zerfetzt ihn!",
+        9: " fordert sein Recht ein - vor dem Tod noch ein letztes Mal Beute fangen."
+    }
+    return switcher[gameData.randrange(0, 10)]
 
 
-def terrorwolf_choose_target():
-    desc_no = random.randrange(0, 10)
-    if desc_no == 0:
-        return "Wen möchtest du mit ins Grab nehmen?"
-    elif desc_no == 1:
-        return "Wen möchtest du zerfleischen?"
-    elif desc_no == 2:
-        return "Wen willst du versnacken?"
-    elif desc_no == 3:
-        return "Wen willst du in Notwehr zerfetzen?"
-    elif desc_no == 4:
-        return "Wen willst du 'ausversehen' mit deinen Zähnen füllen?"
-    elif desc_no == 5:
-        return "Wem möchtest du wortwörtlich den Kopf abreißen?"
-    elif desc_no == 6:
-        return "Wem möchtest du dazu verhelfen, an inneren Blutungen zu erliegen?"
-    elif desc_no == 7:
-        return "Wen willst du als letzten Akt zerreißen?"
-    elif desc_no == 8:
-        return "Wem gönnst du es nicht, ohne dich weiterzuleben?"
-    else:
-        return "Wer soll durch deine Krallen seine ewige Ruhe finden?"
+def terrorwolfChooseTarget(gameData):
+    switcher = {
+        0: "Wen möchtest du mit ins Grab nehmen?",
+        1: "Wen möchtest du zerfleischen?",
+        2: "Wen willst du versnacken?",
+        3: "Wen willst du in Notwehr zerfetzen?",
+        4: "Wen willst du 'ausversehen' mit deinen Zähnen füllen?",
+        5: "Wem möchtest du wortwörtlich den Kopf abreißen?",
+        6: "Wem möchtest du dazu verhelfen, an inneren Blutungen zu erliegen?",
+        7: "Wen willst du als letzten Akt zerreißen?",
+        8: "Wem gönnst du es nicht, ohne dich weiterzuleben?",
+        9: "Wer soll durch deine Krallen seine ewige Ruhe finden?"
+    }
+    return switcher[gameData.randrange(0, 10)]
+
+
+def terrorwolfKill(gameData):
+    switcher = {
+        0: " wurde vom Terrorwolf gerissen.",
+        1: " wurde als Henkersmahlzeit verspeißt!",
+        2: " wurde mit in den Tod gerissen.",
+        3: " wurde noch kurz verputzt.",
+        4: " hat sich im Vorbeilaufen die Zähne in den Hals rammen lassen.",
+        5: " wurde mit der letzen Kraft des Terrorwolfes zerbissen.",
+        6: " wurde in der Luft zerfetzt.",
+        7: " wurde bei einem Attentäter in Auftrag gegeben und konnte nicht entkommen.",
+        8: " kann ohne seinen Kopf nicht weiterleben!",
+        9: " wurde noch kurz aus Mitleid aufgegessen."
+    }
+    return switcher[gameData.randrange(0, 10)]

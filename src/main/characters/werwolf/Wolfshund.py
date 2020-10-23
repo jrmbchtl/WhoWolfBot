@@ -1,6 +1,5 @@
 from ..Types import CharacterType, TeamType
 from ..Character import Character
-import random
 
 from ... import Factory
 
@@ -25,13 +24,13 @@ class Wolfshund(Character):
             zu entscheiden, ob du ein Dorfbewohner oder ein Werwolf wirst."""
         }
 
-    def getDescription(self):
-        return self.descriptions.get(random.randrange(0, 5))
+    def getDescription(self, gameData):
+        return self.descriptions.get(gameData.randrange(0, 5))
 
     def initialWake(self, gameData, playerId):
-        intro = wolfshundOptions()
-        indexWerwolf, optionWerwolf = wolfshundChooseWerwolf()
-        indexDorf, optionDorf = wolfshundChooseDorf()
+        intro = wolfshundOptions(gameData)
+        indexWerwolf, optionWerwolf = wolfshundChooseWerwolf(gameData)
+        indexDorf, optionDorf = wolfshundChooseDorf(gameData)
         gameData.getServerConnection().sendJSON(
             Factory.createChoiceFieldEvent(playerId, intro, [optionWerwolf, optionDorf]))
         messageId = gameData.getNextMessageDict()["reply"]["messageId"]
@@ -52,89 +51,68 @@ class Wolfshund(Character):
         gameData.dumpNextMessageDict()
 
 
-def wolfshundOptions():
-    desc_no = random.randrange(0, 7)
-    if desc_no == 0:
-        return "Wie möchtest du dieses Spiel bestreiten?"
-    elif desc_no == 1:
-        return "Welchem Team möchtest du angehören?"
-    elif desc_no == 2:
-        return "Welche Gene setzen sich in dir durch?"
-    elif desc_no == 3:
-        return "Du kommst jetzt in ein Alter, in dem du dich für eine Seite entscheiden mussst."
-    elif desc_no == 4:
-        return "Wie willst du den Rest deines Lebens verbringen?"
-    elif desc_no == 5:
-        return "Möchtest du Menschen fressen oder von Menschen gelyncht werden?"
-    else:
-        return "Es ist an der Zeit, sich für eine Seite zu entscheiden!"
+def wolfshundOptions(gameData):
+    switcher = {
+        0: "Wie möchtest du dieses Spiel bestreiten?",
+        1: "Welchem Team möchtest du angehören?",
+        2: "Welche Gene setzen sich in dir durch?",
+        3: "Du kommst jetzt in ein Alter, in dem du dich für eine Seite entscheiden mussst.",
+        4: "Wie willst du den Rest deines Lebens verbringen?",
+        5: "Möchtest du Menschen fressen oder von Menschen gelyncht werden?",
+        6: "Es ist an der Zeit, sich für eine Seite zu entscheiden!"
+    }
+    return switcher[gameData.randrange(0, 7)]
 
 
-def wolfshundChooseWerwolf():
-    desc_no = random.randrange(0, 7)
-    if desc_no == 0:
-        return 0, "in einen Werwolf verwandeln"
-    elif desc_no == 1:
-        return 1, "zum Werwolf mutieren"
-    elif desc_no == 2:
-        return 2, "das Tier in dir vorkommen lassen"
-    elif desc_no == 3:
-        return 3, "Blutlust entwickeln"
-    elif desc_no == 4:
-        return 4, "Hunger auf Menschfleisch bekommen"
-    elif desc_no == 5:
-        return 5, "dem Dorf den Rücken zuwenden"
-    else:
-        return 6, "sich den Werwölfen anschließen"
+def wolfshundChooseWerwolf(gameData):
+    switcher = {
+        0: "in einen Werwolf verwandeln",
+        1: "zum Werwolf mutieren",
+        2: "das Tier in dir vorkommen lassen",
+        3: "Blutlust entwickeln",
+        4: "Hunger auf Menschfleisch bekommen",
+        5: "dem Dorf den Rücken zuwenden",
+        6: "sich den Werwölfen anschließen"
+    }
+    option = gameData.randrange(0, 7)
+    return option, switcher[option]
 
 
 def wolfshundDidChooseWerwolf(option):
-    if option == 0:
-        return "Du hast dich in einen Werwolf verwandelt."
-    elif option == 1:
-        return "Du bist zu einem Werwolf mutiert."
-    elif option == 2:
-        return "Du hast das Tier in dir durchkommen lassen."
-    elif option == 3:
-        return "Du hast Blutlust enwickelt."
-    elif option == 4:
-        return "Du hast Hunger auf Menschfleisch bekommen."
-    elif option == 5:
-        return "Du hast dem Dorf den Rücken zugewendet."
-    else:
-        return "Du hast dich den Werwölfen angeschlossen."
+    switcher = {
+        0: "Du hast dich in einen Werwolf verwandelt.",
+        1: "Du bist zu einem Werwolf mutiert.",
+        2: "Du hast das Tier in dir durchkommen lassen.",
+        3: "Du hast Blutlust enwickelt.",
+        4: "Du hast Hunger auf Menschfleisch bekommen.",
+        5: "Du hast dem Dorf den Rücken zugewendet.",
+        6: "Du hast dich den Werwölfen angeschlossen."
+    }
+    return switcher[option]
 
 
-def wolfshundChooseDorf():
-    desc_no = random.randrange(0, 7)
-    if desc_no == 0:
-        return 0, "sich dem Dorf anschließen"
-    elif desc_no == 1:
-        return 1, "brav im Dorf leben"
-    elif desc_no == 2:
-        return 2, "harmloser Schoßhund werden"
-    elif desc_no == 3:
-        return 3, "doch lieber Vegetarier werden"
-    elif desc_no == 4:
-        return 4, "Wenn du Blut siehst, wird dir schlecht"
-    elif desc_no == 5:
-        return 5, "Demokratie der Gewalt vorziehen"
-    else:
-        return 6, "Humanität zeigen"
+def wolfshundChooseDorf(gameData):
+    switcher = {
+        0: "sich dem Dorf anschließen",
+        1: "brav im Dorf leben",
+        2: "harmloser Schoßhund werden",
+        3: "doch lieber Vegetarier werden",
+        4: "Wenn du Blut siehst, wird dir schlecht",
+        5: "Demokratie der Gewalt vorziehen",
+        6: "Humanität zeigen"
+    }
+    option = gameData.randrange(0, 7)
+    return option, switcher[option]
 
 
 def wolfshundDidChooseDorf(option):
-    if option == 0:
-        return "Du hast dich dem Dorf angeschlossen."
-    elif option == 1:
-        return "Du lebst von nun an brav im Dorf."
-    elif option == 2:
-        return "Du bist zu einem harmlosen Schoßhund geworden."
-    elif option == 3:
-        return "Du hast beschlossen, doch lieber Vegetarier zu werden."
-    elif option == 4:
-        return "Du hast Hämatophobie."
-    elif option == 5:
-        return "Du ziehst die Demokratie der Gewalt vor."
-    else:
-        return "Du zeigst Humanität."
+    switcher = {
+        0: "Du hast dich dem Dorf angeschlossen.",
+        1: "Du lebst von nun an brav im Dorf.",
+        2: "Du bist zu einem harmlosen Schoßhund geworden.",
+        3: "Du hast beschlossen, doch lieber Vegetarier zu werden.",
+        4: "Du hast Hämatophobie.",
+        5: "Du ziehst die Demokratie der Gewalt vor.",
+        6: "Du zeigst Humanität."
+    }
+    return switcher[option]

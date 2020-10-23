@@ -1,9 +1,11 @@
+import random
 
 
 class GameData(object):
 	"""stores data for each game"""
-	def __init__(self, gameOver, players, sc, admin, origin, gameQueue, gameId, menuMessageId):
+	def __init__(self, seed, gameOver, players, sc, admin, origin, gameQueue, gameId, menuMessageId):
 		super(GameData, self).__init__()
+		random.seed(seed)
 		self.gameOver = gameOver
 		self.players = players
 		self.sc = sc
@@ -75,3 +77,12 @@ class GameData(object):
 
 	def getMenuMessageId(self):
 		return self.menuMessageId
+
+	def randrange(self, start, stop, step=1):
+		return random.randrange(start, stop, step)
+
+	def random(self):
+		return random.random()
+
+	def shuffle(self, ls):
+		random.shuffle(ls)

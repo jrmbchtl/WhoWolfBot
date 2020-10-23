@@ -1,5 +1,3 @@
-import random
-
 from . import Factory
 from .GameData import GameData
 from .Player import Player
@@ -14,11 +12,11 @@ from .characters.werwolf.Wolfshund import Wolfshund
 
 
 class Server(object):
-    def __init__(self, sc, admin, origin, gameQueue, gameId):
+    def __init__(self, seed, sc, admin, origin, gameQueue, gameId):
         super(Server, self)
-        self.gameData = GameData(gameOver=False, players={}, sc=sc, admin=admin,
-                                 origin=origin, gameQueue=gameQueue, gameId=gameId,
-                                 menuMessageId=None)
+        self.gameData = GameData(seed=seed, gameOver=False, players={}, sc=sc,
+                                 admin=admin, origin=origin, gameQueue=gameQueue,
+                                 gameId=gameId, menuMessageId=None)
 
     def start(self):
         self.register()
@@ -78,7 +76,7 @@ class Server(object):
 
     def rollRoles(self):
         playerList = self.gameData.getPlayerList()
-        random.shuffle(playerList)
+        self.gameData.shuffle(playerList)
 
         werwolfRoleList = getWerwolfRoleList(len(playerList))
         dorfRoleList = getVillagerRoleList()
@@ -86,16 +84,16 @@ class Server(object):
         unique = [CharacterType.JAEGER, CharacterType.SEHERIN, CharacterType.HEXE,
                   CharacterType.WOLFSHUND, CharacterType.TERROWOLF]
 
-        group_mod = random.random() * 0.2 + 0.9
+        group_mod = self.gameData.random() * 0.2 + 0.9
         werwolf_amount = int(round(len(playerList) * (1.0 / 3.5) * group_mod, 0))
         for i, p in enumerate(playerList):
             if i < werwolf_amount:
-                role = werwolfRoleList[random.randrange(0, len(werwolfRoleList))]
+                role = werwolfRoleList[self.gameData.randrange(0, len(werwolfRoleList))]
                 self.gameData.getPlayers()[p].setCharacter(role)
                 if role.getCharacterType() in unique:
                     removeCharacterTypeFromList(werwolfRoleList, role.getCharacterType())
             else:
-                role = dorfRoleList[random.randrange(0, len(dorfRoleList))]
+                role = dorfRoleList[self.gameData.randrange(0, len(dorfRoleList))]
                 self.gameData.getPlayers()[p].setCharacter(role)
                 if role.getCharacterType() in unique:
                     removeCharacterTypeFromList(dorfRoleList, role.getCharacterType())

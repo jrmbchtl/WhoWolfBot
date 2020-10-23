@@ -11,7 +11,7 @@ class Main(object):
         self.gameQueues = {}
         self.port = 32000
 
-    def main(self):
+    def main(self, seed=42):
         sc = ServerConnection(self.port)
         sc.startServer()
         try:

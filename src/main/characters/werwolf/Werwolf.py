@@ -1,6 +1,5 @@
 from ..Types import CharacterType
 from ..Teams import WerwolfTeam
-from random import randrange
 
 
 class Werwolf(WerwolfTeam):
@@ -23,5 +22,5 @@ class Werwolf(WerwolfTeam):
 			unter den Dorfbewohnern zu suchen."""
 		}
 
-	def getDescription(self):
-		return self.descriptions.get(randrange(0, 5))
+	def getDescription(self, gameData):
+		return self.descriptions.get(gameData.randrange(0, 5))

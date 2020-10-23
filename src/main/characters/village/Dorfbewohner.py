@@ -1,6 +1,5 @@
 from ..Types import CharacterType
 from ..Teams import VillagerTeam
-from random import randrange
 
 
 class Dorfbewohner(VillagerTeam):
@@ -17,8 +16,8 @@ class Dorfbewohner(VillagerTeam):
 			der Werwölfe am Tage zu schützen weiß."""
 		}
 
-	def getDescription(self):
-		return self.descriptions.get(randrange(0, 5))
+	def getDescription(self, gameData):
+		return self.descriptions.get(gameData.randrange(0, 5))
 
 
 class Dorfbewohnerin(Dorfbewohner):
@@ -35,5 +34,5 @@ class Dorfbewohnerin(Dorfbewohner):
 			der Werwölfe am Tage zu schützen weiß."""
 		}
 
-	def getDescription(self):
-		return self.descriptions.get(randrange(0, 5))
+	def getDescription(self, gameData):
+		return self.descriptions.get(gameData.randrange(0, 5))

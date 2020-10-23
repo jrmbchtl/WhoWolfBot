@@ -1,6 +1,5 @@
 from ..Types import CharacterType
 from ..Teams import VillagerTeam
-from random import randrange
 
 
 class Jaeger(VillagerTeam):
@@ -22,5 +21,5 @@ class Jaeger(VillagerTeam):
 			einen anderen Bewohner des Dorfes erschießen."""
 		}
 
-	def getDescription(self):
-		return self.descriptions.get(randrange(0, 5))
+	def getDescription(self, gameData):
+		return self.descriptions.get(gameData.randrange(0, 6))

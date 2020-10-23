@@ -1,6 +1,5 @@
 from ..Types import CharacterType
 from ..Teams import VillagerTeam
-import random
 from ... import Factory
 from ..Types import TeamType
 
@@ -25,8 +24,8 @@ class Seherin(VillagerTeam):
             jede Nacht über eine ander Person zu erfahren, ob diese gut oder böse ist."""
         }
 
-    def getDescription(self):
-        return self.descriptions.get(random.randrange(0, 5))
+    def getDescription(self, gameData):
+        return self.descriptions.get(gameData.randrange(0, 6))
 
     def wakeUp(self, gameData, playerId):
         options = []
@@ -34,11 +33,12 @@ class Seherin(VillagerTeam):
         playerToOption = {}
         for player in gameData.getAlivePlayers():
             if player != playerId:
-                option, text = seherinOptions(gameData.getAlivePlayers()[player].getName())
+                option, text = \
+                    seherinOptions(gameData.getAlivePlayers()[player].getName(), gameData)
                 options.append(text)
                 playerToOption[player] = option
                 playerIndexList = player
-        text = seherinChooseTarget()
+        text = seherinChooseTarget(gameData)
         gameData.sendJSON(Factory.createChoiceFieldEvent(playerId, text, options))
         rec = gameData.getNextMessageDict()
         messageId = rec["feedback"]["messageId"]
@@ -58,83 +58,63 @@ class Seherin(VillagerTeam):
         gameData.dumpNextMessageDict()
 
 
-def seherinChooseTarget():
-    desc_no = random.randrange(0, 10)
-    if desc_no == 0:
-        return "Die Seherin erwacht. Was wird sie tun?"
-    elif desc_no == 1:
-        return "Die Seherin schreckt aus dem Schlaf hoch. Über wen wird sie diese Nacht \
-        ein Geheimnis herrausfinden?"
-    elif desc_no == 2:
-        return "Die Seherin erwacht aus einem Albtraum. Sie hat eine Runden 'Ich sehe was, was du \
-        nicht siehst!' verloren. Das wird ihr jetzt nicht passieren!"
-    elif desc_no == 3:
-        return "Der Wecker der Seherin klingelt. Über wen will sie nun bespitzeln?"
-    elif desc_no == 4:
-        return "Die Seherin erwacht wie von einem Blitz getroffen. Wessen Geheimnis will sie diese \
-        Nacht lüften?"
-    elif desc_no == 5:
-        return "Als die Seherin nachts aufwacht, verspürt sie starken Tatendrang - \
-        was wird sie damit machen?"
-    elif desc_no == 6:
-        return "Die Seherin arbeitet nebenberuflich als Privatdetektiv. Was tut sie diese Nacht?"
-    elif desc_no == 7:
-        return "Die Seherin leidet unter Schlafstörungen. Was wird sie diese Nacht unternehmen?"
-    elif desc_no == 8:
-        return "Die Seherin ist leidenschaftliche Spannerin. Wen stalkt sie diese Nacht?"
-    else:
-        return "Die Seherin kann mal wieder nicht schlafen. Was tut sie diese Nacht?"
+def seherinChooseTarget(gameData):
+    switcher = {
+        0: "Die Seherin erwacht. Was wird sie tun?",
+        1: "Die Seherin schreckt aus dem Schlaf hoch. Über wen wird sie diese Nacht \
+        ein Geheimnis herrausfinden?",
+        2: "Die Seherin erwacht aus einem Albtraum. Sie hat eine Runden 'Ich sehe was, was du \
+        nicht siehst!' verloren. Das wird ihr jetzt nicht passieren!",
+        3: "Der Wecker der Seherin klingelt. Über wen will sie nun bespitzeln?",
+        4: "Die Seherin erwacht wie von einem Blitz getroffen. Wessen Geheimnis will sie diese \
+        Nacht lüften?",
+        5: "Als die Seherin nachts aufwacht, verspürt sie starken Tatendrang - \
+        was wird sie damit machen?",
+        6: "Die Seherin arbeitet nebenberuflich als Privatdetektiv. Was tut sie diese Nacht?",
+        7: "Die Seherin leidet unter Schlafstörungen. Was wird sie diese Nacht unternehmen?",
+        8: "Die Seherin ist leidenschaftliche Spannerin. Wen stalkt sie diese Nacht?",
+        9: "Die Seherin kann mal wieder nicht schlafen. Was tut sie diese Nacht?"
+    }
+    return switcher[gameData.randrange(0, 10)]
 
 
-def seherinOptions(name):
-    desc_no = random.randrange(0, 7)
-    if desc_no == 0:
-        return 0, name + " einsehen"
-    elif desc_no == 1:
-        return 1, name + " von der Gestapo überwachen lassen"
-    elif desc_no == 2:
-        return 2, "Informationen über " + name + " beim BND einholen"
-    elif desc_no == 3:
-        return 3, name + " bespitzeln"
-    elif desc_no == 4:
-        return 4, name + " beobachten"
-    elif desc_no == 5:
-        return 5, "Ein Auge auf " + name + " werfen"
-    else:
-        return 6, name + " ausspionieren"
+def seherinOptions(name, gameData):
+    switcher = {
+        0: name + " einsehen",
+        1: name + " von der Gestapo überwachen lassen",
+        2: "Informationen über " + name + " beim BND einholen",
+        3: name + " bespitzeln",
+        4: name + " beobachten",
+        5: "Ein Auge auf " + name + " werfen",
+        6: name + " ausspionieren"
+    }
+    option = gameData.randrange(0, 7)
+    return option, switcher[option]
 
 
 def seherinWerwolf(option, name):
-    if option == 0:
-        return name + " gehört zu den Werwölfen."
-    elif option == 1:
-        return "Die Gestapo hat herausgefunden: " + name + " ist ein Werwolf."
-    elif option == 2:
-        return "Der BND steckt dir zu: " + name + " ist böse!"
-    elif option == 2:
-        return name + " ist böse."
-    elif option == 4:
-        return "Es stellt sich heraus: " + name + " gehört den Bösen an."
-    elif option == 5:
-        return "Du siehst es mit deinen eigenen Augen: " + name \
-               + " verwandelt sich Nachts in einen Werwolf!"
-    else:
-        return "Deine Ermittlungen haben ergeben: " + name + " ist ein Werwolf."
+    switcher = {
+        0: name + " gehört zu den Werwölfen.",
+        1: "Die Gestapo hat herausgefunden: " + name + " ist ein Werwolf.",
+        2: "Der BND steckt dir zu: " + name + " ist böse!",
+        3: name + " ist böse.",
+        4: "Es stellt sich heraus: " + name + " gehört den Bösen an.",
+        5: "Du siehst es mit deinen eigenen Augen: " + name
+           + " verwandelt sich Nachts in einen Werwolf!",
+        6: "Deine Ermittlungen haben ergeben: " + name + " ist ein Werwolf."
+    }
+    return switcher[option]
 
 
 def seherinNoWerwolf(option, name):
-    if option == 0:
-        return name + " gehört nicht zu den Werwölfen."
-    elif option == 1:
-        return "Die Gestapo hat herausgefunden: " + name + " ist kein Werwolf."
-    elif option == 2:
-        return "Der BND steckt dir zu: " + name + " ist gut!"
-    elif option == 3:
-        return name + " ist gut."
-    elif option == 4:
-        return "Es stellt sich heraus: " + name + " gehört den Guten an."
-    elif option == 5:
-        return "Du siehst es mit deinen eigenen Augen: " + name \
-               + " verwandelt sich Nachts nicht in einen Werwolf!"
-    else:
-        return "Deine Ermittlungen haben ergeben: " + name + " ist kein Werwolf."
+    switcher = {
+        0: name + " gehört nicht zu den Werwölfen.",
+        1: "Die Gestapo hat herausgefunden: " + name + " ist kein Werwolf.",
+        2: "Der BND steckt dir zu: " + name + " ist gut!",
+        3: name + " ist gut.",
+        4: "Es stellt sich heraus: " + name + " gehört den Guten an.",
+        5: "Du siehst es mit deinen eigenen Augen: " + name
+           + " verwandelt sich Nachts nicht in einen Werwolf!",
+        6: "Deine Ermittlungen haben ergeben: " + name + " ist kein Werwolf."
+    }
+    return switcher[option]
