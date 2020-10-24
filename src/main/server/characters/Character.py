@@ -1,6 +1,6 @@
 import random
 
-from src.main import Factory
+from src.main.server import Factory
 
 
 class Character(object):

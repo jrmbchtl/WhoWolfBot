@@ -1,6 +1,6 @@
-from src.main.GameData import GameData
-from src.main.characters import Types
-from src.main.characters.Character import Character
+from src.main.server.GameData import GameData
+from src.main.server.characters import Types
+from src.main.server.characters.Character import Character
 
 
 def wake(gameData: GameData):
