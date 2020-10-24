@@ -76,7 +76,7 @@ class Hexe(VillagerTeam):
             for player in gameData.getAlivePlayerList():
                 if player != player:
                     no, option = hexeKill(gameData)
-                    option = gameData.getAlivePlayerList()[player] + option
+                    option = gameData.getAlivePlayers()[player] + option
                     options.append(option)
                     idToNo[player] = no
                     indexToId[index] = player

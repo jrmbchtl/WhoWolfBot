@@ -48,11 +48,11 @@ class Terrorwolf(WerwolfTeam):
             playerId, text, messageId, Factory.EditMode.EDIT))
         gameData.dumpNextMessageDict()
 
-        target = gameData.getAlivePlayers()[rec["reply"]["choiceIndex"]]
+        targetId = gameData.getAlivePlayerList()[rec["reply"]["choiceIndex"]]
 
-        gameData.getAlivePlayers()[target].getCharacter()\
-            .kill(gameData, target,
-                  gameData.getAlivePlayers()[target].getName() + terrorwolfKill(gameData))
+        gameData.getAlivePlayers()[targetId].getCharacter()\
+            .kill(gameData, targetId,
+                  gameData.getAlivePlayers()[targetId].getName() + terrorwolfKill(gameData))
 
 
 def terrorwolfReveal(gameData):
