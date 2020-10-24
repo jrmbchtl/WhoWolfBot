@@ -14,6 +14,8 @@ class GameData(object):
 		self.gameQueue = gameQueue
 		self.gameId = gameId
 		self.menuMessageId = menuMessageId
+		self.werwolfTarget = None
+		self.witchTarget = None
 
 	def getNextMessageDict(self):
 		while self.gameQueue.empty():
@@ -77,6 +79,18 @@ class GameData(object):
 
 	def getMenuMessageId(self):
 		return self.menuMessageId
+
+	def setWerwolfTarget(self, werwolfTarget):
+		self.werwolfTarget = werwolfTarget
+
+	def getWerwolfTarget(self):
+		return self.werwolfTarget
+
+	def setWitchTarget(self, witchTarget):
+		self.witchTarget = witchTarget
+
+	def getWitchTarget(self):
+		return self.witchTarget
 
 	def randrange(self, start, stop, step=1):
 		return random.randrange(start, stop, step)
