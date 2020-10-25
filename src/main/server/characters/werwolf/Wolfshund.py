@@ -27,7 +27,9 @@ class Wolfshund(Character):
     def getDescription(self, gameData):
         return self.descriptions.get(gameData.randrange(0, 5))
 
-    def initialWake(self, gameData, playerId):
+    def wakeUp(self, gameData, playerId):
+        if self.getTeam() is not None:
+            return
         intro = wolfshundOptions(gameData)
         indexWerwolf, optionWerwolf = wolfshundChooseWerwolf(gameData)
         indexDorf, optionDorf = wolfshundChooseDorf(gameData)

@@ -2,101 +2,123 @@ import random
 
 
 class GameData(object):
-	"""stores data for each game"""
-	def __init__(self, seed, gameOver, players, sc, admin, origin, gameQueue, gameId, menuMessageId):
-		super(GameData, self).__init__()
-		random.seed(seed)
-		self.gameOver = gameOver
-		self.players = players
-		self.sc = sc
-		self.admin = admin
-		self.origin = origin
-		self.gameQueue = gameQueue
-		self.gameId = gameId
-		self.menuMessageId = menuMessageId
-		self.werwolfTarget = None
-		self.witchTarget = None
+    """stores data for each game"""
 
-	def getNextMessageDict(self):
-		while self.gameQueue.empty():
-			pass
-		return self.gameQueue.get()
+    def __init__(self, seed, gameOver, players, sc, admin, origin, gameQueue, gameId,
+                 menuMessageId):
+        super(GameData, self).__init__()
+        random.seed(seed)
+        self.gameOver = gameOver
+        self.players = players
+        self.sc = sc
+        self.admin = admin
+        self.origin = origin
+        self.gameQueue = gameQueue
+        self.gameId = gameId
+        self.menuMessageId = menuMessageId
+        self.werwolfTarget = None
+        self.witchTarget = None
 
-	def dumpNextMessageDict(self):
-		while self.gameQueue.empty():
-			pass
-		print("Dumped: " + self.gameQueue.get())
+    def getNextMessageDict(self):
+        while self.gameQueue.empty():
+            pass
+        return self.gameQueue.get()
 
-	def setGameOver(self, gameOver):
-		self.gameOver = gameOver
+    def dumpNextMessageDict(self):
+        while self.gameQueue.empty():
+            pass
+        print("Dumped: " + self.gameQueue.get())
 
-	def getGameOver(self):
-		return self.gameOver
+    def setGameOver(self, gameOver):
+        self.gameOver = gameOver
 
-	def setPlayers(self, players):
-		self.players = players
+    def getGameOver(self):
+        return self.gameOver
 
-	def getPlayers(self):
-		return self.players
+    def setPlayers(self, players):
+        self.players = players
 
-	def getPlayerList(self):
-		return self.getPlayers().keys()
+    def getPlayers(self):
+        return self.players
 
-	def getAlivePlayers(self):
-		alivePlayers = {}
-		for player in self.players:
-			if self.players[player].isAlive():
-				alivePlayers[player] = self.players[player]
-		return alivePlayers
+    def getPlayerList(self):
+        return self.getPlayers().keys()
 
-	def getAlivePlayerList(self):
-		return self.getAlivePlayers().keys()
+    def getAlivePlayers(self):
+        alivePlayers = {}
+        for player in self.players:
+            if self.players[player].isAlive():
+                alivePlayers[player] = self.players[player]
+        return alivePlayers
 
-	def sendJSON(self, dc):
-		dc["gameId"] = self.gameId
-		self.sc.sendJSON()
+    def getAlivePlayerList(self):
+        return self.getAlivePlayers().keys()
 
-	def setAdmin(self, admin):
-		self.admin = admin
+    def getAlivePlayersSortedDict(self):
+        sortedDict = []
+        while len(sortedDict) < len(self.getAlivePlayers()):
+            maximum = None
+            for player in self.getAlivePlayers():
+                if player in sortedDict:
+                    continue
+                playerValue = self.getAlivePlayers()[player].getCharacter().getRole()
+                if maximum is None:
+                    maximum = playerValue
+                elif maximum < playerValue:
+                    maximum = playerValue
+            for player in self.getAlivePlayers():
+                if self.getAlivePlayers()[player].getCharacter().getRole() == maximum:
+                    if player in sortedDict:
+                        continue
+                    sortedDict[player] = self.getAlivePlayers()[player]
+                    break
+        return sortedDict
 
-	def getAdmin(self):
-		return self.admin
+    def sendJSON(self, dc):
+        dc["gameId"] = self.gameId
+        self.sc.sendJSON()
 
-	def setOrigin(self, origin):
-		self.origin = origin
+    def setAdmin(self, admin):
+        self.admin = admin
 
-	def getOrigin(self):
-		return self.origin
+    def getAdmin(self):
+        return self.admin
 
-	def setGameQueue(self, gameQueue):
-		self.gameQueue = gameQueue
+    def setOrigin(self, origin):
+        self.origin = origin
 
-	def getGameQueue(self):
-		return self.gameQueue
+    def getOrigin(self):
+        return self.origin
 
-	def setMenuMessageId(self, menuMessageId):
-		self.menuMessageId = menuMessageId
+    def setGameQueue(self, gameQueue):
+        self.gameQueue = gameQueue
 
-	def getMenuMessageId(self):
-		return self.menuMessageId
+    def getGameQueue(self):
+        return self.gameQueue
 
-	def setWerwolfTarget(self, werwolfTarget):
-		self.werwolfTarget = werwolfTarget
+    def setMenuMessageId(self, menuMessageId):
+        self.menuMessageId = menuMessageId
 
-	def getWerwolfTarget(self):
-		return self.werwolfTarget
+    def getMenuMessageId(self):
+        return self.menuMessageId
 
-	def setWitchTarget(self, witchTarget):
-		self.witchTarget = witchTarget
+    def setWerwolfTarget(self, werwolfTarget):
+        self.werwolfTarget = werwolfTarget
 
-	def getWitchTarget(self):
-		return self.witchTarget
+    def getWerwolfTarget(self):
+        return self.werwolfTarget
 
-	def randrange(self, start, stop, step=1):
-		return random.randrange(start, stop, step)
+    def setWitchTarget(self, witchTarget):
+        self.witchTarget = witchTarget
 
-	def random(self):
-		return random.random()
+    def getWitchTarget(self):
+        return self.witchTarget
 
-	def shuffle(self, ls):
-		random.shuffle(ls)
+    def randrange(self, start, stop, step=1):
+        return random.randrange(start, stop, step)
+
+    def random(self):
+        return random.random()
+
+    def shuffle(self, ls):
+        random.shuffle(ls)

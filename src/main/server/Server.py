@@ -1,11 +1,13 @@
 from . import Factory
 from .GameData import GameData
 from .Player import Player
+from .characters.Character import Character
 from .characters.Types import CharacterType
 from .characters.village.Dorfbewohner import Dorfbewohner, Dorfbewohnerin
 from .characters.village.Hexe import Hexe
 from .characters.village.Jaeger import Jaeger
 from .characters.village.Seherin import Seherin
+from .characters.werwolf import wake
 from .characters.werwolf.Terrorwolf import Terrorwolf
 from .characters.werwolf.Werwolf import Werwolf
 from .characters.werwolf.Wolfshund import Wolfshund
@@ -102,7 +104,25 @@ class Server(object):
             self.gameData.dumpNextMessageDict()
 
     def night(self):
-        pass
+        sortedPlayerDict = self.gameData.getAlivePlayersSortedDict()
+        wakeWerwolf = False
+        for player in sortedPlayerDict:
+            if player.getCharacter().getRole() < 0:
+                player.getCharacter().wakeUp()
+            elif not wakeWerwolf:
+                wakeWerwolf = True
+                wake.wake(self.gameData)
+            else:
+                player.getCharacter().wakeUp()
+
+        if self.gameData.getWerwolfTarget() is not None:
+            werwolfTargetId = self.gameData.getWerwolfTarget()
+            werwolfTarget: Character = self.gameData.getAlivePlayers()[werwolfTargetId]
+            werwolfTarget.kill(self.gameData, werwolfTargetId)
+        if self.gameData.getWitchTarget() is not None:
+            witchTargetId = self.gameData.getWitchTarget()
+            witchTarget: Character = self.gameData.getAlivePlayers()[witchTargetId]
+            witchTarget.kill(self.gameData, witchTargetId)
 
     def accuse(self):
         pass

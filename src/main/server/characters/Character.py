@@ -41,9 +41,6 @@ class Character(object):
     def wakeUp(self, gameData, playerId):
         pass
 
-    def initialWake(self, gameData, playerId):
-        pass
-
     def getCharacterType(self):
         return self.role
 
