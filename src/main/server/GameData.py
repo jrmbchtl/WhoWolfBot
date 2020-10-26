@@ -122,3 +122,38 @@ class GameData(object):
 
     def shuffle(self, ls):
         random.shuffle(ls)
+
+    def idToName(self, playerId):
+        return self.players[playerId].getName()
+
+    @staticmethod
+    def getDecision(dc):
+        choiceToAmount = {}
+        for key in dc:
+            if dc[key] not in choiceToAmount:
+                choiceToAmount[dc[key]] = 1
+            else:
+                choiceToAmount[dc[key]] += 1
+
+        maximum = 0
+        unique = True
+        for key in choiceToAmount:
+            if choiceToAmount[key] > maximum:
+                maximum = choiceToAmount[key]
+                unique = True
+            elif choiceToAmount[key] == maximum:
+                unique = False
+
+        if not unique:
+            return None
+
+        for key in choiceToAmount:
+            if choiceToAmount[key] == maximum:
+                return key
+
+    @staticmethod
+    def uniqueDecision(dc):
+        if GameData.getDecision(dc) is None:
+            return False
+        else:
+            return True

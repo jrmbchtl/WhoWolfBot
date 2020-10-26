@@ -1,18 +1,19 @@
 PY=python -m py_compile
 .PHONY:
-    all
     test
-    install
+    server
+    client
     compile
     analyze
-all:
-    pymake analyze
-    pymake test
-    pymake install
 test:
-    python src/main/SystemTestRegistration.py
-install:
-    python src/main/Main.py
+    pymake analyze
+    python src/systemtest/SystemTestMain.py
+server:
+    pymake analyze
+    python src/main/server/Main.py
+client:
+    pymake analyze
+    python src/main/client/Main.py
 compile:
     $(PY) src/main/Main.py
 analyze:

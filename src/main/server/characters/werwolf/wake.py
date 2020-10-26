@@ -27,7 +27,7 @@ def wake(gameData: GameData):
         messageIdDict[werwolf] = gameData.getNextMessageDict()["feedback"]["messageId"]
 
     voteDict = {}  # stores werwolf and which index he voted for
-    while len(werwolfList) > len(voteDict) and uniqueDecision(voteDict):
+    while len(werwolfList) > len(voteDict) and GameData.uniqueDecision(voteDict):
         rec = gameData.getNextMessageDict()
         if rec["commandType"] == "reply":
             voteDict[rec["reply"]["fromId"]] = rec["reply"]["choiceIndex"]
@@ -50,7 +50,7 @@ def wake(gameData: GameData):
 
 
 def publishDecision(gameData, werwolfList, voteDict, optionIndexList, text, messageIdDict):
-    decisionIndex = getDecision(voteDict)
+    decisionIndex = GameData.getDecision(voteDict)
 
     if decisionIndex == len(gameData.getAlivePlayerList()):
         targetName = "niemanden"
@@ -69,38 +69,6 @@ def publishDecision(gameData, werwolfList, voteDict, optionIndexList, text, mess
         gameData.dumpNextMessageDict()
         gameData.sendJSON(Factory.createMessageEvent(werwolf, decision))
         gameData.dumpNextMessageDict()
-
-
-def getDecision(dc):
-    choiceToAmount = {}
-    for key in dc:
-        if dc[key] not in choiceToAmount:
-            choiceToAmount[dc[key]] = 1
-        else:
-            choiceToAmount[dc[key]] += 1
-
-    maximum = 0
-    unique = True
-    for key in choiceToAmount:
-        if choiceToAmount[key] > maximum:
-            maximum = choiceToAmount[key]
-            unique = True
-        elif choiceToAmount[key] == maximum:
-            unique = False
-
-    if not unique:
-        return None
-
-    for key in choiceToAmount:
-        if choiceToAmount[key] == maximum:
-            return key
-
-
-def uniqueDecision(dc):
-    if getDecision(dc) is None:
-        return False
-    else:
-        return True
 
 
 def werwolfChooseTarget(gameData):
