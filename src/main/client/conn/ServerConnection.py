@@ -30,9 +30,28 @@ class ServerConnection(object):
 				continue
 		raise ValueError("Expected valid json but got :\n" + fromServer)
 
-	def sendJSON(self, dict):
-		print("Sending: " + json.dumps(dict))
-		self.s.send(json.dumps(dict).encode('utf-8'))
+	def sendJSON(self, dc):
+		print("Sending: " + json.dumps(dc))
+		self.s.send(json.dumps(dc).encode('utf-8'))
+
+	def receiveString(self):
+		fromServer = ""
+		while True:
+			data = self.s.recv(4096)
+			if not data:
+				break
+			fromServer += data.decode('utf-8')
+			try:
+				recJSON = json.loads(fromServer)
+				print("Received: " + recJSON)
+				return fromServer
+			except ValueError:
+				continue
+		raise ValueError("Expected valid json but got :\n" + fromServer)
+
+	def sendString(self, string):
+		print("Sending: " + string)
+		self.s.send(string.encode('utf-8'))
 
 	def closeServer(self):
 		self.s.close()
