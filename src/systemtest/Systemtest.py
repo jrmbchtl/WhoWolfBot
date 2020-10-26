@@ -11,12 +11,22 @@ class Systemtest(object):
 
     def asserReceiveDict(self, dc):
         rec = self.sc.receiveJSON()
-        self.dictCompare(rec, dc)
+        self.dictCompare(dc, rec)
 
-    def dictCompare(self, dc1, dc2):
-        for key in dc1:
-            assert key in dc2
-            assert dc1[key] == dc2[key]
-        for key in dc2:
-            assert key in dc1
-            assert dc2[key] == dc1[key]
+    def dictCompare(self, expected, actual):
+        for key in expected:
+            assertIn(key, actual)
+            assertEqual(expected[key], actual[key])
+        for key in actual:
+            assertIn(key, expected)
+            assertEqual(expected[key], actual[key])
+
+
+def assertEqual(element1, element2):
+    if not element1 == element2:
+        raise AssertionError("\nExpected " + str(element1) + "\nBut got " + str(element2))
+
+
+def assertIn(key, dc):
+    if key not in dc:
+        raise AssertionError("\nkey" + str(key) + "not found in dict " + str(dc))

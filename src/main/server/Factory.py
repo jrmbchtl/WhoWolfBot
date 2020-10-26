@@ -1,7 +1,5 @@
-from enum import Enum
 
-
-class EditMode(Enum):
+class EditMode(object):
 	WRITE = "write",
 	EDIT = "edit",
 	DELETE = "delete"

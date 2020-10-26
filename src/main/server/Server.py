@@ -22,8 +22,6 @@ class Server(object):
         self.accusedDict = {}
 
     def start(self):
-        self.gameData.sendJSON({"eventType": "gameStarted"})
-
         self.register()
         self.rollRoles()
         while not self.gameData.getGameOver():
@@ -59,6 +57,7 @@ class Server(object):
         self.gameData.setMenuMessageId(rec["feedback"]["messageId"])
 
     def register(self):
+        self.updateRegisterMenu()
         rec = self.gameData.getNextMessageDict()
         while (rec["commandType"] != "startGame"
                or rec["startGame"]["senderId"] != self.gameData.getAdmin()

@@ -25,7 +25,9 @@ class Main(object):
                                            self.gameQueues[self.gameId],)).start()
                     self.gameId += 1
                 elif dc["gameId"] in self.gameQueues:
-                    self.gameQueues["gameId"].put(dc)
+                    print(dc)
+                    print(self.gameQueues)
+                    self.gameQueues[dc["gameId"]].put(dc)
                 else:
                     print("can't find a game with id " + dc["gameId"])
 
