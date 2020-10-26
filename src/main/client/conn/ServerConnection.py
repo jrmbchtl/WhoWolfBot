@@ -4,14 +4,14 @@ import json
 
 
 class ServerConnection(object):
-	def __init__(self, port=16384, host="127.0.0.1"):
+	def __init__(self, port=32000, host="127.0.0.1"):
 		super(ServerConnection, self)
+		self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.port = port
 		self.host = host
 		self.recQueue = SimpleQueue()
 
 	def startServer(self):
-		self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.s.setblocking(True)
 		self.s.connect((self.host, self.port))
 
@@ -24,7 +24,7 @@ class ServerConnection(object):
 			fromServer += data.decode('utf-8')
 			try:
 				recJSON = json.loads(fromServer)
-				print("Received: " + recJSON)
+				print("Received: " + str(recJSON))
 				return json.loads(recJSON)
 			except ValueError:
 				continue

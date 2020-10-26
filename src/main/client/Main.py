@@ -1,4 +1,4 @@
-from conn.ServerConnection import ServerConnection
+from src.main.client.conn.ServerConnection import ServerConnection
 
 
 class Main(object):
@@ -9,10 +9,7 @@ class Main(object):
 		sc = ServerConnection()
 		sc.startServer()
 
-		startGame = {}
-		startGame["commandType"] = "newGame"
-		startGame["newGame"] = {}
-		startGame["origin"] = 1234
+		startGame = {"commandType": "newGame", "newGame": {}, "origin": 1234}
 		sc.sendJSON(startGame)
 		response = sc.receiveJSON()
 		print(response)

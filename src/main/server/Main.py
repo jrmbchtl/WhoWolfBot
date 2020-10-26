@@ -1,5 +1,5 @@
-from .conn.ServerConnection import ServerConnection
-from .Server import Server
+from src.main.server.conn.ServerConnection import ServerConnection
+from src.main.server.Server import Server
 import threading
 from queue import SimpleQueue
 

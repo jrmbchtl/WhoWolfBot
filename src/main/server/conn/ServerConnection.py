@@ -18,7 +18,9 @@ class ServerConnection(object):
 		self.s.setblocking(True)
 		self.s.bind((self.host, self.port))
 		self.s.listen(100)
-		self.conn, self.addr = self.s.accept()
+		conn, self.addr = self.s.accept()
+		self.s.close()
+		self.s = conn
 
 	def receiveJSON(self):
 		fromServer = ""
@@ -29,8 +31,8 @@ class ServerConnection(object):
 			fromServer += data.decode('utf-8')
 			try:
 				recJSON = json.loads(fromServer)
-				print("Received: " + recJSON)
-				return json.loads(recJSON)
+				print("Received: " + str(recJSON))
+				return json.loads(fromServer)
 			except ValueError:
 				continue
 		raise ValueError("Expected valid json but got :\n" + fromServer)

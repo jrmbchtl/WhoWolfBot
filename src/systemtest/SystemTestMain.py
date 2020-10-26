@@ -1,6 +1,7 @@
 import socket
 import threading
 
+from src.main.client.conn.ServerConnection import ServerConnection
 from src.main.server.Main import Main
 from src.systemtest.SystemTestRegistration import SystemTestRegistration
 
@@ -9,6 +10,8 @@ class SystemTestMain(object):
     def __init__(self):
         super(SystemTestMain, self)
         self.tests = []
+        self.serverConnection = ServerConnection()
+        self.serverConnection.startServer()
 
     def main(self):
         SystemTestRegistration(self).register()
@@ -19,6 +22,8 @@ class SystemTestMain(object):
             print("Server was already started, using running instance")
         for test in self.tests:
             test.run()
+
+        self.serverConnection.closeServer()
 
     def register(self, test):
         self.tests.append(test)
