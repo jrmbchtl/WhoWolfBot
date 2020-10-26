@@ -21,7 +21,7 @@ class SystemTestMain(object):
         else:
             print("Server was already started, using running instance")
         for test in self.tests:
-            test.run()
+            test.run(self.serverConnection)
 
         self.serverConnection.closeServer()
 

@@ -27,15 +27,17 @@ class ServerConnection(object):
 		while True:
 			data = self.s.recv(4096)
 			if not data:
-				break
+				fromServer = ""
+				continue
 			fromServer += data.decode('utf-8')
+			print("Received: " + fromServer)
 			try:
-				recJSON = json.loads(fromServer)
-				print("Received: " + str(recJSON))
+				json.loads(fromServer)
 				return json.loads(fromServer)
 			except ValueError:
 				continue
-		raise ValueError("Expected valid json but got :\n" + fromServer)
+		print("expected valid json but got " + fromServer)
+		return self.receiveJSON()
 
 	def sendJSON(self, dc):
 		print("Sending: " + json.dumps(dc))

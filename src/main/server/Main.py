@@ -35,7 +35,7 @@ class Main(object):
 
 
 def startNewGame(sc, dc, gameId, gameQueue):
-    server = Server(sc, dc["newGame"]["senderId"], dc["origin"], gameQueue, gameId)
+    server = Server(42, sc, dc["newGame"]["senderId"], dc["origin"], gameQueue, gameId)
     server.start()
 
 

@@ -28,7 +28,8 @@ class ServerConnection(object):
 				return json.loads(recJSON)
 			except ValueError:
 				continue
-		raise ValueError("Expected valid json but got :\n" + fromServer)
+		print("expected valid json but got " + fromServer)
+		return self.receiveJSON()
 
 	def sendJSON(self, dc):
 		print("Sending: " + json.dumps(dc))
@@ -47,7 +48,8 @@ class ServerConnection(object):
 				return fromServer
 			except ValueError:
 				continue
-		raise ValueError("Expected valid json but got :\n" + fromServer)
+		print("expected valid json but got " + fromServer)
+		return self.receiveJSON()
 
 	def sendString(self, string):
 		print("Sending: " + string)

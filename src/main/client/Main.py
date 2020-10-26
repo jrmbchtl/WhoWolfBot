@@ -9,7 +9,7 @@ class Main(object):
 		sc = ServerConnection()
 		sc.startServer()
 
-		startGame = {"commandType": "newGame", "newGame": {}, "origin": 1234}
+		startGame = {"commandType": "newGame", "newGame": {"senderId": 42}, "origin": 1234}
 		sc.sendJSON(startGame)
 		response = sc.receiveJSON()
 		print(response)
