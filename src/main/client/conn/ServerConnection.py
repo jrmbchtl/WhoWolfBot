@@ -22,10 +22,9 @@ class ServerConnection(object):
 			if not data:
 				break
 			fromServer += data.decode('utf-8')
+			print("Received: " + fromServer)
 			try:
-				recJSON = json.loads(fromServer)
-				print("Received: " + str(recJSON))
-				return json.loads(recJSON)
+				return json.loads(fromServer)
 			except ValueError:
 				continue
 		print("expected valid json but got " + fromServer)
@@ -42,9 +41,8 @@ class ServerConnection(object):
 			if not data:
 				break
 			fromServer += data.decode('utf-8')
+			print("Received: " + fromServer)
 			try:
-				recJSON = json.loads(fromServer)
-				print("Received: " + recJSON)
 				return fromServer
 			except ValueError:
 				continue

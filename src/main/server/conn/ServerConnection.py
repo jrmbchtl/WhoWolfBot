@@ -17,7 +17,7 @@ class ServerConnection(object):
 		self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		self.s.setblocking(True)
 		self.s.bind((self.host, self.port))
-		self.s.listen(100)
+		self.s.listen(100000000)
 		conn, self.addr = self.s.accept()
 		self.s.close()
 		self.s = conn
@@ -41,7 +41,7 @@ class ServerConnection(object):
 
 	def sendJSON(self, dc):
 		print("Sending: " + json.dumps(dc))
-		self.conn.send(json.dumps(dc).encode('utf-8'))
+		self.s.send(json.dumps(dc).encode('utf-8'))
 
 	def closeServer(self):
 		self.s.close()

@@ -1,6 +1,7 @@
 import socket
-import threading
+import time
 
+from multiprocessing import Process
 from src.main.client.conn.ServerConnection import ServerConnection
 from src.main.server.Main import Main
 from src.systemtest.SystemTestRegistration import SystemTestRegistration
@@ -11,22 +12,31 @@ class SystemTestMain(object):
         super(SystemTestMain, self)
         self.tests = []
         self.serverConnection = ServerConnection()
-        self.serverConnection.startServer()
+        self.server = None
 
     def main(self):
+        print("started Main")
         SystemTestRegistration(self).register()
+        print("finished register")
         if not serverIsRunning():
             print("Server is not running, starting it")
-            threading.Thread(target=launchServer).start()
+            self.server = Process(target=launchServer)
+            self.server.start()
+            time.sleep(5)
         else:
             print("Server was already started, using running instance")
+        self.serverConnection.startServer()
         for test in self.tests:
-            test.run(self.serverConnection)
+            test.run()
 
+        self.server.kill()
         self.serverConnection.closeServer()
 
     def register(self, test):
         self.tests.append(test)
+
+    def getSc(self):
+        return self.serverConnection
 
 
 def serverIsRunning():
@@ -41,7 +51,7 @@ def serverIsRunning():
 
 
 def launchServer():
-    Main.main()
+    Main().main()
 
 
 if __name__ == "__main__":

@@ -76,7 +76,7 @@ class GameData(object):
 
     def sendJSON(self, dc):
         dc["gameId"] = self.gameId
-        self.sc.sendJSON()
+        self.sc.sendJSON(dc)
 
     def setAdmin(self, admin):
         self.admin = admin

@@ -29,3 +29,9 @@ ChoiceField:
 	"mode": "edit",
 	"gameId": 12345//handled by gameData
 }
+
+GameStarted:
+{
+	"eventType": "gameStarted",
+	"gameId": 1234
+}

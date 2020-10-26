@@ -22,6 +22,8 @@ class Server(object):
         self.accusedDict = {}
 
     def start(self):
+        self.gameData.sendJSON({"eventType": "gameStarted"})
+
         self.register()
         self.rollRoles()
         while not self.gameData.getGameOver():

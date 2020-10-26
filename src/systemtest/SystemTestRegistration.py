@@ -7,4 +7,4 @@ class SystemTestRegistration(object):
         self.main = main
 
     def register(self):
-        self.main.register(Exampletest())
+        self.main.register(Exampletest(self.main.getSc()))
