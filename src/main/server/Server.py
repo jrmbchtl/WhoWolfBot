@@ -35,10 +35,10 @@ class Server(object):
             self.vote()
 
     def updateRegisterMenu(self):
-        message = "Viel Spass beim Werwolf spielen!\n\nBitte einen privaten Chat mit dem Bot starten, \
-                   bevor das Spiel beginnt!\n\nUm das Spiel in seiner vollen Breite genießen zu \
-                   können , empfiehlt es sich bei sehr schmalen Bildschirmen, \
-                   diese quer zu verwenden.\n\n"
+        message = ("Viel Spass beim Werwolf spielen!\n\nBitte einen privaten Chat mit dem Bot "
+                   "starten, bevor das Spiel beginnt!\n\nUm das Spiel in seiner vollen Breite "
+                   "genießen zu können , empfiehlt es sich bei sehr schmalen Bildschirmen, "
+                   "diese quer zu verwenden.\n\n")
         message += 'Spieler:\n'
         for player in self.gameData.getPlayers():
             message += player.getName() + "\n"
@@ -183,17 +183,17 @@ class Server(object):
             0: "Es ist Zeit, anzuklagen!",
             1: "Nach einer turbulenten Nacht geht es in Düsterwald heiß her.",
             2: "Nach einer solchen Nacht wird in Düsterwald blind beschuldigt.",
-            3: "Die Dorfbewohner wollen die Übeltäter im Dorf entlarven und beginnen \
-            mit den Beschuldigungen.",
+            3: ("Die Dorfbewohner wollen die Übeltäter im Dorf entlarven und beginnen "
+                "mit den Beschuldigungen."),
             4: "Die Dorfbewohner versuchen durch wildes Beschuldigen, die Werwölfe zu enttarnen.",
-            5: "Jeder versucht, sein eigenes Leben zu schützen und schiebt deshalb die \
-            Schuld auf Andere.",
+            5: ("Jeder versucht, sein eigenes Leben zu schützen und schiebt deshalb die "
+                "Schuld auf Andere."),
             6: "Die Dorfbewohner wollen jemanden für die Verbrechen der Nacht beschuldigen.",
-            7: "Eine Diskussion entbrandet, wer an den schrecklichen Taten der Nacht \
-            schuld sein könnte.",
-            8: "Eine heiße Diskussion beginnt in Düsterwald. Vage Gerüchte werden auf einmal zu harten Fakten, \
-               Werwölfe tarnen sich als normale Büger und harmlose Dorfbewohner werden des \
-               brutalen Mordes beschuldigt.",
+            7: ("Eine Diskussion entbrandet, wer an den schrecklichen Taten der Nacht "
+                "schuld sein könnte."),
+            8: ("Eine heiße Diskussion beginnt in Düsterwald. Vage Gerüchte werden auf einmal zu "
+                "harten Fakten, Werwölfe tarnen sich als normale Büger und harmlose Dorfbewohner "
+                "werden des brutalen Mordes beschuldigt."),
             9: "Lasset die Beschuldigungsspiele beginnen!"
         }
         return switcher[self.gameData.randrange(0, 10)]
@@ -277,8 +277,8 @@ class Server(object):
             3: "Wen wollt ihr hinrichten?",
             4: "Wer soll für die grausamen Verbrechen mit einem noch grausameren Tod bezahlen?",
             5: "Wer ist schuldig und muss sterben?",
-            6: "Auge um Auge, Zahn um Zahn - und wer muss aufgrund vager Gerüchte einen \
-            grauenvollen Tod sterben?",
+            6: ("Auge um Auge, Zahn um Zahn - und wer muss aufgrund vager Gerüchte einen "
+                "grauenvollen Tod sterben?"),
             7: "Die Demokratie wird entscheiden, wer hingerichtet wird!",
             8: "Das Dorf entscheidet, wer gelyncht wird!",
             9: "Lasset die Hinrichtungsspiele beginnen!"
@@ -334,45 +334,45 @@ class Server(object):
     def pattRevote(self):
         switcher = {
             0: "Pattsituation - bitte nochmals abstimmen!",
-            1: "Das Dorf konnte sich nicht entscheiden, wer hingerichtet werden sollte. Deshalb muss die \
-            Abstimmung wiederholt werden.",
+            1: ("Das Dorf konnte sich nicht entscheiden, wer hingerichtet werden sollte. Deshalb "
+                "muss die Abstimmung wiederholt werden."),
             2: "Die Abstimmung geht unentschieden aus und muss wiederholt werden.",
-            3: "Die Dorfgemeinschaft kann sich für keinen Schuldigen entscheiden und setzt daher \
-            Neuwahlen an.",
-            4: "Zustände wie in der Türkei: Es wird sooft gewählt, bis den Oberen das Ergebnis gefällt. \
-            Es wurden Neuwahlen angesetzt!",
-            5: "Es kann nur eine Person hingerichtet werden, irgendjemand sollte seine Meinung \
-            ändern!",
+            3: ("Die Dorfgemeinschaft kann sich für keinen Schuldigen entscheiden und setzt daher "
+                "Neuwahlen an."),
+            4: ("Zustände wie in der Türkei: Es wird sooft gewählt, bis den Oberen das Ergebnis "
+                "gefällt. Es wurden Neuwahlen angesetzt!"),
+            5: ("Es kann nur eine Person hingerichtet werden, irgendjemand sollte seine Meinung "
+                "ändern!"),
             6: "Hier kommt die Demokratie an ihre Grenzen: Die Wahl muss wiederholt werden.",
-            7: "Eine Koalition ist bei der Hinrichtung nicht möglich. Bitte entscheidet euch für \
-            einen Schuldigen.",
-            8: "Auf dem elekrtischen Stuhl ist nur Platz für eine Person. Bitte nochmals \
-            abstimmen!",
-            9: "Wenn ihr zwei halbe Menschen hinrichtet, habt ihr mathematisch auch nur eine Person hingerichtet. \
-            Das Problem ist, dass dann beide tot sind. Entscheidet euch!"
+            7: ("Eine Koalition ist bei der Hinrichtung nicht möglich. Bitte entscheidet euch für "
+                "einen Schuldigen."),
+            8: ("Auf dem elekrtischen Stuhl ist nur Platz für eine Person. Bitte nochmals "
+                "abstimmen!"),
+            9: ("Wenn ihr zwei halbe Menschen hinrichtet, habt ihr mathematisch auch nur eine "
+                "Person hingerichtet. Das Problem ist, dass dann beide tot sind. Entscheidet euch!")
         }
         return switcher[self.gameData.randrange(0, 10)]
 
     def pattNoKill(self):
         switcher = {
-            0: "Da sich das Dorf nicht auf einen Schuldigen einigen kann, wird heute niemand \
-            gelyncht.",
+            0: ("Da sich das Dorf nicht auf einen Schuldigen einigen kann, wird heute niemand "
+            "gelyncht."),
             1: "Die Demokratie ist überfordert und beschließt, niemanden hinzurichten.",
             2: "Nach einer intensiven aber ergebnislosen Diskussion kehren alle nach hause zurück.",
             3: "Mal wieder viel heiße Luft um Nichts - viel Anschuldigungen aber kein Ergebnis.",
-            4: "Bei dem versuch, alle Angeklagten zu hängen, reißt das Seil und das Dorf beschließt, \
-            heute niemanden hinzurichten.",
-            5: "Da die Diskussion zu hitzig wird, ohne ein Ergebnis zu zeigen, löst die Polizei die Versammlung \
-            auf und schickt alle Beteiligten fort.",
-            6: "Am Ende des Tages sind alle genervt, da letztlich keiner seine Meinung durchsetzen \
-            konnte.",
-            7: "Dieser Tag geht ohne einen Toten vorbei. Dies sorgt für Unmut unter den Dorfbewohnern, \
-            da die Werwölfe auch nächste Nacht nicht ruhen werden.",
-            8: "Die Dorfbewohner nehmen sich vor: Beim nächsten Mal erzielen wir bei der Abstimmung ein \
-            klares Ergebnis, doch momentan will keiner seine Meinung ändern. Vielleicht kann die \
-            kommende Nacht gegen ein Patt helfen?",
-            9: "Da sich das Dorf nicht einigen konnte, beschließt es, eine Nacht über die Meinungen zu \
-            schlafen. Vielleicht wird man sich ja morgen einig."
+            4: ("Bei dem versuch, alle Angeklagten zu hängen, reißt das Seil und das Dorf "
+                "beschließt, heute niemanden hinzurichten."),
+            5: ("Da die Diskussion zu hitzig wird, ohne ein Ergebnis zu zeigen, löst die Polizei "
+                "die Versammlung auf und schickt alle Beteiligten fort."),
+            6: ("Am Ende des Tages sind alle genervt, da letztlich keiner seine Meinung "
+                "durchsetzen konnte."),
+            7: ("Dieser Tag geht ohne einen Toten vorbei. Dies sorgt für Unmut unter den "
+                "Dorfbewohnern, da die Werwölfe auch nächste Nacht nicht ruhen werden."),
+            8: ("Die Dorfbewohner nehmen sich vor: Beim nächsten Mal erzielen wir bei der "
+                "Abstimmung ein klares Ergebnis, doch momentan will keiner seine Meinung ändern. "
+                "Vielleicht kann die kommende Nacht gegen ein Patt helfen?"),
+            9: ("Da sich das Dorf nicht einigen konnte, beschließt es, eine Nacht über die "
+                "Meinungen zu schlafen. Vielleicht wird man sich ja morgen einig.")
         }
         return switcher[self.gameData.randrange(0, 10)]
 

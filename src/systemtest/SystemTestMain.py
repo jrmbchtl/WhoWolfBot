@@ -15,9 +15,7 @@ class SystemTestMain(object):
         self.server = None
 
     def main(self):
-        print("started Main")
         SystemTestRegistration(self).register()
-        print("finished register")
         if not serverIsRunning():
             print("Server is not running, starting it")
             self.server = Process(target=launchServer)

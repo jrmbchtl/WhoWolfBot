@@ -1,27 +1,28 @@
-from ..Types import CharacterType
-from ..Teams import VillagerTeam
-from ... import Factory
-from ..Types import TeamType
+from src.main.server import Factory
+from src.main.server.characters.Teams import VillagerTeam
+from src.main.server.characters.Types import CharacterType
+from src.main.server.characters.Types import TeamType
 
 
 class Seherin(VillagerTeam):
     def __init__(self, isAlive=True):
         super(Seherin, self).__init__(CharacterType.SEHERIN, isAlive)
         self.descriptions = {
-            0: """Du bist die Seherin. Diese erwacht jede Nacht, sucht sich einen Bewohner \
-            aus und erfährt, ob dieser zu den Werwölfen gehört oder nicht.""",
-            1: """Du bist die Seherin. Die Seherin hat die Fähigkeit, jede Nacht über einen \
-            Mitspieler zu erfahren, ob dieser zu den Werwölfen gehört.""",
-            2: """Bei deinem Charakter handelt es sich um die Seherin. Jede Nacht erhält sie \
-            Einsicht über einen Spieler, ob dieser zu den Werwölfen gehört.""",
-            3: """Du bist die Seherin. Die Seherin erwählt jede Nacht einen Spieler. Sie erfährt, \
-            ob dieser gut oder böse ist.""",
-            4: """Du bist die Seherin. Die Seherin erwacht, während alle anderen schlafen und darf \
-            sich eine Person aussuchen, über die sie erfahren will, ob diese gut oder böse ist. \
-            Da die Seherin zu jeder Runde die Gruppenzugehörigkeit einer weiteren Person im Spiel \
-            kennt, kann sie großen Einfluss nehmen, muss aber ihr Wissen vorsichtig einsetzen.""",
-            5: """Dein Charakter ist die Seherin. Als diese erhälst du die Fähigkeit, \
-            jede Nacht über eine ander Person zu erfahren, ob diese gut oder böse ist."""
+            0: ("Du bist die Seherin. Diese erwacht jede Nacht, sucht sich einen Bewohner "
+                "aus und erfährt, ob dieser zu den Werwölfen gehört oder nicht."),
+            1: ("Du bist die Seherin. Die Seherin hat die Fähigkeit, jede Nacht über einen "
+                "Mitspieler zu erfahren, ob dieser zu den Werwölfen gehört."),
+            2: ("Bei deinem Charakter handelt es sich um die Seherin. Jede Nacht erhält sie "
+                "Einsicht über einen Spieler, ob dieser zu den Werwölfen gehört."),
+            3: ("Du bist die Seherin. Die Seherin erwählt jede Nacht einen Spieler. Sie erfährt, "
+                "ob dieser gut oder böse ist."),
+            4: ("Du bist die Seherin. Die Seherin erwacht, während alle anderen schlafen und darf "
+                "sich eine Person aussuchen, über die sie erfahren will, ob diese gut oder böse "
+                "ist. Da die Seherin zu jeder Runde die Gruppenzugehörigkeit einer weiteren Person "
+                "im Spiel kennt, kann sie großen Einfluss nehmen, muss aber ihr Wissen vorsichtig "
+                "einsetzen."),
+            5: ("Dein Charakter ist die Seherin. Als diese erhälst du die Fähigkeit, "
+                "jede Nacht über eine ander Person zu erfahren, ob diese gut oder böse ist.")
         }
 
     def getDescription(self, gameData):
@@ -61,15 +62,15 @@ class Seherin(VillagerTeam):
 def seherinChooseTarget(gameData):
     switcher = {
         0: "Die Seherin erwacht. Was wird sie tun?",
-        1: "Die Seherin schreckt aus dem Schlaf hoch. Über wen wird sie diese Nacht \
-        ein Geheimnis herrausfinden?",
-        2: "Die Seherin erwacht aus einem Albtraum. Sie hat eine Runden 'Ich sehe was, was du \
-        nicht siehst!' verloren. Das wird ihr jetzt nicht passieren!",
+        1: ("Die Seherin schreckt aus dem Schlaf hoch. Über wen wird sie diese Nacht "
+            "ein Geheimnis herrausfinden?"),
+        2: ("Die Seherin erwacht aus einem Albtraum. Sie hat eine Runden 'Ich sehe was, was du "
+            "nicht siehst!' verloren. Das wird ihr jetzt nicht passieren!"),
         3: "Der Wecker der Seherin klingelt. Über wen will sie nun bespitzeln?",
-        4: "Die Seherin erwacht wie von einem Blitz getroffen. Wessen Geheimnis will sie diese \
-        Nacht lüften?",
-        5: "Als die Seherin nachts aufwacht, verspürt sie starken Tatendrang - \
-        was wird sie damit machen?",
+        4: ("Die Seherin erwacht wie von einem Blitz getroffen. Wessen Geheimnis will sie diese "
+            "Nacht lüften?"),
+        5: ("Als die Seherin nachts aufwacht, verspürt sie starken Tatendrang - "
+            "was wird sie damit machen?"),
         6: "Die Seherin arbeitet nebenberuflich als Privatdetektiv. Was tut sie diese Nacht?",
         7: "Die Seherin leidet unter Schlafstörungen. Was wird sie diese Nacht unternehmen?",
         8: "Die Seherin ist leidenschaftliche Spannerin. Wen stalkt sie diese Nacht?",

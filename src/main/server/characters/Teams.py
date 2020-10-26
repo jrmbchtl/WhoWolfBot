@@ -1,5 +1,5 @@
-from .Types import TeamType
-from .Character import Character
+from src.main.server.characters.Character import Character
+from src.main.server.characters.Types import TeamType
 
 
 class WerwolfTeam(Character):

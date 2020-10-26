@@ -75,8 +75,8 @@ def werwolfChooseTarget(gameData):
     switcher = {
         0: "Die Werwölfe suchen ihr Opfer aus.",
         1: "Das Werwolfsrudel streift hungrig durch das Dorf, auf der Suche nach einem Imbiss.",
-        2: "Die Werwölfe erinnern sich an einen weisen Spruch: 'Wählt weise, denn jede Mahlzeit \
-        könnte eure letzte sein'.",
+        2: ("Die Werwölfe erinnern sich an einen weisen Spruch: 'Wählt weise, denn jede Mahlzeit "
+            "könnte eure letzte sein'."),
         3: "Auf der Suche nach Essen durchsuchen die Werwölfe das Dorf.",
         4: "Es ist Nacht. Es ist Mitternacht. Es ist Essenzeit!",
         5: "Zu Tische, Werwölfe!",
