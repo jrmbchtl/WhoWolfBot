@@ -3,8 +3,8 @@ from src.main.server.characters.Types import CharacterType
 
 
 class Werwolf(WerwolfTeam):
-    def __init__(self, isAlive=True):
-        super(Werwolf, self).__init__(CharacterType.WERWOLF, isAlive)
+    def __init__(self, alive=True):
+        super(Werwolf, self).__init__(CharacterType.WERWOLF, alive)
         self.descriptions = {
             0: ("Du bist einer der Werwölfe. Diese suchen sich jede Nacht gemeinsam ein Opfer aus, "
                 "welches sie töten wollen. Ihr Ziel ist es, dass nur Charaktere der Werwölfe "

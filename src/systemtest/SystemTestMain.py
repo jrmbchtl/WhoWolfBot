@@ -25,7 +25,10 @@ class SystemTestMain(object):
             print("Server was already started, using running instance")
         self.serverConnection.startServer()
         for test in self.tests:
+            print("\n\n##########################################################################")
+            print("Running test " + test.getName() + "\n\n")
             test.run()
+            print("\n\n")
 
         self.server.kill()
         self.serverConnection.closeServer()

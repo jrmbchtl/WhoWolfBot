@@ -20,7 +20,8 @@ class ServerConnection(object):
 		while True:
 			data = self.s.recv(1)
 			if not data:
-				break
+				fromServer = ""
+				continue
 			fromServer += data.decode('utf-8')
 			try:
 				json.loads(fromServer)

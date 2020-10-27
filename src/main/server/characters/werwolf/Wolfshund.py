@@ -5,8 +5,8 @@ from src.main.server.characters.Types import TeamType
 
 
 class Wolfshund(Character):
-    def __init__(self, isAlive=True):
-        super(Wolfshund, self).__init__(None, CharacterType.WOLFSHUND, isAlive)
+    def __init__(self, alive=True):
+        super(Wolfshund, self).__init__(None, CharacterType.WOLFSHUND, alive)
         self.descriptions = {
             0: ("Du bist der Wolfshund. Als dieser darfst du in der ersten Nacht entscheiden, "
                 "ob du das Spiel als Werwolf oder als Dorfbewohner spielen willst."),

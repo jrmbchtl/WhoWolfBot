@@ -50,7 +50,7 @@ class GameData(object):
     def getAlivePlayers(self):
         alivePlayers = {}
         for player in self.players:
-            if self.players[player].isAlive():
+            if self.players[player].getCharacter().isAlive():
                 alivePlayers[player] = self.players[player]
         return alivePlayers
 
@@ -64,7 +64,7 @@ class GameData(object):
             for player in self.getAlivePlayers():
                 if player in sortedDict:
                     continue
-                playerValue = self.getAlivePlayers()[player].getCharacter().getRole()
+                playerValue = self.getAlivePlayers()[player].getCharacter().getRole().value
                 if maximum is None:
                     maximum = playerValue
                 elif maximum < playerValue:

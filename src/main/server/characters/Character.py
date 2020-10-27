@@ -5,14 +5,14 @@ from src.main.server import Factory
 
 class Character(object):
 
-    def __init__(self, team, role, isAlive=True):
+    def __init__(self, team, role, alive=True):
         super(Character, self)
-        self.isAlive = isAlive
+        self.alive = alive
         self.role = role
         self.team = team
 
     def isAlive(self):
-        return self.isAlive
+        return self.alive
 
     def getTeam(self):
         return self.team
@@ -30,7 +30,7 @@ class Character(object):
         pass
 
     def kill(self, gameData, playerId, dm=None):
-        self.isAlive = False
+        self.alive = False
         if dm is None:
             dm = gameData.getPlayers()[playerId].getName() + deathMessage()
         gameData.sendJSON(Factory.createMessageEvent(gameData.getOrigin(), deathMessage))

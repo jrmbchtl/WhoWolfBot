@@ -3,10 +3,10 @@ from src.main.server.characters.Types import TeamType
 
 
 class WerwolfTeam(Character):
-	def __init__(self, role, isAlive):
-		super(WerwolfTeam, self).__init__(TeamType.WERWOLF, role, isAlive)
+	def __init__(self, role, alive):
+		super(WerwolfTeam, self).__init__(TeamType.WERWOLF, role, alive)
 
 
 class VillagerTeam(Character):
-	def __init__(self, role, isAlive):
-		super(VillagerTeam, self).__init__(TeamType.VILLAGER, role, isAlive)
+	def __init__(self, role, alive):
+		super(VillagerTeam, self).__init__(TeamType.VILLAGER, role, alive)

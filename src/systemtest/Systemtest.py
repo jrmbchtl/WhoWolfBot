@@ -6,6 +6,9 @@ class Systemtest(object):
         super(Systemtest, self)
         self.sc: ServerConnection = sc
 
+    def getName(self):
+        raise NameError("You should name your test!")
+
     def run(self):
         pass
 
@@ -38,12 +41,12 @@ class Systemtest(object):
                 {"name": "Player " + str(i), "id": i}, "origin": 0, "gameId": gameId})
             for j in range(0, 3):
                 self.assertAnyMessage()
-                self.verifyMessage()
+                self.verifyMessage(0, gameId)
         self.sc.sendJSON({"commandType": "startGame", "startGame": {"senderId": admin}, "origin": 0,
                           "gameId": gameId})
         for i in range(0, numberOfPlayers + 1):
             self.assertAnyMessage()
-            self.verifyMessage()
+            self.verifyMessage(0, gameId)
         return
 
 

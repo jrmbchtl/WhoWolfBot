@@ -4,8 +4,8 @@ from src.main.server.characters.Types import CharacterType
 
 
 class Hexe(VillagerTeam):
-    def __init__(self, isAlive=True):
-        super(Hexe, self).__init__(CharacterType.HEXE, isAlive)
+    def __init__(self, alive=True):
+        super(Hexe, self).__init__(CharacterType.HEXE, alive)
         self.descriptions = {
             0: ("Du bist die Hexe. Diese erwacht jede Nacht, erfährt das Opfer der Werwölfe und "
                 "darf sich entscheiden, ob sie ihren einen Lebenstrank auf das Opfer anwendet. "

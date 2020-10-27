@@ -3,8 +3,8 @@ from src.main.server.characters.Types import CharacterType
 
 
 class Dorfbewohner(VillagerTeam):
-    def __init__(self, role=CharacterType.DORFBEWOHNER, isAlive=True):
-        super(Dorfbewohner, self).__init__(role, isAlive)
+    def __init__(self, role=CharacterType.DORFBEWOHNER, alive=True):
+        super(Dorfbewohner, self).__init__(role, alive)
         self.descriptions = {
             0: ("Du bist ein Dorfbewohner, ein normaler Charakter mit keinerlei besonderen "
                 "Fähigkeiten."),
@@ -23,8 +23,8 @@ class Dorfbewohner(VillagerTeam):
 
 
 class Dorfbewohnerin(Dorfbewohner):
-    def __init__(self, isAlive=True):
-        super(Dorfbewohnerin, self).__init__(CharacterType.DORFBEWOHNERIN, isAlive)
+    def __init__(self, alive=True):
+        super(Dorfbewohnerin, self).__init__(CharacterType.DORFBEWOHNERIN, alive)
         self.descriptions = {
             0: ("Du bist eine Dorfbewohnerin, ein normaler Charakter mit keinerlei besonderen "
                 "Fähigkeiten."),

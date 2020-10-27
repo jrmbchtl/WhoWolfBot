@@ -64,9 +64,7 @@ class Server(object):
         while (rec["commandType"] != "startGame"
                or rec["startGame"]["senderId"] != self.gameData.getAdmin()
                or len(self.gameData.getPlayers()) < 4):
-            print("commandType: " + rec["commandType"])
             if rec["commandType"] == "register":
-                print("got register Command")
                 if rec["register"]["id"] not in self.gameData.getPlayers():
                     self.gameData.sendJSON(
                         Factory.createMessageEvent(rec["register"]["id"], "Ich bin der Werwolfbot"))

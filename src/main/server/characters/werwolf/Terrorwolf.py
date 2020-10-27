@@ -4,8 +4,8 @@ from src.main.server.characters.Types import CharacterType
 
 
 class Terrorwolf(WerwolfTeam):
-    def __init__(self, isAlive=True):
-        super(Terrorwolf, self).__init__(CharacterType.TERRORWOLF, isAlive)
+    def __init__(self, alive=True):
+        super(Terrorwolf, self).__init__(CharacterType.TERRORWOLF, alive)
         self.descriptions = {
             0: ("Du bist der Terrorwolf. Wenn der Terrorwolf stirbt, nimmt er noch "
                 "einen Spieler seiner Wahl mit in den Tod."),

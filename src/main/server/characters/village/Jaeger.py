@@ -4,8 +4,8 @@ from src.main.server.characters.Types import CharacterType
 
 
 class Jaeger(VillagerTeam):
-    def __init__(self, isAlive=True):
-        super(Jaeger, self).__init__(CharacterType.JAEGER, isAlive)
+    def __init__(self, alive=True):
+        super(Jaeger, self).__init__(CharacterType.JAEGER, alive)
         self.descriptions = {
             0: ("Du bist der Jäger: Sollte er zu Tode kommen, kann er einen letzten Schuss "
                 "abgeben und einen Mitspieler mit ins Verderben reißen."),

@@ -3,6 +3,9 @@ from src.systemtest.Systemtest import Systemtest
 
 class Exampletest(Systemtest):
 
+    def getName(self):
+        return "Exampletest"
+
     def run(self):
         print("running Exampletest")
         self.sc.sendJSON({"commandType": "newGame", "newGame": {"senderId": 42}, "origin": 0})

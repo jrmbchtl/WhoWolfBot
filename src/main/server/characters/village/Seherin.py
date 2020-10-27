@@ -5,8 +5,8 @@ from src.main.server.characters.Types import TeamType
 
 
 class Seherin(VillagerTeam):
-    def __init__(self, isAlive=True):
-        super(Seherin, self).__init__(CharacterType.SEHERIN, isAlive)
+    def __init__(self, alive=True):
+        super(Seherin, self).__init__(CharacterType.SEHERIN, alive)
         self.descriptions = {
             0: ("Du bist die Seherin. Diese erwacht jede Nacht, sucht sich einen Bewohner "
                 "aus und erfährt, ob dieser zu den Werwölfen gehört oder nicht."),
