@@ -3,9 +3,7 @@
 
 name: Run automated tests
 
-on:
-  release:
-    types: [created]
+on: push
 
 jobs:
   deploy:
