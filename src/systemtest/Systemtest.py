@@ -28,8 +28,23 @@ class Systemtest(object):
             assertIn(key, expected)
             assertEqual(expected[key], actual[key])
 
-    def initGame(self, numberOfPlayers=4):
-        pass
+    # handles everything including nightfall and returns the gameId
+    def initGame(self, numberOfPlayers=4, admin=42):
+        self.sc.sendJSON({"commandType": "newGame", "newGame": {"senderId": admin}, "origin": 0})
+        gameId = self.sc.receiveJSON()["gameId"]
+        self.verifyMessage(0, gameId)
+        for i in range(1, numberOfPlayers + 1):
+            self.sc.sendJSON({"commandType": "register", "register":
+                {"name": "Player " + str(i), "id": i}, "origin": 0, "gameId": gameId})
+            for j in range(0, 3):
+                self.assertAnyMessage()
+                self.verifyMessage()
+        self.sc.sendJSON({"commandType": "startGame", "startGame": {"senderId": admin}, "origin": 0,
+                          "gameId": gameId})
+        for i in range(0, numberOfPlayers + 1):
+            self.assertAnyMessage()
+            self.verifyMessage()
+        return
 
 
 def assertEqual(element1, element2):
