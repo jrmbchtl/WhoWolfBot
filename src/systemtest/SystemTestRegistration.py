@@ -1,4 +1,4 @@
-from src.systemtest.Exampletest import Exampletest
+from src.systemtest.tests.Exampletest import Exampletest
 
 
 class SystemTestRegistration(object):
@@ -7,4 +7,4 @@ class SystemTestRegistration(object):
         self.main = main
 
     def register(self):
-        self.main.register(Exampletest(self.main.getSc()))
+        self.main.register(Exampletest(self.main.getSc()))  # has to be run first

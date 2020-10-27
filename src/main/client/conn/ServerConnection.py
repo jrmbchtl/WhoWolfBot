@@ -18,12 +18,13 @@ class ServerConnection(object):
 	def receiveJSON(self):
 		fromServer = ""
 		while True:
-			data = self.s.recv(4096)
+			data = self.s.recv(1)
 			if not data:
 				break
 			fromServer += data.decode('utf-8')
-			print("Received: " + fromServer)
 			try:
+				json.loads(fromServer)
+				print("Client - Received: " + fromServer)
 				return json.loads(fromServer)
 			except ValueError:
 				continue
@@ -31,27 +32,8 @@ class ServerConnection(object):
 		return self.receiveJSON()
 
 	def sendJSON(self, dc):
-		print("Sending: " + json.dumps(dc))
+		print("Client - Sending: " + json.dumps(dc))
 		self.s.send(json.dumps(dc).encode('utf-8'))
-
-	def receiveString(self):
-		fromServer = ""
-		while True:
-			data = self.s.recv(4096)
-			if not data:
-				break
-			fromServer += data.decode('utf-8')
-			print("Received: " + fromServer)
-			try:
-				return fromServer
-			except ValueError:
-				continue
-		print("expected valid json but got " + fromServer)
-		return self.receiveJSON()
-
-	def sendString(self, string):
-		print("Sending: " + string)
-		self.s.send(string.encode('utf-8'))
 
 	def closeServer(self):
 		self.s.close()

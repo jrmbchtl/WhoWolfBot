@@ -13,6 +13,13 @@ class Systemtest(object):
         rec = self.sc.receiveJSON()
         self.dictCompare(dc, rec)
 
+    def assertAnyMessage(self):
+        self.sc.receiveJSON()
+
+    def verifyMessage(self, messageId=112, gameId=1):
+        self.sc.sendJSON({"commandType": "feedback", "feedback":
+                         {"success": 1, "messageId": messageId}, "gameId": gameId})
+
     def dictCompare(self, expected, actual):
         for key in expected:
             assertIn(key, actual)
@@ -20,6 +27,9 @@ class Systemtest(object):
         for key in actual:
             assertIn(key, expected)
             assertEqual(expected[key], actual[key])
+
+    def initGame(self, numberOfPlayers=4):
+        pass
 
 
 def assertEqual(element1, element2):

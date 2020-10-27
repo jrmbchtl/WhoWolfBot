@@ -27,7 +27,7 @@ class GameData(object):
     def dumpNextMessageDict(self):
         while self.gameQueue.empty():
             pass
-        print("Dumped: " + self.gameQueue.get())
+        print("Dumped: " + str(self.gameQueue.get()))
 
     def setGameOver(self, gameOver):
         self.gameOver = gameOver
@@ -42,7 +42,10 @@ class GameData(object):
         return self.players
 
     def getPlayerList(self):
-        return self.getPlayers().keys()
+        ls = []
+        for player in self.players:
+            ls.append(player)
+        return ls
 
     def getAlivePlayers(self):
         alivePlayers = {}

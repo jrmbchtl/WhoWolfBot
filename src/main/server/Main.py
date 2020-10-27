@@ -22,11 +22,9 @@ class Main(object):
                     self.gameQueues[self.gameId] = SimpleQueue()
                     threading.Thread(target=startNewGame,
                                      args=(sc, dc, self.gameId,
-                                           self.gameQueues[self.gameId],)).start()
+                                           self.gameQueues[self.gameId], seed,)).start()
                     self.gameId += 1
                 elif dc["gameId"] in self.gameQueues:
-                    print(dc)
-                    print(self.gameQueues)
                     self.gameQueues[dc["gameId"]].put(dc)
                 else:
                     print("can't find a game with id " + dc["gameId"])
@@ -36,8 +34,8 @@ class Main(object):
         sc.closeServer()
 
 
-def startNewGame(sc, dc, gameId, gameQueue):
-    server = Server(42, sc, dc["newGame"]["senderId"], dc["origin"], gameQueue, gameId)
+def startNewGame(sc, dc, gameId, gameQueue, seed):
+    server = Server(seed, sc, dc["newGame"]["senderId"], dc["origin"], gameQueue, gameId)
     server.start()
 
 

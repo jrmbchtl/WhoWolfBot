@@ -34,16 +34,18 @@ class Server(object):
                 self.accuse()
             self.vote()
 
-    def updateRegisterMenu(self):
+    def updateRegisterMenu(self, disable=False):
         message = ("Viel Spass beim Werwolf spielen!\n\nBitte einen privaten Chat mit dem Bot "
                    "starten, bevor das Spiel beginnt!\n\nUm das Spiel in seiner vollen Breite "
-                   "genießen zu können , empfiehlt es sich bei sehr schmalen Bildschirmen, "
+                   "genießen zu können, empfiehlt es sich bei sehr schmalen Bildschirmen, "
                    "diese quer zu verwenden.\n\n")
         message += 'Spieler:\n'
         for player in self.gameData.getPlayers():
-            message += player.getName() + "\n"
-        options = ["Mitspielen/Aussteigen", "Start", "Cancel"]
-        sendDict = {}
+            message += self.gameData.getPlayers()[player].getName() + "\n"
+        if not disable:
+            options = ["Mitspielen/Aussteigen", "Start", "Cancel"]
+        else:
+            options = []
         if self.gameData.getMenuMessageId() is None:
             sendDict = Factory.createChoiceFieldEvent(self.gameData.getOrigin(), message, options)
         else:
@@ -61,10 +63,13 @@ class Server(object):
         rec = self.gameData.getNextMessageDict()
         while (rec["commandType"] != "startGame"
                or rec["startGame"]["senderId"] != self.gameData.getAdmin()
-               or self.gameData.getPlayers().len() < 4):
+               or len(self.gameData.getPlayers()) < 4):
+            print("commandType: " + rec["commandType"])
             if rec["commandType"] == "register":
+                print("got register Command")
                 if rec["register"]["id"] not in self.gameData.getPlayers():
-                    Factory.createMessageEvent(rec["register"]["id"], "Ich bin der Werwolfbot")
+                    self.gameData.sendJSON(
+                        Factory.createMessageEvent(rec["register"]["id"], "Ich bin der Werwolfbot"))
                     tmp = self.gameData.getNextMessageDict()
                     if tmp["feedback"]["success"] == 0:
                         self.gameData.sendJSON(Factory.createMessageEvent(
@@ -72,24 +77,32 @@ class Server(object):
                             "@" + rec["register"]["name"]
                             + ", bitte öffne einen privaten Chat mit mir"))
                         self.gameData.dumpNextMessageDict()
+                        rec = self.gameData.getNextMessageDict()
                         continue
                     else:
+                        self.gameData.sendJSON(
+                            Factory.createMessageEvent(rec["register"]["id"],
+                                                       "", tmp["feedback"]["messageId"],
+                                                       Factory.EditMode.DELETE))
+                        self.gameData.dumpNextMessageDict()
                         player = Player(rec["register"]["name"])
                         self.gameData.getPlayers()[rec["register"]["id"]] = player
                 else:
                     self.gameData.getPlayers().pop(rec["register"]["id"], None)
                 self.updateRegisterMenu()
-                rec = self.gameData.getNextMessageDict()
+            rec = self.gameData.getNextMessageDict()
+        print("started game")
+        self.updateRegisterMenu(True)
 
     def rollRoles(self):
-        playerList = self.gameData.getPlayerList()
+        playerList: list = self.gameData.getPlayerList()
         self.gameData.shuffle(playerList)
 
         werwolfRoleList = getWerwolfRoleList(len(playerList))
         dorfRoleList = getVillagerRoleList()
 
         unique = [CharacterType.JAEGER, CharacterType.SEHERIN, CharacterType.HEXE,
-                  CharacterType.WOLFSHUND, CharacterType.TERROWOLF]
+                  CharacterType.WOLFSHUND, CharacterType.TERRORWOLF]
 
         group_mod = self.gameData.random() * 0.2 + 0.9
         werwolf_amount = int(round(len(playerList) * (1.0 / 3.5) * group_mod, 0))
@@ -105,10 +118,15 @@ class Server(object):
                 if role.getCharacterType() in unique:
                     removeCharacterTypeFromList(dorfRoleList, role.getCharacterType())
             self.gameData.sendJSON(
-                Factory.createMessageEvent(p, self.gameData.getPlayers()[p].getDescription()))
+                Factory.createMessageEvent(
+                    p, self.gameData.getPlayers()[p].getCharacter().getDescription(self.gameData)))
             self.gameData.dumpNextMessageDict()
 
     def night(self):
+        self.gameData.sendJSON(Factory.createMessageEvent(
+            self.gameData.getOrigin(), self.nightfall()))
+        self.gameData.dumpNextMessageDict()
+
         sortedPlayerDict = self.gameData.getAlivePlayersSortedDict()
         wakeWerwolf = False
         for player in sortedPlayerDict:
@@ -356,7 +374,7 @@ class Server(object):
     def pattNoKill(self):
         switcher = {
             0: ("Da sich das Dorf nicht auf einen Schuldigen einigen kann, wird heute niemand "
-            "gelyncht."),
+                "gelyncht."),
             1: "Die Demokratie ist überfordert und beschließt, niemanden hinzurichten.",
             2: "Nach einer intensiven aber ergebnislosen Diskussion kehren alle nach hause zurück.",
             3: "Mal wieder viel heiße Luft um Nichts - viel Anschuldigungen aber kein Ergebnis.",
@@ -376,10 +394,32 @@ class Server(object):
         }
         return switcher[self.gameData.randrange(0, 10)]
 
+    def nightfall(self):
+        switcher = {
+            0: "Es wird Nacht in Düsterwald.",
+            1: "Die Sonne geht langsam unter, es ist Zeit für alle, schlafen zu gehen.",
+            2: ("Düsterwald bereitet sich auf eine turbulente Nacht vor und legt sich "
+                "schlafen. Manche Individuen stellen sich jedoch einen Wecker..."),
+            3: ("Die Nacht ist nicht weniger gefährlich als der Tag und die Dorfbewohner "
+                "stellen sich darauf ein, sich vielleicht ein letztes Mal schlafen zu legen..."),
+            4: "Sowie es langsam dunkel wird in Düsterwald, legen sich alle schlafen.",
+            5: ("Nach einem anstrengenden Tag hoffen viele Dorfbewohner nun auf eine erholsame "
+                "Nacht. Doch diese Nacht werden nicht alle gut schlafen..."),
+            6: ("Die Straßen werden leer, in der Kneipe wurde schon vor einer halben Stunde "
+                "das letzte Bier ausgeschenkt und Düsterwald legt sich schlafen."),
+            7: ("Düsterwald legt sich schlafen - in der Hoffnung, in der Morgendämmerung "
+                "wieder zu erwachen."),
+            8: ("So manch Dorfbewohner hofft nun auf eine ruhige Nacht - andere schlecken sich "
+                "schon das Maul..."),
+            9: ("Die Dorfbewohner stoßen auf einen erfolgreichen Tag an und wünschen sich eine "
+                "gute Nacht.")
+        }
+        return switcher[self.gameData.randrange(0, 10)]
+
 
 def removeCharacterTypeFromList(ls, ct):
     i = 0
-    while i < ls.len():
+    while i < len(ls):
         if ls[i].getCharacterType() == ct:
             del ls[i]
         else:
