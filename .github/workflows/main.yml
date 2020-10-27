@@ -3,7 +3,10 @@
 
 name: Run automated tests
 
-on: push
+on:
+  push:
+    branches:
+      - develop
 
 jobs:
   deploy:
