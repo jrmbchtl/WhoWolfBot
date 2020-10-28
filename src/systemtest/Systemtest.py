@@ -26,10 +26,16 @@ class Systemtest(object):
     def dictCompare(self, expected, actual):
         for key in expected:
             assertIn(key, actual)
-            assertEqual(expected[key], actual[key])
+            if isinstance(expected[key], dict):
+                self.dictCompare(expected[key], actual[key])
+            else:
+                assertEqual(expected[key], actual[key])
         for key in actual:
             assertIn(key, expected)
-            assertEqual(expected[key], actual[key])
+            if isinstance(actual[key], dict):
+                self.dictCompare(expected[key], actual[key])
+            else:
+                assertEqual(expected[key], actual[key])
 
     # handles everything including nightfall and returns the gameId
     def initGame(self, numberOfPlayers=4, admin=42):
@@ -44,10 +50,10 @@ class Systemtest(object):
                 self.verifyMessage(0, gameId)
         self.sc.sendJSON({"commandType": "startGame", "startGame": {"senderId": admin}, "origin": 0,
                           "gameId": gameId})
-        for i in range(0, numberOfPlayers + 1):
+        for i in range(0, numberOfPlayers + 2):
             self.assertAnyMessage()
             self.verifyMessage(0, gameId)
-        return
+        return gameId
 
 
 def assertEqual(element1, element2):
