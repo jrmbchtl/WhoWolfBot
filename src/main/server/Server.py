@@ -1,6 +1,10 @@
+import json
+import requests
+
 from . import Factory
 from .GameData import GameData
 from .Player import Player
+from .characters import Teams
 from .characters.Character import Character
 from .characters.Types import CharacterType
 from .characters.village.Dorfbewohner import Dorfbewohner, Dorfbewohnerin
@@ -16,17 +20,16 @@ from .characters.werwolf.Wolfshund import Wolfshund
 class Server(object):
     def __init__(self, seed, sc, admin, origin, gameQueue, gameId):
         super(Server, self)
-        self.gameData = GameData(seed=seed, gameOver=False, players={}, sc=sc,
-                                 admin=admin, origin=origin, gameQueue=gameQueue,
-                                 gameId=gameId, menuMessageId=None)
+        self.gameData = GameData(seed=seed, players={}, sc=sc, admin=admin, origin=origin,
+                                 gameQueue=gameQueue, gameId=gameId, menuMessageId=None)
         self.accusedDict = {}
 
     def start(self):
         self.register()
         self.rollRoles()
-        while not self.gameData.getGameOver():
+        while not self.checkGameOver():
             self.night()
-            if self.gameData.getGameOver():
+            if self.checkGameOver():
                 break
             if len(self.accusedDict) <= 3:
                 self.accuseAll()
@@ -411,6 +414,78 @@ class Server(object):
                 "schon das Maul..."),
             9: ("Die Dorfbewohner stoßen auf einen erfolgreichen Tag an und wünschen sich eine "
                 "gute Nacht.")
+        }
+        return switcher[self.gameData.randrange(0, 10)]
+
+    def checkGameOver(self):
+        if len(self.gameData.getAlivePlayers()) == 0:
+            self.gameData.sendJSON(Factory.createMessageEvent(
+                self.gameData.getOrigin(), self.allDead()))
+            self.gameData.dumpNextMessageDict()
+            return True
+        else:
+            firstPlayerId = self.gameData.getAlivePlayerList()[0]
+            team = self.gameData.getAlivePlayers()[firstPlayerId].getCharacter().getTeam()
+            for player in self.gameData.getAlivePlayers():
+                if self.gameData.getAlivePlayers()[player].getCharacter().getTeam() == team:
+                    continue
+                else:
+                    return False
+            if team == Teams.TeamType.WERWOLF:
+                self.gameData.sendJSON(
+                    Factory.createMessageEvent(self.gameData.getOrigin(), self.werwoelfeWin()))
+            else:
+                self.gameData.sendJSON(
+                    Factory.createMessageEvent(self.gameData.getOrigin(), self.dorfWin()))
+            self.gameData.dumpNextMessageDict()
+            return True
+
+    def allDead(self):
+        switcher = {
+            0: "Es sind alle tot.",
+            1: "Das Dorf ist so lebendig wie Tschernobyl.",
+            2: "In Düsterwald könnte jetzt ein Vulkan ausbrechen und niemand würde sterben.",
+            3: "Düsterwald hat seine Letzte Ruhe gefunden.",
+            4: "Jetzt leben nur noch Tiere in Düsterwald.",
+            5: "Die Natur wird sich das kleine Örtchen ab jetzt Stück für Stück zurückholen.",
+            6: "Die Zivilisation in Düsterwald ist ausgelöscht.",
+            7: "Das Werwolfproblem ist beseitigt. Das Menschenproblem aber auch.",
+            8: "Düsterwald hat jetzt "
+               + str(json.loads(requests.get("http://api.open-notify.org/astros.json").text)
+                     ["number"]) + " Einwohner weniger als das Weltall.",
+            9: "Das Kapitel 'Düsterwald' ist jetzt endgültig abgeschlossen."
+        }
+        return switcher[self.gameData.randrange(0, 10)]
+
+    def werwoelfeWin(self):
+        switcher = {
+            0: "Die Werwölfe gewinnen.",
+            1: "Es war ein langer Kampf, aber die Werwölfe haben sich durchgesetzt.",
+            2: "Es leben nur noch Werwölfe in Düsterwald!",
+            3: "Es gibt keine Dorfbewohner mehr, die von den Werwölfen verspeißt werden können.",
+            4: "Es wird wieder friedlich in Düsterwald, da hier jetzt nur noch Werwölfe leben.",
+            5: "Die Werwölfe haben gesiegt.",
+            6: "Die Werwölfe haben ihre Dominanz bewiesen.",
+            7: "Die Werwölfe sind in Düsterwald anscheinend die stärkere Rasse.",
+            8: "Mit dem Tod des letzten Dorfbewohners haben die Werwölfe jetzt ihre Ruhe.",
+            9: ("Die Werwölfe veranstalten zur Feier des Tages einen Fest und verspeißen "
+                "genussvoll den letzten Dorfbewohner.")
+        }
+        return switcher[self.gameData.randrange(0, 10)]
+
+    def dorfWin(self):
+        switcher = {
+            0: "Das Dorf gewinnt.",
+            1: "Es war ein langer Kampf, aber die Dorfbewohner haben sich durchgesetzt.",
+            2: "Es leben keine Werwölfe mehr in Düsterwald!",
+            3: "Es gibt keine Werwölfe mehr, die Dorfbewohner verspeißen wollen.",
+            4: "Es wird wieder friedlich in Düsterwald, da hier nur noch Dorfbewohner leben.",
+            5: "Die Dorfbewohner haben gesiegt.",
+            6: "Die Dorfbewohner haben ihre Dominanz bewiesen.",
+            7: "Die Werwölfe sind in Düsterwald anscheinend die unterlegene Rasse.",
+            8: "Mit dem Tod des letzten Werwolfes haben die Dorfbewohner jetzt ihre Ruhe.",
+            9: ("Die Dorfbewohner veranstalten zur Feier des Tages einen Fest und stopfen den "
+                "letzten Werwolf aus.")
         }
         return switcher[self.gameData.randrange(0, 10)]
 

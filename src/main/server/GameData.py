@@ -4,11 +4,10 @@ import random
 class GameData(object):
     """stores data for each game"""
 
-    def __init__(self, seed, gameOver, players, sc, admin, origin, gameQueue, gameId,
+    def __init__(self, seed, players, sc, admin, origin, gameQueue, gameId,
                  menuMessageId):
         super(GameData, self).__init__()
         random.seed(seed)
-        self.gameOver = gameOver
         self.players = players
         self.sc = sc
         self.admin = admin
@@ -28,12 +27,6 @@ class GameData(object):
         while self.gameQueue.empty():
             pass
         print("Dumped: " + str(self.gameQueue.get()))
-
-    def setGameOver(self, gameOver):
-        self.gameOver = gameOver
-
-    def getGameOver(self):
-        return self.gameOver
 
     def setPlayers(self, players):
         self.players = players
@@ -55,7 +48,10 @@ class GameData(object):
         return alivePlayers
 
     def getAlivePlayerList(self):
-        return self.getAlivePlayers().keys()
+        playerList = []
+        for player in self.players:
+            playerList.append(player)
+        return playerList
 
     def getAlivePlayersSortedDict(self):
         sortedDict = []
