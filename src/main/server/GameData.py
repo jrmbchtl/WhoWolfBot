@@ -49,7 +49,7 @@ class GameData(object):
 
     def getAlivePlayerList(self):
         playerList = []
-        for player in self.players:
+        for player in self.getAlivePlayers():
             playerList.append(player)
         return playerList
 

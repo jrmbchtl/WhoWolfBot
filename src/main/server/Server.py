@@ -5,7 +5,6 @@ from . import Factory
 from .GameData import GameData
 from .Player import Player
 from .characters import Teams
-from .characters.Character import Character
 from .characters.Types import CharacterType
 from .characters.village.Dorfbewohner import Dorfbewohner, Dorfbewohnerin
 from .characters.village.Hexe import Hexe
@@ -36,6 +35,7 @@ class Server(object):
             else:
                 self.accuse()
             self.vote()
+        print("game " + str(self.gameData.gameId) + " is over")
 
     def updateRegisterMenu(self, disable=False):
         message = ("Viel Spass beim Werwolf spielen!\n\nBitte einen privaten Chat mit dem Bot "
@@ -143,11 +143,11 @@ class Server(object):
 
         if self.gameData.getWerwolfTarget() is not None:
             werwolfTargetId = self.gameData.getWerwolfTarget()
-            werwolfTarget: Character = self.gameData.getAlivePlayers()[werwolfTargetId]
+            werwolfTarget = self.gameData.getAlivePlayers()[werwolfTargetId].getCharacter()
             werwolfTarget.kill(self.gameData, werwolfTargetId)
         if self.gameData.getWitchTarget() is not None:
             witchTargetId = self.gameData.getWitchTarget()
-            witchTarget: Character = self.gameData.getAlivePlayers()[witchTargetId]
+            witchTarget = self.gameData.getAlivePlayers()[witchTargetId].getCharacter()
             witchTarget.kill(self.gameData, witchTargetId)
 
     def accuseAll(self):

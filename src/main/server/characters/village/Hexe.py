@@ -75,9 +75,9 @@ class Hexe(VillagerTeam):
             options = []
             index = 0
             for player in gameData.getAlivePlayerList():
-                if player != player:
+                if player != playerId:
                     no, option = hexeKill(gameData)
-                    option = gameData.getAlivePlayers()[player] + option
+                    option = gameData.getAlivePlayers()[player].getName() + option
                     options.append(option)
                     idToNo[player] = no
                     indexToId[index] = player
@@ -94,12 +94,12 @@ class Hexe(VillagerTeam):
                 playerId, text, messageId, Factory.EditMode.EDIT))
             gameData.dumpNextMessageDict()
 
-            if choice == len(gameData.getAlivePlayerList() - 1):
+            if choice == len(gameData.getAlivePlayerList()) - 1:
                 gameData.setWitchTarget(None)
             else:
                 self.hasDeathPotion = False
                 gameData.setWitchTarget(indexToId[choice])
-                targetName = gameData.getAlivePlayerList()[indexToId[choice]].getName()
+                targetName = gameData.getAlivePlayers()[indexToId[choice]].getName()
                 text = hexeDidKill(idToNo[indexToId[choice]], targetName)
                 gameData.sendJSON(Factory.createMessageEvent(playerId, text))
                 gameData.dumpNextMessageDict()

@@ -15,7 +15,7 @@ class Systemtest(object):
     def run(self):
         pass
 
-    def asserReceiveDict(self, dc):
+    def assertReceiveDict(self, dc):
         rec = self.sc.receiveJSON()
         self.dictCompare(dc, rec)
 

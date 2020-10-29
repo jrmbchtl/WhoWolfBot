@@ -33,8 +33,12 @@ class Jaeger(VillagerTeam):
         text = jaegerChooseTarget(gameData)
         options = []
         idToChoice = {}
+        idList = []
         for player in gameData.getAlivePlayerList():
+            if player == gameData.getWerwolfTarget() or player == gameData.getWitchTarget():
+                continue
             choice, message = jaegerOptions(gameData)
+            idList.append(player)
             idToChoice[player] = choice
             options.append(gameData.getPlayers()[player].getName() + message)
 
@@ -46,9 +50,8 @@ class Jaeger(VillagerTeam):
             playerId, text, messageId, Factory.EditMode.EDIT))
         gameData.dumpNextMessageDict()
 
-        targetId = gameData.getAlivePlayerList()[rec["reply"]["choiceIndex"]]
-
-        dm = gameData.getPlayers()[targetId]
+        targetId = idList[rec["reply"]["choiceIndex"]]
+        dm = gameData.getPlayers()[targetId].getName()
         dm += jaegerShot(idToChoice[targetId])
         gameData.getPlayers()[targetId].getCharacter().kill(gameData, targetId, dm)
 
