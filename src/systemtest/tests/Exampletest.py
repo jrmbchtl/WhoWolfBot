@@ -1,3 +1,5 @@
+import time
+
 from src.systemtest.Systemtest import Systemtest
 
 
@@ -58,3 +60,6 @@ class Exampletest(Systemtest):
         self.verifyMessage()
         self.assertAnyMessage()
         self.verifyMessage()
+
+        self.clearRecBuffer()
+        self.sc.sendJSON({"commandType": "terminate", "terminate": {"fromId": 42}, "gameId": 1})

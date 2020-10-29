@@ -43,7 +43,7 @@ class Hexe(VillagerTeam):
 
     def wakeUp(self, gameData, playerId):
         if self.hasLivePotion and gameData.getWerwolfTarget() is not None:
-            targetName = gameData.getPlayerList()[gameData.getWerwolfTarget()].getName()
+            targetName = gameData.getPlayers()[gameData.getWerwolfTarget()].getName()
             text = targetName + (" wurde diese Nacht von den Werwölfen erwischt. "
                                  "Möchtest du diese Person retten?")
             noSave, optionSave = hexeSave(gameData)

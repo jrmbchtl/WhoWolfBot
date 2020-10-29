@@ -12,7 +12,7 @@ def wake(gameData: GameData):
         c: Character = gameData.getAlivePlayers()[player].getCharacter()
         if c.getTeam() == Types.TeamType.WERWOLF:
             werwolfList.append(player)
-        name = gameData.getAlivePlayerList()[player].getName()
+        name = gameData.getAlivePlayers()[player].getName()
         index, option = werwolfOptions(gameData, name)
         options.append(option)
         optionIndexList.append(index)
@@ -21,13 +21,15 @@ def wake(gameData: GameData):
     optionIndexList.append(index)
     text = werwolfChooseTarget(gameData)
 
-    messageIdDict = []  # werwolfId to MessageId
+    messageIdDict = {}  # werwolfId to MessageId
     for werwolf in werwolfList:
         gameData.sendJSON(Factory.createChoiceFieldEvent(werwolf, text, options))
         messageIdDict[werwolf] = gameData.getNextMessageDict()["feedback"]["messageId"]
 
+    newText = ""
     voteDict = {}  # stores werwolf and which index he voted for
-    while len(werwolfList) > len(voteDict) and GameData.uniqueDecision(voteDict):
+    while len(werwolfList) > len(voteDict) and not GameData.uniqueDecision(voteDict):
+
         rec = gameData.getNextMessageDict()
         if rec["commandType"] == "reply":
             voteDict[rec["reply"]["fromId"]] = rec["reply"]["choiceIndex"]
@@ -41,12 +43,16 @@ def wake(gameData: GameData):
                     targetName = gameData.getAlivePlayers()[targetId].getName()
                 newText += werwolfName + " schlägt vor " + werwolfResponseOptions(
                     optionIndexList[voteDict[key]], targetName) + "\n"
+            if len(werwolfList) == len(voteDict) and GameData.uniqueDecision(voteDict):
+                break
             for werwolf in werwolfList:
                 gameData.sendJSON(Factory.createChoiceFieldEvent(
                     werwolf, newText, options, messageIdDict[werwolf], Factory.EditMode.EDIT))
                 gameData.dumpNextMessageDict()
 
-    publishDecision(gameData, werwolfList, voteDict, optionIndexList, text, messageIdDict)
+    print("publishing werwolf decision")
+    publishDecision(gameData, werwolfList, voteDict, optionIndexList, newText, messageIdDict)
+    print("finished waking werwolfs")
 
 
 def publishDecision(gameData, werwolfList, voteDict, optionIndexList, text, messageIdDict):

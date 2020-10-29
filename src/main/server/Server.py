@@ -92,7 +92,6 @@ class Server(object):
                     self.gameData.getPlayers().pop(rec["register"]["id"], None)
                 self.updateRegisterMenu()
             rec = self.gameData.getNextMessageDict()
-        print("started game")
         self.updateRegisterMenu(True)
 
     def rollRoles(self):
@@ -130,14 +129,17 @@ class Server(object):
 
         sortedPlayerDict = self.gameData.getAlivePlayersSortedDict()
         wakeWerwolf = False
-        for player in sortedPlayerDict:
-            if player.getCharacter().getRole() < 0:
-                player.getCharacter().wakeUp()
+        for p in sortedPlayerDict:
+            player = sortedPlayerDict[p]
+            print("waking up " + player.getName())
+            if player.getCharacter().getRole().value[0] < 0:
+                player.getCharacter().wakeUp(self.gameData, p)
             elif not wakeWerwolf:
                 wakeWerwolf = True
                 wake.wake(self.gameData)
+                player.getCharacter().wakeUp(self.gameData, p)
             else:
-                player.getCharacter().wakeUp()
+                player.getCharacter().wakeUp(self.gameData, p)
 
         if self.gameData.getWerwolfTarget() is not None:
             werwolfTargetId = self.gameData.getWerwolfTarget()

@@ -1,7 +1,6 @@
 from src.main.server.conn.ServerConnection import ServerConnection
 from src.main.server.Server import Server
-import threading
-from queue import SimpleQueue
+from multiprocessing import Process, SimpleQueue
 
 
 class Main(object):
@@ -10,6 +9,7 @@ class Main(object):
         self.gameId = 1
         self.gameQueues = {}
         self.port = 32000
+        self.runningGames = {}
 
     def main(self, seed=42):
         sc = ServerConnection(self.port)
@@ -20,10 +20,15 @@ class Main(object):
                 commandType = dc["commandType"]
                 if commandType == "newGame":
                     self.gameQueues[self.gameId] = SimpleQueue()
-                    threading.Thread(target=startNewGame,
-                                     args=(sc, dc, self.gameId,
-                                           self.gameQueues[self.gameId], seed,)).start()
+                    self.runningGames[self.gameId] = \
+                        Process(target=startNewGame, args=(sc, dc, self.gameId,
+                                                           self.gameQueues[self.gameId], seed,))
+                    self.runningGames[self.gameId].start()
                     self.gameId += 1
+                elif commandType == "terminate":
+                    idToTerminate = dc["gameId"]
+                    if idToTerminate in self.runningGames:
+                        self.runningGames[idToTerminate].kill()
                 elif dc["gameId"] in self.gameQueues:
                     self.gameQueues[dc["gameId"]].put(dc)
                 else:
