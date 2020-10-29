@@ -1,5 +1,3 @@
-import time
-
 from src.systemtest.Systemtest import Systemtest
 
 
