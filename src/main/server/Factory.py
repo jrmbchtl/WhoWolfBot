@@ -9,7 +9,10 @@ def createMessageEvent(target, text="", messageId=0, mode=EditMode.WRITE):
 	dc = {"eventType": "message"}
 	message = {"text": text, "messageId": messageId}
 	dc["message"] = message
-	dc["mode"] = mode
+	if isinstance(mode, tuple):
+		dc["mode"] = mode[0]
+	else:
+		dc["mode"] = mode
 	dc["target"] = target
 
 	return dc
@@ -21,7 +24,10 @@ def createChoiceFieldEvent(target, text="", options=None, messageId=0, mode=Edit
 	dc = {"eventType": "choiceField"}
 	choiceField = {"text": text, "options": options, "messageId": messageId}
 	dc["choiceField"] = choiceField
-	dc["mode"] = mode
+	if isinstance(mode, tuple):
+		dc["mode"] = mode[0]
+	else:
+		dc["mode"] = mode
 	dc["target"] = target
 
 	return dc

@@ -6,7 +6,7 @@ New Game:
 	"newGame":{
 		"senderId": 12345678
 	},
-	"origin": 1234,
+	"origin": 1234
 }
 
 Register:
@@ -26,7 +26,7 @@ StartGame:
 	"startGame":{
 		"senderId": 12345678
 	},
-	"origin": 1234,
+	"origin": 1234,12345
 	"gameId": 12345
 }
 

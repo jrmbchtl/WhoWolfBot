@@ -1,3 +1,4 @@
+from src.main.client.Client import Client
 from src.main.client.conn.ServerConnection import ServerConnection
 
 
@@ -9,10 +10,8 @@ class Main(object):
 		sc = ServerConnection()
 		sc.startServer()
 
-		startGame = {"commandType": "newGame", "newGame": {"senderId": 42}, "origin": 1234}
-		sc.sendJSON(startGame)
-		response = sc.receiveJSON()
-		print(response)
+		client = Client(sc)
+		client.run()
 
 		sc.closeServer()
 

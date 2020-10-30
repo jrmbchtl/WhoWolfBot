@@ -80,7 +80,7 @@ class DoublePattTest(Systemtest):
         self.assertReceiveDict({"eventType": "message", "message":
             {"text": ("Nach einem anstrengenden Tag hoffen viele Dorfbewohner nun auf eine "
                       "erholsame Nacht. Doch diese Nacht werden nicht alle gut schlafen..."),
-             "messageId": 0}, "mode": ["write"], "target": 0, "gameId": gameId})
+             "messageId": 0}, "mode": "write", "target": 0, "gameId": gameId})
         self.verifyMessage(0, gameId)
 
         self.clearRecBuffer()
