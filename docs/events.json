@@ -1,0 +1,33 @@
+From Server to Client:
+
+"parseMode" is optional inside the <eventType>
+
+Message:
+{
+	"eventType": "message",
+	"message": {
+		"text": "test1234",//only needed for write and edit
+		"messageId": 112233 //only needed for edit and delete
+	},
+	"target": 1234,
+	"mode": "write",
+	"gameId": 12345 //handled by gameData
+}
+
+ChoiceField:
+{
+	"eventType": "choiceField",
+	"choiceField": {
+		"text": "test1234",
+		"options": [
+			"option1",
+			"option2",
+			"option3",
+			"option4"
+		],
+		"messageId": 112233 //only needed for edit and delete
+	},
+	"target": 1234,
+	"mode": "edit",
+	"gameId": 12345 //handled by gameData
+}

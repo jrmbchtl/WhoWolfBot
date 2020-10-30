@@ -1,0 +1,62 @@
+From Client to Server:
+
+New Game:
+{
+	"commandType": "newGame",
+	"newGame":{
+		"senderId": 12345678
+	},
+	"origin": 1234
+}
+
+Register:
+{
+	"commandType": "register",
+	"register":{
+		"name": "test Player",
+		"id": 12345678
+	},
+	"origin": 1234,
+	"gameId": 12345
+}
+
+StartGame:
+{
+	"commandType": "startGame",
+	"startGame":{
+		"senderId": 12345678
+	},
+	"origin": 1234,12345
+	"gameId": 12345
+}
+
+Reply:
+{
+	"commandType": "reply",
+	"reply": {
+		"fromId": 12345678,
+		"choiceIndex": 0
+	},
+	"origin": 1234,
+	"gameId": 12345
+}
+
+Feedback: (success can be 0 = False or 1 = True)
+{
+	"commandType": "feedback",
+	"feedback": {
+		"success": 1,
+		"messageId": 1222
+	},
+	"gameId": 12345	
+}
+
+Terminate:
+{
+	"commandType": "terminate",
+	"terminate": {
+		"fromId": 42
+	},
+	"gameId": 12345
+}
+
