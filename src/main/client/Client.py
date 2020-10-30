@@ -1,4 +1,5 @@
 import logging
+import random
 import time
 from multiprocessing import Process
 
@@ -49,8 +50,9 @@ class Client(object):
     def new(self, update, context):
         senderId = update.message.from_user.id
         origin = update.message.chat_id
+        seed = random.getrandbits(32)
         self.sc.sendJSON({"commandType": "newGame", "newGame": {"senderId": senderId},
-                          "origin": origin})
+                          "origin": origin, "seed": seed})
 
     def buttonHandler(self, update, context):
         callbackData = update.callback_query.data
@@ -84,7 +86,8 @@ class Client(object):
             replyMarkup = InlineKeyboardMarkup([])
         else:
             keyboard = []
-            if dc["choiceField"]["options"][0] == "Mitspielen/Aussteigen":
+            if len(dc["choiceField"]["options"]) == 3 \
+                    and dc["choiceField"]["options"][0] == "Mitspielen/Aussteigen":
                 keyboard = [[InlineKeyboardButton("Mitspielen/Aussteigen",
                                                   callback_data='register_' + str(gameId))],
                             [InlineKeyboardButton("Start", callback_data='start_' + str(gameId)),
@@ -100,21 +103,18 @@ class Client(object):
         if "parseMode" in dc[dc["eventType"]]:
             parseMode = dc["message"]["parseMode"]
         else:
-            parseMode = None
+            parseMode = ParseMode.MARKDOWN_V2
 
         if mode == "write":
             messageId = self.botSendLoop(target, text, replyMarkup, parseMode)
-            print("messageId:" + str(messageId))
         elif mode == "edit":
             self.botEditLoop(target, text, messageId, replyMarkup, parseMode)
         elif mode == "delete":
             self.botDeleteLoop(target, messageId)
-        print("messageId:" + str(messageId))
         return messageId
 
     def botSendLoop(self, chatId, text, replyMarkup=InlineKeyboardMarkup([]), parseMode=None):
         try:
-            print("feedback from sending")
             if parseMode is None:
                 tmp = self.bot.send_message(chat_id=chatId, text=text, reply_markup=replyMarkup)
                 return tmp.message_id
@@ -146,7 +146,6 @@ class Client(object):
 
     def botDeleteLoop(self, chatId, messageId):
         try:
-            print("deleting message" + str(messageId))
             self.bot.delete_message(chat_id=chatId, message_id=messageId)
         except RetryAfter:
             time.sleep(15)

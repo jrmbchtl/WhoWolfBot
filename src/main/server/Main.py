@@ -19,10 +19,14 @@ class Main(object):
                 dc = sc.receiveJSON()
                 commandType = dc["commandType"]
                 if commandType == "newGame":
+                    if "seed" in dc:
+                        s = dc["seed"]
+                    else:
+                        s = seed
                     self.gameQueues[self.gameId] = SimpleQueue()
                     self.runningGames[self.gameId] = \
                         Process(target=startNewGame, args=(sc, dc, self.gameId,
-                                                           self.gameQueues[self.gameId], seed,))
+                                                           self.gameQueues[self.gameId], s,))
                     self.runningGames[self.gameId].start()
                     self.gameId += 1
                 elif commandType == "terminate":

@@ -66,7 +66,7 @@ class Server(object):
         rec = self.gameData.getNextMessageDict()
         while (rec["commandType"] != "startGame"
                or rec["startGame"]["senderId"] != self.gameData.getAdmin()
-               or len(self.gameData.getPlayers()) < 4):
+               or len(self.gameData.getPlayers()) < 3):
             if rec["commandType"] == "register":
                 if rec["register"]["id"] not in self.gameData.getPlayers():
                     self.gameData.sendJSON(
@@ -172,6 +172,8 @@ class Server(object):
         newText = ""
         while len(self.accusedDict) < 3:
             rec = self.gameData.getNextMessageDict()
+            if rec["reply"]["fromId"] not in self.gameData.getAlivePlayers():
+                continue
             self.accusedDict[rec["reply"]["fromId"]] = \
                 self.gameData.getAlivePlayerList()[rec["reply"]["choiceIndex"]]
             newText = text + "\n\n"
@@ -274,6 +276,8 @@ class Server(object):
         while len(voteDict) < len(self.gameData.getAlivePlayers()):
             rec = self.gameData.getNextMessageDict()
             if rec["commandType"] == "reply":
+                if rec["reply"]["fromId"] not in self.gameData.getAlivePlayers():
+                    continue
                 voteDict[rec["reply"]["fromId"]] = rec["reply"]["choiceIndex"]
                 newText = text + "\n"
                 for key in voteDict:

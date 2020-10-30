@@ -38,23 +38,24 @@ class Seherin(VillagerTeam):
                     seherinOptions(gameData.getAlivePlayers()[player].getName(), gameData)
                 options.append(text)
                 playerToOption[player] = option
-                playerIndexList = player
+                playerIndexList.append(player)
         text = seherinChooseTarget(gameData)
         gameData.sendJSON(Factory.createChoiceFieldEvent(playerId, text, options))
-        rec = gameData.getNextMessageDict()
-        messageId = rec["feedback"]["messageId"]
+        messageId = gameData.getNextMessageDict()["feedback"]["messageId"]
 
-        rec = gameData.getNextMessageDict()
-        choice = rec["reply"]["choiceIndex"]
+        choice = gameData.getNextMessageDict()["reply"]["choiceIndex"]
 
         gameData.sendJSON(
-            Factory.createMessageEvent(playerId, text, messageId))
+            Factory.createMessageEvent(playerId, text, messageId, Factory.EditMode.EDIT))
         gameData.dumpNextMessageDict()
 
-        if gameData.getAlivePlayers()[playerIndexList[choice]].getTeam() == TeamType.WERWOLF:
-            replyText = seherinWerwolf(choice, playerIndexList[choice].getName())
+        if gameData.getAlivePlayers()[playerIndexList[choice]].\
+                getCharacter().getTeam() == TeamType.WERWOLF:
+            replyText = seherinWerwolf(choice, gameData.getAlivePlayers()[playerIndexList[choice]]
+                                       .getName())
         else:
-            replyText = seherinNoWerwolf(choice, playerIndexList[choice].getName())
+            replyText = seherinNoWerwolf(choice, gameData.getAlivePlayers()[playerIndexList[choice]]
+                                         .getName())
         gameData.sendJSON(Factory.createMessageEvent(playerId, replyText))
         gameData.dumpNextMessageDict()
 

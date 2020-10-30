@@ -41,8 +41,9 @@ class Systemtest(object):
                 assertEqual(expected[key], actual[key])
 
     # handles everything including nightfall and returns the gameId
-    def initGame(self, numberOfPlayers=4, admin=42):
-        self.sc.sendJSON({"commandType": "newGame", "newGame": {"senderId": admin}, "origin": 0})
+    def initGame(self, numberOfPlayers=4, admin=42, seed=42):
+        self.sc.sendJSON({"commandType": "newGame", "newGame": {"senderId": admin}, "origin": 0,
+                          "seed": seed})
         gameId = self.sc.receiveJSON()["gameId"]
         self.verifyMessage(0, gameId)
         for i in range(1, numberOfPlayers + 1):
