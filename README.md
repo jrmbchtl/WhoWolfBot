@@ -2,19 +2,18 @@
 Telegram Bot for playing Werwolf
 
 Implemented Roles:
+Dorfbewohner/in
+Hexe
+Jaeger
+Seherin
 
 Testing:
+Wolfshund
 
 WIP:
 
 Planned:
-Dorfbewohner
-Dorfbewohnerin
-Hexe
-Jaeger
-Seherin
 Rotkaeppchen
-Wolfshund
 Harter Bursche
 Terrorwolf
 Berserker
