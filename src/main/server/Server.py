@@ -232,7 +232,6 @@ class Server(object):
 
     def vote(self):
         idToChoice, voteDict = self.getVoteDict()
-        print(voteDict)
         if GameData.uniqueDecision(voteDict):
             victimId = GameData.getDecision(voteDict)
             dm = self.gameData.idToName(victimId) + self.voteJudgement(idToChoice[victimId])
@@ -241,7 +240,6 @@ class Server(object):
         else:
             text = self.pattRevote()
             idToChoice, voteDict = self.getVoteDict(text)
-            print(voteDict)
             if GameData.uniqueDecision(voteDict):
                 victimId = GameData.getDecision(voteDict)
                 dm = self.gameData.idToName(victimId) + self.voteJudgement(idToChoice[victimId])
