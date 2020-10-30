@@ -30,7 +30,7 @@ class Server(object):
             self.night()
             if self.checkGameOver():
                 break
-            if len(self.accusedDict) <= 3:
+            if len(self.gameData.getAlivePlayers()) <= 3:
                 self.accuseAll()
             else:
                 self.accuse()
@@ -180,7 +180,7 @@ class Server(object):
                 newText += self.gameData.idToName(entry)
                 newText += self.anklageText(idToChoice[target], self.gameData.idToName(target))
             self.gameData.sendJSON(Factory.createChoiceFieldEvent(
-                self.gameData.getOrigin(), text, options, messageId, Factory.EditMode.EDIT))
+                self.gameData.getOrigin(), newText, options, messageId, Factory.EditMode.EDIT))
             self.gameData.dumpNextMessageDict()
 
         self.gameData.sendJSON(Factory.createMessageEvent(
@@ -221,30 +221,32 @@ class Server(object):
 
     def anklageText(self, option, name):
         switcher = {
-            0: " möchte nun " + name + " anklagen.",
-            1: " bezichtigt nun " + name + ".",
-            2: " wirft nun " + name + " Verrat vor!",
-            3: " will nun " + name + " anprangern!",
-            4: " trifft nun Anschuldigungen gegen " + name + ".",
-            5: " beschuldigt jetzt " + name + "."
+            0: " möchte " + name + " anklagen.",
+            1: " bezichtigt " + name + ".",
+            2: " wirft " + name + " Verrat vor!",
+            3: " will " + name + " anprangern!",
+            4: " trifft Anschuldigungen gegen " + name + ".",
+            5: " beschuldigt " + name + "."
         }
         return switcher[option]
 
     def vote(self):
         idToChoice, voteDict = self.getVoteDict()
+        print(voteDict)
         if GameData.uniqueDecision(voteDict):
-            victimIndex = GameData.getDecision(voteDict)
-            victimId = self.gameData.getAlivePlayerList()[victimIndex]
-            dm = self.voteJudgement(idToChoice[victimId])
-            self.gameData.getAlivePlayers()[victimId].kill(self.gameData, victimId, dm)
+            victimId = GameData.getDecision(voteDict)
+            dm = self.gameData.idToName(victimId) + self.voteJudgement(idToChoice[victimId])
+            self.gameData.getAlivePlayers()[victimId].getCharacter()\
+                .kill(self.gameData, victimId, dm)
         else:
             text = self.pattRevote()
             idToChoice, voteDict = self.getVoteDict(text)
+            print(voteDict)
             if GameData.uniqueDecision(voteDict):
-                victimIndex = GameData.getDecision(voteDict)
-                victimId = self.gameData.getAlivePlayerList()[victimIndex]
-                dm = self.voteJudgement(idToChoice[victimId])
-                self.gameData.getAlivePlayers()[victimId].kill(self.gameData, victimId, dm)
+                victimId = GameData.getDecision(voteDict)
+                dm = self.gameData.idToName(victimId) + self.voteJudgement(idToChoice[victimId])
+                self.gameData.getAlivePlayers()[victimId].getCharacter()\
+                    .kill(self.gameData, victimId, dm)
             else:
                 text = self.pattNoKill()
                 self.gameData.sendJSON(Factory.createMessageEvent(self.gameData.getOrigin(), text))
@@ -257,12 +259,15 @@ class Server(object):
             text = self.voteIntro()
         options = []
         idToChoice = {}
-        for player in self.gameData.getAlivePlayers():
+        indexToId = {}
+        for index, p in enumerate(self.accusedDict):
+            player = self.accusedDict[p]
             playerName = self.gameData.getAlivePlayers()[player].getName()
             choice, option = self.voteOptions()
             idToChoice[player] = choice
             option = playerName + option
             options.append(option)
+            indexToId[index] = player
         self.gameData.sendJSON(Factory.createChoiceFieldEvent(
             self.gameData.getOrigin(), text, options))
         messageId = self.gameData.getNextMessageDict()["feedback"]["messageId"]
@@ -272,14 +277,13 @@ class Server(object):
             rec = self.gameData.getNextMessageDict()
             if rec["commandType"] == "reply":
                 voteDict[rec["reply"]["fromId"]] = rec["reply"]["choiceIndex"]
-
                 newText = text + "\n"
                 for key in voteDict:
-                    targetId = self.gameData.getAlivePlayerList()[voteDict[key]]
+                    targetId = indexToId[voteDict[key]]
                     targetName = self.gameData.idToName(targetId)
                     voterName = self.gameData.idToName(key)
-                    text += "\n" + voterName
-                    text += self.votedFor(idToChoice[targetId], targetName)
+                    newText += "\n" + voterName
+                    newText += self.votedFor(idToChoice[targetId], targetName)
 
                 self.gameData.sendJSON(Factory.createChoiceFieldEvent(
                     self.gameData.getOrigin(), newText, options, messageId, Factory.EditMode.EDIT))
@@ -288,6 +292,9 @@ class Server(object):
         self.gameData.sendJSON(Factory.createMessageEvent(
             self.gameData.getOrigin(), newText, messageId, Factory.EditMode.EDIT))
         self.gameData.getNextMessageDict()
+        # change voteDict to store voterId -> votedId
+        for p in voteDict:
+            voteDict[p] = indexToId[voteDict[p]]
         return idToChoice, voteDict
 
     def voteIntro(self):
