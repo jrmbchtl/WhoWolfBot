@@ -431,7 +431,7 @@ class Server(object):
     def checkGameOver(self):
         if len(self.gameData.getAlivePlayers()) == 0:
             self.gameData.sendJSON(Factory.createMessageEvent(
-                self.gameData.getOrigin(), self.allDead()))
+                self.gameData.getOrigin(), self.allDead(), highlight=True))
             self.gameData.dumpNextMessageDict()
             return True
         else:
@@ -444,10 +444,12 @@ class Server(object):
                     return False
             if team == Teams.TeamType.WERWOLF:
                 self.gameData.sendJSON(
-                    Factory.createMessageEvent(self.gameData.getOrigin(), self.werwoelfeWin()))
+                    Factory.createMessageEvent(self.gameData.getOrigin(), self.werwoelfeWin(),
+                                               highlight=True))
             else:
                 self.gameData.sendJSON(
-                    Factory.createMessageEvent(self.gameData.getOrigin(), self.dorfWin()))
+                    Factory.createMessageEvent(self.gameData.getOrigin(), self.dorfWin(),
+                                               highlight=True))
             self.gameData.dumpNextMessageDict()
             return True
 

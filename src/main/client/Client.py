@@ -19,8 +19,10 @@ from src.main.client.conn.ServerConnection import ServerConnection
 illegalChars = ['.', '!', '#', '(', ')', '-', '=', '+', ']', '[', '{', '}', '>', '<', '|', '_', '*',
                 '`', '~']
 
-changelog = ("Version 2.0.1:\n- Fixes für Wolfshund und Terrorwolf\n- weitere kleinere "
-             "Stabilitätsfixes\n\nVersion 2.0.0:\n- Erste stabile Version des Remakes")
+changelog = ("Version 2.0.2:\n:-Todesnachrichten und Spielendenachrichten werden hervorgehoben\n\n"
+             "Version 2.0.1:\n- Fixes für Wolfshund und Terrorwolf\n- weitere kleinere "
+             "Stabilitätsfixes\n\n"
+             "Version 2.0.0:\n- Erste stabile Version des Remakes")
 roles = "Dorfbewohner/in\nHexe\nJäger\nSeherin\nWerwolf\nTerrorwolf\nWolfshund"
 
 
@@ -95,6 +97,8 @@ class Client(object):
         target = dc["target"]
         mode = dc["mode"]
         gameId = dc["gameId"]
+        if dc["highlight"]:
+            text = "__" + text + "__"
 
         if dc["eventType"] == "message":
             replyMarkup = InlineKeyboardMarkup([])

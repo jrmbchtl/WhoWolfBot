@@ -33,9 +33,9 @@ class Character(object):
         self.alive = False
         if dm is None:
             dm = gameData.getPlayers()[playerId].getName() + deathMessage()
-        gameData.sendJSON(Factory.createMessageEvent(gameData.getOrigin(), dm))
+        gameData.sendJSON(Factory.createMessageEvent(gameData.getOrigin(), dm, highlight=True))
         gameData.dumpNextMessageDict()
-        gameData.sendJSON(Factory.createMessageEvent(playerId, dm))
+        gameData.sendJSON(Factory.createMessageEvent(playerId, dm, highlight=True))
         gameData.dumpNextMessageDict()
 
     def wakeUp(self, gameData, playerId):
