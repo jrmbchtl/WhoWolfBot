@@ -38,7 +38,7 @@ class Terrorwolf(WerwolfTeam):
 
         options = []
         for player in gameData.getAlivePlayers():
-            options.append(player.getName())
+            options.append(gameData.getAlivePlayers()[player].getName())
 
         text = terrorwolfChooseTarget(gameData)
         gameData.sendJSON(Factory.createChoiceFieldEvent(playerId, text, options))

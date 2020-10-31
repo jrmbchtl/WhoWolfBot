@@ -56,17 +56,17 @@ class GameData(object):
     def getAlivePlayersSortedDict(self):
         sortedDict = {}
         while len(sortedDict) < len(self.getAlivePlayers()):
-            maximum = None
+            minimum = None
             for player in self.getAlivePlayers():
                 if player in sortedDict:
                     continue
                 playerValue = self.getAlivePlayers()[player].getCharacter().getRole().value[0]
-                if maximum is None:
-                    maximum = playerValue
-                elif maximum < playerValue:
-                    maximum = playerValue
+                if minimum is None:
+                    minimum = playerValue
+                elif minimum > playerValue:
+                    minimum = playerValue
             for player in self.getAlivePlayers():
-                if self.getAlivePlayers()[player].getCharacter().getRole().value[0] == maximum:
+                if self.getAlivePlayers()[player].getCharacter().getRole().value[0] == minimum:
                     if player in sortedDict:
                         continue
                     sortedDict[player] = self.getAlivePlayers()[player]

@@ -18,8 +18,6 @@ class SeherinTest(Systemtest):
         self.verifyMessage(0, gameId)
         self.assertAnyMessage()
         self.verifyMessage(0, gameId)
-        self.assertAnyMessage()
-        self.verifyMessage(0, gameId)
 
         self.sc.sendJSON({"commandType": "reply", "reply": {"fromId": 4, "choiceIndex": 0},
                           "origin": 0, "gameId": gameId})
