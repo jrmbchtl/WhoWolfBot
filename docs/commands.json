@@ -9,6 +9,26 @@ New Game:
 	"origin": 1234
 }
 
+Add
+{
+	"commandType": "add",
+	"add": {
+		"role": "hexe"
+	},
+	"origin": 1234,
+	"gameId": 12345
+}
+
+Remove
+{
+	"commandType": "remove",
+	"remove": {
+		"role": "jaeger"
+	},
+	"origin": 1234,
+	"gameId": 12345
+}
+
 Register:
 {
 	"commandType": "register",
@@ -26,7 +46,7 @@ StartGame:
 	"startGame":{
 		"senderId": 12345678
 	},
-	"origin": 1234,12345
+	"origin": 1234,
 	"gameId": 12345
 }
 

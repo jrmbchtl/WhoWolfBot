@@ -46,6 +46,12 @@ class Systemtest(object):
                           "seed": seed})
         gameId = self.sc.receiveJSON()["gameId"]
         self.verifyMessage(0, gameId)
+        self.assertReceiveDict({"eventType": "choiceField", "choiceField":
+            {"text": "Hier k\u00f6nnen Rollen hinzugef\u00fcgt oder entfernt werden",
+             "options": ["wolfshund deaktivieren", "terrorwolf deaktivieren",
+                         "seherin deaktivieren", "hexe deaktivieren", "jaeger deaktivieren"],
+             "messageId": 0}, "mode": "write", "target": 42, "highlight": False, "gameId": gameId})
+        self.verifyMessage(0, gameId)
         for i in range(1, numberOfPlayers + 1):
             self.sc.sendJSON({"commandType": "register", "register":
                 {"name": "Player " + str(i), "id": i}, "origin": 0, "gameId": gameId})
@@ -54,7 +60,7 @@ class Systemtest(object):
                 self.verifyMessage(0, gameId)
         self.sc.sendJSON({"commandType": "startGame", "startGame": {"senderId": admin}, "origin": 0,
                           "gameId": gameId})
-        for i in range(0, numberOfPlayers + 2):
+        for i in range(0, numberOfPlayers + 3):
             self.assertAnyMessage()
             self.verifyMessage(0, gameId)
         return gameId

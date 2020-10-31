@@ -22,6 +22,9 @@ class Server(object):
         self.gameData = GameData(seed=seed, players={}, sc=sc, admin=admin, origin=origin,
                                  gameQueue=gameQueue, gameId=gameId, menuMessageId=None)
         self.accusedDict = {}
+        self.enabledRoles = ["wolfshund", "terrorwolf", "seherin", "hexe", "jaeger"]
+        self.disabledRoles = []
+        self.settingsMessageId = None
 
     def start(self):
         self.register()
@@ -63,6 +66,7 @@ class Server(object):
 
     def register(self):
         self.updateRegisterMenu()
+        self.sendSettings()
         rec = self.gameData.getNextMessageDict()
         while (rec["commandType"] != "startGame"
                or rec["startGame"]["senderId"] != self.gameData.getAdmin()
@@ -91,15 +95,50 @@ class Server(object):
                 else:
                     self.gameData.getPlayers().pop(rec["register"]["id"], None)
                 self.updateRegisterMenu()
+            elif rec["commandType"] == "add":
+                role = rec["add"]["role"]
+                if role not in self.enabledRoles and role in self.disabledRoles:
+                    self.enabledRoles.append(role)
+                    self.disabledRoles.remove(role)
+                    self.sendSettings()
+            elif rec["commandType"] == "remove":
+                role = rec["remove"]["role"]
+                if role in self.enabledRoles and role not in self.disabledRoles:
+                    self.enabledRoles.remove(role)
+                    self.disabledRoles.append(role)
+                    self.sendSettings()
             rec = self.gameData.getNextMessageDict()
         self.updateRegisterMenu(True)
+        self.gameData.sendJSON(
+            Factory.createMessageEvent(self.gameData.getAdmin(), messageId=self.settingsMessageId,
+                                       mode=Factory.EditMode.DELETE))
+        self.gameData.dumpNextMessageDict()
+
+    def sendSettings(self):
+        target = self.gameData.getAdmin()
+        text = "Hier können Rollen hinzugefügt oder entfernt werden"
+        options = []
+        for i in self.enabledRoles:
+            options.append(i + " deaktivieren")
+        for i in self.disabledRoles:
+            options.append(i + " aktivieren")
+        if self.settingsMessageId is None:
+            messageId = 0
+            mode = Factory.EditMode.WRITE
+        else:
+            messageId = self.settingsMessageId
+            mode = Factory.EditMode.EDIT
+
+        self.gameData.sendJSON(
+            Factory.createChoiceFieldEvent(target, text, options, messageId, mode))
+        self.settingsMessageId = self.gameData.getNextMessageDict()["feedback"]["messageId"]
 
     def rollRoles(self):
         playerList: list = self.gameData.getPlayerList()
         self.gameData.shuffle(playerList)
 
-        werwolfRoleList = getWerwolfRoleList(len(playerList))
-        dorfRoleList = getVillagerRoleList()
+        werwolfRoleList = self.getWerwolfRoleList(len(playerList))
+        dorfRoleList = self.getVillagerRoleList()
 
         unique = [CharacterType.JAEGER, CharacterType.SEHERIN, CharacterType.HEXE,
                   CharacterType.WOLFSHUND, CharacterType.TERRORWOLF]
@@ -502,6 +541,37 @@ class Server(object):
         }
         return switcher[self.gameData.randrange(0, 10)]
 
+    def getWerwolfRoleList(self, amountOfPlayers):
+        werwolfRoleList = []
+        if amountOfPlayers >= 6 and "wolfshund" in self.enabledRoles:
+            for i in range(0, 20):
+                werwolfRoleList.append(Werwolf())
+            for i in range(0, 40):
+                werwolfRoleList.append(Wolfshund())
+        else:
+            for i in range(0, 60):
+                werwolfRoleList.append(Werwolf())
+        if "terrorwolf" in self.enabledRoles:
+            for i in range(0, 40):
+                werwolfRoleList.append(Terrorwolf())
+        return werwolfRoleList
+
+    def getVillagerRoleList(self):
+        dorfRoleList = []
+        for i in range(0, 30):
+            dorfRoleList.append(Dorfbewohner())
+            dorfRoleList.append(Dorfbewohnerin())
+        if "jaeger" in self.enabledRoles:
+            for i in range(0, 28):
+                dorfRoleList.append(Jaeger())
+        if "seherin" in self.enabledRoles:
+            for i in range(0, 28):
+                dorfRoleList.append(Seherin())
+        if "hexe" in self.enabledRoles:
+            for i in range(0, 28):
+                dorfRoleList.append(Hexe())
+        return dorfRoleList
+
 
 def removeCharacterTypeFromList(ls, ct):
     i = 0
@@ -510,32 +580,3 @@ def removeCharacterTypeFromList(ls, ct):
             del ls[i]
         else:
             i += 1
-
-
-def getWerwolfRoleList(amountOfPlayers):
-    werwolfRoleList = []
-    if amountOfPlayers >= 6:
-        for i in range(0, 20):
-            werwolfRoleList.append(Werwolf())
-        for i in range(0, 40):
-            werwolfRoleList.append(Wolfshund())
-    else:
-        for i in range(0, 60):
-            werwolfRoleList.append(Werwolf())
-    for i in range(0, 40):
-        werwolfRoleList.append(Terrorwolf())
-    return werwolfRoleList
-
-
-def getVillagerRoleList():
-    dorfRoleList = []
-    for i in range(0, 30):
-        dorfRoleList.append(Dorfbewohner())
-        dorfRoleList.append(Dorfbewohnerin())
-    for i in range(0, 28):
-        dorfRoleList.append(Jaeger())
-    for i in range(0, 28):
-        dorfRoleList.append(Seherin())
-    for i in range(0, 28):
-        dorfRoleList.append(Hexe())
-    return dorfRoleList
