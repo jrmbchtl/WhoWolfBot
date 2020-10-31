@@ -1,7 +1,7 @@
 # WhoWolfBot
 Telegram Bot for playing Werwolf
 
-Implemented Roles:
+Implemented Roles:\
 Dorfbewohner/in\
 Hexe\
 Werwolf\
