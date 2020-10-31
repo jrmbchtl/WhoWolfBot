@@ -28,7 +28,7 @@ def wake(gameData: GameData):
 
     newText = ""
     voteDict = {}  # stores werwolf and which index he voted for
-    while len(werwolfList) > len(voteDict) and not GameData.uniqueDecision(voteDict):
+    while len(werwolfList) > len(voteDict) or not GameData.uniqueDecision(voteDict):
 
         rec = gameData.getNextMessageDict()
         if rec["commandType"] == "reply":
@@ -68,12 +68,11 @@ def publishDecision(gameData, werwolfList, voteDict, optionIndexList, text, mess
 
     decision = "Die Werwölfe haben beschlossen, " \
                + werwolfResponseOptions(optionIndexList[decisionIndex], targetName)
+    text += "\n" + decision
 
     for werwolf in werwolfList:
         gameData.sendJSON(Factory.createMessageEvent(
             werwolf, text, messageIdDict[werwolf], Factory.EditMode.EDIT))
-        gameData.dumpNextMessageDict()
-        gameData.sendJSON(Factory.createMessageEvent(werwolf, decision))
         gameData.dumpNextMessageDict()
 
 

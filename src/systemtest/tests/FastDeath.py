@@ -23,14 +23,10 @@ class FastDeath(Systemtest):
 
         self.assertReceiveDict({"eventType": "message", "message":
             {"text": ("Mit wem lassen sich die hungrigen Werwolfsm\u00e4uler am besten stopfen?"
-                      "\n\nPlayer 3 schl\u00e4gt vor Player 1 durch den Fleischwolf zu jagen.\n"),
+                      "\n\nPlayer 3 schl\u00e4gt vor Player 1 durch den Fleischwolf zu jagen.\n\n"
+                      "Die Werw\u00f6lfe haben beschlossen, Player 1 durch den Fleischwolf zu "
+                      "jagen."),
              "messageId": 0}, "mode": "edit", "target": 3, "gameId": gameId})
-        self.verifyMessage(0, gameId)
-
-        self.assertReceiveDict({"eventType": "message", "message":
-            {"text":
-             "Die Werw\u00f6lfe haben beschlossen, Player 1 durch den Fleischwolf zu jagen.",
-             "messageId": 0}, "mode": "write", "target": 3, "gameId": gameId})
         self.verifyMessage(0, gameId)
 
         self.assertReceiveDict({"eventType": "choiceField", "choiceField":

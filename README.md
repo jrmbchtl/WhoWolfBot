@@ -1,26 +1,26 @@
 # WhoWolfBot
 Telegram Bot for playing Werwolf
 
-Implemented Roles:
-Dorfbewohner/in
-Hexe
-Jaeger
-Seherin
+Implemented Roles:\
+Dorfbewohner/in\
+Hexe\
+Werwolf\
+Jaeger\
+Wolfshund\
+Terrorwolf
 
 Testing:
-Wolfshund
 
 WIP:
 
 Planned:
-Rotkaeppchen
-Harter Bursche
-Terrorwolf
-Berserker
-Superschurke
-Terrorist
-Kerkermeister
-Parasit
-Weisser Wolf
-Flittchen
+Rotkaeppchen\
+Harter Bursche\
+Berserker\
+Superschurke\
+Terrorist\
+Kerkermeister\
+Parasit\
+Weisser Wolf\
+Flittchen\
 Bürgermeister
