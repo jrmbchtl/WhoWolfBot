@@ -19,6 +19,10 @@ from src.main.client.conn.ServerConnection import ServerConnection
 illegalChars = ['.', '!', '#', '(', ')', '-', '=', '+', ']', '[', '{', '}', '>', '<', '|', '_', '*',
                 '`', '~']
 
+changelog = ("Version 2.0.1:\n- Fixes für Wolfshund und Terrorwolf\n- weitere kleinere "
+             "Stabilitätsfixes\n\nVersion 2.0.0:\n- Erste stabile Version des Remakes")
+roles = "Dorfbewohner/in\nHexe\nJäger\nSeherin\nWerwolf\nTerrorwolf\nWolfshund"
+
 
 class Client(object):
     def __init__(self, serverConnection):
@@ -38,6 +42,8 @@ class Client(object):
         p.start()
         self.dispatcher.add_handler(CommandHandler('start', self.start))
         self.dispatcher.add_handler(CommandHandler('new', self.new))
+        self.dispatcher.add_handler(CommandHandler('changelog', self.changelog))
+        self.dispatcher.add_handler(CommandHandler('roles', self.roles))
         self.dispatcher.add_handler(CallbackQueryHandler(self.buttonHandler))
         self.updater.start_polling()
         self.updater.idle()
@@ -53,6 +59,14 @@ class Client(object):
         seed = random.getrandbits(32)
         self.sc.sendJSON({"commandType": "newGame", "newGame": {"senderId": senderId},
                           "origin": origin, "seed": seed})
+
+    def changelog(self, update, context):
+        self.botSendLoop(update.message.chat_id, text=escapeText(changelog),
+                         parseMode=ParseMode.MARKDOWN_V2)
+
+    def roles(self, update, context):
+        self.botSendLoop(update.message.chat_id, text=escapeText(roles),
+                         parseMode=ParseMode.MARKDOWN_V2)
 
     def buttonHandler(self, update, context):
         callbackData = update.callback_query.data
