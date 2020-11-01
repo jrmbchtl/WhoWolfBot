@@ -19,7 +19,8 @@ from src.main.client.conn.ServerConnection import ServerConnection
 illegalChars = ['.', '!', '#', '(', ')', '-', '=', '+', ']', '[', '{', '}', '>', '<', '|', '_', '*',
                 '`', '~']
 
-changelog = ("Version 2.0.3:\n- Rollen können nun vom Admin explizit entfernt/hinzugefügt werden"
+changelog = ("Version 2.0.4:\n- Spiele können nach einem Serverneustart fortgesetzt werden\n\n"
+             "Version 2.0.3:\n- Rollen können nun vom Admin explizit entfernt/hinzugefügt werden"
              "\n\n"
              "Version 2.0.2:\n- Todesnachrichten und Spielendenachrichten werden hervorgehoben\n\n"
              "Version 2.0.1:\n- Fixes für Wolfshund und Terrorwolf\n- weitere kleinere "
