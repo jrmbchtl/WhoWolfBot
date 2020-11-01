@@ -1,6 +1,5 @@
 import json
 import os
-import socket
 import time
 
 from multiprocessing import Process
@@ -38,7 +37,7 @@ class SystemTestMain(object):
 
     def getSc(self):
         return self.serverConnection
-    
+
     def cleanUp(self):
         files = os.listdir("games/")
         for f in files:

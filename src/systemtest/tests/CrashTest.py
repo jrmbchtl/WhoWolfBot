@@ -17,7 +17,7 @@ class CrashTest(Systemtest):
                     ["Player 1 in die Lasagne mischen", "Player 2 mit einer Torte verwechseln",
                      "Player 3 zu Gulasch verarbeiten", "Player 4 mit einer Torte verwechseln",
                      "niemanden die Rei\u00dfz\u00e4hne in den Hals rammen"], "messageId": 0},
-                                    "mode": "write", "target": 2, "highlight": False, "gameId": 2})
+                "mode": "write", "target": 2, "highlight": False, "gameId": 2})
             self.verifyMessage(0, gameId)
         else:
             print("game 2 should be running")
