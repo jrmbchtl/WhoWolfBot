@@ -1,5 +1,6 @@
 import json
 import requests
+import os
 
 from . import Factory
 from .GameData import GameData
@@ -17,10 +18,11 @@ from .characters.werwolf.Wolfshund import Wolfshund
 
 
 class Server(object):
-    def __init__(self, seed, sc, admin, origin, gameQueue, gameId):
+    def __init__(self, seed, sc, dc, gameQueue, gameId):
         super(Server, self)
-        self.gameData = GameData(seed=seed, players={}, sc=sc, admin=admin, origin=origin,
-                                 gameQueue=gameQueue, gameId=gameId, menuMessageId=None)
+
+        self.gameData = GameData(seed=seed, players={}, sc=sc, dc=dc, gameQueue=gameQueue,
+                                 gameId=gameId, menuMessageId=None)
         self.accusedDict = {}
         self.enabledRoles = ["wolfshund", "terrorwolf", "seherin", "hexe", "jaeger"]
         self.disabledRoles = []
@@ -39,6 +41,9 @@ class Server(object):
                 self.accuse()
             self.vote()
         print("game " + str(self.gameData.gameId) + " is over")
+        file = "games/" + str(self.gameData.gameId) + ".game"
+        if os.path.isfile(file):
+            os.remove(file)
 
     def updateRegisterMenu(self, disable=False):
         message = ("Viel Spass beim Werwolf spielen!\n\nBitte einen privaten Chat mit dem Bot "

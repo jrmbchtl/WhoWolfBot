@@ -28,6 +28,7 @@ class SystemTestMain(object):
             print("\n\n##########################################################################")
             print("Running test " + test.getName() + "\n\n")
             test.run()
+            time.sleep(5)
             print("\n\n")
 
         self.server.kill()

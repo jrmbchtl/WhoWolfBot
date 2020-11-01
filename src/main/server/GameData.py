@@ -1,32 +1,68 @@
+import os
 import random
+import json
 
 
 class GameData(object):
     """stores data for each game"""
 
-    def __init__(self, seed, players, sc, admin, origin, gameQueue, gameId,
+    def __init__(self, seed, players, sc, dc, gameQueue, gameId,
                  menuMessageId):
         super(GameData, self).__init__()
+
         random.seed(seed)
+        self.seed = seed
+        self.admin = dc["newGame"]["senderId"]
+        self.origin = dc["origin"]
         self.players = players
         self.sc = sc
-        self.admin = admin
-        self.origin = origin
         self.gameQueue = gameQueue
         self.gameId = gameId
         self.menuMessageId = menuMessageId
         self.werwolfTarget = None
         self.witchTarget = None
+        self.recList = []
+        self.numberSent = 0
+        if "numberSent" in dc["newGame"] and "recList" in dc["newGame"]:
+            self.recList = dc["newGame"]["recList"]
+            self.numberSent = dc["newGame"]["numberSent"]
 
     def getNextMessageDict(self):
-        while self.gameQueue.empty():
-            pass
-        return self.gameQueue.get()
+        if len(self.recList) > 0:
+            return self.recList.pop(0)
+        else:
+            while self.gameQueue.empty():
+                pass
+            data = self.gameQueue.get()
+            self.appendToRecList(data)
+            return data
 
     def dumpNextMessageDict(self):
-        while self.gameQueue.empty():
-            pass
-        print("Dumped: " + str(self.gameQueue.get()))
+        if len(self.recList) > 0:
+            print("Dumped: " + str(self.recList.pop(0)))
+        else:
+            while self.gameQueue.empty():
+                pass
+            data = self.gameQueue.get()
+            self.appendToRecList(data)
+            print("Dumped: " + str(data))
+
+    def appendToRecList(self, item):
+        self.checkOrCreate()
+        f = "games/" + str(self.gameId) + ".game"
+        with open(f, "r") as jsonFile:
+            data = json.load(jsonFile)
+        data["recList"].append(item)
+        with open(f, "w") as jsonFile:
+            json.dump(data, jsonFile)
+
+    def checkOrCreate(self):
+        f = "games/" + str(self.gameId) + ".game"
+        if not os.path.isfile(f):
+            dc = {"seed": self.seed, "recList": [], "numberSent": 0, "admin": self.admin,
+                  "chatId": self.origin}
+            with open(f, "w") as jsonFile:
+                json.dump(dc, jsonFile)
 
     def setPlayers(self, players):
         self.players = players
@@ -74,8 +110,21 @@ class GameData(object):
         return sortedDict
 
     def sendJSON(self, dc):
-        dc["gameId"] = self.gameId
-        self.sc.sendJSON(dc)
+        if self.numberSent > 0:
+            self.numberSent -= 1
+        else:
+            dc["gameId"] = self.gameId
+            self.sc.sendJSON(dc)
+            self.incNumberSent()
+
+    def incNumberSent(self):
+        self.checkOrCreate()
+        f = "games/" + str(self.gameId) + ".game"
+        with open(f, "r") as jsonFile:
+            data = json.load(jsonFile)
+        data["numberSent"] += 1
+        with open(f, "w") as jsonFile:
+            json.dump(data, jsonFile)
 
     def setAdmin(self, admin):
         self.admin = admin
