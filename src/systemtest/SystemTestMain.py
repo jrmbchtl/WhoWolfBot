@@ -39,6 +39,8 @@ class SystemTestMain(object):
         return self.serverConnection
 
     def cleanUp(self):
+        if not os.path.isdir("games"):
+            return
         files = os.listdir("games/")
         for f in files:
             if os.path.isfile("games/" + f) and f.endswith(".game"):
