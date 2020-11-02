@@ -9,9 +9,9 @@ test:
     pymake analyze
     python src/systemtest/SystemTestMain.py
 server:
-    python src/main/server/Main.py
+    python3 src/main/server/Main.py
 client:
-    python src/main/client/Main.py
+    python3 src/main/client/Main.py
 compile:
     $(PY) src/main/Main.py
 analyze:
