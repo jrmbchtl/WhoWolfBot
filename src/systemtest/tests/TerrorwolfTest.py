@@ -24,7 +24,7 @@ class TerrorwolfTest(Systemtest):
         self.verifyMessage(0, gameId)
         self.assertReceiveDict({"eventType": "message", "message":
             {"text": "Du hast Blutlust enwickelt.", "messageId": 0},
-            "mode": "write", "target": 3, "highlight": False, "gameId": 6})
+            "mode": "write", "target": 3, "highlight": False, "gameId": gameId})
         self.verifyMessage(0, gameId)
         self.assertReceiveDict({"eventType": "choiceField", "choiceField":
             {"text": "Die Werw\u00f6lfe suchen ihr Opfer aus.", "options":

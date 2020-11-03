@@ -19,7 +19,10 @@ from src.main.client.conn.ServerConnection import ServerConnection
 illegalChars = ['.', '!', '#', '(', ')', '-', '=', '+', ']', '[', '{', '}', '>', '<', '|', '_', '*',
                 '`', '~']
 
-changelog = ("Version 2.0.2:\n:-Todesnachrichten und Spielendenachrichten werden hervorgehoben\n\n"
+changelog = ("Version 2.0.4:\n- Spiele können nach einem Serverneustart fortgesetzt werden\n\n"
+             "Version 2.0.3:\n- Rollen können nun vom Admin explizit entfernt/hinzugefügt werden"
+             "\n\n"
+             "Version 2.0.2:\n- Todesnachrichten und Spielendenachrichten werden hervorgehoben\n\n"
              "Version 2.0.1:\n- Fixes für Wolfshund und Terrorwolf\n- weitere kleinere "
              "Stabilitätsfixes\n\n"
              "Version 2.0.0:\n- Erste stabile Version des Remakes")
@@ -79,6 +82,14 @@ class Client(object):
         if callbackData.startswith("register_"):
             self.sc.sendJSON({"commandType": "register", "register":
                 {"name": name, "id": playerId}, "origin": origin, "gameId": gameId})
+        elif callbackData.startswith("add"):
+            role = callbackData.split("_")[2]
+            self.sc.sendJSON({"commandType": "add", "add": {"role": role}, "origin": origin,
+                              "gameId": gameId})
+        elif callbackData.startswith("remove"):
+            role = callbackData.split("_")[2]
+            self.sc.sendJSON({"commandType": "remove", "remove": {"role": role}, "origin": origin,
+                              "gameId": gameId})
         elif callbackData.startswith("start_"):
             self.sc.sendJSON({"commandType": "startGame", "startGame":
                 {"senderId": playerId}, "origin": origin, "gameId": gameId})
@@ -103,20 +114,7 @@ class Client(object):
         if dc["eventType"] == "message":
             replyMarkup = InlineKeyboardMarkup([])
         else:
-            keyboard = []
-            if len(dc["choiceField"]["options"]) == 3 \
-                    and dc["choiceField"]["options"][0] == "Mitspielen/Aussteigen":
-                keyboard = [[InlineKeyboardButton("Mitspielen/Aussteigen",
-                                                  callback_data='register_' + str(gameId))],
-                            [InlineKeyboardButton("Start", callback_data='start_' + str(gameId)),
-                             InlineKeyboardButton("Abbrechen",
-                                                  callback_data='terminate_' + str(gameId))]]
-            else:
-                for i, option in enumerate(dc["choiceField"]["options"]):
-                    option = escapeText(option)
-                    keyboard.append([InlineKeyboardButton(
-                        option, callback_data="reply_" + str(gameId) + "_" + str(i))])
-            replyMarkup = InlineKeyboardMarkup(keyboard)
+            replyMarkup = InlineKeyboardMarkup(generateKeyboard(dc, gameId))
 
         if "parseMode" in dc[dc["eventType"]]:
             parseMode = dc["message"]["parseMode"]
@@ -193,3 +191,30 @@ def escapeText(text):
         else:
             newText += c
     return newText
+
+
+def generateKeyboard(dc, gameId):
+    keyboard = []
+    if len(dc["choiceField"]["options"]) == 3 \
+            and dc["choiceField"]["options"][0] == "Mitspielen/Aussteigen":
+        keyboard = [[InlineKeyboardButton("Mitspielen/Aussteigen",
+                                          callback_data='register_' + str(gameId))],
+                    [InlineKeyboardButton("Start", callback_data='start_' + str(gameId)),
+                     InlineKeyboardButton("Abbrechen",
+                                          callback_data='terminate_' + str(gameId))]]
+    elif dc["choiceField"]["text"] == "Hier können Rollen hinzugefügt oder entfernt werden":
+        for option in dc["choiceField"]["options"]:
+            option = escapeText(option)
+            role = option.split(" ")[0]
+            if option.endswith("deaktivieren"):
+                keyboard.append([InlineKeyboardButton(
+                    option, callback_data="remove_" + str(gameId) + "_" + role)])
+            else:
+                keyboard.append([InlineKeyboardButton(
+                    option, callback_data="add_" + str(gameId) + "_" + role)])
+    else:
+        for i, option in enumerate(dc["choiceField"]["options"]):
+            option = escapeText(option)
+            keyboard.append([InlineKeyboardButton(
+                option, callback_data="reply_" + str(gameId) + "_" + str(i))])
+    return keyboard

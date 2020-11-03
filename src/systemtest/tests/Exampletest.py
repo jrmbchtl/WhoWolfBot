@@ -18,6 +18,12 @@ class Exampletest(Systemtest):
              "messageId": 0}, "mode": "write", "target": 0, "highlight": False, "gameId": 1})
 
         self.verifyMessage(112, 1)
+        self.assertReceiveDict({"eventType": "choiceField", "choiceField":
+            {"text": "Hier k\u00f6nnen Rollen hinzugef\u00fcgt oder entfernt werden",
+             "options": ["wolfshund deaktivieren", "terrorwolf deaktivieren",
+                         "seherin deaktivieren", "hexe deaktivieren", "jaeger deaktivieren"],
+             "messageId": 0}, "mode": "write", "target": 42, "highlight": False, "gameId": 1})
+        self.verifyMessage()
         self.sc.sendJSON({"commandType": "startGame", "startGame": {"senderId": 42},
                           "origin": 0, "gameId": 1})
         for i in range(1, 5):
@@ -31,6 +37,8 @@ class Exampletest(Systemtest):
             self.verifyMessage()
         self.sc.sendJSON({"commandType": "startGame", "startGame": {"senderId": 42},
                           "origin": 0, "gameId": 1})
+        self.assertAnyMessage()
+        self.verifyMessage()
         self.assertAnyMessage()
         self.verifyMessage()
         self.assertReceiveDict({"eventType": "message", "message":

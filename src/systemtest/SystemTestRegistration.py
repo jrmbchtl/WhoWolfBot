@@ -1,3 +1,4 @@
+from src.systemtest.tests.CrashTest import CrashTest
 from src.systemtest.tests.DoublePattTest import DoublePattTest
 from src.systemtest.tests.Exampletest import Exampletest
 from src.systemtest.tests.FastDeath import FastDeath
@@ -13,6 +14,7 @@ class SystemTestRegistration(object):
 
     def register(self):
         self.main.register(Exampletest(self.main.getSc()))  # has to be run first
+        self.main.register(CrashTest(self.main.getSc()))
         self.main.register(FastDeath(self.main.getSc()))
         self.main.register(PattTest(self.main.getSc()))
         self.main.register(DoublePattTest(self.main.getSc()))

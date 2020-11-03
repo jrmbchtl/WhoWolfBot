@@ -137,3 +137,5 @@ lore_stable.py
 game_dict.json
 flake-report/
 .idea/
+games/
+src/systemtest/games
