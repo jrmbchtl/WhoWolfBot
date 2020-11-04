@@ -36,10 +36,10 @@ class Client(object):
         self.sc: ServerConnection = serverConnection
         with open('token.txt', 'r') as token_file:
             self.token = token_file.readline()
-        self.token = self.token[0:25]
-        self.bot = None
-        self.updater = None
-        self.dispatcher = None
+        self.token = self.token[0:46]
+        self.bot = Bot(self.token)
+        self.updater = Updater(self.token, use_context=True)
+        self.dispatcher = self.updater.dispatcher
 
         logging.basicConfig(level=logging.DEBUG,
                             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -47,9 +47,6 @@ class Client(object):
     def run(self):
         p = Process(target=self.recProcess)
         p.start()
-        self.bot = Bot(self.token)
-        self.updater = Updater(self.token, use_context=True)
-        self.dispatcher = self.updater.dispatcher
         self.dispatcher.add_handler(CommandHandler('start', self.start))
         self.dispatcher.add_handler(CommandHandler('new', self.new))
         self.dispatcher.add_handler(CommandHandler('changelog', self.changelog))
