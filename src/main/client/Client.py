@@ -19,7 +19,8 @@ from src.main.client.conn.ServerConnection import ServerConnection
 illegalChars = ['.', '!', '#', '(', ')', '-', '=', '+', ']', '[', '{', '}', '>', '<', '|', '_', '*',
                 '`', '~']
 
-changelog = ("Version 2.0.4:\n- Spiele können nach einem Serverneustart fortgesetzt werden\n\n"
+changelog = ("Version 2.0.4.1:\n- kleiner hotfix für den Server"
+             "Version 2.0.4:\n- Spiele können nach einem Serverneustart fortgesetzt werden\n\n"
              "Version 2.0.3:\n- Rollen können nun vom Admin explizit entfernt/hinzugefügt werden"
              "\n\n"
              "Version 2.0.2:\n- Todesnachrichten und Spielendenachrichten werden hervorgehoben\n\n"
@@ -34,10 +35,11 @@ class Client(object):
         super(Client, self)
         self.sc: ServerConnection = serverConnection
         with open('token.txt', 'r') as token_file:
-            token = token_file.readline()
-        self.bot = Bot(token)
-        self.updater = Updater(token, use_context=True)
-        self.dispatcher = self.updater.dispatcher
+            self.token = token_file.readline()
+        self.token = self.token[0:25]
+        self.bot = None
+        self.updater = None
+        self.dispatcher = None
 
         logging.basicConfig(level=logging.DEBUG,
                             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -45,6 +47,9 @@ class Client(object):
     def run(self):
         p = Process(target=self.recProcess)
         p.start()
+        self.bot = Bot(self.token)
+        self.updater = Updater(self.token, use_context=True)
+        self.dispatcher = self.updater.dispatcher
         self.dispatcher.add_handler(CommandHandler('start', self.start))
         self.dispatcher.add_handler(CommandHandler('new', self.new))
         self.dispatcher.add_handler(CommandHandler('changelog', self.changelog))

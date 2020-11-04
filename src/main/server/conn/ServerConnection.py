@@ -10,7 +10,6 @@ class ServerConnection(object):
 		self.host = host
 		self.recQueue = SimpleQueue()
 		self.s = None
-		self.conn = None
 		self.addr = None
 
 	def startServer(self):
@@ -45,4 +44,3 @@ class ServerConnection(object):
 
 	def closeServer(self):
 		self.s.close()
-		self.conn.close()
