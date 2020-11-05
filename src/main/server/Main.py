@@ -9,43 +9,54 @@ class Main(object):
     def __init__(self):
         super(Main, self)
         self.gameId = 1
-        self.gameQueues = {}
         self.port = 32000
-        self.runningGames = {}
+        self.games = {}
+        self.sc = ServerConnection(self.port)
+        self.sc.startServer()
 
     def main(self, seed=42):
-        sc = ServerConnection(self.port)
-        sc.startServer()
-        self.restoreGames(sc)
+        self.restoreGames(self.sc)
         self.gameId = self.getNextGameId()
         try:
             while True:
-                dc = sc.receiveJSON()
+                dc = self.sc.receiveJSON()
                 commandType = dc["commandType"]
                 if commandType == "newGame":
                     if "seed" in dc:
                         s = dc["seed"]
                     else:
                         s = seed
-                    self.gameQueues[self.gameId] = SimpleQueue()
-                    self.runningGames[self.gameId] = \
-                        Process(target=startNewGame, args=(sc, dc, self.gameId,
-                                                           self.gameQueues[self.gameId], s,))
-                    self.runningGames[self.gameId].start()
+                    self.initGame(self.gameId, self.sc, dc, s)
                     self.gameId = self.getNextGameId()
                 elif commandType == "terminate":
                     idToTerminate = dc["gameId"]
-                    if idToTerminate in self.runningGames:
-                        self.runningGames[idToTerminate].kill()
+                    if idToTerminate in self.games:
+                        self.safeTerminate(dc)
+                        #  self.games[idToTerminate]["process"].kill()
                         self.cleanUp()
-                elif dc["gameId"] in self.gameQueues:
-                    self.gameQueues[dc["gameId"]].put(dc)
+                elif dc["gameId"] in self.games:
+                    self.games[dc["gameId"]]["toProcessQueue"].put(dc)
                 else:
                     print("can't find a game with id " + dc["gameId"])
 
         except KeyboardInterrupt:
             pass
-        sc.closeServer()
+        self.sc.closeServer()
+
+    def safeTerminate(self, dc):
+        gameId = dc["gameId"]
+        if dc["terminate"]["fromId"] != self.games[gameId]["admin"]:
+            return
+        if gameId in self.games:
+            self.games[gameId]["process"].kill()
+            while not self.games[gameId]["deleteQueue"].empty():
+                item = self.games[gameId]["deleteQueue"].get()
+                messageId = item["messageId"]
+                target = item["target"]
+                dc = {"eventType": "message", "message": {"messageId": messageId},
+                      "target": target, "mode": "delete", "gameId": gameId}
+                self.sc.sendJSON(dc)
+            self.cleanUp()
 
     def restoreGames(self, sc):
         if not os.path.isdir("games/"):
@@ -70,37 +81,42 @@ class Main(object):
                     dc = {"commandType": "newGame", "newGame":
                         {"senderId": admin, "numberSent": numberSent, "recList": recList},
                         "origin": chatId}
-                    self.gameQueues[gameId] = SimpleQueue()
-                    self.runningGames[gameId] = \
-                        Process(target=startNewGame, args=(sc, dc, gameId,
-                                                           self.gameQueues[gameId], s,))
-                    self.runningGames[gameId].start()
+                    self.initGame(gameId, sc, dc, s)
+
+    def initGame(self, gameId, sc, dc, seed):
+        self.games[gameId] = {"toProcessQueue": SimpleQueue()}
+        self.games[gameId]["admin"] = dc["newGame"]["senderId"]
+        self.games[gameId]["deleteQueue"] = SimpleQueue()  # dicts with messageId, target
+        self.games[gameId]["process"] = \
+            Process(target=startNewGame,
+                    args=(sc, dc, gameId, self.games[gameId]["toProcessQueue"], seed,
+                          self.games[gameId]["deleteQueue"],))
+        self.games[gameId]["process"].start()
 
     def getNextGameId(self):
         self.cleanUp()
         gameId = 0
         while True:
             gameId += 1
-            if gameId not in self.runningGames:
+            if gameId not in self.games:
                 return gameId
 
     def cleanUp(self):
         remList = []
-        for gameId in self.runningGames:
-            game: Process = self.runningGames[gameId]
+        for gameId in self.games:
+            game: Process = self.games[gameId]["process"]
             if not game.is_alive():
                 remList.append(gameId)
         for r in remList:
             print("removing game " + str(r))
-            self.runningGames.pop(r, None)
-            self.gameQueues.pop(r, None)
+            self.games.pop(r, None)
             file = "games/" + str(r) + ".game"
             if os.path.isfile(file):
                 os.remove(file)
 
 
-def startNewGame(sc, dc, gameId, gameQueue, seed):
-    server = Server(seed, sc, dc, gameQueue, gameId)
+def startNewGame(sc, dc, gameId, gameQueue, seed, deleteQueue):
+    server = Server(seed, sc, dc, gameQueue, gameId, deleteQueue)
     server.start()
 
 

@@ -18,11 +18,11 @@ from .characters.werwolf.Wolfshund import Wolfshund
 
 
 class Server(object):
-    def __init__(self, seed, sc, dc, gameQueue, gameId):
+    def __init__(self, seed, sc, dc, gameQueue, gameId, deleteQueue):
         super(Server, self)
 
         self.gameData = GameData(seed=seed, players={}, sc=sc, dc=dc, gameQueue=gameQueue,
-                                 gameId=gameId, menuMessageId=None)
+                                 gameId=gameId, menuMessageId=None, deleteQueue=deleteQueue)
         self.accusedDict = {}
         self.enabledRoles = ["wolfshund", "terrorwolf", "seherin", "hexe", "jaeger"]
         self.disabledRoles = []
@@ -40,6 +40,10 @@ class Server(object):
             else:
                 self.accuse()
             self.vote()
+        messageId = self.gameData.getMenuMessageId()
+        target = self.gameData.getOrigin()
+        self.gameData.sendJSON({"eventType": "message", "message": {"messageId": messageId},
+                                "target": target, "mode": "delete"})
         print("game " + str(self.gameData.gameId) + " is over")
         file = "games/" + str(self.gameData.gameId) + ".game"
         if os.path.isfile(file):
@@ -54,9 +58,9 @@ class Server(object):
         for player in self.gameData.getPlayers():
             message += self.gameData.getPlayers()[player].getName() + "\n"
         if not disable:
-            options = ["Mitspielen/Aussteigen", "Start", "Cancel"]
+            options = ["Mitspielen/Aussteigen", "Start", "Abbrechen"]
         else:
-            options = []
+            options = ["Abbrechen"]
         if self.gameData.getMenuMessageId() is None:
             sendDict = Factory.createChoiceFieldEvent(self.gameData.getOrigin(), message, options)
         else:
@@ -175,7 +179,6 @@ class Server(object):
         wakeWerwolf = False
         for p in sortedPlayerDict:
             player = sortedPlayerDict[p]
-            print("waking up " + player.getName())
             if player.getCharacter().getRole().value[0] < 0:
                 player.getCharacter().wakeUp(self.gameData, p)
             elif not wakeWerwolf:
