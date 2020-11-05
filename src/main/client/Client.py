@@ -7,6 +7,7 @@ from telegram import Bot
 from telegram import InlineKeyboardButton
 from telegram import InlineKeyboardMarkup
 from telegram import ParseMode
+from telegram.error import BadRequest
 from telegram.error import RetryAfter
 from telegram.error import TimedOut
 from telegram.error import Unauthorized
@@ -105,10 +106,14 @@ class Client(object):
                 "origin": origin, "gameId": gameId})
 
     def sendToBot(self, dc):
-        text = escapeText(dc[dc["eventType"]]["text"])
         messageId = dc[dc["eventType"]]["messageId"]
         target = dc["target"]
         mode = dc["mode"]
+        if mode == "delete":
+            self.botDeleteLoop(target, messageId)
+            return messageId
+
+        text = escapeText(dc[dc["eventType"]]["text"])
         gameId = dc["gameId"]
         if dc["highlight"]:
             text = "__" + text + "__"
@@ -127,8 +132,6 @@ class Client(object):
             messageId = self.botSendLoop(target, text, replyMarkup, parseMode)
         elif mode == "edit":
             self.botEditLoop(target, text, messageId, replyMarkup, parseMode)
-        elif mode == "delete":
-            self.botDeleteLoop(target, messageId)
         return messageId
 
     def botSendLoop(self, chatId, text, replyMarkup=InlineKeyboardMarkup([]), parseMode=None):
@@ -171,15 +174,19 @@ class Client(object):
         except TimedOut:
             time.sleep(15)
             self.botDeleteLoop(chatId, messageId)
+        except BadRequest:
+            return
 
     def recProcess(self):
         while True:
             rec = self.sc.receiveJSON()
             gameId = rec["gameId"]
+            target = rec["target"]
             try:
                 messageId = self.sendToBot(rec)
                 self.sc.sendJSON({"commandType": "feedback", "feedback":
-                                 {"success": 1, "messageId": messageId}, "gameId": gameId})
+                                 {"success": 1, "messageId": messageId, "fromId": target},
+                                  "gameId": gameId})
             except Unauthorized:
                 self.sc.sendJSON({"commandType": "feedback", "feedback":
                                  {"success": 0, "messageId": 0}, "gameId": gameId})
@@ -204,6 +211,10 @@ def generateKeyboard(dc, gameId):
                     [InlineKeyboardButton("Start", callback_data='start_' + str(gameId)),
                      InlineKeyboardButton("Abbrechen",
                                           callback_data='terminate_' + str(gameId))]]
+    elif len(dc["choiceField"]["options"]) == 1 \
+            and dc["choiceField"]["options"][0] == "Abbrechen":
+        keyboard = [InlineKeyboardButton("Abbrechen",
+                                         callback_data='terminate_' + str(gameId))]
     elif dc["choiceField"]["text"] == "Hier können Rollen hinzugefügt oder entfernt werden":
         for option in dc["choiceField"]["options"]:
             option = escapeText(option)

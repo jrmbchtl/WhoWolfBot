@@ -18,11 +18,11 @@ from .characters.werwolf.Wolfshund import Wolfshund
 
 
 class Server(object):
-    def __init__(self, seed, sc, dc, gameQueue, gameId):
+    def __init__(self, seed, sc, dc, gameQueue, gameId, deleteQueue):
         super(Server, self)
 
         self.gameData = GameData(seed=seed, players={}, sc=sc, dc=dc, gameQueue=gameQueue,
-                                 gameId=gameId, menuMessageId=None)
+                                 gameId=gameId, menuMessageId=None, deleteQueue=deleteQueue)
         self.accusedDict = {}
         self.enabledRoles = ["wolfshund", "terrorwolf", "seherin", "hexe", "jaeger"]
         self.disabledRoles = []
@@ -54,9 +54,9 @@ class Server(object):
         for player in self.gameData.getPlayers():
             message += self.gameData.getPlayers()[player].getName() + "\n"
         if not disable:
-            options = ["Mitspielen/Aussteigen", "Start", "Cancel"]
+            options = ["Mitspielen/Aussteigen", "Start", "Abbrechen"]
         else:
-            options = []
+            options = ["Abbrechen"]
         if self.gameData.getMenuMessageId() is None:
             sendDict = Factory.createChoiceFieldEvent(self.gameData.getOrigin(), message, options)
         else:

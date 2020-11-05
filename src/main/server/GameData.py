@@ -7,7 +7,7 @@ class GameData(object):
     """stores data for each game"""
 
     def __init__(self, seed, players, sc, dc, gameQueue, gameId,
-                 menuMessageId):
+                 menuMessageId, deleteQueue):
         super(GameData, self).__init__()
 
         random.seed(seed)
@@ -19,6 +19,7 @@ class GameData(object):
         self.gameQueue = gameQueue
         self.gameId = gameId
         self.menuMessageId = menuMessageId
+        self.deleteQueue = deleteQueue
         self.werwolfTarget = None
         self.witchTarget = None
         self.recList = []
@@ -29,23 +30,46 @@ class GameData(object):
 
     def getNextMessageDict(self):
         if len(self.recList) > 0:
-            return self.recList.pop(0)
+            data = self.recList.pop(0)
+            self.addToDeleteQueue(data)
+            return data
         else:
             while self.gameQueue.empty():
                 pass
             data = self.gameQueue.get()
             self.appendToRecList(data)
+            self.addToDeleteQueue(data)
             return data
 
     def dumpNextMessageDict(self):
         if len(self.recList) > 0:
-            print("Dumped: " + str(self.recList.pop(0)))
+            data = self.recList.pop(0)
+            self.addToDeleteQueue(data)
+            print("Dumped: " + str(data))
         else:
             while self.gameQueue.empty():
                 pass
             data = self.gameQueue.get()
             self.appendToRecList(data)
+            self.addToDeleteQueue(data)
             print("Dumped: " + str(data))
+
+    def addToDeleteQueue(self, data):
+        if data["commandType"] != "feedback" or data["feedback"]["success"] == 0:
+            return
+        tmp = []
+        while not self.deleteQueue.empty():
+            item = self.deleteQueue.get()
+            tmp.append(item)
+        inList = False
+        for i in tmp:
+            if i["messageId"] == data["feedback"]["messageId"] \
+                    and i["target"] == data["feedback"]["fromId"]:
+                inList = True
+            self.deleteQueue.put(i)
+        if not inList:
+            self.deleteQueue.put({"target": data["feedback"]["fromId"],
+                                  "messageId": data["feedback"]["messageId"]})
 
     def appendToRecList(self, item):
         self.checkOrCreate()

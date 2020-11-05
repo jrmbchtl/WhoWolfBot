@@ -8,6 +8,7 @@ class Systemtest(object):
     def __init__(self, sc):
         super(Systemtest, self)
         self.sc: ServerConnection = sc
+        self.messageId = 1
 
     def getName(self):
         raise NameError("You should name your test!")
@@ -22,9 +23,10 @@ class Systemtest(object):
     def assertAnyMessage(self):
         self.sc.receiveJSON()
 
-    def verifyMessage(self, messageId=112, gameId=1):
+    def verifyMessage(self, gameId):
         self.sc.sendJSON({"commandType": "feedback", "feedback":
-            {"success": 1, "messageId": messageId}, "gameId": gameId})
+            {"success": 1, "messageId": self.messageId, "fromId": 0}, "gameId": gameId})
+        self.messageId += 1
 
     def dictCompare(self, expected, actual):
         for key in expected:
@@ -45,24 +47,24 @@ class Systemtest(object):
         self.sc.sendJSON({"commandType": "newGame", "newGame": {"senderId": admin}, "origin": 0,
                           "seed": seed})
         gameId = self.sc.receiveJSON()["gameId"]
-        self.verifyMessage(0, gameId)
+        self.verifyMessage(gameId)
         self.assertReceiveDict({"eventType": "choiceField", "choiceField":
             {"text": "Hier k\u00f6nnen Rollen hinzugef\u00fcgt oder entfernt werden",
              "options": ["wolfshund deaktivieren", "terrorwolf deaktivieren",
                          "seherin deaktivieren", "hexe deaktivieren", "jaeger deaktivieren"],
              "messageId": 0}, "mode": "write", "target": 42, "highlight": False, "gameId": gameId})
-        self.verifyMessage(0, gameId)
+        self.verifyMessage(gameId)
         for i in range(1, numberOfPlayers + 1):
             self.sc.sendJSON({"commandType": "register", "register":
                 {"name": "Player " + str(i), "id": i}, "origin": 0, "gameId": gameId})
             for j in range(0, 3):
                 self.assertAnyMessage()
-                self.verifyMessage(0, gameId)
+                self.verifyMessage(gameId)
         self.sc.sendJSON({"commandType": "startGame", "startGame": {"senderId": admin}, "origin": 0,
                           "gameId": gameId})
         for i in range(0, numberOfPlayers + 3):
             self.assertAnyMessage()
-            self.verifyMessage(0, gameId)
+            self.verifyMessage(gameId)
         return gameId
 
     def clearRecBuffer(self):
