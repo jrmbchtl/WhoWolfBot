@@ -40,6 +40,10 @@ class Server(object):
             else:
                 self.accuse()
             self.vote()
+        messageId = self.gameData.getMenuMessageId()
+        target = self.gameData.getOrigin()
+        self.gameData.sendJSON({"eventType": "message", "message": {"messageId": messageId},
+                                "target": target, "mode": "delete"})
         print("game " + str(self.gameData.gameId) + " is over")
         file = "games/" + str(self.gameData.gameId) + ".game"
         if os.path.isfile(file):
@@ -175,7 +179,6 @@ class Server(object):
         wakeWerwolf = False
         for p in sortedPlayerDict:
             player = sortedPlayerDict[p]
-            print("waking up " + player.getName())
             if player.getCharacter().getRole().value[0] < 0:
                 player.getCharacter().wakeUp(self.gameData, p)
             elif not wakeWerwolf:

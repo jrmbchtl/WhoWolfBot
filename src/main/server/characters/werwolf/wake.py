@@ -50,9 +50,7 @@ def wake(gameData: GameData):
                     werwolf, newText, options, messageIdDict[werwolf], Factory.EditMode.EDIT))
                 gameData.dumpNextMessageDict()
 
-    print("publishing werwolf decision")
     publishDecision(gameData, werwolfList, voteDict, optionIndexList, newText, messageIdDict)
-    print("finished waking werwolfs")
 
 
 def publishDecision(gameData, werwolfList, voteDict, optionIndexList, text, messageIdDict):

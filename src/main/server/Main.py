@@ -44,10 +44,8 @@ class Main(object):
         self.sc.closeServer()
 
     def safeTerminate(self, dc):
-        print("terminating safely")
         gameId = dc["gameId"]
         if dc["terminate"]["fromId"] != self.games[gameId]["admin"]:
-            print("terminate didnt come from admin")
             return
         if gameId in self.games:
             self.games[gameId]["process"].kill()

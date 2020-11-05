@@ -20,7 +20,9 @@ from src.main.client.conn.ServerConnection import ServerConnection
 illegalChars = ['.', '!', '#', '(', ')', '-', '=', '+', ']', '[', '{', '}', '>', '<', '|', '_', '*',
                 '`', '~']
 
-changelog = ("Version 2.0.4.1:\n- kleiner hotfix für den Server"
+changelog = ("Version 2.0.5:\n- Spiel Abbrechen raeumt diese nun auf\n- nur noch der Spielleiter "
+             "kann das Spiel abbrechen"
+             "Version 2.0.4.1:\n- kleiner hotfix für den Server"
              "Version 2.0.4:\n- Spiele können nach einem Serverneustart fortgesetzt werden\n\n"
              "Version 2.0.3:\n- Rollen können nun vom Admin explizit entfernt/hinzugefügt werden"
              "\n\n"
@@ -42,7 +44,7 @@ class Client(object):
         self.updater = Updater(self.token, use_context=True)
         self.dispatcher = self.updater.dispatcher
 
-        logging.basicConfig(level=logging.DEBUG,
+        logging.basicConfig(level=logging.INFO,
                             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
     def run(self):
