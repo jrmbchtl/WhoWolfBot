@@ -50,12 +50,12 @@ class Hexe(VillagerTeam):
             noLetDie, optionLetDie = hexeLetDie(gameData)
             gameData.sendJSON(Factory.createChoiceFieldEvent(
                 playerId, text, [optionSave, optionLetDie]))
-            messageId = gameData.getNextMessageDict()["feedback"]["messageId"]
+            messageId = gameData.getNextMessage(commandType="feedback")["feedback"]["messageId"]
 
-            choice = gameData.getNextMessageDict()["reply"]["choiceIndex"]
+            choice = gameData.getNextMessage(commandType="reply")["reply"]["choiceIndex"]
             gameData.sendJSON(Factory.createMessageEvent(
                 playerId, text, messageId, Factory.EditMode.EDIT))
-            gameData.dumpNextMessageDict()
+            gameData.dumpNextMessage(commandType="feedback")
             if choice == 0:
                 gameData.setWerwolfTarget(None)
                 self.hasLivePotion = False
@@ -66,7 +66,7 @@ class Hexe(VillagerTeam):
                     playerId, hexeDidLetDie(noLetDie, targetName)))
             else:
                 raise ValueError("Die Hexe sollte keine Option " + choice + " haben!")
-            gameData.dumpNextMessageDict()
+            gameData.dumpNextMessage(commandType="feedback")
 
         if self.hasDeathPotion:
             text = "Willst du noch jemanden töten?"
@@ -87,12 +87,12 @@ class Hexe(VillagerTeam):
             options.append("Niemanden" + option)
 
             gameData.sendJSON(Factory.createChoiceFieldEvent(playerId, text, options))
-            messageId = gameData.getNextMessageDict()["feedback"]["messageId"]
+            messageId = gameData.getNextMessage(commandType="feedback")["feedback"]["messageId"]
 
-            choice = gameData.getNextMessageDict()["reply"]["choiceIndex"]
+            choice = gameData.getNextMessage(commandType="reply")["reply"]["choiceIndex"]
             gameData.sendJSON(Factory.createMessageEvent(
                 playerId, text, messageId, Factory.EditMode.EDIT))
-            gameData.dumpNextMessageDict()
+            gameData.dumpNextMessage(commandType="feedback")
 
             if choice == len(gameData.getAlivePlayerList()) - 1:
                 gameData.setWitchTarget(None)
@@ -102,7 +102,7 @@ class Hexe(VillagerTeam):
                 targetName = gameData.getAlivePlayers()[indexToId[choice]].getName()
                 text = hexeDidKill(idToNo[indexToId[choice]], targetName)
                 gameData.sendJSON(Factory.createMessageEvent(playerId, text))
-                gameData.dumpNextMessageDict()
+                gameData.dumpNextMessage(commandType="feedback")
 
 
 def hexeSave(gameData):

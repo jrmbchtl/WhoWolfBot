@@ -8,7 +8,7 @@ class Exampletest(Systemtest):
 
     def run(self):
         print("running Exampletest")
-        self.sc.sendJSON({"commandType": "newGame", "newGame": {"senderId": 42}, "origin": 0})
+        self.sc.sendJSON({"commandType": "newGame", "newGame": {"origin": 0}, "fromId": 42})
         self.assertReceiveDict({"eventType": "choiceField", "choiceField":
             {"text": ("Viel Spass beim Werwolf spielen!\n\nBitte einen privaten Chat mit dem Bot "
                       "starten, bevor das Spiel beginnt!\n\nUm das Spiel in seiner vollen Breite "
@@ -24,19 +24,17 @@ class Exampletest(Systemtest):
                          "seherin deaktivieren", "hexe deaktivieren", "jaeger deaktivieren"],
              "messageId": 0}, "mode": "write", "target": 42, "highlight": False, "gameId": 1})
         self.verifyMessage(1)
-        self.sc.sendJSON({"commandType": "startGame", "startGame": {"senderId": 42},
-                          "origin": 0, "gameId": 1})
+        self.sc.sendJSON({"commandType": "startGame", "fromId": 42, "gameId": 1})
         for i in range(1, 5):
             self.sc.sendJSON({"commandType": "register", "register":
-                             {"name": "Player " + str(i), "id": i}, "origin": 0, "gameId": 1})
+                             {"name": "Player " + str(i)}, "fromId": i, "gameId": 1})
             self.assertAnyMessage()
             self.verifyMessage(1)
             self.assertAnyMessage()
             self.verifyMessage(1)
             self.assertAnyMessage()
             self.verifyMessage(1)
-        self.sc.sendJSON({"commandType": "startGame", "startGame": {"senderId": 42},
-                          "origin": 0, "gameId": 1})
+        self.sc.sendJSON({"commandType": "startGame", "fromId": 42, "gameId": 1})
         self.assertAnyMessage()
         self.verifyMessage(1)
         self.assertAnyMessage()
@@ -67,5 +65,5 @@ class Exampletest(Systemtest):
         self.assertAnyMessage()
         self.verifyMessage(1)
 
-        self.sc.sendJSON({"commandType": "terminate", "terminate": {"fromId": 42}, "gameId": 1})
+        self.sc.sendJSON({"commandType": "terminate", "fromId": 42, "gameId": 1})
         self.clearRecBuffer()

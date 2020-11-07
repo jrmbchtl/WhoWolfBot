@@ -12,8 +12,8 @@ class GameData(object):
 
         random.seed(seed)
         self.seed = seed
-        self.admin = dc["newGame"]["senderId"]
-        self.origin = dc["origin"]
+        self.admin = dc["fromId"]
+        self.origin = dc["newGame"]["origin"]
         self.players = players
         self.sc = sc
         self.gameQueue = gameQueue
@@ -28,31 +28,33 @@ class GameData(object):
             self.recList = dc["newGame"]["recList"]
             self.numberSent = dc["newGame"]["numberSent"]
 
-    def getNextMessageDict(self):
-        if len(self.recList) > 0:
-            data = self.recList.pop(0)
-            self.addToDeleteQueue(data)
-            return data
-        else:
-            while self.gameQueue.empty():
-                pass
-            data = self.gameQueue.get()
-            self.appendToRecList(data)
-            self.addToDeleteQueue(data)
-            return data
+    def getNextMessage(self, commandType=None, fromId=None):
+        data = None
+        index = 0
+        writeBack = []
+        while data is None:
+            if index < len(self.recList):
+                if (commandType is None or commandType == self.recList[index]["commandType"]) \
+                        and (fromId is None or fromId == self.recList[index]["fromId"]):
+                    data = self.recList.pop(index)
+                else:
+                    index += 1
+            else:
+                tmp = self.gameQueue.get()
+                if (commandType is None or commandType == tmp["commandType"]) \
+                        and (fromId is None or fromId == tmp["fromId"]):
+                    data = tmp
+                    print("appending data: " + str(data))
+                    self.appendToRecList(data)
+                else:
+                    writeBack.append(tmp)
+        self.addToDeleteQueue(data)
+        for i in writeBack:
+            self.gameQueue.put(i)
+        return data
 
-    def dumpNextMessageDict(self):
-        if len(self.recList) > 0:
-            data = self.recList.pop(0)
-            self.addToDeleteQueue(data)
-            print("Dumped: " + str(data))
-        else:
-            while self.gameQueue.empty():
-                pass
-            data = self.gameQueue.get()
-            self.appendToRecList(data)
-            self.addToDeleteQueue(data)
-            print("Dumped: " + str(data))
+    def dumpNextMessage(self, commandType=None, fromId=None):
+        print("Dumped: " + str(self.getNextMessage(commandType, fromId)))
 
     def addToDeleteQueue(self, data):
         if data["commandType"] != "feedback" or data["feedback"]["success"] == 0:
@@ -64,11 +66,11 @@ class GameData(object):
         inList = False
         for i in tmp:
             if i["messageId"] == data["feedback"]["messageId"] \
-                    and i["target"] == data["feedback"]["fromId"]:
+                    and i["target"] == data["fromId"]:
                 inList = True
             self.deleteQueue.put(i)
         if not inList:
-            self.deleteQueue.put({"target": data["feedback"]["fromId"],
+            self.deleteQueue.put({"target": data["fromId"],
                                   "messageId": data["feedback"]["messageId"]})
 
     def appendToRecList(self, item):

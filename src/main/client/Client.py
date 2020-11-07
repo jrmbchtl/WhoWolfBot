@@ -20,7 +20,8 @@ from src.main.client.conn.ServerConnection import ServerConnection
 illegalChars = ['.', '!', '#', '(', ')', '-', '=', '+', ']', '[', '{', '}', '>', '<', '|', '_', '*',
                 '`', '~']
 
-changelog = ("Version 2.0.5:\n- Spiel Abbrechen raeumt diese nun auf\n- nur noch der Spielleiter "
+changelog = ("Version 2.0.6:\n- Probleme beim gleichzeitigen betätigen von Buttons behoben"
+             "Version 2.0.5:\n- Spiel Abbrechen raeumt diese nun auf\n- nur noch der Spielleiter "
              "kann das Spiel abbrechen"
              "Version 2.0.4.1:\n- kleiner hotfix für den Server"
              "Version 2.0.4:\n- Spiele können nach einem Serverneustart fortgesetzt werden\n\n"
@@ -64,11 +65,11 @@ class Client(object):
                          parseMode=ParseMode.MARKDOWN_V2)
 
     def new(self, update, context):
-        senderId = update.message.from_user.id
+        fromId = update.message.from_user.id
         origin = update.message.chat_id
         seed = random.getrandbits(32)
-        self.sc.sendJSON({"commandType": "newGame", "newGame": {"senderId": senderId},
-                          "origin": origin, "seed": seed})
+        self.sc.sendJSON({"commandType": "newGame", "newGame": {"seed": seed, "origin": origin},
+                          "fromId": fromId})
 
     def changelog(self, update, context):
         self.botSendLoop(update.message.chat_id, text=escapeText(changelog),
@@ -83,29 +84,25 @@ class Client(object):
         gameId = int(callbackData.split("_")[1])
         name = update.callback_query.from_user.first_name
         playerId = update.callback_query.from_user.id
-        origin = update.callback_query.message.chat.id
         if callbackData.startswith("register_"):
             self.sc.sendJSON({"commandType": "register", "register":
-                {"name": name, "id": playerId}, "origin": origin, "gameId": gameId})
+                {"name": name}, "fromId": playerId, "gameId": gameId})
         elif callbackData.startswith("add"):
             role = callbackData.split("_")[2]
-            self.sc.sendJSON({"commandType": "add", "add": {"role": role}, "origin": origin,
+            self.sc.sendJSON({"commandType": "add", "add": {"role": role}, "fromId": playerId,
                               "gameId": gameId})
         elif callbackData.startswith("remove"):
             role = callbackData.split("_")[2]
-            self.sc.sendJSON({"commandType": "remove", "remove": {"role": role}, "origin": origin,
+            self.sc.sendJSON({"commandType": "remove", "remove": {"role": role}, "fromId": playerId,
                               "gameId": gameId})
         elif callbackData.startswith("start_"):
-            self.sc.sendJSON({"commandType": "startGame", "startGame":
-                {"senderId": playerId}, "origin": origin, "gameId": gameId})
+            self.sc.sendJSON({"commandType": "startGame", "fromId": playerId, "gameId": gameId})
         elif callbackData.startswith("terminate_"):
-            self.sc.sendJSON({"commandType": "terminate", "terminate":
-                {"fromId": playerId}, "gameId": gameId})
+            self.sc.sendJSON({"commandType": "terminate", "fromId": playerId, "gameId": gameId})
         else:
             choiceIndex = int(callbackData.split("_")[2])
             self.sc.sendJSON({"commandType": "reply", "reply":
-                {"fromId": playerId, "choiceIndex": choiceIndex},
-                "origin": origin, "gameId": gameId})
+                {"choiceIndex": choiceIndex}, "fromId": playerId, "gameId": gameId})
 
     def sendToBot(self, dc):
         messageId = dc[dc["eventType"]]["messageId"]
@@ -187,11 +184,12 @@ class Client(object):
             try:
                 messageId = self.sendToBot(rec)
                 self.sc.sendJSON({"commandType": "feedback", "feedback":
-                                 {"success": 1, "messageId": messageId, "fromId": target},
+                                 {"success": 1, "messageId": messageId}, "fromId": target,
                                   "gameId": gameId})
             except Unauthorized:
                 self.sc.sendJSON({"commandType": "feedback", "feedback":
-                                 {"success": 0, "messageId": 0}, "gameId": gameId})
+                                 {"success": 0, "messageId": 0}, "fromId": target,
+                                  "gameId": gameId})
 
 
 def escapeText(text):

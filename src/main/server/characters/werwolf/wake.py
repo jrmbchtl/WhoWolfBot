@@ -24,31 +24,30 @@ def wake(gameData: GameData):
     messageIdDict = {}  # werwolfId to MessageId
     for werwolf in werwolfList:
         gameData.sendJSON(Factory.createChoiceFieldEvent(werwolf, text, options))
-        messageIdDict[werwolf] = gameData.getNextMessageDict()["feedback"]["messageId"]
+        messageIdDict[werwolf] = \
+            gameData.getNextMessage(commandType="feedback")["feedback"]["messageId"]
 
     newText = ""
     voteDict = {}  # stores werwolf and which index he voted for
     while len(werwolfList) > len(voteDict) or not GameData.uniqueDecision(voteDict):
-
-        rec = gameData.getNextMessageDict()
-        if rec["commandType"] == "reply":
-            voteDict[rec["reply"]["fromId"]] = rec["reply"]["choiceIndex"]
-            newText = text + "\n\n"
-            for key in voteDict:
-                werwolfName = gameData.getAlivePlayers()[key].getName()
-                if voteDict[key] == len(gameData.getAlivePlayerList()):
-                    targetName = "niemanden"
-                else:
-                    targetId = gameData.getAlivePlayerList()[voteDict[key]]
-                    targetName = gameData.getAlivePlayers()[targetId].getName()
-                newText += werwolfName + " schlägt vor " + werwolfResponseOptions(
-                    optionIndexList[voteDict[key]], targetName) + "\n"
-            if len(werwolfList) == len(voteDict) and GameData.uniqueDecision(voteDict):
-                break
-            for werwolf in werwolfList:
-                gameData.sendJSON(Factory.createChoiceFieldEvent(
-                    werwolf, newText, options, messageIdDict[werwolf], Factory.EditMode.EDIT))
-                gameData.dumpNextMessageDict()
+        rec = gameData.getNextMessage(commandType="reply")
+        voteDict[rec["fromId"]] = rec["reply"]["choiceIndex"]
+        newText = text + "\n\n"
+        for key in voteDict:
+            werwolfName = gameData.getAlivePlayers()[key].getName()
+            if voteDict[key] == len(gameData.getAlivePlayerList()):
+                targetName = "niemanden"
+            else:
+                targetId = gameData.getAlivePlayerList()[voteDict[key]]
+                targetName = gameData.getAlivePlayers()[targetId].getName()
+            newText += werwolfName + " schlägt vor " + werwolfResponseOptions(
+                optionIndexList[voteDict[key]], targetName) + "\n"
+        if len(werwolfList) == len(voteDict) and GameData.uniqueDecision(voteDict):
+            break
+        for werwolf in werwolfList:
+            gameData.sendJSON(Factory.createChoiceFieldEvent(
+                werwolf, newText, options, messageIdDict[werwolf], Factory.EditMode.EDIT))
+            gameData.dumpNextMessage(commandType="feedback")
 
     publishDecision(gameData, werwolfList, voteDict, optionIndexList, newText, messageIdDict)
 
@@ -71,7 +70,7 @@ def publishDecision(gameData, werwolfList, voteDict, optionIndexList, text, mess
     for werwolf in werwolfList:
         gameData.sendJSON(Factory.createMessageEvent(
             werwolf, text, messageIdDict[werwolf], Factory.EditMode.EDIT))
-        gameData.dumpNextMessageDict()
+        gameData.dumpNextMessage(commandType="feedback")
 
 
 def werwolfChooseTarget(gameData):
