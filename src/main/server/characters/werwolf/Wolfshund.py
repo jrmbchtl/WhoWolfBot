@@ -35,9 +35,9 @@ class Wolfshund(Character):
         indexDorf, optionDorf = wolfshundChooseDorf(gameData)
         gameData.sendJSON(
             Factory.createChoiceFieldEvent(playerId, intro, [optionWerwolf, optionDorf]))
-        messageId = gameData.getNextMessageDict()["feedback"]["messageId"]
+        messageId = gameData.getNextMessage(commandType="feedback")["feedback"]["messageId"]
 
-        rec = gameData.getNextMessageDict()
+        rec = gameData.getNextMessage(commandType="reply", fromId=playerId)
         gameData.sendJSON(
             Factory.createMessageEvent(playerId, intro, messageId, Factory.EditMode.EDIT))
         if rec["reply"]["choiceIndex"] == 0:
@@ -50,7 +50,7 @@ class Wolfshund(Character):
                 Factory.createMessageEvent(playerId, wolfshundDidChooseDorf(indexDorf)))
         else:
             raise ValueError("How can u choose option " + rec["reply"]["choiceIndex"])
-        gameData.dumpNextMessageDict()
+        gameData.dumpNextMessage(commandType="feedback")
 
 
 def wolfshundOptions(gameData):

@@ -70,39 +70,39 @@ class Server(object):
                                                       Factory.EditMode.EDIT)
         self.gameData.sendJSON(sendDict)
 
-        rec = self.gameData.getNextMessageDict()
+        rec = self.gameData.getNextMessage(commandType="feedback")
         self.gameData.setMenuMessageId(rec["feedback"]["messageId"])
 
     def register(self):
         self.updateRegisterMenu()
         self.sendSettings()
-        rec = self.gameData.getNextMessageDict()
+        rec = self.gameData.getNextMessage()
         while (rec["commandType"] != "startGame"
-               or rec["startGame"]["senderId"] != self.gameData.getAdmin()
+               or rec["fromId"] != self.gameData.getAdmin()
                or len(self.gameData.getPlayers()) < 3):
             if rec["commandType"] == "register":
-                if rec["register"]["id"] not in self.gameData.getPlayers():
+                if rec["fromId"] not in self.gameData.getPlayers():
                     self.gameData.sendJSON(
-                        Factory.createMessageEvent(rec["register"]["id"], "Ich bin der Werwolfbot"))
-                    tmp = self.gameData.getNextMessageDict()
+                        Factory.createMessageEvent(rec["fromId"], "Ich bin der Werwolfbot"))
+                    tmp = self.gameData.getNextMessage(commandType="feedback")
                     if tmp["feedback"]["success"] == 0:
                         self.gameData.sendJSON(Factory.createMessageEvent(
                             self.gameData.getOrigin(),
                             "@" + rec["register"]["name"]
                             + ", bitte öffne einen privaten Chat mit mir"))
-                        self.gameData.dumpNextMessageDict()
-                        rec = self.gameData.getNextMessageDict()
+                        self.gameData.dumpNextMessage(commandType="feedback")
+                        rec = self.gameData.getNextMessage()
                         continue
                     else:
                         self.gameData.sendJSON(
-                            Factory.createMessageEvent(rec["register"]["id"],
+                            Factory.createMessageEvent(rec["fromId"],
                                                        "", tmp["feedback"]["messageId"],
                                                        Factory.EditMode.DELETE))
-                        self.gameData.dumpNextMessageDict()
+                        self.gameData.dumpNextMessage(commandType="feedback")
                         player = Player(rec["register"]["name"])
-                        self.gameData.getPlayers()[rec["register"]["id"]] = player
+                        self.gameData.getPlayers()[rec["fromId"]] = player
                 else:
-                    self.gameData.getPlayers().pop(rec["register"]["id"], None)
+                    self.gameData.getPlayers().pop(rec["fromId"], None)
                 self.updateRegisterMenu()
             elif rec["commandType"] == "add":
                 role = rec["add"]["role"]
@@ -116,12 +116,12 @@ class Server(object):
                     self.enabledRoles.remove(role)
                     self.disabledRoles.append(role)
                     self.sendSettings()
-            rec = self.gameData.getNextMessageDict()
+            rec = self.gameData.getNextMessage()
         self.updateRegisterMenu(True)
         self.gameData.sendJSON(
             Factory.createMessageEvent(self.gameData.getAdmin(), messageId=self.settingsMessageId,
                                        mode=Factory.EditMode.DELETE))
-        self.gameData.dumpNextMessageDict()
+        self.gameData.dumpNextMessage(commandType="feedback")
 
     def sendSettings(self):
         target = self.gameData.getAdmin()
@@ -140,7 +140,8 @@ class Server(object):
 
         self.gameData.sendJSON(
             Factory.createChoiceFieldEvent(target, text, options, messageId, mode))
-        self.settingsMessageId = self.gameData.getNextMessageDict()["feedback"]["messageId"]
+        self.settingsMessageId = \
+            self.gameData.getNextMessage(commandType="feedback")["feedback"]["messageId"]
 
     def rollRoles(self):
         playerList: list = self.gameData.getPlayerList()
@@ -168,12 +169,12 @@ class Server(object):
             self.gameData.sendJSON(
                 Factory.createMessageEvent(
                     p, self.gameData.getPlayers()[p].getCharacter().getDescription(self.gameData)))
-            self.gameData.dumpNextMessageDict()
+            self.gameData.dumpNextMessage(commandType="feedback")
 
     def night(self):
         self.gameData.sendJSON(Factory.createMessageEvent(
             self.gameData.getOrigin(), self.nightfall()))
-        self.gameData.dumpNextMessageDict()
+        self.gameData.dumpNextMessage(commandType="feedback")
 
         sortedPlayerDict = self.gameData.getAlivePlayersSortedDict()
         wakeWerwolf = False
@@ -214,14 +215,14 @@ class Server(object):
         text = self.anklageIntro()
         self.gameData.sendJSON(Factory.createChoiceFieldEvent(
             self.gameData.getOrigin(), text, options))
-        messageId = self.gameData.getNextMessageDict()["feedback"]["messageId"]
+        messageId = self.gameData.getNextMessage(commandType="feedback")["feedback"]["messageId"]
 
         newText = ""
         while len(self.accusedDict) < 3:
-            rec = self.gameData.getNextMessageDict()
-            if rec["reply"]["fromId"] not in self.gameData.getAlivePlayers():
+            rec = self.gameData.getNextMessage(commandType="reply")
+            if rec["fromId"] not in self.gameData.getAlivePlayers():
                 continue
-            self.accusedDict[rec["reply"]["fromId"]] = \
+            self.accusedDict[rec["fromId"]] = \
                 self.gameData.getAlivePlayerList()[rec["reply"]["choiceIndex"]]
             newText = text + "\n\n"
             for entry in self.accusedDict:
@@ -230,11 +231,11 @@ class Server(object):
                 newText += self.anklageText(idToChoice[target], self.gameData.idToName(target))
             self.gameData.sendJSON(Factory.createChoiceFieldEvent(
                 self.gameData.getOrigin(), newText, options, messageId, Factory.EditMode.EDIT))
-            self.gameData.dumpNextMessageDict()
+            self.gameData.dumpNextMessage(commandType="feedback")
 
         self.gameData.sendJSON(Factory.createMessageEvent(
             self.gameData.getOrigin(), newText, messageId, Factory.EditMode.EDIT))
-        self.gameData.dumpNextMessageDict()
+        self.gameData.dumpNextMessage(commandType="feedback")
 
     def anklageOptions(self):
         switcher = {
@@ -297,7 +298,7 @@ class Server(object):
             else:
                 text = self.pattNoKill()
                 self.gameData.sendJSON(Factory.createMessageEvent(self.gameData.getOrigin(), text))
-                self.gameData.dumpNextMessageDict()
+                self.gameData.dumpNextMessage(commandType="feedback")
 
     def getVoteDict(self, text=None):
         voteDict = {}  # stores who voted for which index
@@ -317,15 +318,15 @@ class Server(object):
             indexToId[index] = player
         self.gameData.sendJSON(Factory.createChoiceFieldEvent(
             self.gameData.getOrigin(), text, options))
-        messageId = self.gameData.getNextMessageDict()["feedback"]["messageId"]
+        messageId = self.gameData.getNextMessage(commandType="feedback")["feedback"]["messageId"]
 
         newText = ""
         while len(voteDict) < len(self.gameData.getAlivePlayers()):
-            rec = self.gameData.getNextMessageDict()
+            rec = self.gameData.getNextMessage(commandType="reply")
             if rec["commandType"] == "reply":
-                if rec["reply"]["fromId"] not in self.gameData.getAlivePlayers():
+                if rec["fromId"] not in self.gameData.getAlivePlayers():
                     continue
-                voteDict[rec["reply"]["fromId"]] = rec["reply"]["choiceIndex"]
+                voteDict[rec["fromId"]] = rec["reply"]["choiceIndex"]
                 newText = text + "\n"
                 for key in voteDict:
                     targetId = indexToId[voteDict[key]]
@@ -336,11 +337,11 @@ class Server(object):
 
                 self.gameData.sendJSON(Factory.createChoiceFieldEvent(
                     self.gameData.getOrigin(), newText, options, messageId, Factory.EditMode.EDIT))
-                self.gameData.dumpNextMessageDict()
+                self.gameData.dumpNextMessage(commandType="feedback")
 
         self.gameData.sendJSON(Factory.createMessageEvent(
             self.gameData.getOrigin(), newText, messageId, Factory.EditMode.EDIT))
-        self.gameData.getNextMessageDict()
+        self.gameData.getNextMessage(commandType="feedback")
         # change voteDict to store voterId -> votedId
         for p in voteDict:
             voteDict[p] = indexToId[voteDict[p]]
@@ -479,7 +480,7 @@ class Server(object):
         if len(self.gameData.getAlivePlayers()) == 0:
             self.gameData.sendJSON(Factory.createMessageEvent(
                 self.gameData.getOrigin(), self.allDead(), highlight=True))
-            self.gameData.dumpNextMessageDict()
+            self.gameData.dumpNextMessage(commandType="feedback")
             return True
         else:
             firstPlayerId = self.gameData.getAlivePlayerList()[0]
@@ -497,7 +498,7 @@ class Server(object):
                 self.gameData.sendJSON(
                     Factory.createMessageEvent(self.gameData.getOrigin(), self.dorfWin(),
                                                highlight=True))
-            self.gameData.dumpNextMessageDict()
+            self.gameData.dumpNextMessage(commandType="feedback")
             return True
 
     def allDead(self):

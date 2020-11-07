@@ -29,7 +29,7 @@ class Jaeger(VillagerTeam):
         super(Jaeger, self).kill(gameData, playerId, dm)
         announcement = gameData.getPlayers()[playerId].getName() + jaegerReveal(gameData)
         gameData.sendJSON(Factory.createMessageEvent(gameData.getOrigin(), announcement))
-        gameData.dumpNextMessageDict()
+        gameData.dumpNextMessage(commandType="feedback")
         text = jaegerChooseTarget(gameData)
         options = []
         idToChoice = {}
@@ -43,12 +43,12 @@ class Jaeger(VillagerTeam):
             options.append(gameData.getPlayers()[player].getName() + message)
 
         gameData.sendJSON(Factory.createChoiceFieldEvent(playerId, text, options))
-        messageId = gameData.getNextMessageDict()["feedback"]["messageId"]
+        messageId = gameData.getNextMessage(commandType="feedback")["feedback"]["messageId"]
 
-        rec = gameData.getNextMessageDict()
+        rec = gameData.getNextMessage(commandType="reply")
         gameData.sendJSON(Factory.createMessageEvent(
             playerId, text, messageId, Factory.EditMode.EDIT))
-        gameData.dumpNextMessageDict()
+        gameData.dumpNextMessage(commandType="feedback")
 
         targetId = idList[rec["reply"]["choiceIndex"]]
         dm = gameData.getPlayers()[targetId].getName()

@@ -15,8 +15,8 @@ class TerrorwolfTest(Systemtest):
             "mode": "write", "target": 3, "highlight": False, "gameId": gameId})
         self.verifyMessage(gameId)
 
-        self.sc.sendJSON({"commandType": "reply", "reply": {"fromId": 3, "choiceIndex": 0},
-                          "origin": 0, "gameId": gameId})
+        self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 0},
+                          "fromId": 3, "gameId": gameId})
 
         self.assertReceiveDict({"eventType": "message", "message":
             {"text": "M\u00f6chtest du Menschen fressen oder von Menschen gelyncht werden?",
@@ -40,14 +40,14 @@ class TerrorwolfTest(Systemtest):
                  "Player 5 versnacken", "Player 6 rei\u00dfen", "niemanden rei\u00dfen"],
              "messageId": 0}, "mode": "write", "target": 4, "highlight": False, "gameId": gameId})
         self.verifyMessage(gameId)
-        self.sc.sendJSON({"commandType": "reply", "reply": {"fromId": 3, "choiceIndex": 3},
-                          "origin": 0, "gameId": gameId})
+        self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 3},
+                          "fromId": 3, "gameId": gameId})
         self.assertAnyMessage()
         self.verifyMessage(gameId)
         self.assertAnyMessage()
         self.verifyMessage(gameId)
-        self.sc.sendJSON({"commandType": "reply", "reply": {"fromId": 4, "choiceIndex": 3},
-                          "origin": 0, "gameId": gameId})
+        self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 3},
+                          "fromId": 4, "gameId": gameId})
         self.assertAnyMessage()
         self.verifyMessage(gameId)
         self.assertAnyMessage()
@@ -58,8 +58,8 @@ class TerrorwolfTest(Systemtest):
                 ["Wieder zusammenn\u00e4hen", "Sterben lassen"], "messageId": 0},
             "mode": "write", "target": 1, "highlight": False, "gameId": gameId})
         self.verifyMessage(gameId)
-        self.sc.sendJSON({"commandType": "reply", "reply": {"fromId": 1, "choiceIndex": 1},
-                          "origin": 0, "highlight": False, "gameId": gameId})
+        self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 1},
+                          "fromId": 1, "gameId": gameId})
         self.assertAnyMessage()
         self.verifyMessage(gameId)
         self.assertReceiveDict({"eventType": "message", "message":
@@ -75,14 +75,14 @@ class TerrorwolfTest(Systemtest):
                  "Niemanden ausversehen eine \u00dcberdosis Morphium verabreichen"],
              "messageId": 0}, "mode": "write", "target": 1, "highlight": False, "gameId": gameId})
         self.verifyMessage(gameId)
-        self.sc.sendJSON({"commandType": "reply", "reply": {"fromId": 1, "choiceIndex": 5},
-                          "origin": 0, "gameId": gameId})
+        self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 5},
+                          "fromId": 1, "gameId": gameId})
         self.assertAnyMessage()
         self.verifyMessage(gameId)
         self.assertAnyMessage()
         self.verifyMessage(gameId)
-        self.sc.sendJSON({"commandType": "reply", "reply": {"fromId": 5, "choiceIndex": 0},
-                          "origin": 0, "gameId": gameId})
+        self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 0},
+                          "fromId": 5, "gameId": gameId})
         self.assertAnyMessage()
         self.verifyMessage(gameId)
         self.assertAnyMessage()
@@ -100,8 +100,8 @@ class TerrorwolfTest(Systemtest):
              "options": ["Player 1", "Player 2", "Player 3", "Player 5", "Player 6"],
              "messageId": 0}, "mode": "write", "target": 4, "highlight": False, "gameId": gameId})
         self.verifyMessage(gameId)
-        self.sc.sendJSON({"commandType": "reply", "reply":
-            {"fromId": 4, "choiceIndex": 0}, "origin": 0, "highlight": False, "gameId": gameId})
+        self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 0},
+                          "fromId": 4, "gameId": gameId})
         self.assertAnyMessage()
         self.verifyMessage(gameId)
         self.assertReceiveDict({"eventType": "message", "message":
@@ -111,6 +111,5 @@ class TerrorwolfTest(Systemtest):
         self.assertAnyMessage()
         self.verifyMessage(gameId)
 
-        self.sc.sendJSON({"commandType": "terminate", "terminate": {"fromId": 42},
-                          "gameId": gameId})
+        self.sc.sendJSON({"commandType": "terminate", "fromId": 42, "gameId": gameId})
         self.clearRecBuffer()

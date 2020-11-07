@@ -41,13 +41,14 @@ class Seherin(VillagerTeam):
                 playerIndexList.append(player)
         text = seherinChooseTarget(gameData)
         gameData.sendJSON(Factory.createChoiceFieldEvent(playerId, text, options))
-        messageId = gameData.getNextMessageDict()["feedback"]["messageId"]
+        messageId = gameData.getNextMessage(commandType="feedback")["feedback"]["messageId"]
 
-        choice = gameData.getNextMessageDict()["reply"]["choiceIndex"]
+        choice = \
+            gameData.getNextMessage(commandType="reply", fromId=playerId)["reply"]["choiceIndex"]
 
         gameData.sendJSON(
             Factory.createMessageEvent(playerId, text, messageId, Factory.EditMode.EDIT))
-        gameData.dumpNextMessageDict()
+        gameData.dumpNextMessage(commandType="feedback")
 
         if gameData.getAlivePlayers()[playerIndexList[choice]].\
                 getCharacter().getTeam() == TeamType.WERWOLF:
@@ -57,7 +58,7 @@ class Seherin(VillagerTeam):
             replyText = seherinNoWerwolf(choice, gameData.getAlivePlayers()[playerIndexList[choice]]
                                          .getName())
         gameData.sendJSON(Factory.createMessageEvent(playerId, replyText))
-        gameData.dumpNextMessageDict()
+        gameData.dumpNextMessage(commandType="feedback")
 
 
 def seherinChooseTarget(gameData):

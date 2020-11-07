@@ -34,7 +34,7 @@ class Terrorwolf(WerwolfTeam):
             Factory.createMessageEvent(gameData.getOrigin(),
                                        gameData.getPlayers()[playerId].getName()
                                        + terrorwolfReveal(gameData)))
-        gameData.dumpNextMessageDict()
+        gameData.dumpNextMessage(commandType="feedback")
 
         options = []
         for player in gameData.getAlivePlayers():
@@ -42,12 +42,12 @@ class Terrorwolf(WerwolfTeam):
 
         text = terrorwolfChooseTarget(gameData)
         gameData.sendJSON(Factory.createChoiceFieldEvent(playerId, text, options))
-        messageId = gameData.getNextMessageDict()["feedback"]["messageId"]
+        messageId = gameData.getNextMessage(commandType="feedback")["feedback"]["messageId"]
 
-        rec = gameData.getNextMessageDict()
+        rec = gameData.getNextMessage(commandType="reply")
         gameData.sendJSON(Factory.createMessageEvent(
             playerId, text, messageId, Factory.EditMode.EDIT))
-        gameData.dumpNextMessageDict()
+        gameData.dumpNextMessage(commandType="feedback")
 
         targetId = gameData.getAlivePlayerList()[rec["reply"]["choiceIndex"]]
 

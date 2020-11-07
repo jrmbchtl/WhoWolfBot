@@ -18,8 +18,8 @@ class FastDeath(Systemtest):
              "messageId": 0}, "mode": "write", "target": 3, "highlight": False, "gameId": gameId})
         self.verifyMessage(gameId)
 
-        self.sc.sendJSON({"commandType": "reply", "reply": {"fromId": 3, "choiceIndex": 0},
-                          "origin": 0, "gameId": gameId})
+        self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 0},
+                          "fromId": 3, "gameId": gameId})
 
         self.assertReceiveDict({"eventType": "message", "message":
             {"text": ("Mit wem lassen sich die hungrigen Werwolfsm\u00e4uler am besten stopfen?"
@@ -36,8 +36,8 @@ class FastDeath(Systemtest):
             "mode": "write", "target": 2, "highlight": False, "gameId": gameId})
         self.verifyMessage(gameId)
 
-        self.sc.sendJSON({"commandType": "reply", "reply": {"fromId": 3, "choiceIndex": 1},
-                          "origin": 0, "gameId": gameId})
+        self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 1},
+                          "fromId": 3, "gameId": gameId})
         self.assertReceiveDict({"eventType": "message", "message":
             {"text": ("Player 1 wurde diese Nacht von den Werw\u00f6lfen erwischt. M\u00f6chtest "
                       "du diese Person retten?"), "messageId": 24}, "mode": "edit", "target": 2,
@@ -59,8 +59,8 @@ class FastDeath(Systemtest):
              "messageId": 0}, "mode": "write", "target": 2, "highlight": False, "gameId": gameId})
         self.verifyMessage(gameId)
 
-        self.sc.sendJSON({"commandType": "reply", "reply": {"fromId": 2, "choiceIndex": 2},
-                          "origin": 0, "highlight": False, "gameId": gameId})
+        self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 2},
+                          "fromId": 2, "gameId": gameId})
 
         self.assertReceiveDict({"eventType": "message", "message":
             {"text": "Willst du noch jemanden t\u00f6ten?", "messageId": 27},
@@ -102,8 +102,8 @@ class FastDeath(Systemtest):
              "messageId": 0}, "mode": "write", "target": 4, "highlight": False, "gameId": gameId})
         self.verifyMessage(gameId)
 
-        self.sc.sendJSON({"commandType": "reply", "reply": {"fromId": 4, "choiceIndex": 0},
-                          "origin": 0, "gameId": gameId})
+        self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 0},
+                          "fromId": 4, "gameId": gameId})
 
         self.assertReceiveDict({"eventType": "message", "message":
             {"text": "Wen willst du wegpusten?", "messageId": 35},
@@ -125,6 +125,5 @@ class FastDeath(Systemtest):
             "mode": "write", "target": 0, "highlight": True, "gameId": gameId})
         self.verifyMessage(gameId)
 
-        self.sc.sendJSON({"commandType": "terminate", "terminate": {"fromId": 42},
-                          "gameId": gameId})
+        self.sc.sendJSON({"commandType": "terminate", "fromId": 42, "gameId": gameId})
         self.clearRecBuffer()

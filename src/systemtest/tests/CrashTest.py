@@ -11,6 +11,7 @@ class CrashTest(Systemtest):
     def run(self):
         gameId = 2
         if not os.path.isfile("games/" + str(gameId) + ".game"):
+            print("did not found games/2.game, but " + str(os.listdir("./")))
             gameId = self.initGame(4, 42, 16384)
             self.assertReceiveDict({"eventType": "choiceField", "choiceField":
                 {"text": "Die Werw\u00f6lfe suchen ihr Opfer aus.", "options":
@@ -21,8 +22,8 @@ class CrashTest(Systemtest):
             self.verifyMessage(gameId)
         else:
             print("game 2 should be running")
-            self.sc.sendJSON({"commandType": "reply", "reply": {"fromId": 3, "choiceIndex": 0},
-                              "origin": 0, "gameId": gameId})
+            self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 0},
+                              "fromId": 3, "gameId": gameId})
 
             self.assertReceiveDict({"eventType": "message", "message":
                 {"text": ("Die Werw\u00f6lfe suchen ihr Opfer aus.\n\nPlayer 3 schl\u00e4gt vor "
@@ -31,6 +32,6 @@ class CrashTest(Systemtest):
                 "mode": "edit", "target": 2, "highlight": False, "gameId": gameId})
             self.verifyMessage(gameId)
 
-            self.sc.sendJSON({"commandType": "terminate", "terminate": {"fromId": 42},
+            self.sc.sendJSON({"commandType": "terminate", "fromId": 42,
                               "gameId": gameId})
             self.clearRecBuffer()

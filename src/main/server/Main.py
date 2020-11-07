@@ -22,8 +22,8 @@ class Main(object):
                 dc = self.sc.receiveJSON()
                 commandType = dc["commandType"]
                 if commandType == "newGame":
-                    if "seed" in dc:
-                        s = dc["seed"]
+                    if "seed" in dc["newGame"]:
+                        s = dc["newGame"]["seed"]
                     else:
                         s = seed
                     self.initGame(self.gameId, self.sc, dc, s)
@@ -32,7 +32,6 @@ class Main(object):
                     idToTerminate = dc["gameId"]
                     if idToTerminate in self.games:
                         self.safeTerminate(dc)
-                        #  self.games[idToTerminate]["process"].kill()
                         self.cleanUp()
                 elif dc["gameId"] in self.games:
                     self.games[dc["gameId"]]["toProcessQueue"].put(dc)
@@ -45,7 +44,7 @@ class Main(object):
 
     def safeTerminate(self, dc):
         gameId = dc["gameId"]
-        if dc["terminate"]["fromId"] != self.games[gameId]["admin"]:
+        if dc["fromId"] != self.games[gameId]["admin"]:
             return
         if gameId in self.games:
             self.games[gameId]["process"].kill()
@@ -79,13 +78,13 @@ class Main(object):
                     numberSent = data["numberSent"]
                     recList = data["recList"]
                     dc = {"commandType": "newGame", "newGame":
-                        {"senderId": admin, "numberSent": numberSent, "recList": recList},
-                        "origin": chatId}
+                        {"numberSent": numberSent, "recList": recList, "origin": chatId},
+                        "fromId": admin}
                     self.initGame(gameId, sc, dc, s)
 
     def initGame(self, gameId, sc, dc, seed):
         self.games[gameId] = {"toProcessQueue": SimpleQueue()}
-        self.games[gameId]["admin"] = dc["newGame"]["senderId"]
+        self.games[gameId]["admin"] = dc["fromId"]
         self.games[gameId]["deleteQueue"] = SimpleQueue()  # dicts with messageId, target
         self.games[gameId]["process"] = \
             Process(target=startNewGame,
