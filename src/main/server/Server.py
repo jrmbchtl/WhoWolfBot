@@ -126,11 +126,18 @@ class Server(object):
     def sendSettings(self):
         target = self.gameData.getAdmin()
         text = "Hier können Rollen hinzugefügt oder entfernt werden"
-        options = []
-        for i in self.enabledRoles:
-            options.append(i + " deaktivieren")
+        roles = self.enabledRoles.copy()
         for i in self.disabledRoles:
-            options.append(i + " aktivieren")
+            roles.append(i)
+        roles.sort()
+        print(roles)
+        options = []
+        for i in roles:
+            role = makeReadable(i)
+            if i in self.enabledRoles:
+                options.append(role + " deaktivieren")
+            if i in self.disabledRoles:
+                options.append(role + " aktivieren")
         if self.settingsMessageId is None:
             messageId = 0
             mode = Factory.EditMode.WRITE
@@ -580,6 +587,25 @@ class Server(object):
             for i in range(0, 28):
                 dorfRoleList.append(Hexe())
         return dorfRoleList
+
+
+def makeReadable(text):
+    exchange = {"ae": "ä", "oe": "ö", "ue": "ü", "Ae": "Ä", "Oe": "Ö", "Ue": "Ü"}
+    tl = list(text)
+    tl[0] = tl[0].capitalize()
+    for index, i in enumerate(tl):
+        if i == " " and index < len(tl):
+            tl[index + 1] = tl[index + 1].capitalize()
+    text = "".join(tl)
+    for i in exchange:
+        while i in text:
+            print(text)
+            print(i)
+            print(exchange[i])
+            text = text.replace(i, exchange[i])
+            print(text)
+    print(text)
+    return text
 
 
 def removeCharacterTypeFromList(ls, ct):
