@@ -20,10 +20,11 @@ from src.main.client.conn.ServerConnection import ServerConnection
 illegalChars = ['.', '!', '#', '(', ')', '-', '=', '+', ']', '[', '{', '}', '>', '<', '|', '_', '*',
                 '`', '~']
 
-changelog = ("Version 2.0.6:\n- Probleme beim gleichzeitigen betätigen von Buttons behoben"
+changelog = ("Version 2.0.6.1\n- Einige Zeilenumbrüche und Umlautungen behoben\n\n"
+             "Version 2.0.6:\n- Probleme beim gleichzeitigen betätigen von Buttons behoben\n\n"
              "Version 2.0.5:\n- Spiel Abbrechen raeumt diese nun auf\n- nur noch der Spielleiter "
-             "kann das Spiel abbrechen"
-             "Version 2.0.4.1:\n- kleiner hotfix für den Server"
+             "kann das Spiel abbrechen\n\n"
+             "Version 2.0.4.1:\n- kleiner hotfix für den Server\n\n"
              "Version 2.0.4:\n- Spiele können nach einem Serverneustart fortgesetzt werden\n\n"
              "Version 2.0.3:\n- Rollen können nun vom Admin explizit entfernt/hinzugefügt werden"
              "\n\n"
