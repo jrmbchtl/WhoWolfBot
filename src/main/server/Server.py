@@ -105,7 +105,7 @@ class Server(object):
                     self.gameData.getPlayers().pop(rec["fromId"], None)
                 self.updateRegisterMenu()
             elif rec["commandType"] == "add":
-                role = rec["add"]["role"]
+                role = makeUnreadable(rec["add"]["role"])
                 if role not in self.enabledRoles and role in self.disabledRoles:
                     self.enabledRoles.append(role)
                     self.disabledRoles.remove(role)
@@ -599,12 +599,21 @@ def makeReadable(text):
     text = "".join(tl)
     for i in exchange:
         while i in text:
-            print(text)
-            print(i)
-            print(exchange[i])
             text = text.replace(i, exchange[i])
-            print(text)
-    print(text)
+    return text
+
+
+def makeUnreadable(text):
+    exchange = {"ae": "ä", "oe": "ö", "ue": "ü", "Ae": "Ä", "Oe": "Ö", "Ue": "Ü"}
+    tl = list(text)
+    tl[0] = tl[0].lower()
+    for index, i in enumerate(tl):
+        if i == " " and index < len(tl):
+            tl[index + 1] = tl[index + 1].lower()
+    text = "".join(tl)
+    for i in exchange:
+        while exchange[i] in text:
+            text = text.replace(exchange[i], i)
     return text
 
 
