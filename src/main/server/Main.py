@@ -5,9 +5,25 @@ import json
 from multiprocessing import Process, SimpleQueue
 
 from src.main.client.TelegramClient import TelegramClient
+from src.main.server import Factory
 from src.main.server.conn.ServerConnection import ServerConnection
 from src.main.server.Server import Server
 from src.systemtest.SystemTestMain import SystemTestMain
+
+
+changelog = ("Version 2.0.6.2\n- Hotfix für hinzufügen/entfernen von Rollen\n\n"
+             "Version 2.0.6.1\n- Einige Zeilenumbrüche und Umlautungen behoben\n\n"
+             "Version 2.0.6:\n- Probleme beim gleichzeitigen betätigen von Buttons behoben\n\n"
+             "Version 2.0.5:\n- Spiel Abbrechen raeumt diese nun auf\n- nur noch der Spielleiter "
+             "kann das Spiel abbrechen\n\n"
+             "Version 2.0.4.1:\n- kleiner hotfix für den Server\n\n"
+             "Version 2.0.4:\n- Spiele können nach einem Serverneustart fortgesetzt werden\n\n"
+             "Version 2.0.3:\n- Rollen können nun vom Admin explizit entfernt/hinzugefügt werden"
+             "\n\n"
+             "Version 2.0.2:\n- Todesnachrichten und Spielendenachrichten werden hervorgehoben\n\n"
+             "Version 2.0.1:\n- Fixes für Wolfshund und Terrorwolf\n- weitere kleinere "
+             "Stabilitätsfixes\n\n"
+             "Version 2.0.0:\n- Erste stabile Version des Remakes")
 
 
 class Main(object):
@@ -50,10 +66,15 @@ class Main(object):
                         self.cleanUp()
                 elif commandType == "close":
                     self.closeServer()
+                elif commandType == "changelog":
+                    send = Factory.createMessageEvent(dc["fromId"], changelog)
+                    send["gameId"] = 0
+                    self.sc.sendJSON(send)
+                    self.sc.receiveJSON()
                 elif dc["gameId"] in self.games:
                     self.games[dc["gameId"]]["toProcessQueue"].put(dc)
                 else:
-                    print("can't find a game with id " + dc["gameId"])
+                    print("can't find a game with id " + str(dc["gameId"]))
 
         except KeyboardInterrupt:
             pass

@@ -104,7 +104,6 @@ class Server(object):
                 self.updateRegisterMenu()
             elif rec["commandType"] == "add":
                 role = makeUnreadable(rec["add"]["role"])
-                print(role)
                 if role not in self.enabledRoles and role in self.disabledRoles:
                     self.enabledRoles.append(role)
                     self.disabledRoles.remove(role)
@@ -129,7 +128,6 @@ class Server(object):
         for i in self.disabledRoles:
             roles.append(i)
         roles.sort()
-        print(roles)
         options = []
         for i in roles:
             role = makeReadable(i)

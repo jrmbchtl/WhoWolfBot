@@ -80,3 +80,9 @@ CloseServer:
 	"commandType": "close"
 }
 
+ChangeLog:
+{
+	"commandType": "changelog",
+	"fromId": 12345678
+}
+
