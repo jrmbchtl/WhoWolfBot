@@ -48,6 +48,12 @@ class Main(object):
     def main(self, seed=42):
         self.restoreGames(self.sc)
         self.gameId = self.getNextGameId()
+        try:
+            self.gameLoop(seed)
+        except KeyboardInterrupt:
+            self.closeServer()
+
+    def gameLoop(self, seed):
         while True:
             dc = self.sc.receiveJSON()
             commandType = dc["commandType"]
