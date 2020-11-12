@@ -48,36 +48,32 @@ class Main(object):
     def main(self, seed=42):
         self.restoreGames(self.sc)
         self.gameId = self.getNextGameId()
-        try:
-            while True:
-                dc = self.sc.receiveJSON()
-                commandType = dc["commandType"]
-                if commandType == "newGame":
-                    if "seed" in dc["newGame"]:
-                        s = dc["newGame"]["seed"]
-                    else:
-                        s = seed
-                    self.initGame(self.gameId, self.sc, dc, s)
-                    self.gameId = self.getNextGameId()
-                elif commandType == "terminate":
-                    idToTerminate = dc["gameId"]
-                    if idToTerminate in self.games:
-                        self.safeTerminate(dc)
-                        self.cleanUp()
-                elif commandType == "close":
-                    self.closeServer()
-                elif commandType == "changelog":
-                    send = Factory.createMessageEvent(dc["fromId"], changelog)
-                    send["gameId"] = 0
-                    self.sc.sendJSON(send)
-                    self.sc.receiveJSON()
-                elif dc["gameId"] in self.games:
-                    self.games[dc["gameId"]]["toProcessQueue"].put(dc)
+        while True:
+            dc = self.sc.receiveJSON()
+            commandType = dc["commandType"]
+            if commandType == "newGame":
+                if "seed" in dc["newGame"]:
+                    s = dc["newGame"]["seed"]
                 else:
-                    print("can't find a game with id " + str(dc["gameId"]))
-
-        except KeyboardInterrupt:
-            pass
+                    s = seed
+                self.initGame(self.gameId, self.sc, dc, s)
+                self.gameId = self.getNextGameId()
+            elif commandType == "terminate":
+                idToTerminate = dc["gameId"]
+                if idToTerminate in self.games:
+                    self.safeTerminate(dc)
+                    self.cleanUp()
+            elif commandType == "close":
+                self.closeServer()
+            elif commandType == "changelog":
+                send = Factory.createMessageEvent(dc["fromId"], changelog)
+                send["gameId"] = 0
+                self.sc.sendJSON(send)
+                self.sc.receiveJSON()
+            elif dc["gameId"] in self.games:
+                self.games[dc["gameId"]]["toProcessQueue"].put(dc)
+            else:
+                print("can't find a game with id " + str(dc["gameId"]))
 
     def closeServer(self):
         for gameId in self.games:
