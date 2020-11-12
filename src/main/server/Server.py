@@ -91,8 +91,6 @@ class Server(object):
                             "@" + rec["register"]["name"]
                             + ", bitte öffne einen privaten Chat mit mir"))
                         self.gameData.dumpNextMessage(commandType="feedback")
-                        rec = self.gameData.getNextMessage()
-                        continue
                     else:
                         self.gameData.sendJSON(
                             Factory.createMessageEvent(rec["fromId"],

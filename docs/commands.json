@@ -75,3 +75,8 @@ Terminate:
 	"gameId": 12345
 }
 
+CloseServer:
+{
+	"commandType": "close"
+}
+

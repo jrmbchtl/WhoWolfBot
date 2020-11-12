@@ -2,18 +2,12 @@ PY=python -m py_compile
 .PHONY:
     test
     server
-    client
-    compile
     analyze
 test:
     pymake analyze
-    python src/systemtest/SystemTestMain.py
+    python3 src/main/server/Main.py --systemtest
 server:
-    python3 src/main/server/Main.py
-client:
-    python3 src/main/client/Main.py
-compile:
-    $(PY) src/main/Main.py
+    python3 src/main/server/Main.py --telegram
 analyze:
     pymake flake
     pymake pylama

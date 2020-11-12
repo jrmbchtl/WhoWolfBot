@@ -36,10 +36,10 @@ changelog = ("Version 2.0.6.2\n- Hotfix für hinzufügen/entfernen von Rollen\n\
 roles = "Dorfbewohner/in\nHexe\nJäger\nSeherin\nWerwolf\nTerrorwolf\nWolfshund"
 
 
-class Client(object):
-    def __init__(self, serverConnection):
-        super(Client, self)
-        self.sc: ServerConnection = serverConnection
+class TelegramClient(object):
+    def __init__(self, recQueue, sendQueue):
+        super(TelegramClient, self)
+        self.sc: ServerConnection = ServerConnection(recQueue, sendQueue)
         with open('token.txt', 'r') as token_file:
             self.token = token_file.readline()
         self.token = self.token[0:46]

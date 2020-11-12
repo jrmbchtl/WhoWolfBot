@@ -1,18 +1,33 @@
-from src.main.server.conn.ServerConnection import ServerConnection
-from src.main.server.Server import Server
-from multiprocessing import Process, SimpleQueue
+import argparse
+import sys
 import os
 import json
+from multiprocessing import Process, SimpleQueue
+
+from src.main.client.TelegramClient import TelegramClient
+from src.main.server.conn.ServerConnection import ServerConnection
+from src.main.server.Server import Server
+from src.systemtest.SystemTestMain import SystemTestMain
 
 
 class Main(object):
-    def __init__(self):
+    def __init__(self, enableTclient=False, enableSysTestClient=False):
         super(Main, self)
         self.gameId = 1
         self.port = 32000
         self.games = {}
-        self.sc = ServerConnection(self.port)
-        self.sc.startServer()
+        self.fromServerQueue = SimpleQueue()
+        self.toServerQueue = SimpleQueue()
+        self.sc = ServerConnection(self.toServerQueue, self.fromServerQueue)
+        self.clientList = []
+        if enableTclient:
+            self.clientList.append(Process(target=startTelegramClient,
+                                           args=(self.fromServerQueue, self.toServerQueue,)))
+            self.clientList[len(self.clientList) - 1].start()
+        if enableSysTestClient:
+            self.clientList.append(Process(target=startTesting,
+                                           args=(self.fromServerQueue, self.toServerQueue,)))
+            self.clientList[len(self.clientList) - 1].start()
 
     def main(self, seed=42):
         self.restoreGames(self.sc)
@@ -33,6 +48,8 @@ class Main(object):
                     if idToTerminate in self.games:
                         self.safeTerminate(dc)
                         self.cleanUp()
+                elif commandType == "close":
+                    self.closeServer()
                 elif dc["gameId"] in self.games:
                     self.games[dc["gameId"]]["toProcessQueue"].put(dc)
                 else:
@@ -40,7 +57,13 @@ class Main(object):
 
         except KeyboardInterrupt:
             pass
-        self.sc.closeServer()
+
+    def closeServer(self):
+        for gameId in self.games:
+            self.games[gameId]["process"].kill()
+        for client in self.clientList:
+            client.kill()
+        sys.exit(0)
 
     def safeTerminate(self, dc):
         gameId = dc["gameId"]
@@ -119,6 +142,20 @@ def startNewGame(sc, dc, gameId, gameQueue, seed, deleteQueue):
     server.start()
 
 
+def startTelegramClient(recQueue, sendQueue):
+    tclient = TelegramClient(recQueue, sendQueue)
+    tclient.run()
+
+
+def startTesting(recQueue, sendQueue):
+    testClient = SystemTestMain(recQueue, sendQueue)
+    testClient.main()
+
+
 if __name__ == "__main__":
-    main = Main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-S", "--systemtest", help="run the system tests", action="store_true")
+    parser.add_argument("-T", "--telegram", help="enables the Telegram Client", action="store_true")
+    args = parser.parse_args()
+    main = Main(enableSysTestClient=args.systemtest, enableTclient=args.telegram)
     main.main()
