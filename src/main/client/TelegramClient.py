@@ -20,26 +20,13 @@ from src.main.client.conn.ServerConnection import ServerConnection
 illegalChars = ['.', '!', '#', '(', ')', '-', '=', '+', ']', '[', '{', '}', '>', '<', '|', '_', '*',
                 '`', '~']
 
-changelog = ("Version 2.0.6.2\n- Hotfix für hinzufügen/entfernen von Rollen\n\n"
-             "Version 2.0.6.1\n- Einige Zeilenumbrüche und Umlautungen behoben\n\n"
-             "Version 2.0.6:\n- Probleme beim gleichzeitigen betätigen von Buttons behoben\n\n"
-             "Version 2.0.5:\n- Spiel Abbrechen raeumt diese nun auf\n- nur noch der Spielleiter "
-             "kann das Spiel abbrechen\n\n"
-             "Version 2.0.4.1:\n- kleiner hotfix für den Server\n\n"
-             "Version 2.0.4:\n- Spiele können nach einem Serverneustart fortgesetzt werden\n\n"
-             "Version 2.0.3:\n- Rollen können nun vom Admin explizit entfernt/hinzugefügt werden"
-             "\n\n"
-             "Version 2.0.2:\n- Todesnachrichten und Spielendenachrichten werden hervorgehoben\n\n"
-             "Version 2.0.1:\n- Fixes für Wolfshund und Terrorwolf\n- weitere kleinere "
-             "Stabilitätsfixes\n\n"
-             "Version 2.0.0:\n- Erste stabile Version des Remakes")
 roles = "Dorfbewohner/in\nHexe\nJäger\nSeherin\nWerwolf\nTerrorwolf\nWolfshund"
 
 
-class Client(object):
-    def __init__(self, serverConnection):
-        super(Client, self)
-        self.sc: ServerConnection = serverConnection
+class TelegramClient(object):
+    def __init__(self, recQueue, sendQueue):
+        super(TelegramClient, self)
+        self.sc: ServerConnection = ServerConnection(recQueue, sendQueue)
         with open('token.txt', 'r') as token_file:
             self.token = token_file.readline()
         self.token = self.token[0:46]
@@ -74,8 +61,7 @@ class Client(object):
                           "fromId": fromId})
 
     def changelog(self, update, context):
-        self.botSendLoop(update.message.chat_id, text=escapeText(changelog),
-                         parseMode=ParseMode.MARKDOWN_V2)
+        self.sc.sendJSON({"commandType": "changelog", "fromId": update.message.chat_id})
 
     def roles(self, update, context):
         self.botSendLoop(update.message.chat_id, text=escapeText(roles),

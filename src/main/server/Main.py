@@ -1,46 +1,93 @@
-from src.main.server.conn.ServerConnection import ServerConnection
-from src.main.server.Server import Server
-from multiprocessing import Process, SimpleQueue
+import argparse
+import sys
 import os
 import json
+from multiprocessing import Process, SimpleQueue
+
+from src.main.client.TelegramClient import TelegramClient
+from src.main.server import Factory
+from src.main.server.conn.ServerConnection import ServerConnection
+from src.main.server.Server import Server
+from src.systemtest.SystemTestMain import SystemTestMain
+
+
+changelog = ("Version 2.0.7\n- Backend Änderung von Netzwerk zu Queues\n\n"
+             "Version 2.0.6.2\n- Hotfix für hinzufügen/entfernen von Rollen\n\n"
+             "Version 2.0.6.1\n- Einige Zeilenumbrüche und Umlautungen behoben\n\n"
+             "Version 2.0.6:\n- Probleme beim gleichzeitigen betätigen von Buttons behoben\n\n"
+             "Version 2.0.5:\n- Spiel Abbrechen raeumt diese nun auf\n- nur noch der Spielleiter "
+             "kann das Spiel abbrechen\n\n"
+             "Version 2.0.4.1:\n- kleiner hotfix für den Server\n\n"
+             "Version 2.0.4:\n- Spiele können nach einem Serverneustart fortgesetzt werden\n\n"
+             "Version 2.0.3:\n- Rollen können nun vom Admin explizit entfernt/hinzugefügt werden"
+             "\n\n"
+             "Version 2.0.2:\n- Todesnachrichten und Spielendenachrichten werden hervorgehoben\n\n"
+             "Version 2.0.1:\n- Fixes für Wolfshund und Terrorwolf\n- weitere kleinere "
+             "Stabilitätsfixes\n\n"
+             "Version 2.0.0:\n- Erste stabile Version des Remakes")
 
 
 class Main(object):
-    def __init__(self):
+    def __init__(self, enableTclient=False, enableSysTestClient=False):
         super(Main, self)
         self.gameId = 1
         self.port = 32000
         self.games = {}
-        self.sc = ServerConnection(self.port)
-        self.sc.startServer()
+        self.fromServerQueue = SimpleQueue()
+        self.toServerQueue = SimpleQueue()
+        self.sc = ServerConnection(self.toServerQueue, self.fromServerQueue)
+        self.clientList = []
+        if enableTclient:
+            self.clientList.append(Process(target=startTelegramClient,
+                                           args=(self.fromServerQueue, self.toServerQueue,)))
+            self.clientList[len(self.clientList) - 1].start()
+        if enableSysTestClient:
+            self.clientList.append(Process(target=startTesting,
+                                           args=(self.fromServerQueue, self.toServerQueue,)))
+            self.clientList[len(self.clientList) - 1].start()
 
     def main(self, seed=42):
         self.restoreGames(self.sc)
         self.gameId = self.getNextGameId()
         try:
-            while True:
-                dc = self.sc.receiveJSON()
-                commandType = dc["commandType"]
-                if commandType == "newGame":
-                    if "seed" in dc["newGame"]:
-                        s = dc["newGame"]["seed"]
-                    else:
-                        s = seed
-                    self.initGame(self.gameId, self.sc, dc, s)
-                    self.gameId = self.getNextGameId()
-                elif commandType == "terminate":
-                    idToTerminate = dc["gameId"]
-                    if idToTerminate in self.games:
-                        self.safeTerminate(dc)
-                        self.cleanUp()
-                elif dc["gameId"] in self.games:
-                    self.games[dc["gameId"]]["toProcessQueue"].put(dc)
-                else:
-                    print("can't find a game with id " + dc["gameId"])
-
+            self.gameLoop(seed)
         except KeyboardInterrupt:
-            pass
-        self.sc.closeServer()
+            self.closeServer()
+
+    def gameLoop(self, seed):
+        while True:
+            dc = self.sc.receiveJSON()
+            commandType = dc["commandType"]
+            if commandType == "newGame":
+                if "seed" in dc["newGame"]:
+                    s = dc["newGame"]["seed"]
+                else:
+                    s = seed
+                self.initGame(self.gameId, self.sc, dc, s)
+                self.gameId = self.getNextGameId()
+            elif commandType == "terminate":
+                idToTerminate = dc["gameId"]
+                if idToTerminate in self.games:
+                    self.safeTerminate(dc)
+                    self.cleanUp()
+            elif commandType == "close":
+                self.closeServer()
+            elif commandType == "changelog":
+                send = Factory.createMessageEvent(dc["fromId"], changelog)
+                send["gameId"] = 0
+                self.sc.sendJSON(send)
+                self.sc.receiveJSON()
+            elif dc["gameId"] in self.games:
+                self.games[dc["gameId"]]["toProcessQueue"].put(dc)
+            else:
+                print("can't find a game with id " + str(dc["gameId"]))
+
+    def closeServer(self):
+        for gameId in self.games:
+            self.games[gameId]["process"].kill()
+        for client in self.clientList:
+            client.kill()
+        sys.exit(0)
 
     def safeTerminate(self, dc):
         gameId = dc["gameId"]
@@ -119,6 +166,20 @@ def startNewGame(sc, dc, gameId, gameQueue, seed, deleteQueue):
     server.start()
 
 
+def startTelegramClient(recQueue, sendQueue):
+    tclient = TelegramClient(recQueue, sendQueue)
+    tclient.run()
+
+
+def startTesting(recQueue, sendQueue):
+    testClient = SystemTestMain(recQueue, sendQueue)
+    testClient.main()
+
+
 if __name__ == "__main__":
-    main = Main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-S", "--systemtest", help="run the system tests", action="store_true")
+    parser.add_argument("-T", "--telegram", help="enables the Telegram Client", action="store_true")
+    args = parser.parse_args()
+    main = Main(enableSysTestClient=args.systemtest, enableTclient=args.telegram)
     main.main()

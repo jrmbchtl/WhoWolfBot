@@ -91,8 +91,6 @@ class Server(object):
                             "@" + rec["register"]["name"]
                             + ", bitte öffne einen privaten Chat mit mir"))
                         self.gameData.dumpNextMessage(commandType="feedback")
-                        rec = self.gameData.getNextMessage()
-                        continue
                     else:
                         self.gameData.sendJSON(
                             Factory.createMessageEvent(rec["fromId"],
@@ -106,7 +104,6 @@ class Server(object):
                 self.updateRegisterMenu()
             elif rec["commandType"] == "add":
                 role = makeUnreadable(rec["add"]["role"])
-                print(role)
                 if role not in self.enabledRoles and role in self.disabledRoles:
                     self.enabledRoles.append(role)
                     self.disabledRoles.remove(role)
@@ -131,7 +128,6 @@ class Server(object):
         for i in self.disabledRoles:
             roles.append(i)
         roles.sort()
-        print(roles)
         options = []
         for i in roles:
             role = makeReadable(i)

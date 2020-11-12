@@ -1,36 +1,26 @@
 import json
 import os
-import time
 
-from multiprocessing import Process
 from src.main.client.conn.ServerConnection import ServerConnection
-from src.main.server.Main import Main
 from src.systemtest.SystemTestRegistration import SystemTestRegistration
 
 
 class SystemTestMain(object):
-    def __init__(self):
+    def __init__(self, recQueue, sendQueue):
         super(SystemTestMain, self)
         self.tests = []
-        self.serverConnection = ServerConnection()
-        self.server = None
+        self.serverConnection = ServerConnection(recQueue, sendQueue)
 
     def main(self):
         self.cleanUp()
         SystemTestRegistration(self).register()
-        self.server = Process(target=launchServer)
-        self.server.start()
-        time.sleep(5)
-        self.serverConnection.startServer()
         for test in self.tests:
             print("\n\n##########################################################################")
             print("Running test " + test.getName() + "\n\n")
             test.run()
-            time.sleep(5)
             print("\n\n")
         self.cleanUp()
-        self.server.kill()
-        self.serverConnection.closeServer()
+        self.serverConnection.sendJSON({"commandType": "close"})
 
     def register(self, test):
         self.tests.append(test)
@@ -48,12 +38,3 @@ class SystemTestMain(object):
                     data = json.load(file)
                     if data["seed"] != 16384:
                         os.remove("games/" + f)
-
-
-def launchServer():
-    Main().main()
-
-
-if __name__ == "__main__":
-    main = SystemTestMain()
-    main.main()
