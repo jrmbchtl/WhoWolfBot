@@ -11,7 +11,8 @@ from src.main.server.Server import Server
 from src.systemtest.SystemTestMain import SystemTestMain
 
 
-changelog = ("Version 2.0.6.2\n- Hotfix für hinzufügen/entfernen von Rollen\n\n"
+changelog = ("Version 2.0.7\n- Backend Änderung von Netzwerk zu Queues\n\n"
+             "Version 2.0.6.2\n- Hotfix für hinzufügen/entfernen von Rollen\n\n"
              "Version 2.0.6.1\n- Einige Zeilenumbrüche und Umlautungen behoben\n\n"
              "Version 2.0.6:\n- Probleme beim gleichzeitigen betätigen von Buttons behoben\n\n"
              "Version 2.0.5:\n- Spiel Abbrechen raeumt diese nun auf\n- nur noch der Spielleiter "
