@@ -79,7 +79,7 @@ class Server(object):
         rec = self.gameData.getNextMessage()
         while (rec["commandType"] != "startGame"
                or rec["fromId"] != self.gameData.getAdmin()
-               or len(self.gameData.getPlayers()) < 3):
+               or len(self.gameData.getPlayers()) < 4):
             if rec["commandType"] == "register":
                 if rec["fromId"] not in self.gameData.getPlayers():
                     self.gameData.sendJSON(
@@ -556,7 +556,7 @@ class Server(object):
 
     def getWerwolfRoleList(self, amountOfPlayers):
         werwolfRoleList = []
-        if amountOfPlayers >= 6 and "wolfshund" in self.enabledRoles:
+        if amountOfPlayers >= 3 and "wolfshund" in self.enabledRoles:
             for i in range(0, 20):
                 werwolfRoleList.append(Werwolf())
             for i in range(0, 40):

@@ -44,7 +44,6 @@ class GameData(object):
                 if (commandType is None or commandType == tmp["commandType"]) \
                         and (fromId is None or fromId == tmp["fromId"]):
                     data = tmp
-                    print("appending data: " + str(data))
                     self.appendToRecList(data)
                 else:
                     writeBack.append(tmp)

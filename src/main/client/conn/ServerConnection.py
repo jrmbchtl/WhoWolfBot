@@ -10,9 +10,9 @@ class ServerConnection(object):
 		while self.recQueue.empty():
 			pass
 		data = self.recQueue.get()
-		print("TelegramClient - Received: " + str(data))
+		print("Client - Received: " + str(data))
 		return data
 
 	def sendJSON(self, dc):
-		print("TelegramClient - Sending: " + str(dc))
+		print("Client - Sending: " + str(dc))
 		self.sendQueue.put(dc)

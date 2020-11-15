@@ -38,18 +38,16 @@ class Wolfshund(Character):
         messageId = gameData.getNextMessage(commandType="feedback")["feedback"]["messageId"]
 
         rec = gameData.getNextMessage(commandType="reply", fromId=playerId)
-        gameData.sendJSON(
-            Factory.createMessageEvent(playerId, intro, messageId, Factory.EditMode.EDIT))
         if rec["reply"]["choiceIndex"] == 0:
             self.setTeam(TeamType.WERWOLF)
-            gameData.sendJSON(
-                Factory.createMessageEvent(playerId, wolfshundDidChooseWerwolf(indexWerwolf)))
+            intro += "\n\n" + wolfshundDidChooseWerwolf(indexWerwolf)
         elif rec["reply"]["choiceIndex"] == 1:
             self.setTeam(TeamType.VILLAGER)
-            gameData.sendJSON(
-                Factory.createMessageEvent(playerId, wolfshundDidChooseDorf(indexDorf)))
+            intro += "\n\n" + wolfshundDidChooseDorf(indexDorf)
         else:
             raise ValueError("How can u choose option " + rec["reply"]["choiceIndex"])
+        gameData.sendJSON(
+            Factory.createMessageEvent(playerId, intro, messageId, Factory.EditMode.EDIT))
         gameData.dumpNextMessage(commandType="feedback")
 
 

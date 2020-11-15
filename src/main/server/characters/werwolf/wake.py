@@ -25,7 +25,9 @@ def wake(gameData: GameData):
     for werwolf in werwolfList:
         gameData.sendJSON(Factory.createChoiceFieldEvent(werwolf, text, options))
         messageIdDict[werwolf] = \
-            gameData.getNextMessage(commandType="feedback")["feedback"]["messageId"]
+            gameData.getNextMessage(commandType="feedback", fromId=werwolf)["feedback"]["messageId"]
+
+    print(messageIdDict)
 
     newText = ""
     voteDict = {}  # stores werwolf and which index he voted for
