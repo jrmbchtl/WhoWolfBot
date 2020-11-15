@@ -151,6 +151,8 @@ class TelegramClient(object):
         except TimedOut:
             time.sleep(15)
             self.botEditLoop(chatId, text, messageId, replyMarkup, parseMode)
+        except BadRequest:
+            return
 
     def botDeleteLoop(self, chatId, messageId):
         try:
@@ -201,8 +203,8 @@ def generateKeyboard(dc, gameId):
                                           callback_data='terminate_' + str(gameId))]]
     elif len(dc["choiceField"]["options"]) == 1 \
             and dc["choiceField"]["options"][0] == "Abbrechen":
-        keyboard = [InlineKeyboardButton("Abbrechen",
-                                         callback_data='terminate_' + str(gameId))]
+        keyboard = [[InlineKeyboardButton("Abbrechen",
+                                         callback_data='terminate_' + str(gameId))]]
     elif dc["choiceField"]["text"] == "Hier können Rollen hinzugefügt oder entfernt werden":
         for option in dc["choiceField"]["options"]:
             option = escapeText(option)
