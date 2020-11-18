@@ -1,0 +1,67 @@
+{
+  "DE": {
+    "welcome": "Herzlich willkommen beim Werwolf\\-Bot\\!",
+    "cancel": "Abbrechen",
+    "join": "Mitspielen/Aussteigen",
+    "start": "Start",
+    "roleConfig": "Hier können Rollen hinzugefügt oder entfernt werden",
+    "remove": "deaktivieren",
+    "add": "hinzufügen",
+    "gameMenu": [
+      "Viel Spass beim Werwolf spielen!\n\nBitte einen privaten Chat mit dem Bot starten, bevor das Spiel ",
+      "beginnt!\n\nUm das Spiel in seiner vollen Breite genießen zu können, empfiehlt es sich bei sehr schmalen ",
+      "Bildschirmen, diese quer zu verwenden.\n\n"
+    ],
+    "hello": "Hallo, ich bin der Werwolfbot",
+    "plsOpen": ", bitte öffne einen privaten Chat mit mir!",
+    "players": "Spieler",
+    "roles": {
+      "werewolf": "Werwolf",
+      "villager": "Dorfbewohner/in",
+      "witch": "Hexe",
+      "hunter": "Jäger",
+      "seer": "Seherin",
+      "terrorwolf": "Terrorwolf",
+      "wolfdog": "Wolfshund"
+    },
+    "accuseOptions": {
+      "0": " anklagen",
+      "1": " bezichtigen",
+      "2": " Verrat vorwerfen",
+      "3": " anprangern",
+      "4": " anschuldigen",
+      "5": " beschuldigen"
+    },
+    "accuseIntro": {
+      "0": "Es ist Zeit, anzuklagen!",
+      "1": "Nach einer turbulenten Nacht geht es in Düsterwald heiß her.",
+      "2": "Nach einer solchen Nacht wird in Düsterwald blind beschuldigt.",
+      "3": "Die Dorfbewohner wollen die Übeltäter im Dorf entlarven und beginnen mit den Beschuldigungen.",
+      "4": "Die Dorfbewohner versuchen durch wildes Beschuldigen, die Werwölfe zu enttarnen.",
+      "5": "Jeder versucht, sein eigenes Leben zu schützen und schiebt deshalb die Schuld auf Andere.",
+      "6": "Die Dorfbewohner wollen jemanden für die Verbrechen der Nacht beschuldigen.",
+      "7": "Eine Diskussion entbrandet, wer an den schrecklichen Taten der Nacht schuld sein könnte.",
+      "8": [
+        "Eine heiße Diskussion beginnt in Düsterwald. Vage Gerüchte werden auf einmal zu harten Fakten, ",
+        "Werwölfe tarnen sich als normale Büger und harmlose Dorfbewohner werden des brutalen Mordes beschuldigt."
+      ],
+      "9": "Lasset die Beschuldigungsspiele beginnen!"
+    },
+    "accuseTextPre": {
+            "0": " möchte ",
+            "1": " bezichtigt ",
+            "2": " wirft ",
+            "3": " will ",
+            "4": " trifft Anschuldigungen gegen ",
+            "5": " beschuldigt "
+        },
+    "accuseTextPost": {
+            "0": " anklagen.",
+            "1": ".",
+            "2": " Verrat vor!",
+            "3": " anprangern!",
+            "4": ".",
+            "5": "."
+        }
+  }
+}

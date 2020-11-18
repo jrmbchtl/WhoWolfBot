@@ -53,8 +53,8 @@ class Systemtest(object):
         self.__verifyMessage(gameId, rec["target"])
         self.assertReceiveDict({"eventType": "choiceField", "choiceField":
             {"text": "Hier k\u00f6nnen Rollen hinzugef\u00fcgt oder entfernt werden",
-             "options": ["Hexe deaktivieren", "Jäger deaktivieren", "Seherin deaktivieren",
-                         "Terrorwolf deaktivieren", "Wolfshund deaktivieren"],
+             "options": ['Jäger deaktivieren', 'Seherin deaktivieren', 'Terrorwolf deaktivieren',
+                         'Hexe deaktivieren', 'Wolfshund deaktivieren'],
              "messageId": 0}, "mode": "write", "target": 42, "highlight": False, "gameId": gameId})
         for i in range(1, numberOfPlayers + 1):
             self.sc.sendJSON({"commandType": "register", "register":

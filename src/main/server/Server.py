@@ -15,6 +15,9 @@ from .characters.werwolf import wake
 from .characters.werwolf.Terrorwolf import Terrorwolf
 from .characters.werwolf.Werwolf import Werwolf
 from .characters.werwolf.Wolfshund import Wolfshund
+from src.main.localization import getLocalization as loc
+
+lang = "DE"
 
 
 class Server(object):
@@ -24,7 +27,7 @@ class Server(object):
         self.gameData = GameData(seed=seed, players={}, sc=sc, dc=dc, gameQueue=gameQueue,
                                  gameId=gameId, menuMessageId=None, deleteQueue=deleteQueue)
         self.accusedDict = {}
-        self.enabledRoles = ["wolfshund", "terrorwolf", "seherin", "hexe", "jaeger"]
+        self.enabledRoles = ["wolfdog", "terrorwolf", "seer", "witch", "hunter"]
         self.disabledRoles = []
         self.settingsMessageId = None
 
@@ -50,17 +53,14 @@ class Server(object):
             os.remove(file)
 
     def updateRegisterMenu(self, disable=False):
-        message = ("Viel Spass beim Werwolf spielen!\n\nBitte einen privaten Chat mit dem Bot "
-                   "starten, bevor das Spiel beginnt!\n\nUm das Spiel in seiner vollen Breite "
-                   "genießen zu können, empfiehlt es sich bei sehr schmalen Bildschirmen, "
-                   "diese quer zu verwenden.\n\n")
-        message += 'Spieler:\n'
+        message = loc(lang, "gameMenu")
+        message += loc(lang, "players") + ":\n"
         for player in self.gameData.getPlayers():
             message += self.gameData.getPlayers()[player].getName() + "\n"
         if not disable:
-            options = ["Mitspielen/Aussteigen", "Start", "Abbrechen"]
+            options = [loc(lang, "join"), loc(lang, "start"), loc(lang, "cancel")]
         else:
-            options = ["Abbrechen"]
+            options = [loc(lang, "cancel")]
         if self.gameData.getMenuMessageId() is None:
             sendDict = Factory.createChoiceFieldEvent(self.gameData.getOrigin(), message, options)
         else:
@@ -83,13 +83,12 @@ class Server(object):
             if rec["commandType"] == "register":
                 if rec["fromId"] not in self.gameData.getPlayers():
                     self.gameData.sendJSON(
-                        Factory.createMessageEvent(rec["fromId"], "Ich bin der Werwolfbot"))
+                        Factory.createMessageEvent(rec["fromId"], loc(lang, "hello")))
                     tmp = self.gameData.getNextMessage(commandType="feedback")
                     if tmp["feedback"]["success"] == 0:
                         self.gameData.sendJSON(Factory.createMessageEvent(
-                            self.gameData.getOrigin(),
-                            "@" + rec["register"]["name"]
-                            + ", bitte öffne einen privaten Chat mit mir"))
+                            self.gameData.getOrigin(), rec["register"]["name"]
+                            + loc(lang, "plsOpen")))
                         self.gameData.dumpNextMessage(commandType="feedback")
                     else:
                         self.gameData.sendJSON(
@@ -103,13 +102,13 @@ class Server(object):
                     self.gameData.getPlayers().pop(rec["fromId"], None)
                 self.updateRegisterMenu()
             elif rec["commandType"] == "add":
-                role = makeUnreadable(rec["add"]["role"])
+                role = revLookup(loc(lang, "roles"), rec["add"]["role"])
                 if role not in self.enabledRoles and role in self.disabledRoles:
                     self.enabledRoles.append(role)
                     self.disabledRoles.remove(role)
                     self.sendSettings()
             elif rec["commandType"] == "remove":
-                role = makeUnreadable(rec["remove"]["role"])
+                role = revLookup(loc(lang, "roles"), rec["add"]["role"])
                 if role in self.enabledRoles and role not in self.disabledRoles:
                     self.enabledRoles.remove(role)
                     self.disabledRoles.append(role)
@@ -123,18 +122,18 @@ class Server(object):
 
     def sendSettings(self):
         target = self.gameData.getAdmin()
-        text = "Hier können Rollen hinzugefügt oder entfernt werden"
+        text = loc(lang, "roleConfig")
         roles = self.enabledRoles.copy()
         for i in self.disabledRoles:
             roles.append(i)
         roles.sort()
         options = []
         for i in roles:
-            role = makeReadable(i)
+            role = loc(lang, "roles", i)
             if i in self.enabledRoles:
-                options.append(role + " deaktivieren")
+                options.append(role + " " + loc(lang, "remove"))
             if i in self.disabledRoles:
-                options.append(role + " aktivieren")
+                options.append(role + " " + loc(lang, "add"))
         if self.settingsMessageId is None:
             messageId = 0
             mode = Factory.EditMode.WRITE
@@ -212,11 +211,11 @@ class Server(object):
         idToChoice = {}
         options = []
         for player in self.gameData.getAlivePlayers():
-            choice, option = self.anklageOptions()
+            choice, option = self.accuseOptions()
             option = self.gameData.getAlivePlayers()[player].getName() + option
             options.append(option)
             idToChoice[player] = choice
-        text = self.anklageIntro()
+        text = self.accuseIntro()
         self.gameData.sendJSON(Factory.createChoiceFieldEvent(
             self.gameData.getOrigin(), text, options))
         messageId = self.gameData.getNextMessage(commandType="feedback")["feedback"]["messageId"]
@@ -232,7 +231,7 @@ class Server(object):
             for entry in self.accusedDict:
                 target = self.accusedDict[entry]
                 newText += self.gameData.idToName(entry)
-                newText += self.anklageText(idToChoice[target], self.gameData.idToName(target))
+                newText += self.accuseText(idToChoice[target], self.gameData.idToName(target))
             self.gameData.sendJSON(Factory.createChoiceFieldEvent(
                 self.gameData.getOrigin(), newText, options, messageId, Factory.EditMode.EDIT))
             self.gameData.dumpNextMessage(commandType="feedback")
@@ -241,48 +240,19 @@ class Server(object):
             self.gameData.getOrigin(), newText, messageId, Factory.EditMode.EDIT))
         self.gameData.dumpNextMessage(commandType="feedback")
 
-    def anklageOptions(self):
-        switcher = {
-            0: " anklagen",
-            1: " bezichtigen",
-            2: " Verrat vorwerfen",
-            3: " anprangern",
-            4: " anschuldigen",
-            5: " beschuldigen"
-        }
-        choice = self.gameData.randrange(0, 6)
-        return choice, switcher[choice]
+    def accuseOptions(self):
+        dc = loc(lang, "accuseOptions")
+        choice = self.gameData.randrange(0, len(dc))
+        return choice, dc[str(choice)]
 
-    def anklageIntro(self):
-        switcher = {
-            0: "Es ist Zeit, anzuklagen!",
-            1: "Nach einer turbulenten Nacht geht es in Düsterwald heiß her.",
-            2: "Nach einer solchen Nacht wird in Düsterwald blind beschuldigt.",
-            3: ("Die Dorfbewohner wollen die Übeltäter im Dorf entlarven und beginnen "
-                "mit den Beschuldigungen."),
-            4: "Die Dorfbewohner versuchen durch wildes Beschuldigen, die Werwölfe zu enttarnen.",
-            5: ("Jeder versucht, sein eigenes Leben zu schützen und schiebt deshalb die "
-                "Schuld auf Andere."),
-            6: "Die Dorfbewohner wollen jemanden für die Verbrechen der Nacht beschuldigen.",
-            7: ("Eine Diskussion entbrandet, wer an den schrecklichen Taten der Nacht "
-                "schuld sein könnte."),
-            8: ("Eine heiße Diskussion beginnt in Düsterwald. Vage Gerüchte werden auf einmal zu "
-                "harten Fakten, Werwölfe tarnen sich als normale Büger und harmlose Dorfbewohner "
-                "werden des brutalen Mordes beschuldigt."),
-            9: "Lasset die Beschuldigungsspiele beginnen!"
-        }
-        return switcher[self.gameData.randrange(0, 10)]
+    def accuseIntro(self):
+        dc = loc(lang, "accuseIntro")
+        return dc[str(self.gameData.randrange(0, len(dc)))]
 
-    def anklageText(self, option, name):
-        switcher = {
-            0: " möchte " + name + " anklagen.",
-            1: " bezichtigt " + name + ".",
-            2: " wirft " + name + " Verrat vor!",
-            3: " will " + name + " anprangern!",
-            4: " trifft Anschuldigungen gegen " + name + ".",
-            5: " beschuldigt " + name + "."
-        }
-        return switcher[option]
+    def accuseText(self, option, name):
+        pre = loc(lang, "accuseTextPre", option)
+        post = loc(lang, "accuseTextPost", option)
+        return pre + name + post
 
     def vote(self):
         idToChoice, voteDict = self.getVoteDict()
@@ -556,7 +526,7 @@ class Server(object):
 
     def getWerwolfRoleList(self, amountOfPlayers):
         werwolfRoleList = []
-        if amountOfPlayers >= 3 and "wolfshund" in self.enabledRoles:
+        if amountOfPlayers >= 3 and "wolfdog" in self.enabledRoles:
             for i in range(0, 20):
                 werwolfRoleList.append(Werwolf())
             for i in range(0, 40):
@@ -574,19 +544,19 @@ class Server(object):
         for i in range(0, 30):
             dorfRoleList.append(Dorfbewohner())
             dorfRoleList.append(Dorfbewohnerin())
-        if "jaeger" in self.enabledRoles:
+        if "hunter" in self.enabledRoles:
             for i in range(0, 28):
                 dorfRoleList.append(Jaeger())
-        if "seherin" in self.enabledRoles:
+        if "seer" in self.enabledRoles:
             for i in range(0, 28):
                 dorfRoleList.append(Seherin())
-        if "hexe" in self.enabledRoles:
+        if "witch" in self.enabledRoles:
             for i in range(0, 28):
                 dorfRoleList.append(Hexe())
         return dorfRoleList
 
 
-def makeReadable(text):
+""""def makeReadable(text):
     exchange = {"ae": "ä", "oe": "ö", "ue": "ü", "Ae": "Ä", "Oe": "Ö", "Ue": "Ü"}
     tl = list(text)
     tl[0] = tl[0].capitalize()
@@ -611,7 +581,7 @@ def makeUnreadable(text):
     for i in exchange:
         while exchange[i] in text:
             text = text.replace(exchange[i], i)
-    return text
+    return text"""
 
 
 def removeCharacterTypeFromList(ls, ct):
@@ -621,3 +591,9 @@ def removeCharacterTypeFromList(ls, ct):
             del ls[i]
         else:
             i += 1
+
+
+def revLookup(dc, value):
+    for key in dc:
+        if dc[key] == value:
+            return key

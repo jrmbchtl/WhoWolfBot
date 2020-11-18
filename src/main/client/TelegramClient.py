@@ -15,12 +15,13 @@ from telegram.ext import CallbackQueryHandler
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
 
+from src.main.localization import getLocalization as loc
 from src.main.client.conn.ServerConnection import ServerConnection
 
 illegalChars = ['.', '!', '#', '(', ')', '-', '=', '+', ']', '[', '{', '}', '>', '<', '|', '_', '*',
                 '`', '~']
 
-roles = "Dorfbewohner/in\nHexe\nJäger\nSeherin\nWerwolf\nTerrorwolf\nWolfshund"
+lang = "DE"
 
 
 class TelegramClient(object):
@@ -50,7 +51,7 @@ class TelegramClient(object):
 
     def start(self, update, context):
         self.botSendLoop(update.message.chat_id,
-                         text="Herzlich willkommen beim Werwolf\\-Bot\\!",
+                         text=loc(lang, "welcome"),
                          parseMode=ParseMode.MARKDOWN_V2)
 
     def new(self, update, context):
@@ -64,6 +65,12 @@ class TelegramClient(object):
         self.sc.sendJSON({"commandType": "changelog", "fromId": update.message.chat_id})
 
     def roles(self, update, context):
+        roleDict = loc(lang, "roles")
+        roles = ""
+        for index, role in enumerate(roleDict):
+            roles += roleDict[role]
+            if index + 1 < len(roleDict):
+                roles += "\n"
         self.botSendLoop(update.message.chat_id, text=escapeText(roles),
                          parseMode=ParseMode.MARKDOWN_V2)
 
@@ -195,21 +202,21 @@ def escapeText(text):
 def generateKeyboard(dc, gameId):
     keyboard = []
     if len(dc["choiceField"]["options"]) == 3 \
-            and dc["choiceField"]["options"][0] == "Mitspielen/Aussteigen":
-        keyboard = [[InlineKeyboardButton("Mitspielen/Aussteigen",
+            and dc["choiceField"]["options"][0] == loc(lang, "join"):
+        keyboard = [[InlineKeyboardButton(loc(lang, "join"),
                                           callback_data='register_' + str(gameId))],
-                    [InlineKeyboardButton("Start", callback_data='start_' + str(gameId)),
-                     InlineKeyboardButton("Abbrechen",
+                    [InlineKeyboardButton(loc(lang, "start"), callback_data='start_' + str(gameId)),
+                     InlineKeyboardButton(loc(lang, "cancel"),
                                           callback_data='terminate_' + str(gameId))]]
     elif len(dc["choiceField"]["options"]) == 1 \
-            and dc["choiceField"]["options"][0] == "Abbrechen":
-        keyboard = [[InlineKeyboardButton("Abbrechen",
-                                         callback_data='terminate_' + str(gameId))]]
-    elif dc["choiceField"]["text"] == "Hier können Rollen hinzugefügt oder entfernt werden":
+            and dc["choiceField"]["options"][0] == loc(lang, "cancel"):
+        keyboard = [[InlineKeyboardButton(loc(lang, "cancel"),
+                                          callback_data='terminate_' + str(gameId))]]
+    elif dc["choiceField"]["text"] == loc(lang, "roleConfig"):
         for option in dc["choiceField"]["options"]:
             option = escapeText(option)
             role = option.split(" ")[0]
-            if option.endswith("deaktivieren"):
+            if option.endswith(loc(lang, "remove")):
                 keyboard.append([InlineKeyboardButton(
                     option, callback_data="remove_" + str(gameId) + "_" + role)])
             else:
