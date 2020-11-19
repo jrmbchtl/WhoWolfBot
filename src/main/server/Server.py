@@ -322,133 +322,33 @@ class Server(object):
         return idToChoice, voteDict
 
     def voteIntro(self):
-        switcher = {
-            0: "Es ist Zeit, jemanden hinzurichten!",
-            1: "Die Dorfbewohner wollen die Verantwortlichen für die Morde sterben sehen!",
-            2: "Die Abstimmung für die Hinrichtung beginnt.",
-            3: "Wen wollt ihr hinrichten?",
-            4: "Wer soll für die grausamen Verbrechen mit einem noch grausameren Tod bezahlen?",
-            5: "Wer ist schuldig und muss sterben?",
-            6: ("Auge um Auge, Zahn um Zahn - und wer muss aufgrund vager Gerüchte einen "
-                "grauenvollen Tod sterben?"),
-            7: "Die Demokratie wird entscheiden, wer hingerichtet wird!",
-            8: "Das Dorf entscheidet, wer gelyncht wird!",
-            9: "Lasset die Hinrichtungsspiele beginnen!"
-        }
-        return switcher[self.gameData.randrange(0, 10)]
+        dc = loc(lang, "voteIntro")
+        return dc[str(self.gameData.randrange(0, len(dc)))]
 
     def voteOptions(self):
-        switcher = {
-            0: " hängen",
-            1: " auf dem Scheiterhaufen verbrennen",
-            2: " einen Schwedentrunk verabreichen",
-            3: " vierteilen",
-            4: " für das Gemeinwohl opfern",
-            5: " ertränken",
-            6: " von einem Felsen stürzen",
-            7: " guillotinieren",
-            8: " lebendig begraben",
-            9: " steinigen"
-        }
-        choice = self.gameData.randrange(0, 10)
-        return choice, switcher[choice]
+        dc = loc(lang, "voteOptions")
+        choice = self.gameData.randrange(0, len(dc))
+        return choice, dc[str(choice)]
 
     def votedFor(self, option, name):
-        switcher = {
-            0: " möchte " + name + " hängen!",
-            1: " will " + name + " auf dem Scheiterhaufen sehen!",
-            2: " möchte " + name + " den Schwedentrunk verabreichen.",
-            3: " will " + name + " vierteilen.",
-            4: " würde gerne " + name + " für das Gemeinwohl opfern.",
-            5: " möchte " + name + " ertränken.",
-            6: " will " + name + " von einem Felsen stürzen.",
-            7: " will " + name + " unter die Guillotine legen.",
-            8: " würde gerne " + name + " lebendig begraben.",
-            9: " will " + name + " steinigen."
-        }
-        return switcher[option]
+        pre = loc(lang, "votedForPre", option)
+        post = loc(lang, "votedForPost", option)
+        return pre + name + post
 
     def voteJudgement(self, option):
-        switcher = {
-            0: " wurde gehängt.",
-            1: " wird auf dem Scheiterhaufen verbrannt!",
-            2: " bekommt den Schwedentrunk verabreicht.",
-            3: " wurde gevierteilt.",
-            4: " hat sich für das Gemeinwohl opfern lassen.",
-            5: " wurde ertränkt!",
-            6: " wird von einem Felsen gestürzt.",
-            7: " ist unter der Guillotine gelandet!",
-            8: " wurde lebendig begraben.",
-            9: " hat die Steinigung nicht überlebt."
-        }
-        return switcher[option]
+        return loc(lang, "voteJudgement", option)
 
     def pattRevote(self):
-        switcher = {
-            0: "Pattsituation - bitte nochmals abstimmen!",
-            1: ("Das Dorf konnte sich nicht entscheiden, wer hingerichtet werden sollte. Deshalb "
-                "muss die Abstimmung wiederholt werden."),
-            2: "Die Abstimmung geht unentschieden aus und muss wiederholt werden.",
-            3: ("Die Dorfgemeinschaft kann sich für keinen Schuldigen entscheiden und setzt daher "
-                "Neuwahlen an."),
-            4: ("Zustände wie in der Türkei: Es wird sooft gewählt, bis den Oberen das Ergebnis "
-                "gefällt. Es wurden Neuwahlen angesetzt!"),
-            5: ("Es kann nur eine Person hingerichtet werden, irgendjemand sollte seine Meinung "
-                "ändern!"),
-            6: "Hier kommt die Demokratie an ihre Grenzen: Die Wahl muss wiederholt werden.",
-            7: ("Eine Koalition ist bei der Hinrichtung nicht möglich. Bitte entscheidet euch für "
-                "einen Schuldigen."),
-            8: ("Auf dem elekrtischen Stuhl ist nur Platz für eine Person. Bitte nochmals "
-                "abstimmen!"),
-            9: ("Wenn ihr zwei halbe Menschen hinrichtet, habt ihr mathematisch auch nur eine "
-                "Person hingerichtet. Das Problem ist, dass dann beide tot sind. Entscheidet euch!")
-        }
-        return switcher[self.gameData.randrange(0, 10)]
+        dc = loc(lang, "pattRevote")
+        return dc[str(self.gameData.randrange(0, len(dc)))]
 
     def pattNoKill(self):
-        switcher = {
-            0: ("Da sich das Dorf nicht auf einen Schuldigen einigen kann, wird heute niemand "
-                "gelyncht."),
-            1: "Die Demokratie ist überfordert und beschließt, niemanden hinzurichten.",
-            2: "Nach einer intensiven aber ergebnislosen Diskussion kehren alle nach hause zurück.",
-            3: "Mal wieder viel heiße Luft um Nichts - viel Anschuldigungen aber kein Ergebnis.",
-            4: ("Bei dem versuch, alle Angeklagten zu hängen, reißt das Seil und das Dorf "
-                "beschließt, heute niemanden hinzurichten."),
-            5: ("Da die Diskussion zu hitzig wird, ohne ein Ergebnis zu zeigen, löst die Polizei "
-                "die Versammlung auf und schickt alle Beteiligten fort."),
-            6: ("Am Ende des Tages sind alle genervt, da letztlich keiner seine Meinung "
-                "durchsetzen konnte."),
-            7: ("Dieser Tag geht ohne einen Toten vorbei. Dies sorgt für Unmut unter den "
-                "Dorfbewohnern, da die Werwölfe auch nächste Nacht nicht ruhen werden."),
-            8: ("Die Dorfbewohner nehmen sich vor: Beim nächsten Mal erzielen wir bei der "
-                "Abstimmung ein klares Ergebnis, doch momentan will keiner seine Meinung ändern. "
-                "Vielleicht kann die kommende Nacht gegen ein Patt helfen?"),
-            9: ("Da sich das Dorf nicht einigen konnte, beschließt es, eine Nacht über die "
-                "Meinungen zu schlafen. Vielleicht wird man sich ja morgen einig.")
-        }
-        return switcher[self.gameData.randrange(0, 10)]
+        dc = loc(lang, "pattNoKill")
+        return dc[str(self.gameData.randrange(0, len(dc)))]
 
     def nightfall(self):
-        switcher = {
-            0: "Es wird Nacht in Düsterwald.",
-            1: "Die Sonne geht langsam unter, es ist Zeit für alle, schlafen zu gehen.",
-            2: ("Düsterwald bereitet sich auf eine turbulente Nacht vor und legt sich "
-                "schlafen. Manche Individuen stellen sich jedoch einen Wecker..."),
-            3: ("Die Nacht ist nicht weniger gefährlich als der Tag und die Dorfbewohner "
-                "stellen sich darauf ein, sich vielleicht ein letztes Mal schlafen zu legen..."),
-            4: "Sowie es langsam dunkel wird in Düsterwald, legen sich alle schlafen.",
-            5: ("Nach einem anstrengenden Tag hoffen viele Dorfbewohner nun auf eine erholsame "
-                "Nacht. Doch diese Nacht werden nicht alle gut schlafen..."),
-            6: ("Die Straßen werden leer, in der Kneipe wurde schon vor einer halben Stunde "
-                "das letzte Bier ausgeschenkt und Düsterwald legt sich schlafen."),
-            7: ("Düsterwald legt sich schlafen - in der Hoffnung, in der Morgendämmerung "
-                "wieder zu erwachen."),
-            8: ("So manch Dorfbewohner hofft nun auf eine ruhige Nacht - andere schlecken sich "
-                "schon das Maul..."),
-            9: ("Die Dorfbewohner stoßen auf einen erfolgreichen Tag an und wünschen sich eine "
-                "gute Nacht.")
-        }
-        return switcher[self.gameData.randrange(0, 10)]
+        dc = loc(lang, "nightfall")
+        return dc[str(self.gameData.randrange(0, len(dc)))]
 
     def checkGameOver(self):
         if len(self.gameData.getAlivePlayers()) == 0:
@@ -466,63 +366,36 @@ class Server(object):
                     return False
             if team == Teams.TeamType.WERWOLF:
                 self.gameData.sendJSON(
-                    Factory.createMessageEvent(self.gameData.getOrigin(), self.werwoelfeWin(),
+                    Factory.createMessageEvent(self.gameData.getOrigin(), self.werewolfWin(),
                                                highlight=True))
             else:
                 self.gameData.sendJSON(
-                    Factory.createMessageEvent(self.gameData.getOrigin(), self.dorfWin(),
+                    Factory.createMessageEvent(self.gameData.getOrigin(), self.villageWin(),
                                                highlight=True))
             self.gameData.dumpNextMessage(commandType="feedback")
             return True
 
     def allDead(self):
-        switcher = {
-            0: "Es sind alle tot.",
-            1: "Das Dorf ist so lebendig wie Tschernobyl.",
-            2: "In Düsterwald könnte jetzt ein Vulkan ausbrechen und niemand würde sterben.",
-            3: "Düsterwald hat seine Letzte Ruhe gefunden.",
-            4: "Jetzt leben nur noch Tiere in Düsterwald.",
-            5: "Die Natur wird sich das kleine Örtchen ab jetzt Stück für Stück zurückholen.",
-            6: "Die Zivilisation in Düsterwald ist ausgelöscht.",
-            7: "Das Werwolfproblem ist beseitigt. Das Menschenproblem aber auch.",
-            8: "Düsterwald hat jetzt "
-               + str(json.loads(requests.get("http://api.open-notify.org/astros.json").text)
-                     ["number"]) + " Einwohner weniger als das Weltall.",
-            9: "Das Kapitel 'Düsterwald' ist jetzt endgültig abgeschlossen."
-        }
-        return switcher[self.gameData.randrange(0, 10)]
+        dc = loc(lang, "allDeadPre")
+        choice = self.gameData.randrange(0, len(dc))
+        if choice == 8:
+            pre = dc[str(choice)]
+            post = loc(lang, "allDeadPost")
+            msg = pre + str(json.loads(requests.get("http://api.open-notify.org/astros.json")
+                                       .text)["number"]) + post
+        else:
+            msg = dc[str(choice)]
+        return msg
 
-    def werwoelfeWin(self):
-        switcher = {
-            0: "Die Werwölfe gewinnen.",
-            1: "Es war ein langer Kampf, aber die Werwölfe haben sich durchgesetzt.",
-            2: "Es leben nur noch Werwölfe in Düsterwald!",
-            3: "Es gibt keine Dorfbewohner mehr, die von den Werwölfen verspeißt werden können.",
-            4: "Es wird wieder friedlich in Düsterwald, da hier jetzt nur noch Werwölfe leben.",
-            5: "Die Werwölfe haben gesiegt.",
-            6: "Die Werwölfe haben ihre Dominanz bewiesen.",
-            7: "Die Werwölfe sind in Düsterwald anscheinend die stärkere Rasse.",
-            8: "Mit dem Tod des letzten Dorfbewohners haben die Werwölfe jetzt ihre Ruhe.",
-            9: ("Die Werwölfe veranstalten zur Feier des Tages einen Fest und verspeißen "
-                "genussvoll den letzten Dorfbewohner.")
-        }
-        return switcher[self.gameData.randrange(0, 10)]
+    def werewolfWin(self):
+        dc = loc(lang, "werewolfWin")
+        choice = self.gameData.randrange(0, len(dc))
+        return dc[str(choice)]
 
-    def dorfWin(self):
-        switcher = {
-            0: "Das Dorf gewinnt.",
-            1: "Es war ein langer Kampf, aber die Dorfbewohner haben sich durchgesetzt.",
-            2: "Es leben keine Werwölfe mehr in Düsterwald!",
-            3: "Es gibt keine Werwölfe mehr, die Dorfbewohner verspeißen wollen.",
-            4: "Es wird wieder friedlich in Düsterwald, da hier nur noch Dorfbewohner leben.",
-            5: "Die Dorfbewohner haben gesiegt.",
-            6: "Die Dorfbewohner haben ihre Dominanz bewiesen.",
-            7: "Die Werwölfe sind in Düsterwald anscheinend die unterlegene Rasse.",
-            8: "Mit dem Tod des letzten Werwolfes haben die Dorfbewohner jetzt ihre Ruhe.",
-            9: ("Die Dorfbewohner veranstalten zur Feier des Tages einen Fest und stopfen den "
-                "letzten Werwolf aus.")
-        }
-        return switcher[self.gameData.randrange(0, 10)]
+    def villageWin(self):
+        dc = loc(lang, "villageWin")
+        choice = self.gameData.randrange(0, len(dc))
+        return dc[str(choice)]
 
     def getWerwolfRoleList(self, amountOfPlayers):
         werwolfRoleList = []
@@ -554,34 +427,6 @@ class Server(object):
             for i in range(0, 28):
                 dorfRoleList.append(Hexe())
         return dorfRoleList
-
-
-""""def makeReadable(text):
-    exchange = {"ae": "ä", "oe": "ö", "ue": "ü", "Ae": "Ä", "Oe": "Ö", "Ue": "Ü"}
-    tl = list(text)
-    tl[0] = tl[0].capitalize()
-    for index, i in enumerate(tl):
-        if i == " " and index < len(tl):
-            tl[index + 1] = tl[index + 1].capitalize()
-    text = "".join(tl)
-    for i in exchange:
-        while i in text:
-            text = text.replace(i, exchange[i])
-    return text
-
-
-def makeUnreadable(text):
-    exchange = {"ae": "ä", "oe": "ö", "ue": "ü", "Ae": "Ä", "Oe": "Ö", "Ue": "Ü"}
-    tl = list(text)
-    tl[0] = tl[0].lower()
-    for index, i in enumerate(tl):
-        if i == " " and index < len(tl):
-            tl[index + 1] = tl[index + 1].lower()
-    text = "".join(tl)
-    for i in exchange:
-        while exchange[i] in text:
-            text = text.replace(exchange[i], i)
-    return text"""
 
 
 def removeCharacterTypeFromList(ls, ct):

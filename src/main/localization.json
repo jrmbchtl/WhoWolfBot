@@ -48,20 +48,215 @@
       "9": "Lasset die Beschuldigungsspiele beginnen!"
     },
     "accuseTextPre": {
-            "0": " möchte ",
-            "1": " bezichtigt ",
-            "2": " wirft ",
-            "3": " will ",
-            "4": " trifft Anschuldigungen gegen ",
-            "5": " beschuldigt "
-        },
+      "0": " möchte ",
+      "1": " bezichtigt ",
+      "2": " wirft ",
+      "3": " will ",
+      "4": " trifft Anschuldigungen gegen ",
+      "5": " beschuldigt "
+    },
     "accuseTextPost": {
-            "0": " anklagen.",
-            "1": ".",
-            "2": " Verrat vor!",
-            "3": " anprangern!",
-            "4": ".",
-            "5": "."
-        }
+      "0": " anklagen.",
+      "1": ".",
+      "2": " Verrat vor!",
+      "3": " anprangern!",
+      "4": ".",
+      "5": "."
+    },
+    "voteIntro": {
+      "0": "Es ist Zeit, jemanden hinzurichten!",
+      "1": "Die Dorfbewohner wollen die Verantwortlichen für die Morde sterben sehen!",
+      "2": "Die Abstimmung für die Hinrichtung beginnt.",
+      "3": "Wen wollt ihr hinrichten?",
+      "4": "Wer soll für die grausamen Verbrechen mit einem noch grausameren Tod bezahlen?",
+      "5": "Wer ist schuldig und muss sterben?",
+      "6": "Auge um Auge, Zahn um Zahn - und wer muss aufgrund vager Gerüchte einen grauenvollen Tod sterben?",
+      "7": "Die Demokratie wird entscheiden, wer hingerichtet wird!",
+      "8": "Das Dorf entscheidet, wer gelyncht wird!",
+      "9": "Lasset die Hinrichtungsspiele beginnen!"
+    },
+    "voteOptions": {
+      "0": " hängen",
+      "1": " auf dem Scheiterhaufen verbrennen",
+      "2": " einen Schwedentrunk verabreichen",
+      "3": " vierteilen",
+      "4": " für das Gemeinwohl opfern",
+      "5": " ertränken",
+      "6": " von einem Felsen stürzen",
+      "7": " guillotinieren",
+      "8": " lebendig begraben",
+      "9": " steinigen"
+    },
+    "votedForPre": {
+      "0": " möchte ",
+      "1": " will ",
+      "2": " möchte ",
+      "3": " will ",
+      "4": " würde gerne ",
+      "5": " möchte ",
+      "6": " will ",
+      "7": " will ",
+      "8": " würde gerne ",
+      "9": " will "
+    },
+    "votedForPost": {
+      "0": " hängen!",
+      "1": " auf dem Scheiterhaufen sehen!",
+      "2": " den Schwedentrunk verabreichen.",
+      "3": " vierteilen.",
+      "4": " für das Gemeinwohl opfern.",
+      "5": " ertränken.",
+      "6": " von einem Felsen stürzen.",
+      "7": " unter die Guillotine legen.",
+      "8": " lebendig begraben.",
+      "9": " steinigen."
+    },
+    "voteJudgement": {
+      "0": " wurde gehängt.",
+      "1": " wird auf dem Scheiterhaufen verbrannt!",
+      "2": " bekommt den Schwedentrunk verabreicht.",
+      "3": " wurde gevierteilt.",
+      "4": " hat sich für das Gemeinwohl opfern lassen.",
+      "5": " wurde ertränkt!",
+      "6": " wird von einem Felsen gestürzt.",
+      "7": " ist unter der Guillotine gelandet!",
+      "8": " wurde lebendig begraben.",
+      "9": " hat die Steinigung nicht überlebt."
+    },
+    "pattRevote": {
+      "0": "Pattsituation - bitte nochmals abstimmen!",
+      "1": [
+        "Das Dorf konnte sich nicht entscheiden, wer hingerichtet werden sollte. Deshalb muss die ",
+        "Abstimmung wiederholt werden."
+      ],
+      "2": "Die Abstimmung geht unentschieden aus und muss wiederholt werden.",
+      "3": "Die Dorfgemeinschaft kann sich für keinen Schuldigen entscheiden und setzt daher Neuwahlen an.",
+      "4": [
+        "Zustände wie in der Türkei: Es wird sooft gewählt, bis den Oberen das Ergebnis gefällt. Es wurden ",
+        "Neuwahlen angesetzt!"
+      ],
+      "5": "Es kann nur eine Person hingerichtet werden, irgendjemand sollte seine Meinung ändern!",
+      "6": "Hier kommt die Demokratie an ihre Grenzen: Die Wahl muss wiederholt werden.",
+      "7": "Eine Koalition ist bei der Hinrichtung nicht möglich. Bitte entscheidet euch für einen Schuldigen.",
+      "8": "Auf dem elekrtischen Stuhl ist nur Platz für eine Person. Bitte nochmals abstimmen!",
+      "9": [
+        "Wenn ihr zwei halbe Menschen hinrichtet, habt ihr mathematisch auch nur eine Person hingerichtet. ",
+        "Das Problem ist, dass dann beide tot sind. Entscheidet euch!"
+      ]
+    },
+    "pattNoKill": {
+      "0": "Da sich das Dorf nicht auf einen Schuldigen einigen kann, wird heute niemand gelyncht.",
+      "1": "Die Demokratie ist überfordert und beschließt, niemanden hinzurichten.",
+      "2": "Nach einer intensiven aber ergebnislosen Diskussion kehren alle nach hause zurück.",
+      "3": "Mal wieder viel heiße Luft um Nichts - viel Anschuldigungen aber kein Ergebnis.",
+      "4": [
+        "Bei dem versuch, alle Angeklagten zu hängen, reißt das Seil und das Dorf beschließt, heute niemanden ",
+        "hinzurichten."
+      ],
+      "5": [
+        "Da die Diskussion zu hitzig wird, ohne ein Ergebnis zu zeigen, löst die Polizei die Versammlung auf und ",
+        "schickt alle Beteiligten fort."
+      ],
+      "6": "Am Ende des Tages sind alle genervt, da letztlich keiner seine Meinung durchsetzen konnte.",
+      "7": [
+        "Dieser Tag geht ohne einen Toten vorbei. Dies sorgt für Unmut unter den Dorfbewohnern, da die Werwölfe ",
+        "auch nächste Nacht nicht ruhen werden."
+      ],
+      "8": [
+        "Die Dorfbewohner nehmen sich vor: Beim nächsten Mal erzielen wir bei der Abstimmung ein klares Ergebnis, ",
+        "doch momentan will keiner seine Meinung ändern. Vielleicht kann die kommende Nacht gegen ein Patt helfen?"
+      ],
+      "9": [
+        "Da sich das Dorf nicht einigen konnte, beschließt es, eine Nacht über die Meinungen zu schlafen. ",
+        "Vielleicht wird man sich ja morgen einig."
+      ]
+    },
+    "nightfall": {
+      "0": "Es wird Nacht in Düsterwald.",
+      "1": "Die Sonne geht langsam unter, es ist Zeit für alle, schlafen zu gehen.",
+      "2": [
+        "Düsterwald bereitet sich auf eine turbulente Nacht vor und legt sich ",
+        "schlafen. Manche Individuen stellen sich jedoch einen Wecker..."
+      ],
+      "3": [
+        "Die Nacht ist nicht weniger gefährlich als der Tag und die Dorfbewohner ",
+        "stellen sich darauf ein, sich vielleicht ein letztes Mal schlafen zu legen..."
+      ],
+      "4": "Sowie es langsam dunkel wird in Düsterwald, legen sich alle schlafen.",
+      "5": [
+        "Nach einem anstrengenden Tag hoffen viele Dorfbewohner nun auf eine erholsame ",
+        "Nacht. Doch diese Nacht werden nicht alle gut schlafen..."
+      ],
+      "6": [
+        "Die Straßen werden leer, in der Kneipe wurde schon vor einer halben Stunde ",
+        "das letzte Bier ausgeschenkt und Düsterwald legt sich schlafen."
+      ],
+      "7": [
+        "Düsterwald legt sich schlafen - in der Hoffnung, in der Morgendämmerung ",
+        "wieder zu erwachen."
+      ],
+      "8": [
+        "So manch Dorfbewohner hofft nun auf eine ruhige Nacht - andere schlecken sich ",
+        "schon das Maul..."
+      ],
+      "9": [
+        "Die Dorfbewohner stoßen auf einen erfolgreichen Tag an und wünschen sich eine ",
+        "gute Nacht."
+      ]
+    },
+    "allDeadPre": {
+      "0": "Es sind alle tot.",
+      "1": "Das Dorf ist so lebendig wie Tschernobyl.",
+      "2": "In Düsterwald könnte jetzt ein Vulkan ausbrechen und niemand würde sterben.",
+      "3": "Düsterwald hat seine Letzte Ruhe gefunden.",
+      "4": "Jetzt leben nur noch Tiere in Düsterwald.",
+      "5": "Die Natur wird sich das kleine Örtchen ab jetzt Stück für Stück zurückholen.",
+      "6": "Die Zivilisation in Düsterwald ist ausgelöscht.",
+      "7": "Das Werwolfproblem ist beseitigt. Das Menschenproblem aber auch.",
+      "8": "Düsterwald hat jetzt ",
+      "9": "Das Kapitel 'Düsterwald' ist jetzt endgültig abgeschlossen."
+    },
+    "allDeadPost": {
+      "0": "",
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": " Einwohner weniger als das Weltall.",
+      "9": ""
+    },
+    "werewolfWin": {
+      "0": "Die Werwölfe gewinnen.",
+      "1": "Es war ein langer Kampf, aber die Werwölfe haben sich durchgesetzt.",
+      "2": "Es leben nur noch Werwölfe in Düsterwald!",
+      "3": "Es gibt keine Dorfbewohner mehr, die von den Werwölfen verspeißt werden können.",
+      "4": "Es wird wieder friedlich in Düsterwald, da hier jetzt nur noch Werwölfe leben.",
+      "5": "Die Werwölfe haben gesiegt.",
+      "6": "Die Werwölfe haben ihre Dominanz bewiesen.",
+      "7": "Die Werwölfe sind in Düsterwald anscheinend die stärkere Rasse.",
+      "8": "Mit dem Tod des letzten Dorfbewohners haben die Werwölfe jetzt ihre Ruhe.",
+      "9": [
+        "Die Werwölfe veranstalten zur Feier des Tages einen Fest und verspeißen ",
+        "genussvoll den letzten Dorfbewohner."
+      ]
+    },
+    "villageWin": {
+      "0": "Das Dorf gewinnt.",
+      "1": "Es war ein langer Kampf, aber die Dorfbewohner haben sich durchgesetzt.",
+      "2": "Es leben keine Werwölfe mehr in Düsterwald!",
+      "3": "Es gibt keine Werwölfe mehr, die Dorfbewohner verspeißen wollen.",
+      "4": "Es wird wieder friedlich in Düsterwald, da hier nur noch Dorfbewohner leben.",
+      "5": "Die Dorfbewohner haben gesiegt.",
+      "6": "Die Dorfbewohner haben ihre Dominanz bewiesen.",
+      "7": "Die Werwölfe sind in Düsterwald anscheinend die unterlegene Rasse.",
+      "8": "Mit dem Tod des letzten Werwolfes haben die Dorfbewohner jetzt ihre Ruhe.",
+      "9": [
+        "Die Dorfbewohner veranstalten zur Feier des Tages einen Fest und stopfen den ",
+        "letzten Werwolf aus."
+      ]
+    }
   }
 }
