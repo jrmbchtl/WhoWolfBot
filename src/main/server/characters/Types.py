@@ -2,19 +2,19 @@ from enum import Enum
 
 
 class TeamType(Enum):
-	WERWOLF = 1,
+	WEREWOLF = 1,
 	VILLAGER = 2,
 	NONE = 0
 
 
-# negative means prior to werwolf, positiv
+# negative means prior to werewolf, positive
 class CharacterType(Enum):
-	WERWOLF = 1,
-	WOLFSHUND = -10,
+	WEREWOLF = 1,
+	WOLFDOG = -10,
 	TERRORWOLF = 2,
-	DORFBEWOHNER = 100,
-	DORFBEWOHNERIN = 101,
-	HEXE = 3,
-	JAEGER = 102,
-	SEHERIN = 4,
+	VILLAGER = 100,
+	VILLAGERF = 101,
+	WITCH = 3,
+	HUNTER = 102,
+	SEER = 4,
 	NONE = 0

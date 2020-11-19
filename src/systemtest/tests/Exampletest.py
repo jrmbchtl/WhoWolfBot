@@ -33,23 +33,23 @@ class Exampletest(Systemtest):
         self.assertAnyMessage()
         self.assertAnyMessage()
         self.assertReceiveDict({"eventType": "message", "message":
-            {"text": ("Du bist einer der Werw\u00f6lfe. Diese suchen sich jede Nacht gemeinsam ein "
-                      "Opfer aus, welches sie t\u00f6ten wollen. Ihr Ziel ist es, dass nur "
-                      "Charaktere der Werw\u00f6lfe \u00fcberleben."), "messageId": 0},
+            {"text": ("Du bist ein Werwolf. Da diese Rudeltiere sind, erwachen alle Werwölfe jede "
+                      "Nacht gemeinsam, um sich ein [hoffentlich] wehrloses Opfer unter den "
+                      "Dorfbewohnern zu suchen."), "messageId": 0},
             "mode": "write", "target": 3, "highlight": False, "gameId": 1})
+        self.assertReceiveDict({"eventType": "message", "message":
+            {'text': ("Du bist ein normaler Dorfbewohner, welcher sein Überleben nur durch das "
+                      "Lynchen der Werwölfe am Tage zu schützen weiß."), "messageId": 0},
+            "mode": "write", "target": 2, "highlight": False, "gameId": 1})
         self.assertReceiveDict({"eventType": "message", "message":
             {'text': ("Du bist die Hexe. Diese erwacht jede Nacht, erfährt das Opfer der Werwölfe "
                       "und darf sich entscheiden, ob sie ihren einen Lebenstrank auf das Opfer "
-                      "anwendet. Anschließend hat sie die Möglichkeit, einmal im Spiel eine Person "
-                      "mit einem Todestrank zu ermorden."), "messageId": 0},
-            "mode": "write", "target": 2, "highlight": False, "gameId": 1})
-        self.assertReceiveDict({"eventType": "message", "message":
-            {'text': ("Du bist der Jäger. Wenn der Jäger stirbt, muss er noch einen Spieler "
-                      "seiner Wahl in den Tod mitnehmen."), "messageId": 0},
+                      "anwendet. Anschließend hat sie die Möglichkeit, einmal im Spiel eine "
+                      "Person mit einem Todestrank zu ermorden."), "messageId": 0},
             "mode": "write", "target": 4, "highlight": False, "gameId": 1})
         self.assertReceiveDict({"eventType": "message", "message":
-            {'text': ('Du bist ein Dorfbewohner, ein normaler Charakter mit keinerlei besonderen '
-                      'Fähigkeiten.'), 'messageId': 0},
+            {'text': ('Du bist der Jäger. Wenn der Jäger stirbt, muss er noch einen Spieler '
+                      'seiner Wahl in den Tod mitnehmen.'), 'messageId': 0},
             "mode": "write", "target": 1, "highlight": False, "gameId": 1})
         self.assertAnyMessage()
 

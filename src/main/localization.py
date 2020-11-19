@@ -3,7 +3,6 @@ import os
 
 
 def getLocalization(lang=None, primaryKey=None, no=None):
-    print(os.listdir("./"))
     if os.path.isfile("src/main/localization.json"):
         path = "src/main/localization.json"
     elif os.path.isfile("../localization.json"):

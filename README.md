@@ -4,10 +4,10 @@ Telegram Bot for playing Werwolf
 Current Version: 2.0.7
 
 Implemented Roles:\
-Dorfbewohner/in\
-Hexe\
+Villager/in\
+Witch\
 Werwolf\
-Jaeger\
+Hunter\
 Wolfshund\
 Terrorwolf
 

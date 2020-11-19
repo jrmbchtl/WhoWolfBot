@@ -18,13 +18,13 @@ class PattTest(Systemtest):
             self.assertAnyMessage()
 
         self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 0},
-                          "fromId": 3, "gameId": gameId})
+                          "fromId": 4, "gameId": gameId})
 
         for i in range(0, 3):
             self.assertAnyMessage()
 
         self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 3},
-                          "fromId": 3, "gameId": gameId})
+                          "fromId": 4, "gameId": gameId})
 
         for i in range(0, 2):
             self.assertAnyMessage()

@@ -103,7 +103,7 @@ class TerrorwolfTest(Systemtest):
                           "fromId": 4, "gameId": gameId})
         self.assertAnyMessage()
         self.assertReceiveDict({"eventType": "message", "message":
-            {"text": "Player 1 hat sich im Vorbeilaufen die Z\u00e4hne in den Hals rammen lassen.",
+            {"text": "Player 1 wurde noch kurz verputzt.",
              "messageId": 0}, "mode": "write", "target": 0, "highlight": True, "gameId": gameId})
         self.assertAnyMessage()
 

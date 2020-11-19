@@ -7,14 +7,14 @@ from .GameData import GameData
 from .Player import Player
 from .characters import Teams
 from .characters.Types import CharacterType
-from .characters.village.Dorfbewohner import Dorfbewohner, Dorfbewohnerin
-from .characters.village.Hexe import Hexe
-from .characters.village.Jaeger import Jaeger
-from .characters.village.Seherin import Seherin
-from .characters.werwolf import wake
-from .characters.werwolf.Terrorwolf import Terrorwolf
-from .characters.werwolf.Werwolf import Werwolf
-from .characters.werwolf.Wolfshund import Wolfshund
+from .characters.village.Villager import Villager, Villagerf
+from .characters.village.Witch import Witch
+from .characters.village.Hunter import Hunter
+from .characters.village.Seer import Seer
+from .characters.werewolf import wake
+from .characters.werewolf.Terrorwolf import Terrorwolf
+from .characters.werewolf.Werewolf import Werewolf
+from .characters.werewolf.Wolfdog import Wolfdog
 from src.main.localization import getLocalization as loc
 
 lang = "DE"
@@ -150,20 +150,20 @@ class Server(object):
         playerList: list = self.gameData.getPlayerList()
         self.gameData.shuffle(playerList)
 
-        werwolfRoleList = self.getWerwolfRoleList(len(playerList))
+        werewolfRoleList = self.getWerewolfRoleList(len(playerList))
         dorfRoleList = self.getVillagerRoleList()
 
-        unique = [CharacterType.JAEGER, CharacterType.SEHERIN, CharacterType.HEXE,
-                  CharacterType.WOLFSHUND, CharacterType.TERRORWOLF]
+        unique = [CharacterType.HUNTER, CharacterType.SEER, CharacterType.WITCH,
+                  CharacterType.WOLFDOG, CharacterType.TERRORWOLF]
 
         group_mod = self.gameData.random() * 0.2 + 0.9
-        werwolf_amount = int(round(len(playerList) * (1.0 / 3.5) * group_mod, 0))
+        werewolfAmount = int(round(len(playerList) * (1.0 / 3.5) * group_mod, 0))
         for i, p in enumerate(playerList):
-            if i < werwolf_amount:
-                role = werwolfRoleList[self.gameData.randrange(0, len(werwolfRoleList))]
+            if i < werewolfAmount:
+                role = werewolfRoleList[self.gameData.randrange(0, len(werewolfRoleList))]
                 self.gameData.getPlayers()[p].setCharacter(role)
                 if role.getCharacterType() in unique:
-                    removeCharacterTypeFromList(werwolfRoleList, role.getCharacterType())
+                    removeCharacterTypeFromList(werewolfRoleList, role.getCharacterType())
             else:
                 role = dorfRoleList[self.gameData.randrange(0, len(dorfRoleList))]
                 self.gameData.getPlayers()[p].setCharacter(role)
@@ -180,22 +180,22 @@ class Server(object):
         self.gameData.dumpNextMessage(commandType="feedback")
 
         sortedPlayerDict = self.gameData.getAlivePlayersSortedDict()
-        wakeWerwolf = False
+        wakeWerewolf = False
         for p in sortedPlayerDict:
             player = sortedPlayerDict[p]
             if player.getCharacter().getRole().value[0] < 0:
                 player.getCharacter().wakeUp(self.gameData, p)
-            elif not wakeWerwolf:
-                wakeWerwolf = True
+            elif not wakeWerewolf:
+                wakeWerewolf = True
                 wake.wake(self.gameData)
                 player.getCharacter().wakeUp(self.gameData, p)
             else:
                 player.getCharacter().wakeUp(self.gameData, p)
 
-        if self.gameData.getWerwolfTarget() is not None:
-            werwolfTargetId = self.gameData.getWerwolfTarget()
-            werwolfTarget = self.gameData.getAlivePlayers()[werwolfTargetId].getCharacter()
-            werwolfTarget.kill(self.gameData, werwolfTargetId)
+        if self.gameData.getWerewolfTarget() is not None:
+            werewolfTargetId = self.gameData.getWerewolfTarget()
+            werewolfTarget = self.gameData.getAlivePlayers()[werewolfTargetId].getCharacter()
+            werewolfTarget.kill(self.gameData, werewolfTargetId)
         if self.gameData.getWitchTarget() is not None:
             witchTargetId = self.gameData.getWitchTarget()
             witchTarget = self.gameData.getAlivePlayers()[witchTargetId].getCharacter()
@@ -364,7 +364,7 @@ class Server(object):
                     continue
                 else:
                     return False
-            if team == Teams.TeamType.WERWOLF:
+            if team == Teams.TeamType.WEREWOLF:
                 self.gameData.sendJSON(
                     Factory.createMessageEvent(self.gameData.getOrigin(), self.werewolfWin(),
                                                highlight=True))
@@ -397,36 +397,36 @@ class Server(object):
         choice = self.gameData.randrange(0, len(dc))
         return dc[str(choice)]
 
-    def getWerwolfRoleList(self, amountOfPlayers):
-        werwolfRoleList = []
+    def getWerewolfRoleList(self, amountOfPlayers):
+        werewolfRoleList = []
         if amountOfPlayers >= 3 and "wolfdog" in self.enabledRoles:
             for i in range(0, 20):
-                werwolfRoleList.append(Werwolf())
+                werewolfRoleList.append(Werewolf())
             for i in range(0, 40):
-                werwolfRoleList.append(Wolfshund())
+                werewolfRoleList.append(Wolfdog())
         else:
             for i in range(0, 60):
-                werwolfRoleList.append(Werwolf())
+                werewolfRoleList.append(Werewolf())
         if "terrorwolf" in self.enabledRoles:
             for i in range(0, 40):
-                werwolfRoleList.append(Terrorwolf())
-        return werwolfRoleList
+                werewolfRoleList.append(Terrorwolf())
+        return werewolfRoleList
 
     def getVillagerRoleList(self):
-        dorfRoleList = []
+        villageRoleList = []
         for i in range(0, 30):
-            dorfRoleList.append(Dorfbewohner())
-            dorfRoleList.append(Dorfbewohnerin())
+            villageRoleList.append(Villager())
+            villageRoleList.append(Villagerf())
         if "hunter" in self.enabledRoles:
             for i in range(0, 28):
-                dorfRoleList.append(Jaeger())
+                villageRoleList.append(Hunter())
         if "seer" in self.enabledRoles:
             for i in range(0, 28):
-                dorfRoleList.append(Seherin())
+                villageRoleList.append(Seer())
         if "witch" in self.enabledRoles:
             for i in range(0, 28):
-                dorfRoleList.append(Hexe())
-        return dorfRoleList
+                villageRoleList.append(Witch())
+        return villageRoleList
 
 
 def removeCharacterTypeFromList(ls, ct):

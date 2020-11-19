@@ -257,6 +257,604 @@
         "Die Dorfbewohner veranstalten zur Feier des Tages einen Fest und stopfen den ",
         "letzten Werwolf aus."
       ]
-    }
+    },
+    "deathMessage": {
+      "1": " ist diese Nacht leider gestorben.",
+      "2": " erblickt das Licht des neuen Tages nicht mehr.",
+      "3": " wurde massakriert aufgefunden.",
+      "4": " existiert nur noch in Stücken.",
+      "5": " hat die letzten Stunden nicht überlebt.",
+      "6": " ist nicht mehr aufzufinden.",
+      "7": " war ein guter Kamerad.",
+      "8": " hat seinen letzten Kampf verloren.",
+      "9": " hat den Löffel abgegeben.",
+      "10": " besucht nun die ewigen Jagdgründe.",
+      "11": " hat leider ins Gras gebissen.",
+      "12": " wird nie wieder an den Freuden des Dorfes teilhaben.",
+      "13": " ist von uns gegangen.",
+      "14": " ist über die Wupper gegangen.",
+      "15": " hat das Zeitliche gesegnet."
+    },
+    "villagerDescription": {
+      "0": [
+        "Du bist ein Dorfbewohner, ein normaler Charakter mit keinerlei besonderen ",
+        "Fähigkeiten."
+      ],
+      "1": [
+        "Bei deiner Rolle handelt es sich um den Dorfbewohner, einem wehrlosen Charakter, ",
+        "der lediglich tagsüber abstimmen darf."
+      ],
+      "2": [
+        "Du bist ein normaler Dorfbewohner, dessen einzige Waffe die Demokratie am Tage ",
+        "ist."
+      ],
+      "3": "Dein Charakter ist ein braver Bürger.",
+      "4": "Du bist ein Dorfbewohner, welcher nachts einfach in Ruhe durchschlafen darf.",
+      "5": [
+        "Du bist ein normaler Dorfbewohner, welcher sein Überleben nur durch das Lynchen ",
+        "der Werwölfe am Tage zu schützen weiß."
+      ]
+    },
+    "villagerfDescription": {
+      "0": [
+        "Du bist eine Dorfbewohnerin, ein normaler Charakter mit keinerlei besonderen ",
+        "Fähigkeiten."
+      ],
+      "1": [
+        "Bei deiner Rolle handelt es sich um die Dorfbewohnerin, einem wehrlosen ",
+        "Charakter, der lediglich tagsüber abstimmen darf."
+      ],
+      "2": [
+        "Du bist eine normale Dorfbewohnerin, deren einzige Waffe die Demokratie am ",
+        "Tage ist."
+      ],
+      "3": "Dein Charakter ist eine brave Bürgerin.",
+      "4": "Du bist eine Dorfbewohnerin, welche nachts einfach in Ruhe durchschlafen darf.",
+      "5": [
+        "Du bist eine normale Dorfbewohnerin, welche ihr Überleben nur durch das Lynchen ",
+        "der Werwölfe am Tage zu schützen weiß."
+      ]
+    },
+    "witchDescription": {
+      "0": [
+        "Du bist die Hexe. Diese erwacht jede Nacht, erfährt das Opfer der Werwölfe und ",
+        "darf sich entscheiden, ob sie ihren einen Lebenstrank auf das Opfer anwendet. ",
+        "Anschließend hat sie die Möglichkeit, einmal im Spiel eine Person mit einem ",
+        "Todestrank zu ermorden."
+      ],
+      "1": [
+        "Du bist die Hexe. Ihr stehen zwei Tränke zur Verfügung, ein Heil- und ein ",
+        "Gifttrank. \nDeren Bedeutung ist zwar selbsterklärend, aber dennoch: ",
+        "Mit dem Gifttrank kann sie einmal im Spiel einen Mitspieler vergiften, ",
+        "mit dem Heiltrank jemanden vor den Werwölfen erretten [auch sich selber]."
+      ],
+      "2": [
+        "Deine Rolle ist die Hexe. Die Hexe erwacht immer direkt nachdem die Werwölfe ihr ",
+        "Opfer ausgesucht haben. Sie hat im Verlauf des gesamten Spiels einen Gift- und ",
+        "einen Heiltrank. Die Hexe erfährt das Mordopfer der Werwölfe und kann dieses mit ",
+        "ihrem Heiltrank heilen [auch sich selbst], so dass es am nächsten Morgen keinen ",
+        "Toten gibt. Sie kann aber auch den Gifttrank auf einen anderen Spieler anwenden; ",
+        "dann gibt es mehrere Tote."
+      ],
+      "3": [
+        "Dein Charakter ist die Hexe. Die Hexe bekommt jede Nacht das Opfer der Werwölfe ",
+        "angezeigt [sofern jemand durch die Werwölfe sterben würde] und kann einmal im ",
+        "Spiel das Opfer mit einem Heiltrank retten. Außerdem hat sie einen Todestrank, ",
+        "mit dem sie einmal im Spiel einen beliebigen Spieler töten kann."
+      ],
+      "4": [
+        "Du bist die Hexe. Ihr stehen im gesamten Spiel zwei verschiedene Tränke zur ",
+        "Auswahl: Sie darf einmal im Spiel, nachdem sie das Opfer der Werwölfe erfahren ",
+        "hat, dieses mit dem Lebenstrank retten und einmal im Spiel einen beliebigen ",
+        "Mitspieler mit einem Gifttrank aus dem Leben schießen."
+      ],
+      "5": [
+        "Bei deiner Rolle handelt es sich um die Hexe. Diese hat zwei Spezialfähigkeiten. ",
+        "Zum einen darf sie jede Nacht, sofern sie noch ihren einen Heiltrank besitzt, ",
+        "das Opfer der Werwölfe erfahren und ggf. heilen. Zum anderen darf sie einmal im ",
+        "Spiel Gift in das Getränk eines Mitspielers geben, welcher dann am nächsten ",
+        "Morgen nicht mehr erwacht."
+      ]
+    },
+    "witchSaveQuestion": " wurde diese Nacht von den Werwölfen erwischt. Möchtest du diese Person retten?",
+    "witchKillQuestion": "Willst du noch jemanden töten?",
+    "Noone": "Niemanden",
+    "noone": "niemanden",
+    "witchSave": {
+      "0": "Retten",
+      "1": "Heilen",
+      "2": "Einen Lebenstrank verabreichen",
+      "3": "Erfolgreich die Verletzungen versorgen",
+      "4": "Wiederbeleben",
+      "5": "Wieder zusammennähen"
+    },
+    "witchLetDie": {
+      "0": "Sterben lassen",
+      "1": "Nicht beachten",
+      "2": "Dem Schicksal überlassen",
+      "3": "Ausversehen zu spät kommen",
+      "4": "Lieber schlafen",
+      "5": "Umdrehen und weiterschlafen",
+      "6": "Lebenstrank nicht für sojemanden verschwenden",
+      "7": "Eigensicherung vorziehen"
+    },
+    "witchDidSavePre": {
+      "0": "Du hast ",
+      "1": "Die Hexe hat ",
+      "2": "Die Hexe hat ",
+      "3": "Du hast ",
+      "4": "Die Hexe hat ",
+      "5": "Die Hexe hat "
+    },
+    "witchDidSavePost": {
+      "0": " gerettet.",
+      "1": " geheilt.",
+      "2": " einen Lebenstrank verabreicht.",
+      "3": "s Verletzungen erfolgreich versorgt.",
+      "4": " wiederbelebt.",
+      "5": " wieder zusammengenäht."
+    },
+    "witchDidLetDiePre": {
+      "0": "Du hast ",
+      "1": "Die Hexe hat ",
+      "2": "Die Hexe hat ",
+      "3": "Du bist für ",
+      "4": "Die Hexe hat lieber geschlafen, als ",
+      "5": "Die Hexe hat sich einfach umgedreht und weitergeschlafen, als sie von ",
+      "6": "Die Hexe wollte ihren Lebenstrank nicht für jemanden wie ",
+      "7": "Die Hexe hat Eigensicherung vorgezogen statt "
+    },
+    "witchDidLetDiePost": {
+      "0": " sterben gelassen.",
+      "1": " nicht beachtet.",
+      "2": " dem Schicksal überlassen.",
+      "3": " ausversehen zu spät gekommen.",
+      "4": " zu helfen.",
+      "5": "s Unfall hörte.",
+      "6": " verschwenden.",
+      "7": " zur Hilfe zu eilen."
+    },
+    "witchKill": {
+      "0": " vergiften",
+      "1": " den Todestrank einflößen",
+      "2": " eine ungesunde Substanz injezieren",
+      "3": " ausversehen eine Überdosis Morphium verabreichen",
+      "4": " mit radioaktivem Gemüse versorgen",
+      "5": "s innere Organe verätzen",
+      "6": " ausversehen Gift in das Getränk mischen",
+      "7": " ein Essen mit Fliegenpilzen zubereiten",
+      "8": " einen Kugelfisch falsch zubereiten",
+      "9": " Quecksilber in die Milch mischen"
+    },
+    "witchDidKillPre": {
+      "0": "Du hast ",
+      "1": "Die Hexe hat ",
+      "2": "Die Hexe hat ",
+      "3": "Du hast ",
+      "4": "Die Hexe hat ",
+      "5": "Du hast ",
+      "6": "Die Hexe hat ausversehen ",
+      "7": "Die Hexe hat ",
+      "8": "Du hast einen kleinen Fehler gemacht, als du den Kugelfisch für ",
+      "9": "Die Hexe hat "
+    },
+    "witchDidKillPost": {
+      "0": " vergiftet.",
+      "1": " den Todestrank eingeflöst.",
+      "2": " eine ungesunde Substanz injeziert.",
+      "3": " eine Überdosis Morphium verabreicht.",
+      "4": " mit radioaktivem Gemüse versorgt.",
+      "5": "s innere Organe verätzt.",
+      "6": " Gift ins Getränk gemischt.",
+      "7": " ein Essen mit Fliegenpilzen zubereitet.",
+      "8": " zubereitet hast.",
+      "9": " Quecksilber in die Milch gemischt."
+    },
+    "seerDescription": {
+      "0": [
+        "Du bist die Seherin. Diese erwacht jede Nacht, sucht sich einen Bewohner ",
+        "aus und erfährt, ob dieser zu den Werwölfen gehört oder nicht."
+      ],
+      "1": [
+        "Du bist die Seherin. Die Seherin hat die Fähigkeit, jede Nacht über einen ",
+        "Mitspieler zu erfahren, ob dieser zu den Werwölfen gehört."
+      ],
+      "2": [
+        "Bei deinem Charakter handelt es sich um die Seherin. Jede Nacht erhält sie ",
+        "Einsicht über einen Spieler, ob dieser zu den Werwölfen gehört."
+      ],
+      "3": [
+        "Du bist die Seherin. Die Seherin erwählt jede Nacht einen Spieler. Sie erfährt, ",
+        "ob dieser gut oder böse ist."
+      ],
+      "4": [
+        "Du bist die Seherin. Die Seherin erwacht, während alle anderen schlafen und darf ",
+        "sich eine Person aussuchen, über die sie erfahren will, ob diese gut oder böse ",
+        "ist. Da die Seherin zu jeder Runde die Gruppenzugehörigkeit einer weiteren Person ",
+        "im Spiel kennt, kann sie großen Einfluss nehmen, muss aber ihr Wissen vorsichtig ",
+        "einsetzen."
+      ],
+      "5": [
+        "Dein Charakter ist die Seherin. Als diese erhälst du die Fähigkeit, ",
+        "jede Nacht über eine ander Person zu erfahren, ob diese gut oder böse ist."
+      ]
+    },
+    "seerQuestion": {
+      "0": "Die Seherin erwacht. Was wird sie tun?",
+      "1": [
+        "Die Seherin schreckt aus dem Schlaf hoch. Über wen wird sie diese Nacht ",
+        "ein Geheimnis herrausfinden?"
+      ],
+      "2": [
+        "Die Seherin erwacht aus einem Albtraum. Sie hat eine Runden 'Ich sehe was, was du ",
+        "nicht siehst!' verloren. Das wird ihr jetzt nicht passieren!"
+      ],
+      "3": "Der Wecker der Seherin klingelt. Über wen will sie nun bespitzeln?",
+      "4": [
+        "Die Seherin erwacht wie von einem Blitz getroffen. Wessen Geheimnis will sie diese ",
+        "Nacht lüften?"
+      ],
+      "5": [
+        "Als die Seherin nachts aufwacht, verspürt sie starken Tatendrang - ",
+        "was wird sie damit machen?"
+      ],
+      "6": "Die Seherin arbeitet nebenberuflich als Privatdetektiv. Was tut sie diese Nacht?",
+      "7": "Die Seherin leidet unter Schlafstörungen. Was wird sie diese Nacht unternehmen?",
+      "8": "Die Seherin ist leidenschaftliche Spannerin. Wen stalkt sie diese Nacht?",
+      "9": "Die Seherin kann mal wieder nicht schlafen. Was tut sie diese Nacht?"
+    },
+    "seerOptionsPre": {
+      "0": "",
+      "1": "",
+      "2": "Informationen über ",
+      "3": "",
+      "4": "",
+      "5": "Ein Auge auf ",
+      "6": ""
+    },
+    "seerOptionsPost": {
+      "0": " einsehen",
+      "1": " von der Gestapo überwachen lassen",
+      "2": " beim BND einholen",
+      "3": " bespitzeln",
+      "4": " beobachten",
+      "5": " werfen",
+      "6": " ausspionieren"
+    },
+    "seerWerewolfPre": {
+      "0": "",
+      "1": "Die Gestapo hat herausgefunden: ",
+      "2": "Der BND steckt dir zu: ",
+      "3": "",
+      "4": "Es stellt sich heraus: ",
+      "5": "Du siehst es mit deinen eigenen Augen: ",
+      "6": "Deine Ermittlungen haben ergeben: "
+    },
+    "seerWerewolfPost": {
+      "0": " gehört zu den Werwölfen.",
+      "1": " ist ein Werwolf.",
+      "2": " ist böse!",
+      "3": " ist böse.",
+      "4": " gehört den Bösen an.",
+      "5": " verwandelt sich Nachts in einen Werwolf!",
+      "6": " ist ein Werwolf."
+    },
+    "seerNoWerewolfPre": {
+      "0": "",
+      "1": "Die Gestapo hat herausgefunden: ",
+      "2": "Der BND steckt dir zu: ",
+      "3": "",
+      "4": "Es stellt sich heraus: ",
+      "5": "Du siehst es mit deinen eigenen Augen: ",
+      "6": "Deine Ermittlungen haben ergeben: "
+    },
+    "seerNoWerewolfPost": {
+      "0": " gehört nicht zu den Werwölfen.",
+      "1": " ist kein Werwolf.",
+      "2": " ist gut!",
+      "3": " ist gut.",
+      "4": " gehört den Guten an.",
+      "5": " verwandelt sich Nachts nicht in einen Werwolf!",
+      "6": " ist kein Werwolf."
+    },
+    "hunterDescription": {
+      "0": [
+        "Du bist der Jäger: Sollte er zu Tode kommen, kann er einen letzten Schuss ",
+        "abgeben und einen Mitspieler mit ins Verderben reißen."
+      ],
+      "1": [
+        "Du bist der Jäger, welcher in seinem letzen Atemzug noch zum Gewehr greift, ",
+        "um einen beliebigen Mitspieler ins Jenseits zu befördern."
+      ],
+      "2": [
+        "Bei deinem Charakter handelt es sich um den Jäger, welcher als letzte Aktion ",
+        "vor seinem Tod noch einen Spieler erschießen muss."
+      ],
+      "3": [
+        "Du bist der Jäger. Wenn der Jäger stirbt, muss er noch einen Spieler seiner ",
+        "Wahl in den Tod mitnehmen."
+      ],
+      "4": [
+        "Du bist der Jäger. Scheidet der Jäger aus dem Spiel aus, feuert er in seinem ",
+        "letzten Atemzug noch einen Schuss ab, mit dem er einen Spieler seiner ",
+        "Wahl mit in den Tod reißt."
+      ],
+      "5": [
+        "Du bist der Jäger. Als dieser musst du direkt vor deinem Tod mit deiner Jagdwaffe ",
+        "einen anderen Bewohner des Dorfes erschießen."
+      ]
+    },
+    "hunterReveal": {
+      "0": " war der Jäger!",
+      "1": " schießt rücksichtslos, um nicht alleine sterben zu müssen!",
+      "2": " trägt eine geladene Waffe bei sich!",
+      "3": " zückt eine Schrotflinte!",
+      "4": " versucht mit Waffengewalt, kurz vor seinem Tod noch für Gerechtigkeit zu sorgen!",
+      "5": " hat einen Jagdschein!",
+      "6": " hat eine Jagdlizenz. Jetzt auch für Menschen!",
+      "7": " will nicht alleine sterben und zieht einen Revolver!",
+      "8": " genießt es, jemanden zu sehen - und erschießt ihn!",
+      "9": " fordert sein Recht ein - jemanden mit Waffengewalt in den Tod mitzunehmen.",
+      "10": " hat die Flinte noch nicht ins Korn geworfen!"
+    },
+    "hunterQuestion": {
+      "0": "Wen möchtest du mit ins Grab nehmen?",
+      "1": "Wen möchtest du erschießen?",
+      "2": "Wen willst du wegpusten?",
+      "3": "Wen willst du in Notwehr abknallen?",
+      "4": "Wen willst du ausversehen mit 15 Schüssen in der Brust treffen?",
+      "5": "Wen möchtest du mit Blei ausstopfen?",
+      "6": "Wem möchtest du zu einer inneren Bleivergiftung verhelfen?",
+      "7": "Wen willst du als letzten Akt erschießen?",
+      "8": "Wem gönnst du es nicht, ohne dich weiterzuleben?",
+      "9": "Wer soll im Kugelhagel seine ewige Ruhe finden?",
+      "10": "Wen willst du in Mitleidenschaft ziehen?"
+    },
+    "hunterOptions": {
+      "0": " erschießen",
+      "1": " mit der Nagelpistole an die Wand heften",
+      "2": " durchlöchern",
+      "3": " umlegen",
+      "4": " wegpusten",
+      "5": " in der Notwehr erschießen",
+      "6": " niederstrecken",
+      "7": " zur Jagdtrophäe befördern",
+      "8": " mit in den Tod reißen",
+      "9": " einen Gnadenschuss verpassen"
+    },
+    "hunterShot": {
+      "0": " wurde vom Jäger erschossen.",
+      "1": " wurde mit einer Nagelpistole an die Wand geheftet!",
+      "2": " hat nun sehr viele Löcher in Kopf und Brust.",
+      "3": " wurde umgelegt.",
+      "4": " hat sich wegpusten lassen.",
+      "5": " wurde in der Notwehr des Jägers erschossen!",
+      "6": " wurde niedergestreckt.",
+      "7": " endete als letzte Jagdtrophäe des Jägers!",
+      "8": " wurde vom Jäger mit in den Tod gerissen.",
+      "9": " hat einen Gnadenschuss erhalten."
+    },
+    "terrorwolfDescription": {
+      "0": [
+        "Du bist der Terrorwolf. Wenn der Terrorwolf stirbt, nimmt er noch ",
+        "einen Spieler seiner Wahl mit in den Tod."
+      ],
+      "1": [
+        "Du bist der Terrorwolf. Der Terrorwolf ist der Jäger der Werwölfe: ",
+        "Sollte er sterben, kann er noch einen Charakter seiner Wahl mit in den Tod reißen."
+      ],
+      "2": [
+        "Dein Carakter ist der Terrorwolf, welcher, sollte er zu Tode kommen, ",
+        "in letzter Sekunde noch ein Opfer reißen kann."
+      ],
+      "3": [
+        "Du bist der Terrorwolf. Dieser ist ähnlich dem Jäger, mit dem Unterschied, ",
+        "dass er für die Werwölfe spielt: Stirbt der Terrorwolf, egal ob bei Tag oder ",
+        "Nacht, so bleibt ihm noch ausreichend Zeit, sich einen Villager als Henkersmahlzeit zu schnappen."
+      ],
+      "4": [
+        "Deine Rolle ist er Terrorwolf, welcher mittels eines Testaments ",
+        "den Tod eines Dorfbewohners einfordert."
+      ],
+      "5": [
+        "Du bist der Terrorwolf. Dein Tod hat Konsequenzen. Zumindest für einen weiteren ",
+        "Villager: Wenn du stirbst, steht er als letzte Mahlzeit auf deinem Speiseplan."
+      ]
+    },
+    "terrorwolfReveal": {
+      "0": " war der Terrorwolf!",
+      "1": " will noch jemanden in seinem Testament zerfleischen lassen.",
+      "2": " reißt sein Maul auf: Ihm bleibt noch genügend Zeit, jemanden zu fressen",
+      "3": " beißt einen Dorfbewohner!",
+      "4": " will seinen Freunden mit seinem Tod helfen und sucht sich eine Henkersmahlzeit.",
+      "5": " kriegt vor seinem Tod nochmal Hunger.",
+      "6": " will im Sterben noch jemanden versnacken!",
+      "7": " will nicht alleine sterben und fletscht die Zähne.",
+      "8": " genießt es, jemanden zu sehen - und zerfetzt ihn!",
+      "9": " fordert sein Recht ein - vor dem Tod noch ein letztes Mal Beute fangen."
+    },
+    "terrorwolfQuestion": {
+      "0": "Wen möchtest du mit ins Grab nehmen?",
+      "1": "Wen möchtest du zerfleischen?",
+      "2": "Wen willst du versnacken?",
+      "3": "Wen willst du in Notwehr zerfetzen?",
+      "4": "Wen willst du 'ausversehen' mit deinen Zähnen füllen?",
+      "5": "Wem möchtest du wortwörtlich den Kopf abreißen?",
+      "6": "Wem möchtest du dazu verhelfen, an inneren Blutungen zu erliegen?",
+      "7": "Wen willst du als letzten Akt zerreißen?",
+      "8": "Wem gönnst du es nicht, ohne dich weiterzuleben?",
+      "9": "Wer soll durch deine Krallen seine ewige Ruhe finden?"
+    },
+    "terrorwolfKill": {
+      "0": " wurde vom Terrorwolf gerissen.",
+      "1": " wurde mit in den Tod gerissen.",
+      "2": " wurde als Henkersmahlzeit verspeißt!",
+      "3": " hat sich im Vorbeilaufen die Zähne in den Hals rammen lassen.",
+      "4": " wurde noch kurz verputzt.",
+      "5": " wurde mit der letzen Kraft des Terrorwolfes zerbissen.",
+      "6": " wurde in der Luft zerfetzt.",
+      "7": " wurde bei einem Attentäter in Auftrag gegeben und konnte nicht entkommen.",
+      "8": " kann ohne seinen Kopf nicht weiterleben!",
+      "9": " wurde noch kurz aus Mitleid aufgegessen."
+    },
+    "werewolfSuggest": " schlägt vor ",
+    "werewolfQuestion": {
+      "0": "Die Werwölfe suchen ihr Opfer aus.",
+      "1": "Das Werwolfsrudel streift hungrig durch das Dorf, auf der Suche nach einem Imbiss.",
+      "2": [
+        "Die Werwölfe erinnern sich an einen weisen Spruch: 'Wählt weise, denn jede Mahlzeit ",
+        "könnte eure letzte sein'."
+      ],
+      "3": "Auf der Suche nach Essen durchsuchen die Werwölfe das Dorf.",
+      "4": "Es ist Nacht. Es ist Mitternacht. Es ist Essenzeit!",
+      "5": "Zu Tische, Werwölfe!",
+      "6": "Auf wen die Werwölfe heute Nacht wohl Appetit haben?",
+      "7": "Werwölfe, sucht euer Opfer aus!",
+      "8": "Mit wem lassen sich die hungrigen Werwolfsmäuler am besten stopfen?",
+      "9": "Die Werwolfsmägen knurren vor Hunger - Zeit, sich etwas zu Essen zu suchen!",
+      "10": "Frischer Mensch - kommt auf den Tisch - so saftig süüüüüüüüüüüüüüüß!"
+    },
+    "werewolfOptions": {
+      "0": " reißen",
+      "1": " zu Gulasch verarbeiten",
+      "2": " als Geschnetzeltes genießen",
+      "3": " durch den Fleischwolf jagen",
+      "4": " den Hals umdrehen",
+      "5": " versnacken",
+      "6": " zur Stillung der Blutlust verwenden",
+      "7": " auf einen Mitternachtsimbiss treffen",
+      "8": " die Reißzähne in den Hals rammen",
+      "9": " zu Salami verarbeiten",
+      "10": " in die Lasagne mischen",
+      "11": " mit einer Torte verwechseln"
+    },
+    "werewolfResponse": {
+      "0": " zu reißen.",
+      "1": " zu Gulasch zu verarbeiten.",
+      "2": " als Geschnetzeltes zu genießen.",
+      "3": " durch den Fleischwolf zu jagen.",
+      "4": " den Hals umzudrehen.",
+      "5": " zu versnacken.",
+      "6": " zur Stillung der Blutlust zu verwenden.",
+      "7": " auf einen Mitternachtsimbiss zu treffen.",
+      "8": " die Reißzähne in den Hals zu rammen.",
+      "9": " zu Salami zu verarbeiten.",
+      "10": " in die Lasagne zu mischen.",
+      "11": " mit einer Torte zu verwechseln."
+    },
+    "werewolfDecision": "Die Werwölfe haben beschlossen, ",
+    "werewolfDescription": {
+      "0": [
+        "Du bist einer der Werwölfe. Diese suchen sich jede Nacht gemeinsam ein Opfer aus, ",
+        "welches sie töten wollen. Ihr Ziel ist es, dass nur Charaktere der Werwölfe überleben."
+      ],
+      "1": [
+        "Du bist ein Werwolf. Jede Nacht zieht das Werwolfsrudel umher und sucht sich ",
+        "gemeinschaftlich ein Opfer aus, dass sie diese Nacht reißen wollen. Die Werwölfe ",
+        "gewinnen, falls alle Villager gestorben sind."
+      ],
+      "2": [
+        "Du gehörst den Werwölfen an. Du suchst dir, zusammen mit den anderen Werwölfen ",
+        "jede Nacht deinen Mitternachtsimbiss aus."
+      ],
+      "3": [
+        "Du bist ein Werwolf, welcher sich jede Nacht mit seinem Wolfsrudel trifft, ",
+        "um sich einen Villager zum snacken zu 'borgen'."
+      ],
+      "4": [
+        "Du bist ein Werwolf, welcher jede Nacht erwacht und sich ein Opfer unter den ",
+        "Dorfbewohnern sucht, um dieses dann gemeinsam mit den anderen Werwölfen anzugreifen."
+      ],
+      "5": [
+        "Du bist ein Werwolf. Da diese Rudeltiere sind, erwachen alle Werwölfe jede Nacht gemeinsam, um ",
+        "sich ein [hoffentlich] wehrloses Opfer unter den Dorfbewohnern zu suchen."
+      ]
+    },
+    "wolfdogDescription": {
+      "0": [
+        "Du bist der Wolfshund. Als dieser darfst du in der ersten Nacht entscheiden, ",
+        "ob du das Spiel als Werwolf oder als Villager spielen willst."
+      ],
+      "1": [
+        "Du bist ein Wolfshund, welcher sowohl die Gene eines friedlichen Hundes ",
+        "als auch die eines Wolfes in sich hat. Er entscheidet sich in der ersten Nacht, ",
+        "ob er zum Dorf oder zu den Werwölfen gehören will."
+      ],
+      "2": [
+        "Deine Rolle ist der Wolfshund. Der Wolfshund entscheidet sich in der ersten ",
+        "Nacht, ob er zu den Dorfbewohnern oder zu den Werwölfen gehören will."
+      ],
+      "3": [
+        "Dein Charakter ist der Wolfshund, welcher in der ersten Nacht vor den ",
+        "Werwölfen erwacht und sich entscheiden muss, ob er zu den Werwölfen oder zum Dorf gehört."
+      ],
+      "4": [
+        "Du bist der Wolfshund. Der Wolfshund hat die Wahl, ob er das Spiel als Werwolf ",
+        "oder Villager bestreiten will."
+      ],
+      "5": [
+        "Du bist der Wolfshund und besitzt die Fähigkeit, dich zu Beginn des Spieles ",
+        "zu entscheiden, ob du ein Villager oder ein Werwolf wirst."
+      ]
+    },
+    "wolfdogQuestion": {
+      "0": "Wie möchtest du dieses Spiel bestreiten?",
+      "1": "Welchem Team möchtest du angehören?",
+      "2": "Welche Gene setzen sich in dir durch?",
+      "3": "Du kommst jetzt in ein Alter, in dem du dich für eine Seite entscheiden mussst.",
+      "4": "Wie willst du den Rest deines Lebens verbringen?",
+      "5": "Möchtest du Menschen fressen oder von Menschen gelyncht werden?",
+      "6": "Es ist an der Zeit, sich für eine Seite zu entscheiden!"
+    },
+    "wolfdogChooseWerewolf": {
+      "0": "in einen Werwolf verwandeln",
+      "1": "zum Werwolf mutieren",
+      "2": "das Tier in dir vorkommen lassen",
+      "3": "Blutlust entwickeln",
+      "4": "Hunger auf Menschfleisch bekommen",
+      "5": "dem Dorf den Rücken zuwenden",
+      "6": "sich den Werwölfen anschließen"
+    },
+    "wolfdogChoseWerewolf": {
+      "0": "Du hast dich in einen Werwolf verwandelt.",
+      "1": "Du bist zu einem Werwolf mutiert.",
+      "2": "Du hast das Tier in dir durchkommen lassen.",
+      "3": "Du hast Blutlust enwickelt.",
+      "4": "Du hast Hunger auf Menschfleisch bekommen.",
+      "5": "Du hast dem Dorf den Rücken zugewendet.",
+      "6": "Du hast dich den Werwölfen angeschlossen."
+    },
+    "wolfdogChooseVillage": {
+      "0": "sich dem Dorf anschließen",
+      "1": "brav im Dorf leben",
+      "2": "harmloser Schoßhund werden",
+      "3": "doch lieber Vegetarier werden",
+      "4": "Wenn du Blut siehst, wird dir schlecht",
+      "5": "Demokratie der Gewalt vorziehen",
+      "6": "Humanität zeigen"
+    },
+    "wolfdogChoseVillage": {
+      "0": "Du hast dich dem Dorf angeschlossen.",
+      "1": "Du lebst von nun an brav im Dorf.",
+      "2": "Du bist zu einem harmlosen Schoßhund geworden.",
+      "3": "Du hast beschlossen, doch lieber Vegetarier zu werden.",
+      "4": "Du hast Hämatophobie.",
+      "5": "Du ziehst die Demokratie der Gewalt vor.",
+      "6": "Du zeigst Humanität."
+    },
+    "changelog": [
+      "Version 2.0.7\n- Backend Änderung von Netzwerk zu Queues\n\n",
+      "Version 2.0.6.2\n- Hotfix für hinzufügen/entfernen von Rollen\n\n",
+      "Version 2.0.6.1\n- Einige Zeilenumbrüche und Umlautungen behoben\n\n",
+      "Version 2.0.6:\n- Probleme beim gleichzeitigen betätigen von Buttons behoben\n\n",
+      "Version 2.0.5:\n- Spiel Abbrechen raeumt diese nun auf\n- nur noch der Spielleiter ",
+      "kann das Spiel abbrechen\n\n",
+      "Version 2.0.4.1:\n- kleiner hotfix für den Server\n\n",
+      "Version 2.0.4:\n- Spiele können nach einem Serverneustart fortgesetzt werden\n\n",
+      "Version 2.0.3:\n- Rollen können nun vom Admin explizit entfernt/hinzugefügt werden\n\n",
+      "Version 2.0.2:\n- Todesnachrichten und Spielendenachrichten werden hervorgehoben\n\n",
+      "Version 2.0.1:\n- Fixes für Wolfshund und Terrorwolf\n- weitere kleinere Stabilitätsfixes\n\n",
+      "Version 2.0.0:\n- Erste stabile Version des Remakes"
+    ]
   }
 }
