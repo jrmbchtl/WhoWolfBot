@@ -2,6 +2,7 @@
   "DE": {
     "languageQuestion": "In welcher Sprache möchten Sie dass Spiel spielen",
     "welcome": "Herzlich willkommen beim Werwolf\\-Bot\\!",
+    "privateNotAllowed": "Es ergibt nicht sonderlich viel Sinn, ein Multiplayer-Spiel alleine zu spielen!",
     "cancel": "Abbrechen",
     "join": "Mitspielen/Aussteigen",
     "start": "Start",
@@ -933,6 +934,7 @@
   "EN": {
     "languageQuestion": "Please choose a language",
     "welcome": "Welcome to the Werewolf\\-Bot\\!",
+    "privateNotAllowed": "It doesn't make sense to player a multiplayer game alone!",
     "cancel": "Cancel",
     "join": "Join/Leave",
     "start": "Start",

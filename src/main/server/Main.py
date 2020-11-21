@@ -45,7 +45,13 @@ class Main(object):
         while True:
             dc = self.sc.receiveJSON()
             commandType = dc["commandType"]
-            if commandType == "newGame":
+            if commandType == "newGame" and dc["newGame"]["origin"] == dc["fromId"]:
+                send = Factory.createMessageEvent(
+                    dc["fromId"], loc(lang, "privateNotAllowed"))
+                send["gameId"] = 0
+                self.sc.sendJSON(send)
+                self.sc.receiveJSON()
+            elif commandType == "newGame":
                 if "seed" in dc["newGame"]:
                     s = dc["newGame"]["seed"]
                 else:
