@@ -11,7 +11,7 @@ from src.main.server.Server import Server
 from src.systemtest.SystemTestMain import SystemTestMain
 from src.main.localization import getLocalization as loc
 
-lang = "DE"
+lang = "EN"
 
 
 class Main(object):

@@ -4,15 +4,13 @@ from src.main.server.characters.Types import CharacterType
 from src.main.server.characters.Types import TeamType
 from src.main.localization import getLocalization as loc
 
-lang = "DE"
-
 
 class Seer(VillagerTeam):
     def __init__(self, alive=True):
         super(Seer, self).__init__(CharacterType.SEER, alive)
 
     def getDescription(self, gameData):
-        dc = loc(lang, "seerDescription")
+        dc = loc(gameData.getLang(), "seerDescription")
         return dc[str(gameData.randrange(0, len(dc)))]
 
     def wakeUp(self, gameData, playerId):
@@ -40,34 +38,35 @@ class Seer(VillagerTeam):
 
         if gameData.getAlivePlayers()[playerIndexList[choice]].\
                 getCharacter().getTeam() == TeamType.WEREWOLF:
-            replyText = seerWerewolf(choice, gameData.getAlivePlayers()[playerIndexList[choice]]
-                                     .getName())
+            replyText = seerWerewolf(gameData, choice,
+                                     gameData.getAlivePlayers()[playerIndexList[choice]].getName())
         else:
-            replyText = seerNoWerewolf(choice, gameData.getAlivePlayers()[playerIndexList[choice]]
+            replyText = seerNoWerewolf(gameData, choice,
+                                       gameData.getAlivePlayers()[playerIndexList[choice]]
                                        .getName())
         gameData.sendJSON(Factory.createMessageEvent(playerId, replyText))
         gameData.dumpNextMessage(commandType="feedback", fromId=playerId)
 
 
 def seerChooseTarget(gameData):
-    dc = loc(lang, "seerQuestion")
+    dc = loc(gameData.getLang(), "seerQuestion")
     return dc[str(gameData.randrange(0, len(dc)))]
 
 
 def seerOptions(name, gameData):
-    pre = loc(lang, "seerOptionsPre")
-    post = loc(lang, "seerOptionsPost")
+    pre = loc(gameData.getLang(), "seerOptionsPre")
+    post = loc(gameData.getLang(), "seerOptionsPost")
     option = gameData.randrange(0, 7)
     return option, pre[str(option)] + name + post[str(option)]
 
 
-def seerWerewolf(option, name):
-    pre = loc(lang, "seerWerewolfPre", option)
-    post = loc(lang, "seerWerewolfPost", option)
+def seerWerewolf(gameData, option, name):
+    pre = loc(gameData.getLang(), "seerWerewolfPre", option)
+    post = loc(gameData.getLang(), "seerWerewolfPost", option)
     return pre + name + post
 
 
-def seerNoWerewolf(option, name):
-    pre = loc(lang, "seerNoWerewolfPre", option)
-    post = loc(lang, "seerNoWerewolfPost", option)
+def seerNoWerewolf(gameData, option, name):
+    pre = loc(gameData.getLang(), "seerNoWerewolfPre", option)
+    post = loc(gameData.getLang(), "seerNoWerewolfPost", option)
     return pre + name + post

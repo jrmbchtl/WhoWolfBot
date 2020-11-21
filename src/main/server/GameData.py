@@ -20,6 +20,7 @@ class GameData(object):
         self.gameId = gameId
         self.menuMessageId = menuMessageId
         self.deleteQueue = deleteQueue
+        self.lang = "EN"
         self.werewolfTarget = None
         self.witchTarget = None
         self.recList = []
@@ -139,6 +140,7 @@ class GameData(object):
             self.numberSent -= 1
         else:
             dc["gameId"] = self.gameId
+            dc["lang"] = self.lang
             self.sc.sendJSON(dc)
             self.incNumberSent()
 
@@ -186,6 +188,12 @@ class GameData(object):
 
     def getWitchTarget(self):
         return self.witchTarget
+
+    def setLang(self, lang):
+        self.lang = lang
+
+    def getLang(self):
+        return self.lang
 
     def randrange(self, start, stop, step=1):
         return random.randrange(start, stop, step)

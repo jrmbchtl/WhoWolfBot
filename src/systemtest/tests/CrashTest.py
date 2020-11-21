@@ -11,7 +11,6 @@ class CrashTest(Systemtest):
     def run(self):
         gameId = 2
         if not os.path.isfile("games/" + str(gameId) + ".game"):
-            print("did not found games/2.game, but " + str(os.listdir("./")))
             self.initGame(4, 42, 16384)
             self.assertReceiveDict({"eventType": "choiceField", "choiceField":
                 {"text": "Mit wem lassen sich die hungrigen Werwolfsmäuler am besten stopfen?",
@@ -20,7 +19,7 @@ class CrashTest(Systemtest):
                              'Player 3 mit einer Torte verwechseln',
                              'Player 4 zu Gulasch verarbeiten',
                              'niemanden mit einer Torte verwechseln'], "messageId": 0},
-                "mode": "write", "target": 2, "highlight": False, "gameId": 2})
+                "mode": "write", "target": 2, "highlight": False, "gameId": 2, 'lang': 'DE'})
         else:
             print("game 2 should be running")
             self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 0},
@@ -30,8 +29,8 @@ class CrashTest(Systemtest):
                 {"text": ("Mit wem lassen sich die hungrigen Werwolfsmäuler am besten stopfen?\n\n"
                           "Player 3 schlägt vor Player 1 auf einen Mitternachtsimbiss zu treffen."
                           "\n\nDie Werwölfe haben beschlossen, Player 1 auf einen "
-                          "Mitternachtsimbiss zu treffen."), "messageId": 22},
-                "mode": "edit", "target": 2, "highlight": False, "gameId": gameId})
+                          "Mitternachtsimbiss zu treffen."), "messageId": 24},
+                "mode": "edit", "target": 2, "highlight": False, "gameId": gameId, 'lang': 'DE'})
 
             self.sc.sendJSON({"commandType": "terminate", "fromId": 42,
                               "gameId": gameId})

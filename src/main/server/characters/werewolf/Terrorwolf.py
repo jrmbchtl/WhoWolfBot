@@ -3,15 +3,13 @@ from src.main.server.characters.Teams import WerewolfTeam
 from src.main.server.characters.Types import CharacterType
 from src.main.localization import getLocalization as loc
 
-lang = "DE"
-
 
 class Terrorwolf(WerewolfTeam):
     def __init__(self, alive=True):
         super(Terrorwolf, self).__init__(CharacterType.TERRORWOLF, alive)
 
     def getDescription(self, gameData):
-        dc = loc(lang, "seerDescription")
+        dc = loc(gameData.getLang(), "seerDescription")
         return dc[str(gameData.randrange(0, len(dc)))]
 
     def kill(self, gameData, playerId, dm=None):
@@ -44,15 +42,15 @@ class Terrorwolf(WerewolfTeam):
 
 
 def terrorwolfReveal(gameData):
-    dc = loc(lang, "terrorwolfReveal")
+    dc = loc(gameData.getLang(), "terrorwolfReveal")
     return dc[str(gameData.randrange(0, len(dc)))]
 
 
 def terrorwolfChooseTarget(gameData):
-    dc = loc(lang, "terrorwolfQuestion")
+    dc = loc(gameData.getLang(), "terrorwolfQuestion")
     return dc[str(gameData.randrange(0, len(dc)))]
 
 
 def terrorwolfKill(gameData):
-    dc = loc(lang, "terrorwolfKill")
+    dc = loc(gameData.getLang(), "terrorwolfKill")
     return dc[str(gameData.randrange(0, len(dc)))]

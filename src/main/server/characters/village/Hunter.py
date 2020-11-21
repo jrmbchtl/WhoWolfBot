@@ -3,15 +3,13 @@ from src.main.server.characters.Teams import VillagerTeam
 from src.main.server.characters.Types import CharacterType
 from src.main.localization import getLocalization as loc
 
-lang = "DE"
-
 
 class Hunter(VillagerTeam):
     def __init__(self, alive=True):
         super(Hunter, self).__init__(CharacterType.HUNTER, alive)
 
     def getDescription(self, gameData):
-        dc = loc(lang, "hunterDescription")
+        dc = loc(gameData.getLang(), "hunterDescription")
         return dc[str(gameData.randrange(0, len(dc)))]
 
     def kill(self, gameData, playerId, dm=None):
@@ -26,10 +24,11 @@ class Hunter(VillagerTeam):
         for player in gameData.getAlivePlayerList():
             if player == gameData.getWerewolfTarget() or player == gameData.getWitchTarget():
                 continue
-            choice, message = hunterOptions(gameData)
+            name = gameData.getPlayers()[player].getName()
+            choice, message = hunterOptions(gameData, name)
             idList.append(player)
             idToChoice[player] = choice
-            options.append(gameData.getPlayers()[player].getName() + message)
+            options.append(message)
 
         gameData.sendJSON(Factory.createChoiceFieldEvent(playerId, text, options))
         messageId = gameData.getNextMessage(
@@ -42,25 +41,26 @@ class Hunter(VillagerTeam):
 
         targetId = idList[rec["reply"]["choiceIndex"]]
         dm = gameData.getPlayers()[targetId].getName()
-        dm += hunterShot(idToChoice[targetId])
+        dm += hunterShot(gameData, idToChoice[targetId])
         gameData.getPlayers()[targetId].getCharacter().kill(gameData, targetId, dm)
 
 
 def hunterReveal(gameData):
-    dc = loc(lang, "hunterReveal")
+    dc = loc(gameData.getLang(), "hunterReveal")
     return dc[str(gameData.randrange(0, len(dc)))]
 
 
 def hunterChooseTarget(gameData):
-    dc = loc(lang, "hunterQuestion")
+    dc = loc(gameData.getLang(), "hunterQuestion")
     return dc[str(gameData.randrange(0, len(dc)))]
 
 
-def hunterOptions(gameData):
-    dc = loc(lang, "hunterOptions")
-    option = gameData.randrange(0, len(dc))
-    return option, dc[str(option)]
+def hunterOptions(gameData, name):
+    pre = loc(gameData.getLang(), "hunterOptionsPre")
+    post = loc(gameData.getLang(), "hunterOptionsPost")
+    option = gameData.randrange(0, len(pre))
+    return option, pre[str(option)] + name + post[str(option)]
 
 
-def hunterShot(option):
-    return loc(lang, "hunterShot", option)
+def hunterShot(gameData, option):
+    return loc(gameData.getLang(), "hunterShot", option)

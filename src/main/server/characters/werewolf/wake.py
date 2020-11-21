@@ -4,8 +4,6 @@ from src.main.server.characters import Types
 from src.main.server.characters.Character import Character
 from src.main.localization import getLocalization as loc
 
-lang = "DE"
-
 
 def wake(gameData: GameData):
     werewolfList = []
@@ -19,7 +17,7 @@ def wake(gameData: GameData):
         index, option = werewolfOptions(gameData, name)
         options.append(option)
         optionIndexList.append(index)
-    index, option = werewolfOptions(gameData, loc(lang, "noone"))
+    index, option = werewolfOptions(gameData, loc(gameData.getLang(), "noone"))
     options.append(option)
     optionIndexList.append(index)
     text = werewolfChooseTarget(gameData)
@@ -39,12 +37,13 @@ def wake(gameData: GameData):
         for key in voteDict:
             werewolfName = gameData.getAlivePlayers()[key].getName()
             if voteDict[key] == len(gameData.getAlivePlayerList()):
-                targetName = loc(lang, "noone")
+                targetName = loc(gameData.getLang(), "noone")
             else:
                 targetId = gameData.getAlivePlayerList()[voteDict[key]]
                 targetName = gameData.getAlivePlayers()[targetId].getName()
-            newText += werewolfName + loc(lang, "werewolfSuggest") + werewolfResponseOptions(
-                optionIndexList[voteDict[key]], targetName) + "\n"
+            newText += werewolfName + loc(gameData.getLang(), "werewolfSuggest") \
+                       + werewolfResponseOptions(gameData, optionIndexList[voteDict[key]],
+                                                 targetName) + "\n"
         if len(werewolfList) == len(voteDict) and GameData.uniqueDecision(voteDict):
             break
         for werewolf in werewolfList:
@@ -66,8 +65,8 @@ def publishDecision(gameData, werewolfList, voteDict, optionIndexList, text, mes
         targetName = gameData.getAlivePlayers()[targetId].getName()
         gameData.setWerewolfTarget(targetId)
 
-    decision = loc(lang, "werewolfDecision") + werewolfResponseOptions(
-        optionIndexList[decisionIndex], targetName)
+    decision = loc(gameData.getLang(), "werewolfDecision") + werewolfResponseOptions(
+        gameData, optionIndexList[decisionIndex], targetName)
     text += "\n" + decision
 
     for werewolf in werewolfList:
@@ -77,15 +76,17 @@ def publishDecision(gameData, werewolfList, voteDict, optionIndexList, text, mes
 
 
 def werewolfChooseTarget(gameData):
-    dc = loc(lang, "werewolfQuestion")
+    dc = loc(gameData.getLang(), "werewolfQuestion")
     return dc[str(gameData.randrange(0, len(dc)))]
 
 
 def werewolfOptions(gameData, name):
-    dc = loc(lang, "werewolfOptions")
-    choice = gameData.randrange(0, len(dc))
-    return choice, name + dc[str(choice)]
+    pre = loc(gameData.getLang(), "werewolfOptionsPre")
+    post = loc(gameData.getLang(), "werewolfOptionsPost")
+    choice = gameData.randrange(0, len(pre))
+    return choice, pre[str(choice)] + name + post[str(choice)]
 
 
-def werewolfResponseOptions(option, name):
-    return name + loc(lang, "werewolfResponse", option)
+def werewolfResponseOptions(gameData, option, name):
+    return loc(gameData.getLang(), "werewolfResponsePre", option) + name \
+           + loc(gameData.getLang(), "werewolfResponsePost", option)

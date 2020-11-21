@@ -4,15 +4,13 @@ from src.main.server.characters.Types import CharacterType
 from src.main.server.characters.Types import TeamType
 from src.main.localization import getLocalization as loc
 
-lang = "DE"
-
 
 class Wolfdog(Character):
     def __init__(self, alive=True):
         super(Wolfdog, self).__init__(None, CharacterType.WOLFDOG, alive)
 
     def getDescription(self, gameData):
-        dc = loc(lang, "wolfdogDescription")
+        dc = loc(gameData.getLang(), "wolfdogDescription")
         return dc[str(gameData.randrange(0, len(dc)))]
 
     def wakeUp(self, gameData, playerId):
@@ -29,10 +27,10 @@ class Wolfdog(Character):
         rec = gameData.getNextMessage(commandType="reply", fromId=playerId)
         if rec["reply"]["choiceIndex"] == 0:
             self.setTeam(TeamType.WEREWOLF)
-            intro += "\n\n" + wolfdogChoseWerewolf(indexWerewolf)
+            intro += "\n\n" + wolfdogChoseWerewolf(gameData, indexWerewolf)
         elif rec["reply"]["choiceIndex"] == 1:
             self.setTeam(TeamType.VILLAGER)
-            intro += "\n\n" + wolfdogChoseVillage(indexVillage)
+            intro += "\n\n" + wolfdogChoseVillage(gameData, indexVillage)
         else:
             raise ValueError("How can u choose option " + rec["reply"]["choiceIndex"])
         gameData.sendJSON(
@@ -41,25 +39,25 @@ class Wolfdog(Character):
 
 
 def wolfdogOptions(gameData):
-    dc = loc(lang, "wolfdogQuestion")
+    dc = loc(gameData.getLang(), "wolfdogQuestion")
     return dc[str(gameData.randrange(0, len(dc)))]
 
 
 def wolfdogChooseWerewolf(gameData):
-    dc = loc(lang, "wolfdogChooseWerewolf")
+    dc = loc(gameData.getLang(), "wolfdogChooseWerewolf")
     option = gameData.randrange(0, len(dc))
     return option, dc[str(option)]
 
 
-def wolfdogChoseWerewolf(option):
-    return loc(lang, "wolfdogChoseWerewolf", option)
+def wolfdogChoseWerewolf(gameData, option):
+    return loc(gameData.getLang(), "wolfdogChoseWerewolf", option)
 
 
 def wolfdogChooseVillage(gameData):
-    dc = loc(lang, "wolfdogChooseVillage")
+    dc = loc(gameData.getLang(), "wolfdogChooseVillage")
     option = gameData.randrange(0, len(dc))
     return option, dc[str(option)]
 
 
-def wolfdogChoseVillage(option):
-    return loc(lang, "wolfdogChoseVillage", option)
+def wolfdogChoseVillage(gameData, option):
+    return loc(gameData.getLang(), "wolfdogChoseVillage", option)

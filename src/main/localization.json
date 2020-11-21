@@ -1,5 +1,6 @@
 {
   "DE": {
+    "languageQuestion": "In welcher Sprache möchten Sie dass Spiel spielen",
     "welcome": "Herzlich willkommen beim Werwolf\\-Bot\\!",
     "cancel": "Abbrechen",
     "join": "Mitspielen/Aussteigen",
@@ -24,7 +25,15 @@
       "terrorwolf": "Terrorwolf",
       "wolfdog": "Wolfshund"
     },
-    "accuseOptions": {
+    "accuseOptionsPre": {
+      "0": "",
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "5": ""
+    },
+    "accuseOptionsPost": {
       "0": " anklagen",
       "1": " bezichtigen",
       "2": " Verrat vorwerfen",
@@ -75,7 +84,19 @@
       "8": "Das Dorf entscheidet, wer gelyncht wird!",
       "9": "Lasset die Hinrichtungsspiele beginnen!"
     },
-    "voteOptions": {
+    "voteOptionsPre": {
+      "0": "",
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "9": ""
+    },
+    "voteOptionsPost": {
       "0": " hängen",
       "1": " auf dem Scheiterhaufen verbrennen",
       "2": " einen Schwedentrunk verabreichen",
@@ -150,7 +171,7 @@
       "2": "Nach einer intensiven aber ergebnislosen Diskussion kehren alle nach hause zurück.",
       "3": "Mal wieder viel heiße Luft um Nichts - viel Anschuldigungen aber kein Ergebnis.",
       "4": [
-        "Bei dem versuch, alle Angeklagten zu hängen, reißt das Seil und das Dorf beschließt, heute niemanden ",
+        "Bei dem Versuch, alle Angeklagten zu hängen, reißt das Seil und das Dorf beschließt, heute niemanden ",
         "hinzurichten."
       ],
       "5": [
@@ -414,7 +435,19 @@
       "6": " verschwenden.",
       "7": " zur Hilfe zu eilen."
     },
-    "witchKill": {
+    "witchKillPre": {
+      "0": "",
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "9": ""
+    },
+    "witchKillPost": {
       "0": " vergiften",
       "1": " den Todestrank einflößen",
       "2": " eine ungesunde Substanz injezieren",
@@ -610,7 +643,19 @@
       "9": "Wer soll im Kugelhagel seine ewige Ruhe finden?",
       "10": "Wen willst du in Mitleidenschaft ziehen?"
     },
-    "hunterOptions": {
+    "hunterOptionsPre": {
+      "0": "",
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "9": ""
+    },
+    "hunterOptionsPost": {
       "0": " erschießen",
       "1": " mit der Nagelpistole an die Wand heften",
       "2": " durchlöchern",
@@ -650,7 +695,7 @@
       "3": [
         "Du bist der Terrorwolf. Dieser ist ähnlich dem Jäger, mit dem Unterschied, ",
         "dass er für die Werwölfe spielt: Stirbt der Terrorwolf, egal ob bei Tag oder ",
-        "Nacht, so bleibt ihm noch ausreichend Zeit, sich einen Villager als Henkersmahlzeit zu schnappen."
+        "Nacht, so bleibt ihm noch ausreichend Zeit, sich einen Dorfbewohner als Henkersmahlzeit zu schnappen."
       ],
       "4": [
         "Deine Rolle ist er Terrorwolf, welcher mittels eines Testaments ",
@@ -658,7 +703,7 @@
       ],
       "5": [
         "Du bist der Terrorwolf. Dein Tod hat Konsequenzen. Zumindest für einen weiteren ",
-        "Villager: Wenn du stirbst, steht er als letzte Mahlzeit auf deinem Speiseplan."
+        "Dorfbewohner: Wenn du stirbst, steht er als letzte Mahlzeit auf deinem Speiseplan."
       ]
     },
     "terrorwolfReveal": {
@@ -714,7 +759,21 @@
       "9": "Die Werwolfsmägen knurren vor Hunger - Zeit, sich etwas zu Essen zu suchen!",
       "10": "Frischer Mensch - kommt auf den Tisch - so saftig süüüüüüüüüüüüüüüß!"
     },
-    "werewolfOptions": {
+     "werewolfOptionsPre": {
+      "0": "",
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "9": "",
+      "10": "",
+      "11": ""
+    },
+    "werewolfOptionsPost": {
       "0": " reißen",
       "1": " zu Gulasch verarbeiten",
       "2": " als Geschnetzeltes genießen",
@@ -728,7 +787,21 @@
       "10": " in die Lasagne mischen",
       "11": " mit einer Torte verwechseln"
     },
-    "werewolfResponse": {
+    "werewolfResponsePre": {
+      "0": "",
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "9": "",
+      "10": "",
+      "11": ""
+    },
+    "werewolfResponsePost": {
       "0": " zu reißen.",
       "1": " zu Gulasch zu verarbeiten.",
       "2": " als Geschnetzeltes zu genießen.",
@@ -751,7 +824,7 @@
       "1": [
         "Du bist ein Werwolf. Jede Nacht zieht das Werwolfsrudel umher und sucht sich ",
         "gemeinschaftlich ein Opfer aus, dass sie diese Nacht reißen wollen. Die Werwölfe ",
-        "gewinnen, falls alle Villager gestorben sind."
+        "gewinnen, falls alle Dorfbewohner gestorben sind."
       ],
       "2": [
         "Du gehörst den Werwölfen an. Du suchst dir, zusammen mit den anderen Werwölfen ",
@@ -759,7 +832,7 @@
       ],
       "3": [
         "Du bist ein Werwolf, welcher sich jede Nacht mit seinem Wolfsrudel trifft, ",
-        "um sich einen Villager zum snacken zu 'borgen'."
+        "um sich einen Dorfbewohner zum snacken zu 'borgen'."
       ],
       "4": [
         "Du bist ein Werwolf, welcher jede Nacht erwacht und sich ein Opfer unter den ",
@@ -773,7 +846,7 @@
     "wolfdogDescription": {
       "0": [
         "Du bist der Wolfshund. Als dieser darfst du in der ersten Nacht entscheiden, ",
-        "ob du das Spiel als Werwolf oder als Villager spielen willst."
+        "ob du das Spiel als Werwolf oder als Dorfbewohner spielen willst."
       ],
       "1": [
         "Du bist ein Wolfshund, welcher sowohl die Gene eines friedlichen Hundes ",
@@ -790,11 +863,11 @@
       ],
       "4": [
         "Du bist der Wolfshund. Der Wolfshund hat die Wahl, ob er das Spiel als Werwolf ",
-        "oder Villager bestreiten will."
+        "oder Dorfbewohner bestreiten will."
       ],
       "5": [
         "Du bist der Wolfshund und besitzt die Fähigkeit, dich zu Beginn des Spieles ",
-        "zu entscheiden, ob du ein Villager oder ein Werwolf wirst."
+        "zu entscheiden, ob du ein Dorfbewohner oder ein Werwolf wirst."
       ]
     },
     "wolfdogQuestion": {
@@ -855,6 +928,824 @@
       "Version 2.0.2:\n- Todesnachrichten und Spielendenachrichten werden hervorgehoben\n\n",
       "Version 2.0.1:\n- Fixes für Wolfshund und Terrorwolf\n- weitere kleinere Stabilitätsfixes\n\n",
       "Version 2.0.0:\n- Erste stabile Version des Remakes"
+    ]
+  },
+  "EN": {
+    "languageQuestion": "Please choose a language",
+    "welcome": "Welcome to the Werewolf\\-Bot\\!",
+    "cancel": "Cancel",
+    "join": "Join/Leave",
+    "start": "Start",
+    "roleConfig": "You can add and remove roles for this game",
+    "remove": "remove",
+    "add": "add",
+    "gameMenu": [
+      "Have fun playing Werewolf!\n\nPlease start talking to me in a private Chat, otherwise you are not able to join ",
+      "any of my games.\n\nIt might be helpful to use landscape mode when playing on a small phone due to limitations ",
+      "within telegram.\n\n"
+    ],
+    "hello": "Hello, it's me",
+    "plsOpen": ", please start talking to me privately!",
+    "players": "Player",
+    "roles": {
+      "werewolf": "Werewolf",
+      "villager": "Villager and female villager",
+      "witch": "Witch",
+      "hunter": "Hunter",
+      "seer": "Seer",
+      "terrorwolf": "Terrorwolf",
+      "wolfdog": "Wolfdog"
+    },
+    "accuseOptionsPre": {
+      "0": "accuse ",
+      "1": "declare ",
+      "2": "accuse ",
+      "3": "denounce ",
+      "4": "blame ",
+      "5": "incriminate "
+    },
+    "accuseOptionsPost": {
+      "0": "",
+      "1": " guilty",
+      "2": " of treason",
+      "3": "",
+      "4": "",
+      "5": ""
+    },
+    "accuseIntro": {
+      "0": "It is time to accuse!",
+      "1": "After a wild night, it's getting spicy in town.",
+      "2": "The town is need for justice after such a night",
+      "3": "The vilagers want to bring peace back to town and start accusing the guilty (or not so guilty).",
+      "4": "The villagers try to find the werewolfs in a rude discussion.",
+      "5": "Everyone tries to protect his own live by accusing everyone else.",
+      "6": "Someone has to pay for the nightly crimes...",
+      "7": "The villagers start a discussion, who the reason for the nightly murder is.",
+      "8": [
+        "There's a hot discussion in town, rumours are counted as facts, werewolfs disguise themselfs as villagers and ",
+        "harmless villagers are getting accused of brutal murder"
+      ],
+      "9": "Let's have some fun accusing others!"
+    },
+    "accuseTextPre": {
+      "0": " wants to accuse ",
+      "1": " declares ",
+      "2": " accuses ",
+      "3": " denounces ",
+      "4": " blames ",
+      "5": " incriminates "
+    },
+    "accuseTextPost": {
+      "0": ".",
+      "1": " guilty.",
+      "2": " of treason!",
+      "3": " !",
+      "4": ".",
+      "5": "."
+    },
+    "voteIntro": {
+      "0": "It is time to execute someone!",
+      "1": "The villagers want to see some werewolfs die!",
+      "2": "The vote for the execution begins.",
+      "3": "Who do you want to execute?",
+      "4": "Who should pay for the cruel crimes with an even more cruel death?",
+      "5": "Who is guilty and must die?",
+      "6": "Eye for eye, tooth for tooth - and who has to die a horrible death due to vague rumours?",
+      "7": "Democracy will decide who will be executed!",
+      "8": "The village decides who gets lynched!",
+      "9": "Let the execution games begin!"
+    },
+    "voteOptionsPre": {
+      "0": "hang ",
+      "1": "burn ",
+      "2": "give ",
+      "3": "hang, draw and quarter ",
+      "4": "sacrifice ",
+      "5": "drown ",
+      "6": "throw ",
+      "7": "guillotine ",
+      "8": "bury ",
+      "9": "stone "
+    },
+    "voteOptionsPost": {
+      "0": "",
+      "1": " at stake",
+      "2": " administer a Schwedentrunk",
+      "3": "",
+      "4": " for the common good",
+      "5": "",
+      "6": " off a cliff",
+      "7": "",
+      "8": " alive",
+      "9": ""
+    },
+    "votedForPre": {
+      "0": " wants to hang ",
+      "1": " wants to burn ",
+      "2": " likes to give ",
+      "3": " wants to hang, draw and quarter ",
+      "4": " prefers to sacrifice ",
+      "5": " wants to drown ",
+      "6": " prefers to throw ",
+      "7": " wants to put ",
+      "8": " prefers to bury ",
+      "9": " likes to stone "
+    },
+    "votedForPost": {
+      "0": "!",
+      "1": " at stake!",
+      "2": " a Schwedentrunk.",
+      "3": ".",
+      "4": " for common good.",
+      "5": ".",
+      "6": " off a cliff.",
+      "7": " under a guillotine.",
+      "8": " alive.",
+      "9": "."
+    },
+    "voteJudgement": {
+      "0": " got hanged.",
+      "1": " was burned at stake!",
+      "2": " was tortured with a Schwedentrunk and died.",
+      "3": " was hanged, drawn and ripped in four.",
+      "4": " was sacrificed for common good.",
+      "5": " couldn't swim with a millstone around his neck!",
+      "6": " didn't survive the the jump off a high cliff onto solid ground",
+      "7": " is headless!",
+      "8": " couldn't live without air.",
+      "9": " got too many stones on his head to survive."
+    },
+    "pattRevote": {
+      "0": "Stalemate - please revote!",
+      "1": "The villagers couldn't decide who to execute, so they have vote again.",
+      "2": "The vote ended with a draw and has to be repeated.",
+      "3": "The village community cannot decide on a guilty one and therefore starts a re-election.",
+      "4": "Conditions like in Turkey: It is elected until those in power like the result. New elections are scheduled!",
+      "5": "You can only execute one Person, somebody should change their opinion!",
+      "6": "Democracy is at its limits: There is the need for a re-election.",
+      "7": "A coalition is not possible during execution. Please decide for a guilty person.",
+      "8": "There is only room for one person on the electric chair. Please vote again!",
+      "9": [
+        "If you execute two half people, you have mathematically only executed one person. ",
+        "The problem is that then both are dead. Make up your minds!"
+      ]
+    },
+    "pattNoKill": {
+      "0": "Since the village cannot agree on a guilty one, nobody is lynched today.",
+      "1": "Democracy is overwhelmed and decides not to execute anyone.",
+      "2": "After an intense discussion without result, everyone returns home.",
+      "3": "Once again a lot of discussion for nothing - a lot of accusations but no result.",
+      "4": [
+        "During the attempt to hang all accused, the ropes snap and the village decides not to execute anyone today."
+      ],
+      "5": [
+        "Since the discussion becomes too heated without showing a result, the police dissolves the meeting and sends ",
+        "all participants away."
+      ],
+      "6": "At the end of the day, everyone is annoyed because in the end no one was able to assert their opinion.",
+      "7": [
+        "The day passes without a dead person. This causes displeasure among the villagers, as the werewolves will ",
+        "not rest next night."
+      ],
+      "8": [
+        "The villagers take care of themselves: Next time we will get a clear result in the vote, but at the moment ",
+        "nobody wants to change his mind. Maybe the coming night can help against a stalemate?"
+      ],
+      "9": [
+        "Since the village couldn't agree who to execute, they decided to go to bed. Maybe they will come to an ",
+        "agreement tomorrow."
+      ]
+    },
+    "nightfall": {
+      "0": "Night falls in town.",
+      "1": "As the sun goes down, it is time for everyone to go to bed.",
+      "2": [
+        "This town prepares itself for a turbulent night and goes to sleep. Some individuals however set themselves ",
+        "an alarm clock..."
+      ],
+      "3": [
+        "The night is no less dangerous than the day and the villagers prepare themselves to go to sleep one last ",
+        "time..."
+      ],
+      "4": "As soon as it slowly gets dark in town, everyone goes to sleep.",
+      "5": [
+        "After an exhausting day, many villagers now hope for a restful night. But especially this night not all ",
+        "will sleep well..."
+      ],
+      "6": [
+        "The streets become empty, over in the pub the last beer was poured half an hour ago and the village goes to ",
+        "bed."
+      ],
+      "7": "The village goes to bed - hoping to wake up again at dawn.",
+      "8": "Some villagers are just hoping for a quiet night - others are already licking their lips.",
+      "9": "The villagers toast to a successful day and wish each other a good night."
+    },
+    "allDeadPre": {
+      "0": "Everyone's dead.",
+      "1": "The village is as alive as Chernobyl.",
+      "2": "There is the possibility for a vulcanic eruption in the town center and noone would die.",
+      "3": "This town now rests in peace.",
+      "4": "There are only animals left in this village",
+      "5": "From now on, nature will take back the small village slowly.",
+      "6": "The civilization in this town is now extinct.",
+      "7": "The issue with werewolves is solved. But there's also no food left for werewolfs...",
+      "8": "There are currently ",
+      "9": "The history of this town is now completed."
+    },
+    "allDeadPost": {
+      "0": "",
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": " more people in space than in this town",
+      "9": ""
+    },
+    "werewolfWin": {
+      "0": "The werewolfs win.",
+      "1": "It was a long fight, but the werewolves prevailed.",
+      "2": "Only werewolves remain in town!",
+      "3": "There are no more villagers who can be eaten by the werewolves.",
+      "4": "Peace returns to town, since there are only werewolves left here.",
+      "5": "The werewolves have won.",
+      "6": "The werewolves have proven their dominance.",
+      "7": "The werewolves are apparently the stronger race in town.",
+      "8": "After the death of the last villager the werewolves now have their peace.",
+      "9": "The werewolves organize a feast to celebrate the day and eat the last villager."
+    },
+    "villageWin": {
+      "0": "The villagers win.",
+      "1": "It was a long fight, but the villagers prevailed.",
+      "2": "Only villagers remain in town!",
+      "3": "There are no more werewolfs to eat the villagers.",
+      "4": "Peace returns to town, since there are only villagers left here.",
+      "5": "The villagers have won.",
+      "6": "The villagers have proven their dominance.",
+      "7": "The werewolves were apparently the weaker race in town.",
+      "8": "After the death of the last werewolf the villagers now have peace.",
+      "9": "The villagers organize a feast to celebrate the day and stuff the last werewolf."
+    },
+    "deathMessage": {
+      "1": " sadly died tonight.",
+      "2": " won't get to live another day..",
+      "3": " was found massacred.",
+      "4": " rests in pieces.",
+      "5": " didn't survive the last couple hours",
+      "6": " is nowhere to be found.",
+      "8": " lost his last battle.",
+      "9": " turned up his toes.",
+      "10": " snuffed it.",
+      "11": " bought a farm.",
+      "12": " went west.",
+      "13": " pegged out.",
+      "14": " bit the dust.",
+      "15": " kicked the bucket.",
+      "16": " popped his clogs.",
+      "17": " went toes up",
+      "18": " hopped the twig",
+      "19": " hopped the stick",
+      "20": " kicked it"
+    },
+    "villagerDescription": {
+      "0": "You're a male villager, a normal character with no special abilities",
+      "1": "Your role is the male villager, a defenseless character who can only vote during the day.",
+      "2": "You are an ordinary male villager whose only weapon is democracy during the day.",
+      "3": "Your character is a good male citizen.",
+      "4": "You are a normal male villager who can only protect his survival by lynching the werewolves during the day.",
+      "5": "You are a female  villager who can just sleep through the night in peace."
+    },
+    "villagerfDescription": {
+      "0": "You're a female villager, a normal character with no special abilities",
+      "1": "Your role is the female villager, a defenseless character who can only vote during the day.",
+      "2": "You are an ordinary female villager whose only weapon is democracy during the day.",
+      "3": "Your character is a good female citizen.",
+      "4": "You are a normal female villager who can only protect her survival by lynching the werewolves during the day.",
+      "5": "You are a female villager who can just sleep through the night in peace."
+    },
+    "witchDescription": {
+      "0": [
+        "You are the witch. You are waking up every night, learning about the victim of the werewolves and may ",
+        "decide whether or not to apply her one life potion to the victim. Afterwards she has the possibility to ",
+        "kill a person with a death potion once in the game."
+      ],
+      "1": [
+        "You are the witch.You have two potions at your disposal, a healing potion and a poison potion. Their ",
+        "meaning is self-explanatory, but still: With the poison potion she can poison a player once in the game, ",
+        "with the healing potion she can save someone from the werewolves [including herself]."
+      ],
+      "2": [
+        "Your role is the witch. The witch always wakes up right after the werewolves have chosen their victim. She ",
+        "has a poison and a healing potion throughout the game. The witch learns about the werewolves' murder victim ",
+        "and can heal it with her healing potion [also herself], so that there is no death the next morning. ",
+        "But she can also apply the poison potion to another player; then there are several dead."
+      ],
+      "3": [
+        "Your character is the witch. The witch gets to know the victim of the werewolves every night [if someone ",
+        "would die by the werewolves] and can save the victim once in the game with a healing potion. She also has ",
+        "a death potion with which she can use once to kill any player in the game."
+      ],
+      "4": [
+        "You are the witch. You have two different potions to choose from throughout the game: Once in the game, ",
+        "she may, after she has learned about the victim of the werewolves, save it with the life potion and once in ",
+        "the game she may kill any other player with her poison potion."
+      ],
+      "5": [
+        "Your role is the witch. She has two special abilities. On the one hand, she gets to know and (if she wants ",
+        "to) heal the victim of the werewolves every night, as long as she still has her healing potion. On the ",
+        "other hand, she can put poison into the drink of a fellow player once in the game, who won't wake up the ",
+        "next morning."
+      ]
+    },
+    "witchSaveQuestion": " had a werewolf-encounter tonight. Do you want to save this person?",
+    "witchKillQuestion": "Do you want to kill someone?",
+    "Noone": "Noone",
+    "noone": "noone",
+    "witchSave": {
+      "0": "Save",
+      "1": "Heal",
+      "2": "Apply a life potion",
+      "3": "Take care of the wounds",
+      "4": "Resuscitate",
+      "5": "Stitch back together"
+    },
+    "witchLetDie": {
+      "0": "Let him die",
+      "1": "Ignore",
+      "2": "Leave to fate",
+      "3": "Accidentally arrive late",
+      "4": "Prefer to sleep",
+      "5": "Turn over and go back to sleep",
+      "6": "Not wasting your precious potion for such a scum",
+      "7": "Prefer self-protection"
+    },
+    "witchDidSavePre": {
+      "0": "You saved ",
+      "1": "The witch healed ",
+      "2": "The witch applied a life potion to ",
+      "3": "You successfully took care of ",
+      "4": "You resuscitated ",
+      "5": "The witch stitched "
+    },
+    "witchDidSavePost": {
+      "0": ".",
+      "1": ".",
+      "2": ".",
+      "3": "s wounds.",
+      "4": ".",
+      "5": " back together."
+    },
+    "witchDidLetDiePre": {
+      "0": "You let ",
+      "1": "The witch ignored ",
+      "2": "The witch left ",
+      "3": "you accidetly arrived too late for ",
+      "4": "The witch preferred sleep over helping ",
+      "5": "You turned over and continued sleeping when you heard of ",
+      "6": "You didn't waste your valuable potion on a scum like ",
+      "7": "The witch decided that helping "
+    },
+    "witchDidLetDiePost": {
+      "0": " die.",
+      "1": ".",
+      "2": " to fate.",
+      "3": ".",
+      "4": ".",
+      "5": "s accident.",
+      "6": ".",
+      "7": " would have been too dangerous."
+    },
+    "witchKillPre": {
+      "0": "poisson ",
+      "1": "apply the poison to ",
+      "2": "inject ",
+      "3": "accidentally give an overdose of morphine to ",
+      "4": "supply ",
+      "5": "corrode ",
+      "6": "mix poison into ",
+      "7": "prepare a meal with toadstools for ",
+      "8": "prepare a puffer fish incorrectly for",
+      "9": "Mix mercury into "
+    },
+    "witchKillPost": {
+      "0": "",
+      "1": "",
+      "2": " an unhealthy substance",
+      "3": "",
+      "4": " with radioactive vegetables",
+      "5": "s internal organs",
+      "6": "s drink",
+      "7": "",
+      "8": "",
+      "9": "s milk"
+    },
+    "witchDidKillPre": {
+      "0": "You poisoned ",
+      "1": "you applied poison to ",
+      "2": "The witch injected ",
+      "3": "You gave an overdose of morphine to ",
+      "4": "The witch supplied ",
+      "5": "You corroded ",
+      "6": "The witch mixed poison into ",
+      "7": "The witch prepared a meal with toadstools for ",
+      "8": "You made a small mistake while preparing the puffer fish for ",
+      "9": "Thew witch mixed mercury into  "
+    },
+    "witchDidKillPost": {
+      "0": ".",
+      "1": ".",
+      "2": " an unhealthy substance.",
+      "3": ".",
+      "4": " with radioactive vegetables.",
+      "5": "s internal organs.",
+      "6": "s drink.",
+      "7": ".",
+      "8": ".",
+      "9": "s milk."
+    },
+    "seerDescription": {
+      "0": [
+        "You are the seer. You're waking up every night, choosing a player and finding out if he belongs to the ",
+        "werewolves or not."
+      ],
+      "1": [
+        "You are the seer. Every night, the seer has the ability to find out whether one teammate belongs to the ",
+        "werewolves or not."
+      ],
+      "2": "Your character is the seer. Every night she gets insight about a player, if he belongs to the werewolves.",
+      "3": "You are the seer. The seer chooses a player every night. She learns whether this player is good or evil.",
+      "4": [
+        "You are the seer. The seer wakes up while everyone else is asleep and chooses a person about whom she wants ",
+        "to know whether he is good or evil. Since the Seer knows the group affiliation of another person in the game ",
+        "each round, she can have great influence, but must use her knowledge carefully."
+      ],
+      "5": [
+        "Your character is the seer. As the seer you have the ability to learn about one person each night, whether ",
+        "this person is good or bad."
+      ]
+    },
+    "seerQuestion": {
+      "0": "The seer awakens. What will she do?",
+      "1": "The seer is startled out of her sleep. About whom will she find out a secret this night?",
+      "2": [
+        "The seer awakens from a nightmare. She has lost a round of \"I see something you don't!\" That won't happen ",
+        "to her now!,"
+      ],
+      "3": "The alarm clock of the seer rings. Who does she want to spy on now?",
+      "4": "The seer wakes up as if struck by lightning. Whose secret will she reveal this night?",
+      "5": "When the seer wakes up at night, she feels a strong urge to act - what will she do?",
+      "6": "The seer has a part time job as private detective. What is she doing tonight?",
+      "7": "The seer suffers from insomnia. What will she do tonight?",
+      "8": "The seer is a passionate peeping Tom. Who is she stalking tonight?",
+      "9": "Once again the seer cannot sleep. What is she doing tonight?"
+    },
+    "seerOptionsPre": {
+      "0": "have a look at",
+      "1": "put ",
+      "2": "get some information about ",
+      "3": "spy on ",
+      "4": "monitor ",
+      "5": "have a closer look at ",
+      "6": "check on "
+    },
+    "seerOptionsPost": {
+      "0": "",
+      "1": " under surveillance by the CIA",
+      "2": " from the FBI",
+      "3": "",
+      "4": "",
+      "5": "",
+      "6": ""
+    },
+    "seerWerewolfPre": {
+      "0": "",
+      "1": "The CIA found out: ",
+      "2": "The FBI tells you: ",
+      "3": "",
+      "4": "You found out that ",
+      "5": "You saw it with your own eyes: ",
+      "6": "Your investigations revealed that "
+    },
+    "seerWerewolfPost": {
+      "0": " belongs to the group of werewolfs.",
+      "1": " is a werewolf.",
+      "2": " is evil!",
+      "3": " is evil.",
+      "4": " belongs to the dark side.",
+      "5": " turns into a werewolf at night!",
+      "6": " is a werewolf."
+    },
+    "seerNoWerewolfPre": {
+      "0": "",
+      "1": "The CIA found out: ",
+      "2": "The FBI tells you: ",
+      "3": "",
+      "4": "You found out that ",
+      "5": "You saw it with your own eyes: ",
+      "6": "Your investigations revealed that "
+    },
+    "seerNoWerewolfPost": {
+      "0": " belongs to the villagers.",
+      "1": " isn't a werewolf.",
+      "2": " is good!",
+      "3": " is good.",
+      "4": " belongs to the good people.",
+      "5": " doesn't turn into a werewolf at night!",
+      "6": " isn't a werewolf."
+    },
+    "hunterDescription": {
+      "0": "You are the hunter: When he dies, he fires a last shot and drags a fellow player with him into his doom.",
+      "1": [
+        "You are the hunter who in his last breath reaches for his rifle in order to send any other player to the ,",
+        "afterlife."
+      ],
+      "2": "Your character is the hunter, who has to shoot a player as his last action before he dies.",
+      "3": "You are the hunter. When the hunter dies, he has to take another player of his choice into death.",
+      "4": [
+        "You are the hunter. If the hunter is killed in the game, he fires a shot in his last breath to kill a player ",
+        "of his choice."
+      ],
+      "5": "You are the hunter who can to shoot another player with your gun right before you die."
+    },
+    "hunterReveal": {
+      "0": " was the hunter!",
+      "1": " shoots recklessly to not die alone!",
+      "2": " carries a loaded gun!",
+      "3": " pulls out a shotgun!",
+      "4": " tries with force of arms to provide justice shortly before his death!",
+      "5": " has a licence to hunt!",
+      "6": " has a hunting license. Now extended for humans!",
+      "7": " does not want to die alone and draws a revolver!",
+      "8": " enjoys to see someone - and shoots him in the face!",
+      "9": " demands his right to send someone to their death by force of arms.",
+      "10": "is a fan of nail guns in other people faces!"
+    },
+    "hunterQuestion": {
+      "0": "Who would you like to drag with you into grave?",
+      "1": "Who do you want to shoot?",
+      "2": "Who are you gonna blow away?",
+      "3": "Who will you shoot in self-defense?",
+      "4": "Who will you accidentally hit with 15 shots in the chest?",
+      "5": "Who would you like to stuff with lead?",
+      "6": "Who would you like to help to internal lead poisoning?",
+      "7": "Who will you shoot as the last action?",
+      "8": "Who do you begrudge not to continue living without you?",
+      "9": "Who shall find eternal rest in the hail of bullets?",
+      "10": "Who do you want to make suffer?"
+    },
+    "hunterOptionsPre": {
+      "0": "shoot ",
+      "1": "staple ",
+      "2": "turn ",
+      "3": "blow ",
+      "4": "shoot ",
+      "5": "promote ",
+      "6": "shoot "
+    },
+    "hunterOptionsPost": {
+      "0": "",
+      "1": " to the wall using a nail gun",
+      "2": "  into a sieve",
+      "3": " away",
+      "4": " in self-defense",
+      "5": " to hunting trophy",
+      "6": " in the face"
+    },
+    "hunterShot": {
+      "0": " got shot by the hunter.",
+      "1": " was stapled to the wall with a nail gun!",
+      "2": " has as more holes in head and chest than a sieve.",
+      "3": " got blowen away",
+      "4": " was shot in self-defense.",
+      "5": " was promoted to a hunting trophy",
+      "6": " has a bullet in the middle of his head."
+    },
+    "terrorwolfDescription": {
+      "0": "You are the terror wolf. When the terror wolf dies, he drags one more player of his choice into death.",
+      "1": [
+        "You are the terror wolf. The terror wolf is the hunter of the werewolves: If he dies, he can take another ",
+        "character of his choice with him."
+      ],
+      "2": "Your character is the terror wolf, who, if he should die, can snatch a victim at the last second.",
+      "3": [
+        "You are the terror wolf. This one is similar to the hunter, with the difference that he plays for the ",
+        "werewolves: If the terror wolf dies, no matter if day or night, he still has enough time to grab a villager ",
+        "as a last meal."
+      ],
+      "4": "Your role is the terror wolf, who demands the death of a villager through his last will.",
+      "5": [
+        "You are the terror wolf. Your death has consequences. At least for another villager: When you die, a ",
+        "villager is the last meal on your menu."
+      ]
+    },
+    "terrorwolfReveal": {
+      "0": " was the terror wolf!",
+      "1": " wants to have someone else ripped apart through his last will.",
+      "2": " opens his mouth: He still has enough time to eat someone.",
+      "3": " bites a villager!",
+      "4": " wants to help his friends with his death and seeks a last meal.",
+      "5": " gets hungry again before his death.",
+      "6": " wants to snack someone before he dies!",
+      "7": " doesn't want to die alone and braids his teeth.",
+      "8": " enjoys seeing someone - and shreds them!",
+      "9": " demands his right - to catch prey one last time before death."
+    },
+    "terrorwolfQuestion": {
+      "0": "Who would you like to take with you to the grave?",
+      "1": "Who would you like to tear apart?",
+      "2": "Who do you want to eat?",
+      "3": "Who do you want to shred in self-defense?",
+      "4": "Who should have an encounter with your teeth",
+      "5": "Who do you literally want to rip the head off?",
+      "6": "Who do you want to help succumb to internal bleeding?",
+      "7": "Who do you want to tear apart as the last action?",
+      "8": "Who do you begrudge not to continue living without you?",
+      "9": "Who shall find eternal rest through your claws?"
+    },
+    "terrorwolfKill": {
+      "0": " was torn by the terror wolf.",
+      "1": " was dragged to his death.",
+      "2": " was eaten as a last meal!",
+      "3": " has had teeth rammed into his neck.",
+      "4": " ended up as a quick meal.",
+      "5": " was bitten with the last strength of the terror wolf.",
+      "6": " was torn to pieces.",
+      "7": " cannot live on without his head!",
+      "8": " was eaten out of pity."
+    },
+    "werewolfSuggest": " suggests ",
+    "werewolfQuestion": {
+      "0": "The werewolves choose their victim.",
+      "1": "The pack of werewolves roams hungrily through the village, looking for a snack.",
+      "2": "The werewolves remember a wise saying: 'Choose wisely, for every meal might be your last'.",
+      "3": "On the hunt for food the werewolves search the village.",
+      "4": "It is night. It is midnight. It is dinnertime!",
+      "5": "To the table, werewolves!",
+      "6": "Who do  the werewolves have an appetite for tonight?",
+      "7": "Werewolves, choose your victim!",
+      "8": "With whom can the hungry werewolf mouths be filled best?",
+      "9": "The werewolf stomachs growl with hunger - time to find something to eat!"
+    },
+    "werewolfOptionsPre": {
+      "0": "tear ",
+      "1": "process ",
+      "2": "enjoy ",
+      "3": "put ",
+      "4": "twist ",
+      "5": "eat ",
+      "6": "use ",
+      "7": "meet ",
+      "8": "ram your fangs into ",
+      "9": "process ",
+      "10": "mix ",
+      "11": "confuse "
+    },
+    "werewolfOptionsPost": {
+      "0": "",
+      "1": " to goulash",
+      "2": " as shredded meat",
+      "3": " into the mincer",
+      "4": "s neck",
+      "5": " as a snack",
+      "6": " to stop your bloodlust",
+      "7": " for a midnight snack",
+      "8": " neck",
+      "9": " to sausage",
+      "10": " into your next meal",
+      "11": " for a cake"
+    },
+    "werewolfResponsePre": {
+      "0": "to tear ",
+      "1": "to process ",
+      "2": "to enjoy ",
+      "3": "to put ",
+      "4": "to twist ",
+      "5": "to eat ",
+      "6": "to use ",
+      "7": "to meet",
+      "8": "to ram the fangs into ",
+      "9": "to process ",
+      "10": "to mix ",
+      "11": "to confuse "
+    },
+    "werewolfResponsePost": {
+      "0": ".",
+      "1": " to goulash.",
+      "2": " as shredded meat.",
+      "3": " into the mincer.",
+      "4": "s neck.",
+      "5": " as a snack.",
+      "6": " to stop the bloodlust.",
+      "7": " for a midnight snack.",
+      "8": "s neck.",
+      "9": " to sausage.",
+      "10": " into the next meal.",
+      "11": " with a cake."
+    },
+    "werewolfDecision": "The werewoilves decided, ",
+    "werewolfDescription": {
+      "0": [
+        "You are one of the werewolves. Every night they choose a victim together, which they want to kill. Their ",
+        "goal is that only werewolves survive."
+      ],
+      "1": [
+        "You are a werewolf. Every night the pack of werewolves roams around and collectively chooses a victim they ",
+        "want to kill that night. The werewolves win if all the villagers have died."
+      ],
+      "2": [
+        "You belong to the werewolves. You choose, together with the other werewolves, ",
+        "your midnight snack every night."
+      ],
+      "3": "You are a werewolf who meets his wolf pack every night to 'borrow' a villager for a snack.",
+      "4": [
+        "You are a werewolf who wakes up every night and looks for a victim among the villagers to attack together ",
+        "with the other werewolves."
+      ],
+      "5": [
+        "You are a werewolf. Since these are pack animals, all werewolves wake up together every night to find a ",
+        "[hopefully] defenseless victim among the villagers."
+      ]
+    },
+    "wolfdogDescription": {
+      "0": [
+        "You are the wolf dog. As this you decide in the first night whether you want to play the game as a werewolf ",
+        "or as a villager."
+      ],
+      "1": [
+        "You are a wolf dog, which has the genes of a peaceful dog as well as those of a wolf inside. He decides in ",
+        "the first night whether he wants to belong to the village or to the werewolves."
+      ],
+      "2": [
+        "Your role is the wolf dog. The wolf dog decides in the first night whether he wants to be one of the ",
+        "villagers or one of the werewolves."
+      ],
+      "3": [
+        "Your character is the wolf dog, which wakes up the first night before the werewolves and has to decide ",
+        "whether he belongs to them or to the village."
+      ],
+      "4": "You are the wolf dog. The wolf dog has the choice to play the game as a werewolf or as a villager.",
+      "5": [
+        "You are the wolf dog and have the ability to decide at the beginning of the game whether to become a villager",
+        "or a werewolf."
+      ]
+    },
+    "wolfdogQuestion": {
+      "0": "How do you want to play this game?",
+      "1": "Which team do you want to belong to?",
+      "2": "Which genes prevail in you?",
+      "3": "You are getting to an age where you have to choose sides.",
+      "4": "How do you want to spend the rest of your life?",
+      "5": "Do you want to eat people or be lynched by people?",
+      "6": "It is time to choose a side!"
+    },
+    "wolfdogChooseWerewolf": {
+      "0": "turn into a werewolf",
+      "1": "mutate into a werewolf",
+      "2": "develop bloodlust",
+      "3": "getting hungry for human flesh",
+      "4": "turn your back to the village",
+      "5": "join the werewolves"
+    },
+    "wolfdogChoseWerewolf": {
+      "0": "You turned into a werewolf.",
+      "1": "You mutated into a werewolf.",
+      "2": "You developed bloodlust.",
+      "3": "You got hungry for human flesh.",
+      "4": "You turned your back to the village.",
+      "5": "You joined the werewolves."
+    },
+    "wolfdogChooseVillage": {
+      "0": "join the village",
+      "1": "live well in the village",
+      "2": "become a harmless lapdog",
+      "3": "prefer the vegetarian live",
+      "4": "when you see blood, you get sick",
+      "5": "prefer democracy over violence",
+      "6": "show humanity"
+    },
+    "wolfdogChoseVillage": {
+      "0": "You joined the village.",
+      "1": "You're living well in the village.",
+      "2": "You became a harmless lapdog of that old grandma down the road.",
+      "3": "You have decided to become a vegetarian.",
+      "4": "You have hematophobia.",
+      "5": "You prefer democracy over violence.",
+      "6": "You show humanity."
+    },
+    "changelog": [
+      "Version 2.0.7\n- Backend changes from network to queue\n\n",
+      "Version 2.0.6.2\n- Hotfix for adding/removing roles\n\n",
+      "Version 2.0.6.1\n- Fixed some spelling issues\n\n",
+      "Version 2.0.6:\n- Fixed problems with simultanious button presses\n\n",
+      "Version 2.0.5:\n- Cancaling a game removes all messages from that game\n- only the admin can cancel a game\n\n",
+      "Version 2.0.4.1:\n- kleiner hotfix für den Server\n\n",
+      "Version 2.0.4:\n- Games continue even after a softcrash\n\n",
+      "Version 2.0.3:\n- roles can be added/removed\n\n",
+      "Version 2.0.2:\n- Deathmessages are being highlighted\n\n",
+      "Version 2.0.1:\n- Fixes for wolfdog and terror wolf\n- small stability fixes\n\n",
+      "Version 2.0.0:\n- First stable version of the remake"
     ]
   }
 }

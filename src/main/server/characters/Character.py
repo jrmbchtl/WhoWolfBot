@@ -3,8 +3,6 @@ import random
 from src.main.server import Factory
 from src.main.localization import getLocalization as loc
 
-lang = "DE"
-
 
 class Character(object):
 
@@ -35,7 +33,7 @@ class Character(object):
     def kill(self, gameData, playerId, dm=None):
         self.alive = False
         if dm is None:
-            dm = gameData.getPlayers()[playerId].getName() + deathMessage()
+            dm = gameData.getPlayers()[playerId].getName() + deathMessage(gameData)
         gameData.sendJSON(Factory.createMessageEvent(gameData.getOrigin(), dm, highlight=True))
         gameData.dumpNextMessage(commandType="feedback")
         gameData.sendJSON(Factory.createMessageEvent(playerId, dm, highlight=True))
@@ -48,6 +46,6 @@ class Character(object):
         return self.role
 
 
-def deathMessage():
-    dc = loc(lang, "deathMessage")
+def deathMessage(gameData):
+    dc = loc(gameData.getLang(), "deathMessage")
     return dc[str(random.randrange(0, len(dc)))]

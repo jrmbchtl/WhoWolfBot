@@ -21,7 +21,7 @@ from src.main.client.conn.ServerConnection import ServerConnection
 illegalChars = ['.', '!', '#', '(', ')', '-', '=', '+', ']', '[', '{', '}', '>', '<', '|', '_', '*',
                 '`', '~']
 
-lang = "DE"
+lang = "EN"
 
 
 class TelegramClient(object):
@@ -201,6 +201,7 @@ def escapeText(text):
 
 def generateKeyboard(dc, gameId):
     keyboard = []
+    lang = dc["lang"]
     if len(dc["choiceField"]["options"]) == 3 \
             and dc["choiceField"]["options"][0] == loc(lang, "join"):
         keyboard = [[InlineKeyboardButton(loc(lang, "join"),

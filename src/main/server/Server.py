@@ -17,8 +17,6 @@ from .characters.werewolf.Werewolf import Werewolf
 from .characters.werewolf.Wolfdog import Wolfdog
 from src.main.localization import getLocalization as loc
 
-lang = "DE"
-
 
 class Server(object):
     def __init__(self, seed, sc, dc, gameQueue, gameId, deleteQueue):
@@ -32,6 +30,7 @@ class Server(object):
         self.settingsMessageId = None
 
     def start(self):
+        self.setLanguage()
         self.register()
         self.rollRoles()
         while not self.checkGameOver():
@@ -52,15 +51,33 @@ class Server(object):
         if os.path.isfile(file):
             os.remove(file)
 
+    def setLanguage(self):
+        message = loc(self.gameData.getLang(), "languageQuestion")
+        dc = loc()
+        options = []
+        for lang in dc:
+            options.append(lang)
+        self.gameData.sendJSON(Factory.createChoiceFieldEvent(self.gameData.getAdmin(), message, 
+                                                              options))
+        messageId = self.gameData.getNextMessage(commandType="feedback",
+                                                 fromId=self.gameData.getAdmin())
+        choice = self.gameData.getNextMessage(commandType="reply", fromId=self.gameData.getAdmin())
+        self.gameData.setLang(options[choice["reply"]["choiceIndex"]])
+        self.gameData.sendJSON(Factory.createMessageEvent(self.gameData.getAdmin(), "",
+                                                          messageId, mode=Factory.EditMode.DELETE))
+        self.gameData.dumpNextMessage(commandType="feedback", fromId=self.gameData.getAdmin())
+
     def updateRegisterMenu(self, disable=False):
-        message = loc(lang, "gameMenu")
-        message += loc(lang, "players") + ":\n"
+        message = loc(self.gameData.getLang(), "gameMenu")
+        message += loc(self.gameData.getLang(), "players") + ":\n"
         for player in self.gameData.getPlayers():
             message += self.gameData.getPlayers()[player].getName() + "\n"
         if not disable:
-            options = [loc(lang, "join"), loc(lang, "start"), loc(lang, "cancel")]
+            options = [loc(self.gameData.getLang(), "join"),
+                       loc(self.gameData.getLang(), "start"),
+                       loc(self.gameData.getLang(), "cancel")]
         else:
-            options = [loc(lang, "cancel")]
+            options = [loc(self.gameData.getLang(), "cancel")]
         if self.gameData.getMenuMessageId() is None:
             sendDict = Factory.createChoiceFieldEvent(self.gameData.getOrigin(), message, options)
         else:
@@ -83,12 +100,13 @@ class Server(object):
             if rec["commandType"] == "register":
                 if rec["fromId"] not in self.gameData.getPlayers():
                     self.gameData.sendJSON(
-                        Factory.createMessageEvent(rec["fromId"], loc(lang, "hello")))
+                        Factory.createMessageEvent(rec["fromId"],
+                                                   loc(self.gameData.getLang(), "hello")))
                     tmp = self.gameData.getNextMessage(commandType="feedback")
                     if tmp["feedback"]["success"] == 0:
                         self.gameData.sendJSON(Factory.createMessageEvent(
                             self.gameData.getOrigin(), rec["register"]["name"]
-                            + loc(lang, "plsOpen")))
+                            + loc(self.gameData.getLang(), "plsOpen")))
                         self.gameData.dumpNextMessage(commandType="feedback")
                     else:
                         self.gameData.sendJSON(
@@ -102,13 +120,13 @@ class Server(object):
                     self.gameData.getPlayers().pop(rec["fromId"], None)
                 self.updateRegisterMenu()
             elif rec["commandType"] == "add":
-                role = revLookup(loc(lang, "roles"), rec["add"]["role"])
+                role = revLookup(loc(self.gameData.getLang(), "roles"), rec["add"]["role"])
                 if role not in self.enabledRoles and role in self.disabledRoles:
                     self.enabledRoles.append(role)
                     self.disabledRoles.remove(role)
                     self.sendSettings()
             elif rec["commandType"] == "remove":
-                role = revLookup(loc(lang, "roles"), rec["add"]["role"])
+                role = revLookup(loc(self.gameData.getLang(), "roles"), rec["add"]["role"])
                 if role in self.enabledRoles and role not in self.disabledRoles:
                     self.enabledRoles.remove(role)
                     self.disabledRoles.append(role)
@@ -122,18 +140,18 @@ class Server(object):
 
     def sendSettings(self):
         target = self.gameData.getAdmin()
-        text = loc(lang, "roleConfig")
+        text = loc(self.gameData.getLang(), "roleConfig")
         roles = self.enabledRoles.copy()
         for i in self.disabledRoles:
             roles.append(i)
         roles.sort()
         options = []
         for i in roles:
-            role = loc(lang, "roles", i)
+            role = loc(self.gameData.getLang(), "roles", i)
             if i in self.enabledRoles:
-                options.append(role + " " + loc(lang, "remove"))
+                options.append(role + " " + loc(self.gameData.getLang(), "remove"))
             if i in self.disabledRoles:
-                options.append(role + " " + loc(lang, "add"))
+                options.append(role + " " + loc(self.gameData.getLang(), "add"))
         if self.settingsMessageId is None:
             messageId = 0
             mode = Factory.EditMode.WRITE
@@ -211,8 +229,8 @@ class Server(object):
         idToChoice = {}
         options = []
         for player in self.gameData.getAlivePlayers():
-            choice, option = self.accuseOptions()
-            option = self.gameData.getAlivePlayers()[player].getName() + option
+            name = self.gameData.getAlivePlayers()[player].getName()
+            choice, option = self.accuseOptions(name)
             options.append(option)
             idToChoice[player] = choice
         text = self.accuseIntro()
@@ -240,18 +258,19 @@ class Server(object):
             self.gameData.getOrigin(), newText, messageId, Factory.EditMode.EDIT))
         self.gameData.dumpNextMessage(commandType="feedback")
 
-    def accuseOptions(self):
-        dc = loc(lang, "accuseOptions")
-        choice = self.gameData.randrange(0, len(dc))
-        return choice, dc[str(choice)]
+    def accuseOptions(self, name):
+        pre = loc(self.gameData.getLang(), "accuseOptionsPre")
+        post = loc(self.gameData.getLang(), "accuseOptionsPost")
+        choice = self.gameData.randrange(0, len(pre))
+        return choice, pre[str(choice)] + name + post[str(choice)]
 
     def accuseIntro(self):
-        dc = loc(lang, "accuseIntro")
+        dc = loc(self.gameData.getLang(), "accuseIntro")
         return dc[str(self.gameData.randrange(0, len(dc)))]
 
     def accuseText(self, option, name):
-        pre = loc(lang, "accuseTextPre", option)
-        post = loc(lang, "accuseTextPost", option)
+        pre = loc(self.gameData.getLang(), "accuseTextPre", option)
+        post = loc(self.gameData.getLang(), "accuseTextPost", option)
         return pre + name + post
 
     def vote(self):
@@ -285,7 +304,7 @@ class Server(object):
         for index, p in enumerate(self.accusedDict):
             player = self.accusedDict[p]
             playerName = self.gameData.getAlivePlayers()[player].getName()
-            choice, option = self.voteOptions()
+            choice, option = self.voteOptions(playerName)
             idToChoice[player] = choice
             option = playerName + option
             options.append(option)
@@ -322,32 +341,33 @@ class Server(object):
         return idToChoice, voteDict
 
     def voteIntro(self):
-        dc = loc(lang, "voteIntro")
+        dc = loc(self.gameData.getLang(), "voteIntro")
         return dc[str(self.gameData.randrange(0, len(dc)))]
 
-    def voteOptions(self):
-        dc = loc(lang, "voteOptions")
-        choice = self.gameData.randrange(0, len(dc))
-        return choice, dc[str(choice)]
+    def voteOptions(self, name):
+        pre = loc(self.gameData.getLang(), "voteOptionsPre")
+        post = loc(self.gameData.getLang(), "voteOptionsPost")
+        choice = self.gameData.randrange(0, len(pre))
+        return choice, pre[str(choice)] + name + post[str(choice)]
 
     def votedFor(self, option, name):
-        pre = loc(lang, "votedForPre", option)
-        post = loc(lang, "votedForPost", option)
+        pre = loc(self.gameData.getLang(), "votedForPre", option)
+        post = loc(self.gameData.getLang(), "votedForPost", option)
         return pre + name + post
 
     def voteJudgement(self, option):
-        return loc(lang, "voteJudgement", option)
+        return loc(self.gameData.getLang(), "voteJudgement", option)
 
     def pattRevote(self):
-        dc = loc(lang, "pattRevote")
+        dc = loc(self.gameData.getLang(), "pattRevote")
         return dc[str(self.gameData.randrange(0, len(dc)))]
 
     def pattNoKill(self):
-        dc = loc(lang, "pattNoKill")
+        dc = loc(self.gameData.getLang(), "pattNoKill")
         return dc[str(self.gameData.randrange(0, len(dc)))]
 
     def nightfall(self):
-        dc = loc(lang, "nightfall")
+        dc = loc(self.gameData.getLang(), "nightfall")
         return dc[str(self.gameData.randrange(0, len(dc)))]
 
     def checkGameOver(self):
@@ -376,11 +396,11 @@ class Server(object):
             return True
 
     def allDead(self):
-        dc = loc(lang, "allDeadPre")
+        dc = loc(self.gameData.getLang(), "allDeadPre")
         choice = self.gameData.randrange(0, len(dc))
         if choice == 8:
             pre = dc[str(choice)]
-            post = loc(lang, "allDeadPost")
+            post = loc(self.gameData.getLang(), "allDeadPost")
             msg = pre + str(json.loads(requests.get("http://api.open-notify.org/astros.json")
                                        .text)["number"]) + post
         else:
@@ -388,12 +408,12 @@ class Server(object):
         return msg
 
     def werewolfWin(self):
-        dc = loc(lang, "werewolfWin")
+        dc = loc(self.gameData.getLang(), "werewolfWin")
         choice = self.gameData.randrange(0, len(dc))
         return dc[str(choice)]
 
     def villageWin(self):
-        dc = loc(lang, "villageWin")
+        dc = loc(self.gameData.getLang(), "villageWin")
         choice = self.gameData.randrange(0, len(dc))
         return dc[str(choice)]
 
