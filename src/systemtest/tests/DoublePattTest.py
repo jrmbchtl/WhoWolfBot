@@ -67,8 +67,7 @@ class DoublePattTest(Systemtest):
             {"text": ("Nach einem anstrengenden Tag hoffen viele Dorfbewohner nun auf eine "
                       "erholsame Nacht. Doch diese Nacht werden nicht alle gut schlafen..."),
              "messageId": 0}, "mode": "write", "target": 0, "highlight": False, "gameId": gameId,
-
-                                'lang': 'DE'})
+            'lang': 'DE'})
 
         self.sc.sendJSON({"commandType": "terminate", "fromId": 42, "gameId": gameId})
         self.clearRecBuffer()

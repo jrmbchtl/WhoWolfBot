@@ -57,7 +57,7 @@ class Server(object):
         options = []
         for lang in dc:
             options.append(lang)
-        self.gameData.sendJSON(Factory.createChoiceFieldEvent(self.gameData.getAdmin(), message, 
+        self.gameData.sendJSON(Factory.createChoiceFieldEvent(self.gameData.getAdmin(), message,
                                                               options))
         messageId = self.gameData.getNextMessage(commandType="feedback",
                                                  fromId=self.gameData.getAdmin())

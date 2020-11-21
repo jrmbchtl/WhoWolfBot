@@ -60,7 +60,7 @@ class Systemtest(object):
              "options": ['Jäger deaktivieren', 'Seherin deaktivieren', 'Terrorwolf deaktivieren',
                          'Hexe deaktivieren', 'Wolfshund deaktivieren'],
              "messageId": 0}, "mode": "write", "target": 42, "highlight": False, "gameId": gameId,
-                                "lang": "DE"})
+            "lang": "DE"})
         for i in range(1, numberOfPlayers + 1):
             self.sc.sendJSON({"commandType": "register", "register":
                 {"name": "Player " + str(i)}, "fromId": i, "gameId": gameId})

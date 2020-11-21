@@ -16,7 +16,7 @@ class FastDeath(Systemtest):
                          'Player 4 durch den Fleischwolf jagen',
                          'niemanden die Reißzähne in den Hals rammen'],
              "messageId": 0}, "mode": "write", "target": 3, "highlight": False, "gameId": gameId,
-                                'lang': 'DE'})
+            'lang': 'DE'})
 
         self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 0},
                           "fromId": 3, "gameId": gameId})
@@ -26,7 +26,7 @@ class FastDeath(Systemtest):
                       "\n\nPlayer 3 schlägt vor Player 1 zu reißen.\n\n"
                       "Die Werwölfe haben beschlossen, Player 1 zu reißen."),
              "messageId": 24}, "mode": "edit", "target": 3, "highlight": False, "gameId": gameId,
-                                'lang': 'DE'})
+            'lang': 'DE'})
 
         self.assertReceiveDict({"eventType": "choiceField", "choiceField":
             {"text": ("Player 1 wurde diese Nacht von den Werw\u00f6lfen erwischt. M\u00f6chtest "
@@ -53,7 +53,7 @@ class FastDeath(Systemtest):
                          'Player 3 ausversehen eine Überdosis Morphium verabreichen',
                          'Niemanden ein Essen mit Fliegenpilzen zubereiten'],
              "messageId": 0}, "mode": "write", "target": 4, "highlight": False, "gameId": gameId,
-                                'lang': 'DE'})
+            'lang': 'DE'})
 
         self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 2},
                           "fromId": 4, "gameId": gameId})
@@ -83,7 +83,7 @@ class FastDeath(Systemtest):
             {"text": "Wen möchtest du mit ins Grab nehmen?", "options":
                 ['Player 2 durchlöchern', 'Player 4 niederstrecken'],
              "messageId": 0}, "mode": "write", "target": 1, "highlight": False, "gameId": gameId,
-                                'lang': 'DE'})
+            'lang': 'DE'})
 
         self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 0},
                           "fromId": 1, "gameId": gameId})

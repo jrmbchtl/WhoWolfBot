@@ -41,9 +41,9 @@ def wake(gameData: GameData):
             else:
                 targetId = gameData.getAlivePlayerList()[voteDict[key]]
                 targetName = gameData.getAlivePlayers()[targetId].getName()
-            newText += werewolfName + loc(gameData.getLang(), "werewolfSuggest") \
-                       + werewolfResponseOptions(gameData, optionIndexList[voteDict[key]],
-                                                 targetName) + "\n"
+            newText += werewolfName + loc(
+                gameData.getLang(), "werewolfSuggest") + werewolfResponseOptions(
+                gameData, optionIndexList[voteDict[key]], targetName) + "\n"
         if len(werewolfList) == len(voteDict) and GameData.uniqueDecision(voteDict):
             break
         for werewolf in werewolfList:
@@ -88,5 +88,5 @@ def werewolfOptions(gameData, name):
 
 
 def werewolfResponseOptions(gameData, option, name):
-    return loc(gameData.getLang(), "werewolfResponsePre", option) + name \
-           + loc(gameData.getLang(), "werewolfResponsePost", option)
+    return loc(gameData.getLang(), "werewolfResponsePre", option) + name + loc(
+        gameData.getLang(), "werewolfResponsePost", option)
