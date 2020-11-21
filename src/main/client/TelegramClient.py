@@ -216,8 +216,12 @@ def generateKeyboard(dc, gameId):
     elif dc["choiceField"]["text"] == loc(lang, "roleConfig"):
         for option in dc["choiceField"]["options"]:
             option = escapeText(option)
-            role = option.split(" ")[0]
-            if option.endswith(loc(lang, "remove")):
+            if loc(lang, "removePre") in option and loc(lang, "removePost") in option:
+                role = option[len(loc(lang, "removePre")):].split(" ")[0]
+            else:
+                role = option[len(loc(lang, "addPre")):].split(" ")[0]
+            if option.endswith(loc(lang, "removePost")) \
+                    and option.startswith(loc(lang, "removePre")):
                 keyboard.append([InlineKeyboardButton(
                     option, callback_data="remove_" + str(gameId) + "_" + role)])
             else:

@@ -59,8 +59,8 @@ class Server(object):
             options.append(lang)
         self.gameData.sendJSON(Factory.createChoiceFieldEvent(self.gameData.getAdmin(), message,
                                                               options))
-        messageId = self.gameData.getNextMessage(commandType="feedback",
-                                                 fromId=self.gameData.getAdmin())
+        messageId = self.gameData.getNextMessage(
+            commandType="feedback", fromId=self.gameData.getAdmin())["feedback"]["messageId"]
         choice = self.gameData.getNextMessage(commandType="reply", fromId=self.gameData.getAdmin())
         self.gameData.setLang(options[choice["reply"]["choiceIndex"]])
         self.gameData.sendJSON(Factory.createMessageEvent(self.gameData.getAdmin(), "",
@@ -126,7 +126,7 @@ class Server(object):
                     self.disabledRoles.remove(role)
                     self.sendSettings()
             elif rec["commandType"] == "remove":
-                role = revLookup(loc(self.gameData.getLang(), "roles"), rec["add"]["role"])
+                role = revLookup(loc(self.gameData.getLang(), "roles"), rec["remove"]["role"])
                 if role in self.enabledRoles and role not in self.disabledRoles:
                     self.enabledRoles.remove(role)
                     self.disabledRoles.append(role)
@@ -149,9 +149,13 @@ class Server(object):
         for i in roles:
             role = loc(self.gameData.getLang(), "roles", i)
             if i in self.enabledRoles:
-                options.append(role + " " + loc(self.gameData.getLang(), "remove"))
+                pre = loc(self.gameData.getLang(), "removePre")
+                post = loc(self.gameData.getLang(), "removePost")
+                options.append(pre + role + post)
             if i in self.disabledRoles:
-                options.append(role + " " + loc(self.gameData.getLang(), "add"))
+                pre = loc(self.gameData.getLang(), "addPre")
+                post = loc(self.gameData.getLang(), "addPost")
+                options.append(pre + role + post)
         if self.settingsMessageId is None:
             messageId = 0
             mode = Factory.EditMode.WRITE
