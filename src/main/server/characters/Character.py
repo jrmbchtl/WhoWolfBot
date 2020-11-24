@@ -1,6 +1,7 @@
 import random
 
 from src.main.server import Factory
+from src.main.localization import getLocalization as loc
 
 
 class Character(object):
@@ -32,7 +33,7 @@ class Character(object):
     def kill(self, gameData, playerId, dm=None):
         self.alive = False
         if dm is None:
-            dm = gameData.getPlayers()[playerId].getName() + deathMessage()
+            dm = gameData.getPlayers()[playerId].getName() + deathMessage(gameData)
         gameData.sendJSON(Factory.createMessageEvent(gameData.getOrigin(), dm, highlight=True))
         gameData.dumpNextMessage(commandType="feedback")
         gameData.sendJSON(Factory.createMessageEvent(playerId, dm, highlight=True))
@@ -45,23 +46,6 @@ class Character(object):
         return self.role
 
 
-def deathMessage():
-    desc_no = random.randrange(1, 16)
-    switcher = {
-        1: " ist diese Nacht leider gestorben.",
-        2: " erblickt das Licht des neuen Tages nicht mehr.",
-        3: " wurde massakriert aufgefunden.",
-        4: " existiert nur noch in Stücken.",
-        5: " hat die letzten Stunden nicht überlebt.",
-        6: " ist nicht mehr aufzufinden.",
-        7: " war ein guter Kamerad.",
-        8: " hat seinen letzten Kampf verloren.",
-        9: " hat den Löffel abgegeben.",
-        10: " besucht nun die ewigen Jagdgründe.",
-        11: " hat leider ins Gras gebissen.",
-        12: " wird nie wieder an den Freuden des Dorfes teilhaben.",
-        13: " ist von uns gegangen.",
-        14: " ist über die Wupper gegangen.",
-        15: " hat das Zeitliche gesegnet."
-    }
-    return switcher[desc_no]
+def deathMessage(gameData):
+    dc = loc(gameData.getLang(), "deathMessage")
+    return dc[str(random.randrange(0, len(dc)))]

@@ -18,13 +18,13 @@ class DoublePattTest(Systemtest):
             self.assertAnyMessage()
 
         self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 0},
-                          "fromId": 3, "gameId": gameId})
+                          "fromId": 4, "gameId": gameId})
 
         for i in range(0, 3):
             self.assertAnyMessage()
 
         self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 3},
-                          "fromId": 3, "gameId": gameId})
+                          "fromId": 4, "gameId": gameId})
 
         for i in range(0, 2):
             self.assertAnyMessage()
@@ -66,7 +66,8 @@ class DoublePattTest(Systemtest):
         self.assertReceiveDict({"eventType": "message", "message":
             {"text": ("Nach einem anstrengenden Tag hoffen viele Dorfbewohner nun auf eine "
                       "erholsame Nacht. Doch diese Nacht werden nicht alle gut schlafen..."),
-             "messageId": 0}, "mode": "write", "target": 0, "highlight": False, "gameId": gameId})
+             "messageId": 0}, "mode": "write", "target": 0, "highlight": False, "gameId": gameId,
+            'lang': 'DE'})
 
         self.sc.sendJSON({"commandType": "terminate", "fromId": 42, "gameId": gameId})
         self.clearRecBuffer()

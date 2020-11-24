@@ -11,6 +11,7 @@ server:
 analyze:
     pymake flake
     pymake pylama
+    python3 checkLocalization.py
 flake:
     pymake flake_main
     pymake flake_client

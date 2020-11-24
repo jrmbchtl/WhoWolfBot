@@ -11,7 +11,8 @@ Message:
 	},
 	"target": 1234,
 	"mode": "write",
-	"gameId": 12345 //handled by gameData
+	"gameId": 12345, //handled by gameData
+	"lang": "DE"
 }
 
 ChoiceField:
@@ -29,5 +30,6 @@ ChoiceField:
 	},
 	"target": 1234,
 	"mode": "edit",
-	"gameId": 12345 //handled by gameData
+	"gameId": 12345, //handled by gameData
+	"lang": "DE"
 }

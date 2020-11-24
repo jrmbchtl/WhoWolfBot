@@ -139,3 +139,4 @@ flake-report/
 .idea/
 games/
 src/systemtest/games
+banList.json

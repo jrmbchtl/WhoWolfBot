@@ -9,22 +9,9 @@ from src.main.server import Factory
 from src.main.server.conn.ServerConnection import ServerConnection
 from src.main.server.Server import Server
 from src.systemtest.SystemTestMain import SystemTestMain
+from src.main.localization import getLocalization as loc
 
-
-changelog = ("Version 2.0.7\n- Backend Änderung von Netzwerk zu Queues\n\n"
-             "Version 2.0.6.2\n- Hotfix für hinzufügen/entfernen von Rollen\n\n"
-             "Version 2.0.6.1\n- Einige Zeilenumbrüche und Umlautungen behoben\n\n"
-             "Version 2.0.6:\n- Probleme beim gleichzeitigen betätigen von Buttons behoben\n\n"
-             "Version 2.0.5:\n- Spiel Abbrechen raeumt diese nun auf\n- nur noch der Spielleiter "
-             "kann das Spiel abbrechen\n\n"
-             "Version 2.0.4.1:\n- kleiner hotfix für den Server\n\n"
-             "Version 2.0.4:\n- Spiele können nach einem Serverneustart fortgesetzt werden\n\n"
-             "Version 2.0.3:\n- Rollen können nun vom Admin explizit entfernt/hinzugefügt werden"
-             "\n\n"
-             "Version 2.0.2:\n- Todesnachrichten und Spielendenachrichten werden hervorgehoben\n\n"
-             "Version 2.0.1:\n- Fixes für Wolfshund und Terrorwolf\n- weitere kleinere "
-             "Stabilitätsfixes\n\n"
-             "Version 2.0.0:\n- Erste stabile Version des Remakes")
+lang = "EN"
 
 
 class Main(object):
@@ -58,7 +45,13 @@ class Main(object):
         while True:
             dc = self.sc.receiveJSON()
             commandType = dc["commandType"]
-            if commandType == "newGame":
+            if commandType == "newGame" and dc["newGame"]["origin"] == dc["fromId"]:
+                send = Factory.createMessageEvent(
+                    dc["fromId"], loc(lang, "privateNotAllowed"))
+                send["gameId"] = 0
+                self.sc.sendJSON(send)
+                self.sc.receiveJSON()
+            elif commandType == "newGame":
                 if "seed" in dc["newGame"]:
                     s = dc["newGame"]["seed"]
                 else:
@@ -73,7 +66,7 @@ class Main(object):
             elif commandType == "close":
                 self.closeServer()
             elif commandType == "changelog":
-                send = Factory.createMessageEvent(dc["fromId"], changelog)
+                send = Factory.createMessageEvent(dc["fromId"], loc(lang, "changelog"))
                 send["gameId"] = 0
                 self.sc.sendJSON(send)
                 self.sc.receiveJSON()

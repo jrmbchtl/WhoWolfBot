@@ -1,4 +1,7 @@
+import datetime
+import json
 import logging
+import os
 import random
 import time
 from multiprocessing import Process
@@ -15,12 +18,13 @@ from telegram.ext import CallbackQueryHandler
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
 
+from src.main.localization import getLocalization as loc
 from src.main.client.conn.ServerConnection import ServerConnection
 
 illegalChars = ['.', '!', '#', '(', ')', '-', '=', '+', ']', '[', '{', '}', '>', '<', '|', '_', '*',
                 '`', '~']
 
-roles = "Dorfbewohner/in\nHexe\nJäger\nSeherin\nWerwolf\nTerrorwolf\nWolfshund"
+lang = "EN"
 
 
 class TelegramClient(object):
@@ -33,6 +37,8 @@ class TelegramClient(object):
         self.bot = Bot(self.token)
         self.updater = Updater(self.token, use_context=True)
         self.dispatcher = self.updater.dispatcher
+        self.spamDict = {}
+        self.banList = self.getBanList()
 
         logging.basicConfig(level=logging.INFO,
                             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -48,12 +54,68 @@ class TelegramClient(object):
         self.updater.start_polling()
         self.updater.idle()
 
+    def getBanList(self):
+        if not os.path.isfile("banList.json"):
+            with open("banList.json", "w") as file:
+                json.dump([], file)
+                return []
+        with open("banList.json", "r") as file:
+            return json.load(file)
+
+    def writeBanList(self):
+        with open("banList.json", "w") as file:
+            json.dump(self.banList, file)
+
+    def isSpam(self, update):
+        userId = update.message.from_user.id
+        if userId in self.banList:
+            return True
+        chatId = update.message.chat_id
+        name = update.message.chat.first_name
+        now = datetime.datetime.now()
+        if userId not in self.spamDict:
+            self.spamDict[userId] = [now]
+        else:
+            self.spamDict[userId].append(now)
+            i = 0
+            while i < len(self.spamDict[userId]):
+                if (now - self.spamDict[userId][i]).seconds > 60:
+                    self.spamDict[userId].pop(i)
+                else:
+                    i += 1
+            if len(self.spamDict[userId]) > 15:
+                pre = loc(lang, "banSpamPre")
+                post = loc(lang, "banSpamPost")
+                text = pre + name + post
+                dc = {
+                    "eventType": "message", "message": {"text": text, "messageId": 0},
+                    "target": chatId, "mode": "write", "gameId": 0, "lang": lang, "highlight": True
+                }
+                self.sendToBot(dc)
+                self.banList.append(userId)
+                self.writeBanList()
+                return True
+            elif len(self.spamDict[userId]) > 13:
+                pre = loc(lang, "warnSpamPre")
+                post = loc(lang, "warnSpamPost")
+                text = pre + name + post
+                dc = {
+                    "eventType": "message", "message": {"text": text, "messageId": 0},
+                    "target": chatId, "mode": "write", "gameId": 0, "lang": lang, "highlight": True
+                }
+                self.sendToBot(dc)
+            return False
+
     def start(self, update, context):
+        if self.isSpam(update):
+            return
         self.botSendLoop(update.message.chat_id,
-                         text="Herzlich willkommen beim Werwolf\\-Bot\\!",
+                         text=loc(lang, "welcome"),
                          parseMode=ParseMode.MARKDOWN_V2)
 
     def new(self, update, context):
+        if self.isSpam(update):
+            return
         fromId = update.message.from_user.id
         origin = update.message.chat_id
         seed = random.getrandbits(32)
@@ -61,13 +123,25 @@ class TelegramClient(object):
                           "fromId": fromId})
 
     def changelog(self, update, context):
+        if self.isSpam(update):
+            return
         self.sc.sendJSON({"commandType": "changelog", "fromId": update.message.chat_id})
 
     def roles(self, update, context):
+        if self.isSpam(update):
+            return
+        roleDict = loc(lang, "roles")
+        roles = ""
+        for index, role in enumerate(roleDict):
+            roles += roleDict[role]
+            if index + 1 < len(roleDict):
+                roles += "\n"
         self.botSendLoop(update.message.chat_id, text=escapeText(roles),
                          parseMode=ParseMode.MARKDOWN_V2)
 
     def buttonHandler(self, update, context):
+        if self.isSpam(update):
+            return
         callbackData = update.callback_query.data
         gameId = int(callbackData.split("_")[1])
         name = update.callback_query.from_user.first_name
@@ -194,22 +268,27 @@ def escapeText(text):
 
 def generateKeyboard(dc, gameId):
     keyboard = []
+    lang = dc["lang"]
     if len(dc["choiceField"]["options"]) == 3 \
-            and dc["choiceField"]["options"][0] == "Mitspielen/Aussteigen":
-        keyboard = [[InlineKeyboardButton("Mitspielen/Aussteigen",
+            and dc["choiceField"]["options"][0] == loc(lang, "join"):
+        keyboard = [[InlineKeyboardButton(loc(lang, "join"),
                                           callback_data='register_' + str(gameId))],
-                    [InlineKeyboardButton("Start", callback_data='start_' + str(gameId)),
-                     InlineKeyboardButton("Abbrechen",
+                    [InlineKeyboardButton(loc(lang, "start"), callback_data='start_' + str(gameId)),
+                     InlineKeyboardButton(loc(lang, "cancel"),
                                           callback_data='terminate_' + str(gameId))]]
     elif len(dc["choiceField"]["options"]) == 1 \
-            and dc["choiceField"]["options"][0] == "Abbrechen":
-        keyboard = [[InlineKeyboardButton("Abbrechen",
-                                         callback_data='terminate_' + str(gameId))]]
-    elif dc["choiceField"]["text"] == "Hier können Rollen hinzugefügt oder entfernt werden":
+            and dc["choiceField"]["options"][0] == loc(lang, "cancel"):
+        keyboard = [[InlineKeyboardButton(loc(lang, "cancel"),
+                                          callback_data='terminate_' + str(gameId))]]
+    elif dc["choiceField"]["text"] == loc(lang, "roleConfig"):
         for option in dc["choiceField"]["options"]:
             option = escapeText(option)
-            role = option.split(" ")[0]
-            if option.endswith("deaktivieren"):
+            if loc(lang, "removePre") in option and loc(lang, "removePost") in option:
+                role = option[len(loc(lang, "removePre")):].split(" ")[0]
+            else:
+                role = option[len(loc(lang, "addPre")):].split(" ")[0]
+            if option.endswith(loc(lang, "removePost")) \
+                    and option.startswith(loc(lang, "removePre")):
                 keyboard.append([InlineKeyboardButton(
                     option, callback_data="remove_" + str(gameId) + "_" + role)])
             else:

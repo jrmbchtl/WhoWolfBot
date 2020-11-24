@@ -7,14 +7,15 @@ from .GameData import GameData
 from .Player import Player
 from .characters import Teams
 from .characters.Types import CharacterType
-from .characters.village.Dorfbewohner import Dorfbewohner, Dorfbewohnerin
-from .characters.village.Hexe import Hexe
-from .characters.village.Jaeger import Jaeger
-from .characters.village.Seherin import Seherin
-from .characters.werwolf import wake
-from .characters.werwolf.Terrorwolf import Terrorwolf
-from .characters.werwolf.Werwolf import Werwolf
-from .characters.werwolf.Wolfshund import Wolfshund
+from .characters.village.Villager import Villager, Villagerf
+from .characters.village.Witch import Witch
+from .characters.village.Hunter import Hunter
+from .characters.village.Seer import Seer
+from .characters.werewolf import wake
+from .characters.werewolf.Terrorwolf import Terrorwolf
+from .characters.werewolf.Werewolf import Werewolf
+from .characters.werewolf.Wolfdog import Wolfdog
+from src.main.localization import getLocalization as loc
 
 
 class Server(object):
@@ -24,11 +25,12 @@ class Server(object):
         self.gameData = GameData(seed=seed, players={}, sc=sc, dc=dc, gameQueue=gameQueue,
                                  gameId=gameId, menuMessageId=None, deleteQueue=deleteQueue)
         self.accusedDict = {}
-        self.enabledRoles = ["wolfshund", "terrorwolf", "seherin", "hexe", "jaeger"]
+        self.enabledRoles = ["wolfdog", "terrorwolf", "seer", "witch", "hunter"]
         self.disabledRoles = []
         self.settingsMessageId = None
 
     def start(self):
+        self.setLanguage()
         self.register()
         self.rollRoles()
         while not self.checkGameOver():
@@ -49,18 +51,33 @@ class Server(object):
         if os.path.isfile(file):
             os.remove(file)
 
+    def setLanguage(self):
+        message = loc(self.gameData.getLang(), "languageQuestion")
+        dc = loc()
+        options = []
+        for lang in dc:
+            options.append(lang)
+        self.gameData.sendJSON(Factory.createChoiceFieldEvent(self.gameData.getAdmin(), message,
+                                                              options))
+        messageId = self.gameData.getNextMessage(
+            commandType="feedback", fromId=self.gameData.getAdmin())["feedback"]["messageId"]
+        choice = self.gameData.getNextMessage(commandType="reply", fromId=self.gameData.getAdmin())
+        self.gameData.setLang(options[choice["reply"]["choiceIndex"]])
+        self.gameData.sendJSON(Factory.createMessageEvent(self.gameData.getAdmin(), "",
+                                                          messageId, mode=Factory.EditMode.DELETE))
+        self.gameData.dumpNextMessage(commandType="feedback", fromId=self.gameData.getAdmin())
+
     def updateRegisterMenu(self, disable=False):
-        message = ("Viel Spass beim Werwolf spielen!\n\nBitte einen privaten Chat mit dem Bot "
-                   "starten, bevor das Spiel beginnt!\n\nUm das Spiel in seiner vollen Breite "
-                   "genießen zu können, empfiehlt es sich bei sehr schmalen Bildschirmen, "
-                   "diese quer zu verwenden.\n\n")
-        message += 'Spieler:\n'
+        message = loc(self.gameData.getLang(), "gameMenu")
+        message += loc(self.gameData.getLang(), "players") + ":\n"
         for player in self.gameData.getPlayers():
             message += self.gameData.getPlayers()[player].getName() + "\n"
         if not disable:
-            options = ["Mitspielen/Aussteigen", "Start", "Abbrechen"]
+            options = [loc(self.gameData.getLang(), "join"),
+                       loc(self.gameData.getLang(), "start"),
+                       loc(self.gameData.getLang(), "cancel")]
         else:
-            options = ["Abbrechen"]
+            options = [loc(self.gameData.getLang(), "cancel")]
         if self.gameData.getMenuMessageId() is None:
             sendDict = Factory.createChoiceFieldEvent(self.gameData.getOrigin(), message, options)
         else:
@@ -83,13 +100,13 @@ class Server(object):
             if rec["commandType"] == "register":
                 if rec["fromId"] not in self.gameData.getPlayers():
                     self.gameData.sendJSON(
-                        Factory.createMessageEvent(rec["fromId"], "Ich bin der Werwolfbot"))
+                        Factory.createMessageEvent(rec["fromId"],
+                                                   loc(self.gameData.getLang(), "hello")))
                     tmp = self.gameData.getNextMessage(commandType="feedback")
                     if tmp["feedback"]["success"] == 0:
                         self.gameData.sendJSON(Factory.createMessageEvent(
-                            self.gameData.getOrigin(),
-                            "@" + rec["register"]["name"]
-                            + ", bitte öffne einen privaten Chat mit mir"))
+                            self.gameData.getOrigin(), rec["register"]["name"]
+                            + loc(self.gameData.getLang(), "plsOpen")))
                         self.gameData.dumpNextMessage(commandType="feedback")
                     else:
                         self.gameData.sendJSON(
@@ -103,13 +120,13 @@ class Server(object):
                     self.gameData.getPlayers().pop(rec["fromId"], None)
                 self.updateRegisterMenu()
             elif rec["commandType"] == "add":
-                role = makeUnreadable(rec["add"]["role"])
+                role = revLookup(loc(self.gameData.getLang(), "roles"), rec["add"]["role"])
                 if role not in self.enabledRoles and role in self.disabledRoles:
                     self.enabledRoles.append(role)
                     self.disabledRoles.remove(role)
                     self.sendSettings()
             elif rec["commandType"] == "remove":
-                role = makeUnreadable(rec["remove"]["role"])
+                role = revLookup(loc(self.gameData.getLang(), "roles"), rec["remove"]["role"])
                 if role in self.enabledRoles and role not in self.disabledRoles:
                     self.enabledRoles.remove(role)
                     self.disabledRoles.append(role)
@@ -123,18 +140,22 @@ class Server(object):
 
     def sendSettings(self):
         target = self.gameData.getAdmin()
-        text = "Hier können Rollen hinzugefügt oder entfernt werden"
+        text = loc(self.gameData.getLang(), "roleConfig")
         roles = self.enabledRoles.copy()
         for i in self.disabledRoles:
             roles.append(i)
         roles.sort()
         options = []
         for i in roles:
-            role = makeReadable(i)
+            role = loc(self.gameData.getLang(), "roles", i)
             if i in self.enabledRoles:
-                options.append(role + " deaktivieren")
+                pre = loc(self.gameData.getLang(), "removePre")
+                post = loc(self.gameData.getLang(), "removePost")
+                options.append(pre + role + post)
             if i in self.disabledRoles:
-                options.append(role + " aktivieren")
+                pre = loc(self.gameData.getLang(), "addPre")
+                post = loc(self.gameData.getLang(), "addPost")
+                options.append(pre + role + post)
         if self.settingsMessageId is None:
             messageId = 0
             mode = Factory.EditMode.WRITE
@@ -151,20 +172,20 @@ class Server(object):
         playerList: list = self.gameData.getPlayerList()
         self.gameData.shuffle(playerList)
 
-        werwolfRoleList = self.getWerwolfRoleList(len(playerList))
+        werewolfRoleList = self.getWerewolfRoleList(len(playerList))
         dorfRoleList = self.getVillagerRoleList()
 
-        unique = [CharacterType.JAEGER, CharacterType.SEHERIN, CharacterType.HEXE,
-                  CharacterType.WOLFSHUND, CharacterType.TERRORWOLF]
+        unique = [CharacterType.HUNTER, CharacterType.SEER, CharacterType.WITCH,
+                  CharacterType.WOLFDOG, CharacterType.TERRORWOLF]
 
         group_mod = self.gameData.random() * 0.2 + 0.9
-        werwolf_amount = int(round(len(playerList) * (1.0 / 3.5) * group_mod, 0))
+        werewolfAmount = int(round(len(playerList) * (1.0 / 3.5) * group_mod, 0))
         for i, p in enumerate(playerList):
-            if i < werwolf_amount:
-                role = werwolfRoleList[self.gameData.randrange(0, len(werwolfRoleList))]
+            if i < werewolfAmount:
+                role = werewolfRoleList[self.gameData.randrange(0, len(werewolfRoleList))]
                 self.gameData.getPlayers()[p].setCharacter(role)
                 if role.getCharacterType() in unique:
-                    removeCharacterTypeFromList(werwolfRoleList, role.getCharacterType())
+                    removeCharacterTypeFromList(werewolfRoleList, role.getCharacterType())
             else:
                 role = dorfRoleList[self.gameData.randrange(0, len(dorfRoleList))]
                 self.gameData.getPlayers()[p].setCharacter(role)
@@ -181,22 +202,22 @@ class Server(object):
         self.gameData.dumpNextMessage(commandType="feedback")
 
         sortedPlayerDict = self.gameData.getAlivePlayersSortedDict()
-        wakeWerwolf = False
+        wakeWerewolf = False
         for p in sortedPlayerDict:
             player = sortedPlayerDict[p]
             if player.getCharacter().getRole().value[0] < 0:
                 player.getCharacter().wakeUp(self.gameData, p)
-            elif not wakeWerwolf:
-                wakeWerwolf = True
+            elif not wakeWerewolf:
+                wakeWerewolf = True
                 wake.wake(self.gameData)
                 player.getCharacter().wakeUp(self.gameData, p)
             else:
                 player.getCharacter().wakeUp(self.gameData, p)
 
-        if self.gameData.getWerwolfTarget() is not None:
-            werwolfTargetId = self.gameData.getWerwolfTarget()
-            werwolfTarget = self.gameData.getAlivePlayers()[werwolfTargetId].getCharacter()
-            werwolfTarget.kill(self.gameData, werwolfTargetId)
+        if self.gameData.getWerewolfTarget() is not None:
+            werewolfTargetId = self.gameData.getWerewolfTarget()
+            werewolfTarget = self.gameData.getAlivePlayers()[werewolfTargetId].getCharacter()
+            werewolfTarget.kill(self.gameData, werewolfTargetId)
         if self.gameData.getWitchTarget() is not None:
             witchTargetId = self.gameData.getWitchTarget()
             witchTarget = self.gameData.getAlivePlayers()[witchTargetId].getCharacter()
@@ -212,11 +233,11 @@ class Server(object):
         idToChoice = {}
         options = []
         for player in self.gameData.getAlivePlayers():
-            choice, option = self.anklageOptions()
-            option = self.gameData.getAlivePlayers()[player].getName() + option
+            name = self.gameData.getAlivePlayers()[player].getName()
+            choice, option = self.accuseOptions(name)
             options.append(option)
             idToChoice[player] = choice
-        text = self.anklageIntro()
+        text = self.accuseIntro()
         self.gameData.sendJSON(Factory.createChoiceFieldEvent(
             self.gameData.getOrigin(), text, options))
         messageId = self.gameData.getNextMessage(commandType="feedback")["feedback"]["messageId"]
@@ -232,7 +253,7 @@ class Server(object):
             for entry in self.accusedDict:
                 target = self.accusedDict[entry]
                 newText += self.gameData.idToName(entry)
-                newText += self.anklageText(idToChoice[target], self.gameData.idToName(target))
+                newText += self.accuseText(idToChoice[target], self.gameData.idToName(target))
             self.gameData.sendJSON(Factory.createChoiceFieldEvent(
                 self.gameData.getOrigin(), newText, options, messageId, Factory.EditMode.EDIT))
             self.gameData.dumpNextMessage(commandType="feedback")
@@ -241,48 +262,20 @@ class Server(object):
             self.gameData.getOrigin(), newText, messageId, Factory.EditMode.EDIT))
         self.gameData.dumpNextMessage(commandType="feedback")
 
-    def anklageOptions(self):
-        switcher = {
-            0: " anklagen",
-            1: " bezichtigen",
-            2: " Verrat vorwerfen",
-            3: " anprangern",
-            4: " anschuldigen",
-            5: " beschuldigen"
-        }
-        choice = self.gameData.randrange(0, 6)
-        return choice, switcher[choice]
+    def accuseOptions(self, name):
+        pre = loc(self.gameData.getLang(), "accuseOptionsPre")
+        post = loc(self.gameData.getLang(), "accuseOptionsPost")
+        choice = self.gameData.randrange(0, len(pre))
+        return choice, pre[str(choice)] + name + post[str(choice)]
 
-    def anklageIntro(self):
-        switcher = {
-            0: "Es ist Zeit, anzuklagen!",
-            1: "Nach einer turbulenten Nacht geht es in Düsterwald heiß her.",
-            2: "Nach einer solchen Nacht wird in Düsterwald blind beschuldigt.",
-            3: ("Die Dorfbewohner wollen die Übeltäter im Dorf entlarven und beginnen "
-                "mit den Beschuldigungen."),
-            4: "Die Dorfbewohner versuchen durch wildes Beschuldigen, die Werwölfe zu enttarnen.",
-            5: ("Jeder versucht, sein eigenes Leben zu schützen und schiebt deshalb die "
-                "Schuld auf Andere."),
-            6: "Die Dorfbewohner wollen jemanden für die Verbrechen der Nacht beschuldigen.",
-            7: ("Eine Diskussion entbrandet, wer an den schrecklichen Taten der Nacht "
-                "schuld sein könnte."),
-            8: ("Eine heiße Diskussion beginnt in Düsterwald. Vage Gerüchte werden auf einmal zu "
-                "harten Fakten, Werwölfe tarnen sich als normale Büger und harmlose Dorfbewohner "
-                "werden des brutalen Mordes beschuldigt."),
-            9: "Lasset die Beschuldigungsspiele beginnen!"
-        }
-        return switcher[self.gameData.randrange(0, 10)]
+    def accuseIntro(self):
+        dc = loc(self.gameData.getLang(), "accuseIntro")
+        return dc[str(self.gameData.randrange(0, len(dc)))]
 
-    def anklageText(self, option, name):
-        switcher = {
-            0: " möchte " + name + " anklagen.",
-            1: " bezichtigt " + name + ".",
-            2: " wirft " + name + " Verrat vor!",
-            3: " will " + name + " anprangern!",
-            4: " trifft Anschuldigungen gegen " + name + ".",
-            5: " beschuldigt " + name + "."
-        }
-        return switcher[option]
+    def accuseText(self, option, name):
+        pre = loc(self.gameData.getLang(), "accuseTextPre", option)
+        post = loc(self.gameData.getLang(), "accuseTextPost", option)
+        return pre + name + post
 
     def vote(self):
         idToChoice, voteDict = self.getVoteDict()
@@ -315,7 +308,7 @@ class Server(object):
         for index, p in enumerate(self.accusedDict):
             player = self.accusedDict[p]
             playerName = self.gameData.getAlivePlayers()[player].getName()
-            choice, option = self.voteOptions()
+            choice, option = self.voteOptions(playerName)
             idToChoice[player] = choice
             option = playerName + option
             options.append(option)
@@ -352,133 +345,34 @@ class Server(object):
         return idToChoice, voteDict
 
     def voteIntro(self):
-        switcher = {
-            0: "Es ist Zeit, jemanden hinzurichten!",
-            1: "Die Dorfbewohner wollen die Verantwortlichen für die Morde sterben sehen!",
-            2: "Die Abstimmung für die Hinrichtung beginnt.",
-            3: "Wen wollt ihr hinrichten?",
-            4: "Wer soll für die grausamen Verbrechen mit einem noch grausameren Tod bezahlen?",
-            5: "Wer ist schuldig und muss sterben?",
-            6: ("Auge um Auge, Zahn um Zahn - und wer muss aufgrund vager Gerüchte einen "
-                "grauenvollen Tod sterben?"),
-            7: "Die Demokratie wird entscheiden, wer hingerichtet wird!",
-            8: "Das Dorf entscheidet, wer gelyncht wird!",
-            9: "Lasset die Hinrichtungsspiele beginnen!"
-        }
-        return switcher[self.gameData.randrange(0, 10)]
+        dc = loc(self.gameData.getLang(), "voteIntro")
+        return dc[str(self.gameData.randrange(0, len(dc)))]
 
-    def voteOptions(self):
-        switcher = {
-            0: " hängen",
-            1: " auf dem Scheiterhaufen verbrennen",
-            2: " einen Schwedentrunk verabreichen",
-            3: " vierteilen",
-            4: " für das Gemeinwohl opfern",
-            5: " ertränken",
-            6: " von einem Felsen stürzen",
-            7: " guillotinieren",
-            8: " lebendig begraben",
-            9: " steinigen"
-        }
-        choice = self.gameData.randrange(0, 10)
-        return choice, switcher[choice]
+    def voteOptions(self, name):
+        pre = loc(self.gameData.getLang(), "voteOptionsPre")
+        post = loc(self.gameData.getLang(), "voteOptionsPost")
+        choice = self.gameData.randrange(0, len(pre))
+        return choice, pre[str(choice)] + name + post[str(choice)]
 
     def votedFor(self, option, name):
-        switcher = {
-            0: " möchte " + name + " hängen!",
-            1: " will " + name + " auf dem Scheiterhaufen sehen!",
-            2: " möchte " + name + " den Schwedentrunk verabreichen.",
-            3: " will " + name + " vierteilen.",
-            4: " würde gerne " + name + " für das Gemeinwohl opfern.",
-            5: " möchte " + name + " ertränken.",
-            6: " will " + name + " von einem Felsen stürzen.",
-            7: " will " + name + " unter die Guillotine legen.",
-            8: " würde gerne " + name + " lebendig begraben.",
-            9: " will " + name + " steinigen."
-        }
-        return switcher[option]
+        pre = loc(self.gameData.getLang(), "votedForPre", option)
+        post = loc(self.gameData.getLang(), "votedForPost", option)
+        return pre + name + post
 
     def voteJudgement(self, option):
-        switcher = {
-            0: " wurde gehängt.",
-            1: " wird auf dem Scheiterhaufen verbrannt!",
-            2: " bekommt den Schwedentrunk verabreicht.",
-            3: " wurde gevierteilt.",
-            4: " hat sich für das Gemeinwohl opfern lassen.",
-            5: " wurde ertränkt!",
-            6: " wird von einem Felsen gestürzt.",
-            7: " ist unter der Guillotine gelandet!",
-            8: " wurde lebendig begraben.",
-            9: " hat die Steinigung nicht überlebt."
-        }
-        return switcher[option]
+        return loc(self.gameData.getLang(), "voteJudgement", option)
 
     def pattRevote(self):
-        switcher = {
-            0: "Pattsituation - bitte nochmals abstimmen!",
-            1: ("Das Dorf konnte sich nicht entscheiden, wer hingerichtet werden sollte. Deshalb "
-                "muss die Abstimmung wiederholt werden."),
-            2: "Die Abstimmung geht unentschieden aus und muss wiederholt werden.",
-            3: ("Die Dorfgemeinschaft kann sich für keinen Schuldigen entscheiden und setzt daher "
-                "Neuwahlen an."),
-            4: ("Zustände wie in der Türkei: Es wird sooft gewählt, bis den Oberen das Ergebnis "
-                "gefällt. Es wurden Neuwahlen angesetzt!"),
-            5: ("Es kann nur eine Person hingerichtet werden, irgendjemand sollte seine Meinung "
-                "ändern!"),
-            6: "Hier kommt die Demokratie an ihre Grenzen: Die Wahl muss wiederholt werden.",
-            7: ("Eine Koalition ist bei der Hinrichtung nicht möglich. Bitte entscheidet euch für "
-                "einen Schuldigen."),
-            8: ("Auf dem elekrtischen Stuhl ist nur Platz für eine Person. Bitte nochmals "
-                "abstimmen!"),
-            9: ("Wenn ihr zwei halbe Menschen hinrichtet, habt ihr mathematisch auch nur eine "
-                "Person hingerichtet. Das Problem ist, dass dann beide tot sind. Entscheidet euch!")
-        }
-        return switcher[self.gameData.randrange(0, 10)]
+        dc = loc(self.gameData.getLang(), "pattRevote")
+        return dc[str(self.gameData.randrange(0, len(dc)))]
 
     def pattNoKill(self):
-        switcher = {
-            0: ("Da sich das Dorf nicht auf einen Schuldigen einigen kann, wird heute niemand "
-                "gelyncht."),
-            1: "Die Demokratie ist überfordert und beschließt, niemanden hinzurichten.",
-            2: "Nach einer intensiven aber ergebnislosen Diskussion kehren alle nach hause zurück.",
-            3: "Mal wieder viel heiße Luft um Nichts - viel Anschuldigungen aber kein Ergebnis.",
-            4: ("Bei dem versuch, alle Angeklagten zu hängen, reißt das Seil und das Dorf "
-                "beschließt, heute niemanden hinzurichten."),
-            5: ("Da die Diskussion zu hitzig wird, ohne ein Ergebnis zu zeigen, löst die Polizei "
-                "die Versammlung auf und schickt alle Beteiligten fort."),
-            6: ("Am Ende des Tages sind alle genervt, da letztlich keiner seine Meinung "
-                "durchsetzen konnte."),
-            7: ("Dieser Tag geht ohne einen Toten vorbei. Dies sorgt für Unmut unter den "
-                "Dorfbewohnern, da die Werwölfe auch nächste Nacht nicht ruhen werden."),
-            8: ("Die Dorfbewohner nehmen sich vor: Beim nächsten Mal erzielen wir bei der "
-                "Abstimmung ein klares Ergebnis, doch momentan will keiner seine Meinung ändern. "
-                "Vielleicht kann die kommende Nacht gegen ein Patt helfen?"),
-            9: ("Da sich das Dorf nicht einigen konnte, beschließt es, eine Nacht über die "
-                "Meinungen zu schlafen. Vielleicht wird man sich ja morgen einig.")
-        }
-        return switcher[self.gameData.randrange(0, 10)]
+        dc = loc(self.gameData.getLang(), "pattNoKill")
+        return dc[str(self.gameData.randrange(0, len(dc)))]
 
     def nightfall(self):
-        switcher = {
-            0: "Es wird Nacht in Düsterwald.",
-            1: "Die Sonne geht langsam unter, es ist Zeit für alle, schlafen zu gehen.",
-            2: ("Düsterwald bereitet sich auf eine turbulente Nacht vor und legt sich "
-                "schlafen. Manche Individuen stellen sich jedoch einen Wecker..."),
-            3: ("Die Nacht ist nicht weniger gefährlich als der Tag und die Dorfbewohner "
-                "stellen sich darauf ein, sich vielleicht ein letztes Mal schlafen zu legen..."),
-            4: "Sowie es langsam dunkel wird in Düsterwald, legen sich alle schlafen.",
-            5: ("Nach einem anstrengenden Tag hoffen viele Dorfbewohner nun auf eine erholsame "
-                "Nacht. Doch diese Nacht werden nicht alle gut schlafen..."),
-            6: ("Die Straßen werden leer, in der Kneipe wurde schon vor einer halben Stunde "
-                "das letzte Bier ausgeschenkt und Düsterwald legt sich schlafen."),
-            7: ("Düsterwald legt sich schlafen - in der Hoffnung, in der Morgendämmerung "
-                "wieder zu erwachen."),
-            8: ("So manch Dorfbewohner hofft nun auf eine ruhige Nacht - andere schlecken sich "
-                "schon das Maul..."),
-            9: ("Die Dorfbewohner stoßen auf einen erfolgreichen Tag an und wünschen sich eine "
-                "gute Nacht.")
-        }
-        return switcher[self.gameData.randrange(0, 10)]
+        dc = loc(self.gameData.getLang(), "nightfall")
+        return dc[str(self.gameData.randrange(0, len(dc)))]
 
     def checkGameOver(self):
         if len(self.gameData.getAlivePlayers()) == 0:
@@ -494,124 +388,69 @@ class Server(object):
                     continue
                 else:
                     return False
-            if team == Teams.TeamType.WERWOLF:
+            if team == Teams.TeamType.WEREWOLF:
                 self.gameData.sendJSON(
-                    Factory.createMessageEvent(self.gameData.getOrigin(), self.werwoelfeWin(),
+                    Factory.createMessageEvent(self.gameData.getOrigin(), self.werewolfWin(),
                                                highlight=True))
             else:
                 self.gameData.sendJSON(
-                    Factory.createMessageEvent(self.gameData.getOrigin(), self.dorfWin(),
+                    Factory.createMessageEvent(self.gameData.getOrigin(), self.villageWin(),
                                                highlight=True))
             self.gameData.dumpNextMessage(commandType="feedback")
             return True
 
     def allDead(self):
-        switcher = {
-            0: "Es sind alle tot.",
-            1: "Das Dorf ist so lebendig wie Tschernobyl.",
-            2: "In Düsterwald könnte jetzt ein Vulkan ausbrechen und niemand würde sterben.",
-            3: "Düsterwald hat seine Letzte Ruhe gefunden.",
-            4: "Jetzt leben nur noch Tiere in Düsterwald.",
-            5: "Die Natur wird sich das kleine Örtchen ab jetzt Stück für Stück zurückholen.",
-            6: "Die Zivilisation in Düsterwald ist ausgelöscht.",
-            7: "Das Werwolfproblem ist beseitigt. Das Menschenproblem aber auch.",
-            8: "Düsterwald hat jetzt "
-               + str(json.loads(requests.get("http://api.open-notify.org/astros.json").text)
-                     ["number"]) + " Einwohner weniger als das Weltall.",
-            9: "Das Kapitel 'Düsterwald' ist jetzt endgültig abgeschlossen."
-        }
-        return switcher[self.gameData.randrange(0, 10)]
+        dc = loc(self.gameData.getLang(), "allDeadPre")
+        choice = self.gameData.randrange(0, len(dc))
+        if choice == 8:
+            pre = dc[str(choice)]
+            post = loc(self.gameData.getLang(), "allDeadPost")
+            msg = pre + str(json.loads(requests.get("http://api.open-notify.org/astros.json")
+                                       .text)["number"]) + post
+        else:
+            msg = dc[str(choice)]
+        return msg
 
-    def werwoelfeWin(self):
-        switcher = {
-            0: "Die Werwölfe gewinnen.",
-            1: "Es war ein langer Kampf, aber die Werwölfe haben sich durchgesetzt.",
-            2: "Es leben nur noch Werwölfe in Düsterwald!",
-            3: "Es gibt keine Dorfbewohner mehr, die von den Werwölfen verspeißt werden können.",
-            4: "Es wird wieder friedlich in Düsterwald, da hier jetzt nur noch Werwölfe leben.",
-            5: "Die Werwölfe haben gesiegt.",
-            6: "Die Werwölfe haben ihre Dominanz bewiesen.",
-            7: "Die Werwölfe sind in Düsterwald anscheinend die stärkere Rasse.",
-            8: "Mit dem Tod des letzten Dorfbewohners haben die Werwölfe jetzt ihre Ruhe.",
-            9: ("Die Werwölfe veranstalten zur Feier des Tages einen Fest und verspeißen "
-                "genussvoll den letzten Dorfbewohner.")
-        }
-        return switcher[self.gameData.randrange(0, 10)]
+    def werewolfWin(self):
+        dc = loc(self.gameData.getLang(), "werewolfWin")
+        choice = self.gameData.randrange(0, len(dc))
+        return dc[str(choice)]
 
-    def dorfWin(self):
-        switcher = {
-            0: "Das Dorf gewinnt.",
-            1: "Es war ein langer Kampf, aber die Dorfbewohner haben sich durchgesetzt.",
-            2: "Es leben keine Werwölfe mehr in Düsterwald!",
-            3: "Es gibt keine Werwölfe mehr, die Dorfbewohner verspeißen wollen.",
-            4: "Es wird wieder friedlich in Düsterwald, da hier nur noch Dorfbewohner leben.",
-            5: "Die Dorfbewohner haben gesiegt.",
-            6: "Die Dorfbewohner haben ihre Dominanz bewiesen.",
-            7: "Die Werwölfe sind in Düsterwald anscheinend die unterlegene Rasse.",
-            8: "Mit dem Tod des letzten Werwolfes haben die Dorfbewohner jetzt ihre Ruhe.",
-            9: ("Die Dorfbewohner veranstalten zur Feier des Tages einen Fest und stopfen den "
-                "letzten Werwolf aus.")
-        }
-        return switcher[self.gameData.randrange(0, 10)]
+    def villageWin(self):
+        dc = loc(self.gameData.getLang(), "villageWin")
+        choice = self.gameData.randrange(0, len(dc))
+        return dc[str(choice)]
 
-    def getWerwolfRoleList(self, amountOfPlayers):
-        werwolfRoleList = []
-        if amountOfPlayers >= 3 and "wolfshund" in self.enabledRoles:
+    def getWerewolfRoleList(self, amountOfPlayers):
+        werewolfRoleList = []
+        if amountOfPlayers >= 3 and "wolfdog" in self.enabledRoles:
             for i in range(0, 20):
-                werwolfRoleList.append(Werwolf())
+                werewolfRoleList.append(Werewolf())
             for i in range(0, 40):
-                werwolfRoleList.append(Wolfshund())
+                werewolfRoleList.append(Wolfdog())
         else:
             for i in range(0, 60):
-                werwolfRoleList.append(Werwolf())
+                werewolfRoleList.append(Werewolf())
         if "terrorwolf" in self.enabledRoles:
             for i in range(0, 40):
-                werwolfRoleList.append(Terrorwolf())
-        return werwolfRoleList
+                werewolfRoleList.append(Terrorwolf())
+        return werewolfRoleList
 
     def getVillagerRoleList(self):
-        dorfRoleList = []
+        villageRoleList = []
         for i in range(0, 30):
-            dorfRoleList.append(Dorfbewohner())
-            dorfRoleList.append(Dorfbewohnerin())
-        if "jaeger" in self.enabledRoles:
+            villageRoleList.append(Villager())
+            villageRoleList.append(Villagerf())
+        if "hunter" in self.enabledRoles:
             for i in range(0, 28):
-                dorfRoleList.append(Jaeger())
-        if "seherin" in self.enabledRoles:
+                villageRoleList.append(Hunter())
+        if "seer" in self.enabledRoles:
             for i in range(0, 28):
-                dorfRoleList.append(Seherin())
-        if "hexe" in self.enabledRoles:
+                villageRoleList.append(Seer())
+        if "witch" in self.enabledRoles:
             for i in range(0, 28):
-                dorfRoleList.append(Hexe())
-        return dorfRoleList
-
-
-def makeReadable(text):
-    exchange = {"ae": "ä", "oe": "ö", "ue": "ü", "Ae": "Ä", "Oe": "Ö", "Ue": "Ü"}
-    tl = list(text)
-    tl[0] = tl[0].capitalize()
-    for index, i in enumerate(tl):
-        if i == " " and index < len(tl):
-            tl[index + 1] = tl[index + 1].capitalize()
-    text = "".join(tl)
-    for i in exchange:
-        while i in text:
-            text = text.replace(i, exchange[i])
-    return text
-
-
-def makeUnreadable(text):
-    exchange = {"ae": "ä", "oe": "ö", "ue": "ü", "Ae": "Ä", "Oe": "Ö", "Ue": "Ü"}
-    tl = list(text)
-    tl[0] = tl[0].lower()
-    for index, i in enumerate(tl):
-        if i == " " and index < len(tl):
-            tl[index + 1] = tl[index + 1].lower()
-    text = "".join(tl)
-    for i in exchange:
-        while exchange[i] in text:
-            text = text.replace(exchange[i], i)
-    return text
+                villageRoleList.append(Witch())
+        return villageRoleList
 
 
 def removeCharacterTypeFromList(ls, ct):
@@ -621,3 +460,9 @@ def removeCharacterTypeFromList(ls, ct):
             del ls[i]
         else:
             i += 1
+
+
+def revLookup(dc, value):
+    for key in dc:
+        if dc[key] == value:
+            return key
