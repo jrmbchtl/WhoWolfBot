@@ -1,6 +1,11 @@
 {
   "DE": {
     "languageQuestion": "In welcher Sprache möchten Sie dass Spiel spielen",
+    "warnSpamPre": "",
+    "warnSpamPost": [", es wäre nett, wenn du den Gamemaster  nicht so quälen würdest, sonst hat er evtl. keine Lust ",
+      "mehr, mit dir zu reden."],
+    "banSpamPre": "Der Gamemaster verbannt ",
+    "banSpamPost": " auf Lebenszeizeit!",
     "welcome": "Herzlich willkommen beim Werwolf\\-Bot\\!",
     "privateNotAllowed": "Es ergibt nicht sonderlich viel Sinn, ein Multiplayer-Spiel alleine zu spielen!",
     "cancel": "Abbrechen",
@@ -935,6 +940,10 @@
   },
   "EN": {
     "languageQuestion": "Please choose a language",
+    "warnSpamPre": "Please don't torture the Gamemaster, ",
+    "warnSpamPost": ", otherwise he might not want to talk to you again!",
+    "banSpamPre": "",
+    "banSpamPost": " was banned by the Gamemaster for all eternity!",
     "welcome": "Welcome to the Werewolf\\-Bot\\!",
     "privateNotAllowed": "It doesn't make sense to player a multiplayer game alone!",
     "cancel": "Cancel",

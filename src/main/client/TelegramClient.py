@@ -1,4 +1,7 @@
+import datetime
+import json
 import logging
+import os
 import random
 import time
 from multiprocessing import Process
@@ -34,6 +37,8 @@ class TelegramClient(object):
         self.bot = Bot(self.token)
         self.updater = Updater(self.token, use_context=True)
         self.dispatcher = self.updater.dispatcher
+        self.spamDict = {}
+        self.banList = self.getBanList()
 
         logging.basicConfig(level=logging.INFO,
                             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -49,12 +54,68 @@ class TelegramClient(object):
         self.updater.start_polling()
         self.updater.idle()
 
+    def getBanList(self):
+        if not os.path.isfile("banList.json"):
+            with open("banList.json", "w") as file:
+                json.dump([], file)
+                return []
+        with open("banList.json", "r") as file:
+            return json.load(file)
+
+    def writeBanList(self):
+        with open("banList.json", "w") as file:
+            json.dump(self.banList, file)
+
+    def isSpam(self, update):
+        userId = update.message.from_user.id
+        if userId in self.banList:
+            return True
+        chatId = update.message.chat_id
+        name = update.message.chat.first_name
+        now = datetime.datetime.now()
+        if userId not in self.spamDict:
+            self.spamDict[userId] = [now]
+        else:
+            self.spamDict[userId].append(now)
+            i = 0
+            while i < len(self.spamDict[userId]):
+                if (now - self.spamDict[userId][i]).seconds > 60:
+                    self.spamDict[userId].pop(i)
+                else:
+                    i += 1
+            if len(self.spamDict[userId]) > 15:
+                pre = loc(lang, "banSpamPre")
+                post = loc(lang, "banSpamPost")
+                text = pre + name + post
+                dc = {
+                    "eventType": "message", "message": {"text": text, "messageId": 0},
+                    "target": chatId, "mode": "write", "gameId": 0, "lang": lang, "highlight": True
+                }
+                self.sendToBot(dc)
+                self.banList.append(userId)
+                self.writeBanList()
+                return True
+            elif len(self.spamDict[userId]) > 13:
+                pre = loc(lang, "warnSpamPre")
+                post = loc(lang, "warnSpamPost")
+                text = pre + name + post
+                dc = {
+                    "eventType": "message", "message": {"text": text, "messageId": 0},
+                    "target": chatId, "mode": "write", "gameId": 0, "lang": lang, "highlight": True
+                }
+                self.sendToBot(dc)
+            return False
+
     def start(self, update, context):
+        if self.isSpam(update):
+            return
         self.botSendLoop(update.message.chat_id,
                          text=loc(lang, "welcome"),
                          parseMode=ParseMode.MARKDOWN_V2)
 
     def new(self, update, context):
+        if self.isSpam(update):
+            return
         fromId = update.message.from_user.id
         origin = update.message.chat_id
         seed = random.getrandbits(32)
@@ -62,9 +123,13 @@ class TelegramClient(object):
                           "fromId": fromId})
 
     def changelog(self, update, context):
+        if self.isSpam(update):
+            return
         self.sc.sendJSON({"commandType": "changelog", "fromId": update.message.chat_id})
 
     def roles(self, update, context):
+        if self.isSpam(update):
+            return
         roleDict = loc(lang, "roles")
         roles = ""
         for index, role in enumerate(roleDict):
@@ -75,6 +140,8 @@ class TelegramClient(object):
                          parseMode=ParseMode.MARKDOWN_V2)
 
     def buttonHandler(self, update, context):
+        if self.isSpam(update):
+            return
         callbackData = update.callback_query.data
         gameId = int(callbackData.split("_")[1])
         name = update.callback_query.from_user.first_name
