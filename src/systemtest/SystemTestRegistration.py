@@ -4,6 +4,7 @@ from src.systemtest.tests.DoublePattTest import DoublePattTest
 from src.systemtest.tests.Exampletest import Exampletest
 from src.systemtest.tests.FastDeath import FastDeath
 from src.systemtest.tests.PattTest import PattTest
+from src.systemtest.tests.RedhatTest import RedhatTest
 from src.systemtest.tests.SeherinTest import SeherinTest
 from src.systemtest.tests.TerrorwolfTest import TerrorwolfTest
 
@@ -22,3 +23,4 @@ class SystemTestRegistration(object):
         self.main.register(DoublePattTest(self.main.getSc()))
         self.main.register(SeherinTest(self.main.getSc()))
         self.main.register(TerrorwolfTest(self.main.getSc()))
+        self.main.register(RedhatTest(self.main.getSc()))

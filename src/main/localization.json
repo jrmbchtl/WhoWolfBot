@@ -34,7 +34,8 @@
       "seer": "Seherin",
       "terrorwolf": "Terrorwolf",
       "wolfdog": "Wolfshund",
-      "badassbastard": "Harter Bursche"
+      "badassbastard": "Harter Bursche",
+      "redhat": "Rotkäppchen"
     },
     "accuseOptionsPre": {
       "0": "",
@@ -950,6 +951,18 @@
         "standzuhalten."
       ]
     },
+    "redhatDescription": {
+      "0": ["Du bist das Rotkäppchen. Solange der Jäger am Leben ist, bleibt das Rotkäppchen nachts immun gegen ",
+        "normale Angriffe von Werwölfen."],
+      "1": ["Deine Rolle ist das Rotkäppchen, welches nachts nicht von den Werwölfen gerissen werden kann, solange ",
+        "der Jäger noch lebt."],
+      "2": "Du bist das Rotkäppchen. Dieses wird nachts vom Jäger, solange dieser lebt, vor Werwölfen beschützt.",
+      "3": ["Dein Charakter ist das Rotkäppchen, welches unter dem Schutz des Jägers steht, solange dieser lebt. ",
+        "Dies bedeutet, dass solange der Jäger lebt, das Rotkäppchen nicht nachts durch Werwölfe getötet werden kann."],
+      "4": ["Du bist das märchenhafte Rotkäppchen, welches zu Lebzeiten des Jägers von diesem vor Werwolfangriffen ",
+        "geschützt wird."],
+      "5": "Du bist das Rotkäppchen, welches nicht durch Werwolfangriffe sterben kann, solange der Jäger lebt."
+    },
     "changelog": [
       "Version 2.0.8\n- Bot wehrt sich nun gegen Spam und spricht auch Englisch\n\n",
       "Version 2.0.7\n- Backend Änderung von Netzwerk zu Queues\n\n",
@@ -998,7 +1011,8 @@
       "seer": "Seer",
       "terrorwolf": "Terrorwolf",
       "wolfdog": "Wolfdog",
-      "badassbastard": "Badass Bastard"
+      "badassbastard": "Badass Bastard",
+      "redhat": "Little Red Riding Hood"
     },
     "accuseOptionsPre": {
       "0": "accuse ",
@@ -1797,6 +1811,19 @@
         "You are a badass bastard. No, you're THE badass bastard in town. Hard enough to survive the first werewolf ",
         "attack, but not hard enough to resist the witch's poison or the village's judgement."
       ]
+    },
+    "redhatDescription": {
+      "0": ["You are Little Red Riding Hood. As long as the hunter is alive, Little Red Riding Hood remains ",
+        "immune to normal werewolf attacks at night."],
+      "1": ["Your role is Little Red Riding Hood, which cannot be torn by the werewolves at night while the hunter ",
+        "is still alive."],
+      "2": "You are Little Red Riding Hood. You are protected from werewolves by the hunter at night as long as he lives.",
+      "3": ["Your character is Little Red Riding Hood, which is under the protection of the hunter as long as he ",
+        "lives. This means that as long as the hunter lives, Little Red Riding Hood cannot be killed by werewolves ",
+        "at night."],
+      "4": ["You are Little Red Riding Hood straight from the fairytale, which is protected from werewolf attacks by ",
+        "the hunter during his lifetime."],
+      "5": "You are Little Red Riding Hood, which cannot die by werewolf attacks as long as the hunter lives."
     },
     "changelog": [
       "Version 2.0.8\n- Added localization and spam protection\n\n",

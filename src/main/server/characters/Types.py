@@ -17,5 +17,6 @@ class CharacterType(Enum):
 	WITCH = 3,
 	HUNTER = 102,
 	BADDASSBASTARD = 103,
+	REDHAT = 104,
 	SEER = 4,
 	NONE = 0
