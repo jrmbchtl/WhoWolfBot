@@ -1,7 +1,7 @@
 # WhoWolfBot
 Telegram Bot for playing Werwolf
 
-Current Version: 2.0.8
+Current Version: 2.1.0
 
 Implemented Roles:\
 Villager/in\

@@ -1019,6 +1019,7 @@
       "6": "Wessen Werwolfsfratze kannst du nicht leiden?"
     },
     "changelog": [
+      "Version 2.1.0\n- Neue Rollen: Weißer Wolf, Rotkäppchen und Harter Bursche\n\n",
       "Version 2.0.8\n- Bot wehrt sich nun gegen Spam und spricht auch Englisch\n\n",
       "Version 2.0.7\n- Backend Änderung von Netzwerk zu Queues\n\n",
       "Version 2.0.6.2\n- Hotfix für hinzufügen/entfernen von Rollen\n\n",
@@ -1933,6 +1934,7 @@
       "6": "Whose werewolf face do you hate?"
     },
     "changelog": [
+      "Version 2.1.0\n- New roles: Little Red Riding Hood, White Wolf and Badass Bastard\n\n",
       "Version 2.0.8\n- Added localization and spam protection\n\n",
       "Version 2.0.7\n- Backend changes from network to queue\n\n",
       "Version 2.0.6.2\n- Hotfix for adding/removing roles\n\n",
