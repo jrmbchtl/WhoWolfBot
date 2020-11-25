@@ -10,3 +10,8 @@ class WerewolfTeam(Character):
 class VillagerTeam(Character):
 	def __init__(self, role, alive):
 		super(VillagerTeam, self).__init__(TeamType.VILLAGER, role, alive)
+
+
+class WhitewolfTeam(Character):
+	def __init__(self, role, alive):
+		super(WhitewolfTeam, self).__init__(TeamType.WHITEWOLF, role, alive)

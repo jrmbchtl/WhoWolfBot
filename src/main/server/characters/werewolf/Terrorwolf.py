@@ -9,7 +9,7 @@ class Terrorwolf(WerewolfTeam):
         super(Terrorwolf, self).__init__(CharacterType.TERRORWOLF, alive)
 
     def getDescription(self, gameData):
-        dc = loc(gameData.getLang(), "seerDescription")
+        dc = loc(gameData.getLang(), "terrorwolfDescription")
         return dc[str(gameData.randrange(0, len(dc)))]
 
     def kill(self, gameData, playerId, dm=None):

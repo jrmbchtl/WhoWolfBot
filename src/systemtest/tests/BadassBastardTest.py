@@ -56,7 +56,7 @@ class BadassBastardTest(Systemtest):
         self.assertAnyMessage()
         self.assertReceiveDict({'eventType': 'message', 'message':
             {'text': 'Player 2 besucht nun die ewigen Jagdgründe.', 'messageId': 0},
-            'mode': 'write', 'target': 0, 'highlight': True, 'gameId': 1,
+            'mode': 'write', 'target': 0, 'highlight': True, 'gameId': gameId,
             'lang': 'DE'})
 
         self.sc.sendJSON({"commandType": "terminate", "fromId": 42, "gameId": gameId})

@@ -10,6 +10,8 @@ Werwolf\
 Hunter\
 Wolfshund\
 Terrorwolf\
+Rotkaeppchen\
+Weisser Wolf\
 Harter Bursche
 
 Testing:
@@ -17,12 +19,11 @@ Testing:
 WIP:
 
 Planned:
-Rotkaeppchen\
+Amor\
 Berserker\
-Superschurke\
 Terrorist\
+Superschurke\
 Kerkermeister\
 Parasit\
-Weisser Wolf\
 Flittchen\
 Bürgermeister

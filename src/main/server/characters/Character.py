@@ -45,6 +45,9 @@ class Character(object):
     def getCharacterType(self):
         return self.role
 
+    def canBeKilled(self, gameData):
+        return True
+
 
 def deathMessage(gameData):
     dc = loc(gameData.getLang(), "deathMessage")

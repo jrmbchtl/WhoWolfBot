@@ -16,6 +16,7 @@ from .characters.village.Seer import Seer
 from .characters.werewolf import wake
 from .characters.werewolf.Terrorwolf import Terrorwolf
 from .characters.werewolf.Werewolf import Werewolf
+from .characters.werewolf.Whitewolf import Whitewolf
 from .characters.werewolf.Wolfdog import Wolfdog
 from src.main.localization import getLocalization as loc
 
@@ -28,7 +29,7 @@ class Server(object):
                                  gameId=gameId, menuMessageId=None, deleteQueue=deleteQueue)
         self.accusedDict = {}
         self.enabledRoles = ["wolfdog", "terrorwolf", "seer", "witch", "hunter"]
-        self.disabledRoles = ["badassbastard", "redhat"]
+        self.disabledRoles = ["badassbastard", "redhat", "whitewolf"]
         self.settingsMessageId = None
 
     def start(self):
@@ -221,23 +222,40 @@ class Server(object):
             else:
                 player.getCharacter().wakeUp(self.gameData, p)
 
+        self.killWerewolfTarget()
+        self.killWitchTarget()
+        self.killWhitewolfTarget()
+
+    def killWerewolfTarget(self):
         if self.gameData.getWerewolfTarget() is not None:
             werewolfTargetId = self.gameData.getWerewolfTarget()
-            werewolfTarget = self.gameData.getAlivePlayers()[werewolfTargetId].getCharacter()
-            if werewolfTarget.getRole() == CharacterType.BADDASSBASTARD \
-                    and werewolfTarget.hasSecondLive():
-                werewolfTarget.removeSecondLive()
-            elif werewolfTarget.getRole() == CharacterType.REDHAT \
-                    and not werewolfTarget.canBeKilled(self.gameData):
-                pass
-            else:
-                werewolfTarget.kill(self.gameData, werewolfTargetId)
-            self.gameData.setWerewolfTarget(None)
+            if werewolfTargetId in self.gameData.getAlivePlayers():
+                werewolfTarget = self.gameData.getAlivePlayers()[werewolfTargetId].getCharacter()
+                if werewolfTarget.getRole() == CharacterType.BADDASSBASTARD \
+                        and werewolfTarget.hasSecondLive():
+                    werewolfTarget.removeSecondLive()
+                elif werewolfTarget.getRole() == CharacterType.REDHAT \
+                        and not werewolfTarget.canBeKilled(self.gameData):
+                    pass
+                else:
+                    werewolfTarget.kill(self.gameData, werewolfTargetId)
+                self.gameData.setWerewolfTarget(None)
+
+    def killWitchTarget(self):
         if self.gameData.getWitchTarget() is not None:
             witchTargetId = self.gameData.getWitchTarget()
-            witchTarget = self.gameData.getAlivePlayers()[witchTargetId].getCharacter()
-            witchTarget.kill(self.gameData, witchTargetId)
-            self.gameData.setWitchTarget(None)
+            if witchTargetId in self.gameData.getAlivePlayers():
+                witchTarget = self.gameData.getAlivePlayers()[witchTargetId].getCharacter()
+                witchTarget.kill(self.gameData, witchTargetId)
+                self.gameData.setWitchTarget(None)
+
+    def killWhitewolfTarget(self):
+        if self.gameData.getWhitewolfTarget() is not None:
+            whitewolfTargetId = self.gameData.getWhitewolfTarget()
+            if whitewolfTargetId in self.gameData.getAlivePlayers():
+                whitewolfTarget = self.gameData.getAlivePlayers()[whitewolfTargetId].getCharacter()
+                whitewolfTarget.kill(self.gameData, whitewolfTargetId)
+                self.gameData.setWhitewolfTarget(None)
 
     def accuseAll(self):
         self.accusedDict = {}
@@ -407,6 +425,10 @@ class Server(object):
                 self.gameData.sendJSON(
                     Factory.createMessageEvent(self.gameData.getOrigin(), self.werewolfWin(),
                                                highlight=True))
+            elif team == Teams.TeamType.WHITEWOLF:
+                self.gameData.sendJSON(
+                    Factory.createMessageEvent(self.gameData.getOrigin(), self.whitewolfWin(),
+                                               highlight=True))
             else:
                 self.gameData.sendJSON(
                     Factory.createMessageEvent(self.gameData.getOrigin(), self.villageWin(),
@@ -431,6 +453,11 @@ class Server(object):
         choice = self.gameData.randrange(0, len(dc))
         return dc[str(choice)]
 
+    def whitewolfWin(self):
+        dc = loc(self.gameData.getLang(), "whitewolfWin")
+        choice = self.gameData.randrange(0, len(dc))
+        return dc[str(choice)]
+
     def villageWin(self):
         dc = loc(self.gameData.getLang(), "villageWin")
         choice = self.gameData.randrange(0, len(dc))
@@ -438,14 +465,14 @@ class Server(object):
 
     def getWerewolfRoleList(self, amountOfPlayers):
         werewolfRoleList = []
-        if amountOfPlayers >= 3 and "wolfdog" in self.enabledRoles:
-            for i in range(0, 20):
-                werewolfRoleList.append(Werewolf())
+        for i in range(0, 40):
+            werewolfRoleList.append(Werewolf())
+        if amountOfPlayers >= 6 and "wolfdog" in self.enabledRoles:
             for i in range(0, 40):
                 werewolfRoleList.append(Wolfdog())
-        else:
-            for i in range(0, 60):
-                werewolfRoleList.append(Werewolf())
+        if amountOfPlayers >= 6 and "whitewolf" in self.enabledRoles:
+            for i in range(0, 40):
+                werewolfRoleList.append(Whitewolf())
         if "terrorwolf" in self.enabledRoles:
             for i in range(0, 40):
                 werewolfRoleList.append(Terrorwolf())

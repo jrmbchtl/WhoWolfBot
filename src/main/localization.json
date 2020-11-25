@@ -35,7 +35,8 @@
       "terrorwolf": "Terrorwolf",
       "wolfdog": "Wolfshund",
       "badassbastard": "Harter Bursche",
-      "redhat": "Rotkäppchen"
+      "redhat": "Rotkäppchen",
+      "whitewolf": "Weißer Wolf"
     },
     "accuseOptionsPre": {
       "0": "",
@@ -275,6 +276,19 @@
         "Die Werwölfe veranstalten zur Feier des Tages einen Fest und verspeißen ",
         "genussvoll den letzten Dorfbewohner."
       ]
+    },
+    "whitewolfWin": {
+      "0": "Der weiße Werwolf gewinnt.",
+      "1": "Es war ein langer Kampf, aber der weißse Werwolf hat sich durchgesetzt.",
+      "2": "Es lebt nur noch der weiße Werwolf in Düsterwald!",
+      "3": ["Es gibt keine Dorfbewohner und keine normalen Werwölfe mehr, die von den dem weißen Werwolf verspeißt ",
+        "werden können."],
+      "4": "Es wird wieder friedlich in Düsterwald, da hier jetzt nur noch ein einsamer weißer Werwolf lebt.",
+      "5": "Der weiße Werwolf hat gesiegt.",
+      "6": "Der weiße Werwolf hat seine Dominanz bewiesen.",
+      "7": ["Der weiße Werwolf ist in Düsterwald anscheinend die stärkste Rasse. Zu dumm, dass er sich alleine nicht ",
+        "fortpflanzen kann..."],
+      "8": "Der weiße Werwolf feiert den Sieg der Einsamkeit in Düsterwald"
     },
     "villageWin": {
       "0": "Das Dorf gewinnt.",
@@ -963,6 +977,47 @@
         "geschützt wird."],
       "5": "Du bist das Rotkäppchen, welches nicht durch Werwolfangriffe sterben kann, solange der Jäger lebt."
     },
+    "whitewolfDescription": {
+      "0": [
+        "Du bist der weiße Werwolf. Dieser erwacht normal mit den Werwölfen, erhält aber jede zweite Nacht die ",
+        "Möglichkeit, einen anderen Werwolf zu ermorden. Dein Ziel ist es, als Einziger zu überleben."
+      ],
+      "1": [
+        "Dein Charakter ist der weiße Werwolf. Du tarnst dich als regulärer Werwolf, willst jedoch ganz ",
+        "Düsterwald für  dich alleine. Dies kannst du erreichen, da du jede zweite Nacht die Möglichkeit erhälst, ",
+        "einen Werwolf zu töten."
+      ],
+      "2": [
+        "Das Dorf denkt, du wärst ein Dorfbewohner. Deine Freunde denken, du wärst ein Werwolf, aber du bist ein ",
+        "weißer Werwolf. Du bist gerne einsam, willst aber im Dorf bleiben: Indem du jede zweite Nacht einen ",
+        "Werwolf \"verschwinden\" lassen kannst, kannst du dein Ziel erreichen, der letzte Überlebende Düsterwalds ",
+        "zu sein."
+      ],
+      "3": [
+        "Du bist der weiße Werwolf. Deine Blutlust endet nichgt darin, jede Nacht ein Opfer zu fressen, du ",
+        "willst mehr Blut! Um zu gewinnen, musst du alleine überleben. Um dieses Ziel schneller zu erreichen, kanst ",
+        "du jede zweite Nacht noch einen Werwolf verspeisen."
+      ],
+      "4": [
+        "Dein Charakter ist der weiße Werwolf. Dieser bekommt jede zweite Nacht Hunger auf Werwolf, um der Letzte ",
+        "Überlebde in Düsterwald zu sein."
+      ],
+      "5": [
+        "Du bist der gefürchtete weiße Werwolf: Nicht nur, weil du jede Nacht mit deinen Freunden einen ",
+        "Dorfbewohner zerfleischt, sondern auch weil du jede zweite Nacht zusätzlich ausversehen einen Werwolf mit ",
+        "einem Dorfbewohner verwechselst und er auf deinem Esstisch landet. Für dich gibt es nur einen Weg, diesem ",
+        "Schicksal zu entkommen: Ausnahmslos alle anderen Töten."
+      ]
+    },
+    "whitewolfQuestion": {
+      "0": "Welcher Werwolf muss heute Nacht leiden?",
+      "1": "An wem lebst du deinen Kanibalismus aus?.",
+      "2": "Welchen deiner Freunde hast du lediglich zum Fressen gern?",
+      "3": "Wer muss heute Nacht das Rudel verlassen?",
+      "4": "Wer darf morgen nicht mehr aufwachen?",
+      "5": "Welcher der Werwölfe ist zu auffällig?",
+      "6": "Wessen Werwolfsfratze kannst du nicht leiden?"
+    },
     "changelog": [
       "Version 2.0.8\n- Bot wehrt sich nun gegen Spam und spricht auch Englisch\n\n",
       "Version 2.0.7\n- Backend Änderung von Netzwerk zu Queues\n\n",
@@ -1012,7 +1067,8 @@
       "terrorwolf": "Terrorwolf",
       "wolfdog": "Wolfdog",
       "badassbastard": "Badass Bastard",
-      "redhat": "Little Red Riding Hood"
+      "redhat": "Little Red Riding Hood",
+      "whitewolf": "White Wolf"
     },
     "accuseOptionsPre": {
       "0": "accuse ",
@@ -1233,6 +1289,18 @@
       "7": "The werewolves are apparently the stronger race in town.",
       "8": "After the death of the last villager the werewolves now have their peace.",
       "9": "The werewolves organize a feast to celebrate the day and eat the last villager."
+    },
+    "whitewolfWin": {
+      "0": "The white werewolf wins.",
+      "1": "It was a long fight, but the white werewolf prevailed.",
+      "2": "Only the white werewolf remains in town!",
+      "3": "There are no more villagers nor werewolves that can be eaten by the white werewolf.",
+      "4": "Peace returns to town, since there is only the white werewolf left here.",
+      "5": "The white werewolf has won.",
+      "6": "The white werewolf has proven his dominance.",
+      "7": ["The white werewolf is apparently the strongest race in town. Too bad that it cannot reproduce himself ",
+        "alone..."],
+      "8": "The white werewolf celebrates the victory of loneliness in town."
     },
     "villageWin": {
       "0": "The villagers win.",
@@ -1825,13 +1893,52 @@
         "the hunter during his lifetime."],
       "5": "You are Little Red Riding Hood, which cannot die by werewolf attacks as long as the hunter lives."
     },
+    "whitewolfDescription": {
+      "0": [
+        "You are the white werewolf. This one wakes up normally with the other werewolves, but every second night he ",
+        "gets the opportunity to kill another werewolf. Your goal is to be the last man standing."
+      ],
+      "1": [
+        "Your character is the white werewolf. You disguise yourself as a regular werewolf, but you want all the ",
+        "village for yourself. You can achieve this because every other night you get the opportunity to murder ",
+        "a werewolf."
+      ],
+      "2": [
+        "The village thinks you are a villager. Your friends think you are a werewolf, but you are a white werewolf. ",
+        "You like to be lonely, but you want to stay in the village: By making a werewolf \"disappear\" every other ",
+        "night, you can achieve your goal of being the last survivor of in town."
+      ],
+      "3": [
+        "You are the white werewolf. Your bloodlust does not stop when eating a villager every night, you want more ",
+        "blood! To win, you must survive alone. To reach this goal faster, you can eat another werewolf every other ",
+        "night."
+      ],
+      "4": [
+        "Your character is the white werewolf. You get hungry for werewolf every second night to be the last survivor ",
+        "in town."
+      ],
+      "5": [
+        "You are the legendary white werewolf: Not only because you and your friends mow up a villager every night, ",
+        "but also because every other night you accidentally mix up a werewolf with a villager and he ends up on your ",
+        "dining table. There is only one way for you to escape this fate: killing all others without any exceptions."
+      ]
+    },
+    "whitewolfQuestion": {
+      "0": "Which werewolf must suffer tonight?",
+      "1": "Who will die to your cannibalism?",
+      "2": "Which of your friends do you only like to eat?",
+      "3": "Who must leave the pack tonight?",
+      "4": "Who may not wake up tomorrow?",
+      "5": "Which of the werewolves is too flashy?",
+      "6": "Whose werewolf face do you hate?"
+    },
     "changelog": [
       "Version 2.0.8\n- Added localization and spam protection\n\n",
       "Version 2.0.7\n- Backend changes from network to queue\n\n",
       "Version 2.0.6.2\n- Hotfix for adding/removing roles\n\n",
       "Version 2.0.6.1\n- Fixed some spelling issues\n\n",
       "Version 2.0.6:\n- Fixed problems with simultanious button presses\n\n",
-      "Version 2.0.5:\n- Cancaling a game removes all messages from that game\n- only the admin can cancel a game\n\n",
+      "Version 2.0.5:\n- Canceling a game removes all messages from that game\n- only the admin can cancel a game\n\n",
       "Version 2.0.4.1:\n- kleiner hotfix für den Server\n\n",
       "Version 2.0.4:\n- Games continue even after a softcrash\n\n",
       "Version 2.0.3:\n- roles can be added/removed\n\n",

@@ -7,6 +7,7 @@ from src.systemtest.tests.PattTest import PattTest
 from src.systemtest.tests.RedhatTest import RedhatTest
 from src.systemtest.tests.SeherinTest import SeherinTest
 from src.systemtest.tests.TerrorwolfTest import TerrorwolfTest
+from src.systemtest.tests.WhiteWolfTest import WhiteWolfTest
 
 
 class SystemTestRegistration(object):
@@ -24,3 +25,4 @@ class SystemTestRegistration(object):
         self.main.register(SeherinTest(self.main.getSc()))
         self.main.register(RedhatTest(self.main.getSc()))
         self.main.register(TerrorwolfTest(self.main.getSc()))
+        self.main.register(WhiteWolfTest(self.main.getSc()))

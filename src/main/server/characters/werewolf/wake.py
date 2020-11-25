@@ -11,7 +11,7 @@ def wake(gameData: GameData):
     optionIndexList = []
     for player in gameData.getAlivePlayerList():
         c: Character = gameData.getAlivePlayers()[player].getCharacter()
-        if c.getTeam() == Types.TeamType.WEREWOLF:
+        if c.getTeam() == Types.TeamType.WEREWOLF or c.getTeam() == Types.TeamType.WHITEWOLF:
             werewolfList.append(player)
         name = gameData.getAlivePlayers()[player].getName()
         index, option = werewolfOptions(gameData, name)
