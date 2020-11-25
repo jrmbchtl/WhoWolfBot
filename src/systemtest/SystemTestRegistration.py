@@ -22,5 +22,5 @@ class SystemTestRegistration(object):
         self.main.register(PattTest(self.main.getSc()))
         self.main.register(DoublePattTest(self.main.getSc()))
         self.main.register(SeherinTest(self.main.getSc()))
-        self.main.register(TerrorwolfTest(self.main.getSc()))
         self.main.register(RedhatTest(self.main.getSc()))
+        self.main.register(TerrorwolfTest(self.main.getSc()))
