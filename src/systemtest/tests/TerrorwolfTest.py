@@ -10,88 +10,88 @@ class TerrorwolfTest(Systemtest):
         gameId = self.initGame(6, 42, 1)
 
         self.assertReceiveDict({"eventType": "choiceField", "choiceField":
-            {"text": "M\u00f6chtest du Menschen fressen oder von Menschen gelyncht werden?",
-             "options": ["Blutlust entwickeln", "harmloser Scho\u00dfhund werden"], "messageId": 0},
+            {"text": "Welche Gene setzen sich in dir durch?",
+             "options": ['dem Dorf den Rücken zuwenden', 'Humanität zeigen'], "messageId": 0},
             "mode": "write", "target": 3, "highlight": False, "gameId": gameId, 'lang': 'DE'})
 
         self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 0},
                           "fromId": 3, "gameId": gameId})
 
         self.assertReceiveDict({"eventType": "message", "message":
-            {"text": ("M\u00f6chtest du Menschen fressen oder von Menschen gelyncht werden?\n\n"
-                      "Du hast Blutlust enwickelt."),
+            {"text": ("Welche Gene setzen sich in dir durch?\n\n"
+                      "Du hast dem Dorf den Rücken zugewendet."),
              "messageId": 32}, "mode": "edit", "target": 3, "highlight": False, "gameId": gameId,
             'lang': 'DE'})
         self.assertReceiveDict({"eventType": "choiceField", "choiceField":
-            {"text": "Die Werw\u00f6lfe suchen ihr Opfer aus.", "options":
-                ["Player 1 mit einer Torte verwechseln", "Player 2 durch den Fleischwolf jagen",
-                 "Player 3 zu Salami verarbeiten", "Player 4 zu Gulasch verarbeiten",
-                 "Player 5 versnacken", "Player 6 rei\u00dfen", "niemanden rei\u00dfen"],
+            {"text": "Frischer Mensch - kommt auf den Tisch - so saftig süüüüüüüüüüüüüüüß!",
+             "options":
+                ['Player 1 durch den Fleischwolf jagen', 'Player 2 zu Salami verarbeiten',
+                 'Player 3 zu Gulasch verarbeiten', 'Player 4 versnacken', 'Player 5 reißen',
+                 'Player 6 reißen', 'niemanden reißen'],
              "messageId": 0}, "mode": "write", "target": 3, "highlight": False, "gameId": gameId,
             'lang': 'DE'})
         self.assertReceiveDict({"eventType": "choiceField", "choiceField":
-            {"text": "Die Werw\u00f6lfe suchen ihr Opfer aus.", "options":
-                ["Player 1 mit einer Torte verwechseln", "Player 2 durch den Fleischwolf jagen",
-                 "Player 3 zu Salami verarbeiten", "Player 4 zu Gulasch verarbeiten",
-                 "Player 5 versnacken", "Player 6 rei\u00dfen", "niemanden rei\u00dfen"],
+            {"text": "Frischer Mensch - kommt auf den Tisch - so saftig süüüüüüüüüüüüüüüß!",
+             "options":
+             ['Player 1 durch den Fleischwolf jagen', 'Player 2 zu Salami verarbeiten',
+              'Player 3 zu Gulasch verarbeiten', 'Player 4 versnacken', 'Player 5 reißen',
+              'Player 6 reißen', 'niemanden reißen'],
              "messageId": 0}, "mode": "write", "target": 4, "highlight": False, "gameId": gameId,
             'lang': 'DE'})
         self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 3},
                           "fromId": 3, "gameId": gameId})
         self.assertReceiveDict({"eventType": "choiceField", "choiceField":
-            {"text": ("Die Werw\u00f6lfe suchen ihr Opfer aus.\n\n"
-                      "Player 3 schlägt vor Player 4 zu Gulasch zu verarbeiten.\n"), "options":
-                ["Player 1 mit einer Torte verwechseln", "Player 2 durch den Fleischwolf jagen",
-                 "Player 3 zu Salami verarbeiten", "Player 4 zu Gulasch verarbeiten",
-                 "Player 5 versnacken", "Player 6 rei\u00dfen", "niemanden rei\u00dfen"],
+            {"text": ("Frischer Mensch - kommt auf den Tisch - so saftig süüüüüüüüüüüüüüüß!\n\n"
+                      "Player 3 schlägt vor Player 4 zu versnacken.\n"), "options":
+                ['Player 1 durch den Fleischwolf jagen', 'Player 2 zu Salami verarbeiten',
+                 'Player 3 zu Gulasch verarbeiten', 'Player 4 versnacken', 'Player 5 reißen',
+                 'Player 6 reißen', 'niemanden reißen'],
              "messageId": 34}, "mode": "edit", "target": 3, "highlight": False, "gameId": gameId,
             'lang': 'DE'})
         self.assertReceiveDict({"eventType": "choiceField", "choiceField":
-            {"text": ("Die Werw\u00f6lfe suchen ihr Opfer aus.\n\n"
-                      "Player 3 schlägt vor Player 4 zu Gulasch zu verarbeiten.\n"), "options":
-                ["Player 1 mit einer Torte verwechseln", "Player 2 durch den Fleischwolf jagen",
-                 "Player 3 zu Salami verarbeiten", "Player 4 zu Gulasch verarbeiten",
-                 "Player 5 versnacken", "Player 6 rei\u00dfen", "niemanden rei\u00dfen"],
+            {"text": ("Frischer Mensch - kommt auf den Tisch - so saftig süüüüüüüüüüüüüüüß!\n\n"
+                      "Player 3 schlägt vor Player 4 zu versnacken.\n"), "options":
+                ['Player 1 durch den Fleischwolf jagen', 'Player 2 zu Salami verarbeiten',
+                 'Player 3 zu Gulasch verarbeiten', 'Player 4 versnacken', 'Player 5 reißen',
+                 'Player 6 reißen', 'niemanden reißen'],
              "messageId": 35}, "mode": "edit", "target": 4, "highlight": False, "gameId": gameId,
             'lang': 'DE'})
         self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 3},
                           "fromId": 4, "gameId": gameId})
         self.assertReceiveDict({"eventType": "message", "message":
-            {"text": ("Die Werw\u00f6lfe suchen ihr Opfer aus.\n\n"
-                      "Player 3 schlägt vor Player 4 zu Gulasch zu verarbeiten.\nPlayer 4 schlägt "
-                      "vor Player 4 zu Gulasch zu verarbeiten.\n\nDie Werwölfe haben beschlossen, "
-                      "Player 4 zu Gulasch zu verarbeiten."),
+            {"text": ("Frischer Mensch - kommt auf den Tisch - so saftig süüüüüüüüüüüüüüüß!\n\n"
+                      "Player 3 schlägt vor Player 4 zu versnacken.\nPlayer 4 schlägt vor Player 4 "
+                      "zu versnacken.\n\nDie Werwölfe haben beschlossen, Player 4 zu versnacken."),
              "messageId": 34}, "mode": "edit", "target": 3, "highlight": False, "gameId": gameId,
             'lang': 'DE'})
         self.assertReceiveDict({"eventType": "message", "message":
-            {"text": ("Die Werw\u00f6lfe suchen ihr Opfer aus.\n\n"
-                      "Player 3 schlägt vor Player 4 zu Gulasch zu verarbeiten.\nPlayer 4 schlägt "
-                      "vor Player 4 zu Gulasch zu verarbeiten.\n\nDie Werwölfe haben beschlossen, "
-                      "Player 4 zu Gulasch zu verarbeiten."),
+            {"text": ("Frischer Mensch - kommt auf den Tisch - so saftig süüüüüüüüüüüüüüüß!\n\n"
+                      "Player 3 schlägt vor Player 4 zu versnacken.\nPlayer 4 schlägt vor Player 4 "
+                      "zu versnacken.\n\nDie Werwölfe haben beschlossen, Player 4 zu versnacken."),
              "messageId": 35}, "mode": "edit", "target": 4, "highlight": False, "gameId": gameId,
             'lang': 'DE'})
         self.assertReceiveDict({"eventType": "choiceField", "choiceField":
             {"text": ("Player 4 wurde diese Nacht von den Werw\u00f6lfen erwischt. M\u00f6chtest "
                       "du diese Person retten?"), "options":
-                ["Wieder zusammenn\u00e4hen", "Sterben lassen"], "messageId": 0},
-            "mode": "write", "target": 1, "highlight": False, "gameId": gameId, 'lang': 'DE'})
+                ['Wiederbeleben', 'Sterben lassen'], "messageId": 0},
+            "mode": "write", "target": 2, "highlight": False, "gameId": gameId, 'lang': 'DE'})
         self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 1},
-                          "fromId": 1, "gameId": gameId})
+                          "fromId": 2, "gameId": gameId})
         self.assertAnyMessage()
         self.assertReceiveDict({"eventType": "message", "message":
             {"text": "Du hast Player 4 sterben gelassen.", "messageId": 0},
-            "mode": "write", "target": 1, "highlight": False, "gameId": gameId, 'lang': 'DE'})
+            "mode": "write", "target": 2, "highlight": False, "gameId": gameId, 'lang': 'DE'})
         self.assertReceiveDict({"eventType": "choiceField", "choiceField":
             {"text": "Willst du noch jemanden t\u00f6ten?", "options":
-                ["Player 2 ausversehen Gift in das Getr\u00e4nk mischen",
-                 "Player 3 ausversehen eine \u00dcberdosis Morphium verabreichen",
-                 "Player 4 ausversehen Gift in das Getr\u00e4nk mischen", "Player 5 vergiften",
-                 "Player 6 einen Kugelfisch falsch zubereiten",
-                 "Niemanden ausversehen eine \u00dcberdosis Morphium verabreichen"],
-             "messageId": 0}, "mode": "write", "target": 1, "highlight": False, "gameId": gameId,
+                ['Player 1 ausversehen Gift in das Getränk mischen',
+                 'Player 3 ausversehen eine Überdosis Morphium verabreichen',
+                 'Player 4 ausversehen Gift in das Getränk mischen', 'Player 5 vergiften',
+                 'Player 6 einen Kugelfisch falsch zubereiten',
+                 'Niemanden ausversehen eine Überdosis Morphium verabreichen'],
+             "messageId": 0}, "mode": "write", "target": 2, "highlight": False, "gameId": gameId,
             'lang': 'DE'})
         self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 5},
-                          "fromId": 1, "gameId": gameId})
+                          "fromId": 2, "gameId": gameId})
         self.assertAnyMessage()
         self.assertAnyMessage()
         self.sc.sendJSON({"commandType": "reply", "reply": {"choiceIndex": 0},

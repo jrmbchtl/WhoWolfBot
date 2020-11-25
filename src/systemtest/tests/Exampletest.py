@@ -27,8 +27,10 @@ class Exampletest(Systemtest):
 
         self.assertReceiveDict({"eventType": "choiceField", "choiceField":
             {"text": "Hier k\u00f6nnen Rollen hinzugef\u00fcgt oder entfernt werden",
-             "options": ['Jäger deaktivieren', 'Seherin deaktivieren', 'Terrorwolf deaktivieren',
-                         'Hexe deaktivieren', 'Wolfshund deaktivieren'],
+             "options": ['Harter Bursche hinzufügen', 'Jäger deaktivieren',
+                         'Rotkäppchen hinzufügen', 'Seherin deaktivieren',
+                         'Terrorwolf deaktivieren', 'Weißer Wolf hinzufügen', 'Hexe deaktivieren',
+                         'Wolfshund deaktivieren'],
              "messageId": 0}, "mode": "write", "target": 42, "highlight": False, "gameId": 1,
             'lang': 'DE'})
         self.sc.sendJSON({"commandType": "startGame", "fromId": 42, "gameId": 1})

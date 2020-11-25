@@ -22,6 +22,7 @@ class GameData(object):
         self.deleteQueue = deleteQueue
         self.lang = "EN"
         self.werewolfTarget = None
+        self.whitewolfTarget = None
         self.witchTarget = None
         self.recList = []
         self.numberSent = 0
@@ -177,11 +178,17 @@ class GameData(object):
     def getMenuMessageId(self):
         return self.menuMessageId
 
-    def setWerewolfTarget(self, werwolfTarget):
-        self.werewolfTarget = werwolfTarget
+    def setWerewolfTarget(self, werewolfTarget):
+        self.werewolfTarget = werewolfTarget
 
     def getWerewolfTarget(self):
         return self.werewolfTarget
+
+    def setWhitewolfTarget(self, whitewolfTarget):
+        self.whitewolfTarget = whitewolfTarget
+
+    def getWhitewolfTarget(self):
+        return self.whitewolfTarget
 
     def setWitchTarget(self, witchTarget):
         self.witchTarget = witchTarget
