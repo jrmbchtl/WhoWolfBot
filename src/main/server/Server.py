@@ -7,6 +7,7 @@ from .GameData import GameData
 from .Player import Player
 from .characters import Teams
 from .characters.Types import CharacterType
+from .characters.village.BadassBastard import BadassBastard
 from .characters.village.Villager import Villager, Villagerf
 from .characters.village.Witch import Witch
 from .characters.village.Hunter import Hunter
@@ -26,7 +27,7 @@ class Server(object):
                                  gameId=gameId, menuMessageId=None, deleteQueue=deleteQueue)
         self.accusedDict = {}
         self.enabledRoles = ["wolfdog", "terrorwolf", "seer", "witch", "hunter"]
-        self.disabledRoles = []
+        self.disabledRoles = ["badassbastard"]
         self.settingsMessageId = None
 
     def start(self):
@@ -176,7 +177,7 @@ class Server(object):
         dorfRoleList = self.getVillagerRoleList()
 
         unique = [CharacterType.HUNTER, CharacterType.SEER, CharacterType.WITCH,
-                  CharacterType.WOLFDOG, CharacterType.TERRORWOLF]
+                  CharacterType.WOLFDOG, CharacterType.TERRORWOLF, CharacterType.BADDASSBASTARD]
 
         group_mod = self.gameData.random() * 0.2 + 0.9
         werewolfAmount = int(round(len(playerList) * (1.0 / 3.5) * group_mod, 0))
@@ -217,7 +218,11 @@ class Server(object):
         if self.gameData.getWerewolfTarget() is not None:
             werewolfTargetId = self.gameData.getWerewolfTarget()
             werewolfTarget = self.gameData.getAlivePlayers()[werewolfTargetId].getCharacter()
-            werewolfTarget.kill(self.gameData, werewolfTargetId)
+            if werewolfTarget.getRole() == CharacterType.BADDASSBASTARD \
+                    and werewolfTarget.hasSecondLive():
+                werewolfTarget.removeSecondLive()
+            else:
+                werewolfTarget.kill(self.gameData, werewolfTargetId)
         if self.gameData.getWitchTarget() is not None:
             witchTargetId = self.gameData.getWitchTarget()
             witchTarget = self.gameData.getAlivePlayers()[witchTargetId].getCharacter()
@@ -310,7 +315,6 @@ class Server(object):
             playerName = self.gameData.getAlivePlayers()[player].getName()
             choice, option = self.voteOptions(playerName)
             idToChoice[player] = choice
-            option = playerName + option
             options.append(option)
             indexToId[index] = player
         self.gameData.sendJSON(Factory.createChoiceFieldEvent(
@@ -450,6 +454,9 @@ class Server(object):
         if "witch" in self.enabledRoles:
             for i in range(0, 28):
                 villageRoleList.append(Witch())
+        if "badassbastard" in self.enabledRoles:
+            for i in range(0, 28):
+                villageRoleList.append(BadassBastard())
         return villageRoleList
 
 

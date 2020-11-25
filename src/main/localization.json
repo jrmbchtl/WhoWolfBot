@@ -2,8 +2,10 @@
   "DE": {
     "languageQuestion": "In welcher Sprache möchten Sie dass Spiel spielen",
     "warnSpamPre": "",
-    "warnSpamPost": [", es wäre nett, wenn du den Gamemaster  nicht so quälen würdest, sonst hat er evtl. keine Lust ",
-      "mehr, mit dir zu reden."],
+    "warnSpamPost": [
+      ", es wäre nett, wenn du den Gamemaster  nicht so quälen würdest, sonst hat er evtl. keine Lust ",
+      "mehr, mit dir zu reden."
+    ],
     "banSpamPre": "Der Gamemaster verbannt ",
     "banSpamPost": " auf Lebenszeizeit!",
     "welcome": "Herzlich willkommen beim Werwolf\\-Bot\\!",
@@ -31,7 +33,8 @@
       "hunter": "Jäger",
       "seer": "Seherin",
       "terrorwolf": "Terrorwolf",
-      "wolfdog": "Wolfshund"
+      "wolfdog": "Wolfshund",
+      "badassbastard": "Harter Bursche"
     },
     "accuseOptionsPre": {
       "0": "",
@@ -767,7 +770,7 @@
       "9": "Die Werwolfsmägen knurren vor Hunger - Zeit, sich etwas zu Essen zu suchen!",
       "10": "Frischer Mensch - kommt auf den Tisch - so saftig süüüüüüüüüüüüüüüß!"
     },
-     "werewolfOptionsPre": {
+    "werewolfOptionsPre": {
       "0": "",
       "1": "",
       "2": "",
@@ -923,6 +926,30 @@
       "5": "Du ziehst die Demokratie der Gewalt vor.",
       "6": "Du zeigst Humanität."
     },
+    "bbDescription": {
+      "0": "Du bist der Harte Bursche. Der Harte Bursche überlebt den ersten Werwolf-Angriff.",
+      "1": [
+        "Du bist ein harter Bursche. Also so richtig hart. Du überlebst sogar einen Werwolfangriff. Aber nur den ",
+        "ersten."
+      ],
+      "2": [
+        "Deine Rolle ist der Harte Bursche. Dieser überlebt durch seine männliche Härte und Kraft den ersten ",
+        "Werwolfangriff."
+      ],
+      "3": [
+        "Dein Charakter ist der Harte Bursche. Dieser hat die Fähigkeit, sich gegen den ersten Werwolfangriff zu ",
+        "verteidigen. Gegen andere Gefahren wie die Hexe oder die Hinrichtung hilft deine Härte aber Nichts."
+      ],
+      "4": [
+        "Du bist ein harter Bursche. Muskeln aus Stahl, breiter als der Türsteher. Damit kannst du den ersten ",
+        "Angriff der Werwölfe erfolgreich abwenden."
+      ],
+      "5": [
+        "Du bist ein harter Bursche. Nein, du bist DER Harte Bursche von Düsterwald. Hart genug, um den ersten ",
+        "Werwolfangriff zu überleben, aber nicht hart genug, um dem Gift der Hexe oder der Hinrichtung des Dorfes zu ",
+        "standzuhalten."
+      ]
+    },
     "changelog": [
       "Version 2.0.8\n- Bot wehrt sich nun gegen Spam und spricht auch Englisch\n\n",
       "Version 2.0.7\n- Backend Änderung von Netzwerk zu Queues\n\n",
@@ -946,7 +973,7 @@
     "banSpamPre": "",
     "banSpamPost": " was banned by the Gamemaster for all eternity!",
     "welcome": "Welcome to the Werewolf\\-Bot\\!",
-    "privateNotAllowed": "It doesn't make sense to player a multiplayer game alone!",
+    "privateNotAllowed": "It doesn't make sense to play a multiplayer game alone!",
     "cancel": "Cancel",
     "join": "Join/Leave",
     "start": "Start",
@@ -970,7 +997,8 @@
       "hunter": "Hunter",
       "seer": "Seer",
       "terrorwolf": "Terrorwolf",
-      "wolfdog": "Wolfdog"
+      "wolfdog": "Wolfdog",
+      "badassbastard": "Badass Bastard"
     },
     "accuseOptionsPre": {
       "0": "accuse ",
@@ -1749,6 +1777,26 @@
       "4": "You have hematophobia.",
       "5": "You prefer democracy over violence.",
       "6": "You show humanity."
+    },
+    "bbDescription": {
+      "0": "You are the badass bastard. The badass bastard survives the first attack of the werewolves.",
+      "1": [
+        "You are a badass bastard. You're a real badass bastard. You even survive a werewolf attack. But only the ",
+        "first one."
+      ],
+      "2": "Your role is the badass bastard. He survives the first werewolf attack by his male toughness and strength.",
+      "3": [
+        "Your character is the badass bastard. He has the ability to defend himself against the first werewolf attack.",
+        "But you're not tough enough to stand against the witch or to survive the guillotine."
+      ],
+      "4": [
+        "You are a badass bastard. Muscles of steel, stronger than the bouncer. With this you can successfully fend ",
+        "off the first attack of the werewolves."
+      ],
+      "5": [
+        "You are a badass bastard. No, you're THE badass bastard in town. Hard enough to survive the first werewolf ",
+        "attack, but not hard enough to resist the witch's poison or the village's judgement."
+      ]
     },
     "changelog": [
       "Version 2.0.8\n- Added localization and spam protection\n\n",

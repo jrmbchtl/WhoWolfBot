@@ -16,5 +16,6 @@ class CharacterType(Enum):
 	VILLAGERF = 101,
 	WITCH = 3,
 	HUNTER = 102,
+	BADDASSBASTARD = 103,
 	SEER = 4,
 	NONE = 0
