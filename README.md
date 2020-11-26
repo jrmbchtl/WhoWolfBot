@@ -13,14 +13,14 @@ Terrorwolf\
 Rotkaeppchen\
 Weisser Wolf\
 Harter Bursche\
-Amor
+Amor\
+Berserker
 
 Testing:
 
 WIP:
 
 Planned:\
-Berserker\
 Terrorist\
 Superschurke\
 Kerkermeister\

@@ -1,4 +1,7 @@
 from src.systemtest.tests.BadassBastardTest import BadassBastardTest
+from src.systemtest.tests.BerserkTest1 import BerserkTest1
+from src.systemtest.tests.BerserkTest2 import BerserkTest2
+from src.systemtest.tests.BerserkTest3 import BerserkTest3
 from src.systemtest.tests.CrashTest import CrashTest
 from src.systemtest.tests.CupidTest import CupidTest
 from src.systemtest.tests.DoublePattTest import DoublePattTest
@@ -30,3 +33,6 @@ class SystemTestRegistration(object):
         self.main.register(WhiteWolfTest)
         self.main.register(CupidTest)
         self.main.register(LoveWinTest)
+        self.main.register(BerserkTest1)
+        self.main.register(BerserkTest2)
+        self.main.register(BerserkTest3)

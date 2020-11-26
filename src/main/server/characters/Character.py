@@ -37,6 +37,9 @@ class Character(object):
     def setBeloved(self, beloved):
         self.beloved = beloved
 
+    def werewolfKillAttempt(self):
+        return True
+
     def kill(self, gameData, playerId, dm=None):
         self.alive = False
         if dm is None:

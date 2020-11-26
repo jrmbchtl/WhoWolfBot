@@ -8,6 +8,7 @@ from .Player import Player
 from .characters import Teams
 from .characters.Types import CharacterType
 from .characters.village.BadassBastard import BadassBastard
+from .characters.village.Berserk import Berserk
 from .characters.village.Cupid import Cupid
 from .characters.village.Redhat import Redhat
 from .characters.village.Villager import Villager, Villagerf
@@ -30,7 +31,7 @@ class Server(object):
                                  gameId=gameId, menuMessageId=None, deleteQueue=deleteQueue)
         self.accusedDict = {}
         self.enabledRoles = ["wolfdog", "terrorwolf", "seer", "witch", "hunter"]
-        self.disabledRoles = ["badassbastard", "redhat", "whitewolf", "cupid"]
+        self.disabledRoles = ["badassbastard", "redhat", "whitewolf", "cupid", "berserk"]
         self.settingsMessageId = None
 
     def start(self):
@@ -181,7 +182,7 @@ class Server(object):
 
         unique = [CharacterType.HUNTER, CharacterType.SEER, CharacterType.WITCH,
                   CharacterType.WOLFDOG, CharacterType.TERRORWOLF, CharacterType.BADDASSBASTARD,
-                  CharacterType.REDHAT, CharacterType.CUPID]
+                  CharacterType.REDHAT, CharacterType.CUPID, CharacterType.BERSERK]
 
         group_mod = self.gameData.random() * 0.2 + 0.9
         werewolfAmount = int(round(len(playerList) * (1.0 / 3.5) * group_mod, 0))
@@ -226,6 +227,7 @@ class Server(object):
         self.killWerewolfTarget()
         self.killWitchTarget()
         self.killWhitewolfTarget()
+        self.killBerserkTarget()
 
     def killWerewolfTarget(self):
         if self.gameData.getWerewolfTarget() is not None:
@@ -238,7 +240,7 @@ class Server(object):
                 elif werewolfTarget.getRole() == CharacterType.REDHAT \
                         and not werewolfTarget.canBeKilled(self.gameData):
                     pass
-                else:
+                elif werewolfTarget.werewolfKillAttempt():
                     werewolfTarget.kill(self.gameData, werewolfTargetId)
                 self.gameData.setWerewolfTarget(None)
 
@@ -257,6 +259,13 @@ class Server(object):
                 whitewolfTarget = self.gameData.getAlivePlayers()[whitewolfTargetId].getCharacter()
                 whitewolfTarget.kill(self.gameData, whitewolfTargetId)
                 self.gameData.setWhitewolfTarget(None)
+
+    def killBerserkTarget(self):
+        for targetId in self.gameData.getBerserkTarget():
+            if targetId in self.gameData.getAlivePlayers():
+                target = self.gameData.getAlivePlayers()[targetId].getCharacter()
+                target.kill(self.gameData, targetId)
+                self.gameData.clearBerserkTarget()
 
     def accuseAll(self):
         self.accusedDict = {}
@@ -516,6 +525,9 @@ class Server(object):
         if "cupid" in self.enabledRoles:
             for i in range(0, 28):
                 villageRoleList.append(Cupid())
+        if "berserk" in self.enabledRoles:
+            for i in range(0, 28):
+                villageRoleList.append(Berserk())
         return villageRoleList
 
 

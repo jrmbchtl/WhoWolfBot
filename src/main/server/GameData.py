@@ -24,6 +24,7 @@ class GameData(object):
         self.werewolfTarget = None
         self.whitewolfTarget = None
         self.witchTarget = None
+        self.berserkTarget = []
         self.recList = []
         self.numberSent = 0
         if "numberSent" in dc["newGame"] and "recList" in dc["newGame"]:
@@ -195,6 +196,15 @@ class GameData(object):
 
     def getWitchTarget(self):
         return self.witchTarget
+
+    def addBerserkTarget(self, target):
+        self.berserkTarget.append(target)
+
+    def clearBerserkTarget(self):
+        self.berserkTarget = []
+
+    def getBerserkTarget(self):
+        return self.berserkTarget
 
     def setLang(self, lang):
         self.lang = lang

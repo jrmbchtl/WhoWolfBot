@@ -17,6 +17,7 @@ class CharacterType(Enum):
 	WHITEWOLF = 2,
 	WITCH = 3,
 	SEER = 4,
+	BERSERK = 5,
 	VILLAGER = 100,
 	VILLAGERF = 101,
 	HUNTER = 102,

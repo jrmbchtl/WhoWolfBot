@@ -38,7 +38,8 @@
       "badassbastard": "Harter Bursche",
       "redhat": "Rotkäppchen",
       "whitewolf": "Weißer Wolf",
-      "cupid": "Amor"
+      "cupid": "Amor",
+      "berserk": "Berserker"
     },
     "accuseOptionsPre": {
       "0": "",
@@ -1100,6 +1101,77 @@
       "6": " will nicht ohne Liebe leben.",
       "7": " hält es alleine nicht mehr aus und begeht Suizid."
     },
+    "berserkDescription": {
+      "0": [
+        "Du bist der Berserker. Der Berserker hat ein Extraleben gegen Werwolfangriffe. Zusätzlich kann er jede ",
+        "Nacht einen Spieler töten, verliert dabei aber auch selbst ein Leben!"
+      ],
+      "1": [
+        "Du bist ein Berserker, welcher den ersten Werwolfangriff überlebt. Außerdem kann er jede Nacht jemanden ",
+        "töten, allerdings für einen Preis: Für seinen ersten Mord verliert er den Schutz vor den Werölfen, nach ",
+        "seinem zweiten Mord stirbt er vor Erschöpfung."
+      ],
+      "2": [
+        "Du bist ein Berserker. Du kämpfst in deinem Rausch. Du bist unverwundbar. Naja so fast. Du hast ein ",
+        "Extraleben gegen Werwolfangriffe. Und wenn du willst, kannst du auch jemanden mit deinen Äxten zerstückeln, ",
+        "allerdings verlierst du dann deinen Schutz gegen die Werwölfe."
+      ],
+      "3": [
+        "Du ist ein Berserker. Ein ziemlich harter und brutaler Zeitgenosse. Du hast ein Extraleben gegen ",
+        "Werwolfangriffe und kannst jede Nacht jemanden töten. Aber Vorsicht: Es gilt Leben für Leben, für jedes Leben, ",
+        "dass du nimmst, verlierst auch du eines!"
+      ],
+      "4": [
+        "Deine Rolle ist der Berserker. Dieser hat ein Extraleben gegen Werwolfangriffe und schreckt jede Nacht ",
+        "aus seinem Schlaf hoch, mit der Möglichkeit jemanden zu töten. Allerdings verliert der Berserker für jeden ",
+        "Angriff selbst ein Leben."
+      ],
+      "5": [
+        "Du bist ein Berserker. Du versuchst, mit Brutalität Gerechtigkeit zu schaffen. Mit deiner Härte, die ",
+        "Werwölfe zu vernichten. Mit deinem Geschick, dem ersten Angriff der Werwölfe zu entkommen. Oder mit deiner ",
+        "Eiseskälte, jemanden zu ermorden. Aber kein Verbrechen, für das nicht bezahlt werden müsste! Beschließt du ",
+        "jemanden zu töten, so verlöierst du deinem Schutz gegen die Werwölfe. Und solltest du keinen Schutz mehr haben,",
+        " so stirbst du in deinem Wahn, nachdem du dein Opfer erfolgreich erschlagen hast."
+      ]
+    },
+    "berserkTwoLives": "Du hast noch 2 Leben.\n\n",
+    "berserkOneLive": "Du hast noch ein Leben.\n\n",
+    "berserkQuestion": {
+      "0": "Wen möchtest du ermorden?",
+      "1": "Wen willst du mit deinen Äxten besuchen?",
+      "2": "Wer soll morgens mit einer Axt im Kopf aufgefunden werden?",
+      "3": "Wer könnte ein Werwolf sein und muss dafür sterben?",
+      "4": "Du erhälst die Möglichkeit, jemanden zu töten. Wer wird es sein?",
+      "5": "Wer wird heute Nacht dem Berserker zum Opfer fallen?",
+      "6": "Es ist Zeit für dich, jemanden zu töten!",
+      "7": "Wer dient als Zielscheibe für dein nächtliches Axtwerfen?",
+      "8": "Wen greifst du diese Nacht im Rausch an?",
+      "9": "Wen willst du wie ein wildes Tier anfallen?"
+    },
+    "berserkResponsePre": {
+      "0": "Du hast ",
+      "1": "Der Berserker hat ",
+      "2": "Du hast ",
+      "3": "Du hast ",
+      "4": "Der Berserker hat vermutet, dass ",
+      "5": "Der Berserker hat ",
+      "6": "Der Berserker hat ",
+      "7": "Der Berserker hat ",
+      "8": "Du hast ",
+      "9": "Der Berserker hat "
+    },
+    "berserkResponsePost": {
+      "0": " ermordet.",
+      "1": " mit seinen Äxten besucht.",
+      "2": " eine Axt in den Kopf geschlagen.",
+      "3": " sterben lassen.",
+      "4": " ein Werwolf ist, kurzen Prozess gemacht und ihn schnell enthauptet.",
+      "5": " überfallen.",
+      "6": " getötet.",
+      "7": " als Zielscheibe genutzt.",
+      "8": " in deinem Rausch angegriffen.",
+      "9": " wie ein wildes Tier angefallen."
+    },
     "changelog": [
       "Version 2.1.0\n- Neue Rollen: Weißer Wolf, Rotkäppchen und Harter Bursche\n\n",
       "Version 2.0.8\n- Bot wehrt sich nun gegen Spam und spricht auch Englisch\n\n",
@@ -1153,7 +1225,8 @@
       "badassbastard": "Badass Bastard",
       "redhat": "Little Red Riding Hood",
       "whitewolf": "White Wolf",
-      "cupid": "Cupid"
+      "cupid": "Cupid",
+      "berserk": "Berserk"
     },
     "accuseOptionsPre": {
       "0": "accuse ",
@@ -2091,6 +2164,75 @@
       "5": " does not survive with a broken heart.",
       "6": " does not want to live without love.",
       "7": " can't stand the loneliness anymore and commits suicide."
+    },
+    "berserkDescription": {
+      "0": [
+        "You are the Berserk. The Berserk has an extra life against werewolf attacks. Additionally he can kill a ",
+        "player every night, but he also loses a life himself!"
+      ],
+      "1": [
+        "You are a berserk who survives the first werewolf attack. He can also kill someone every night, but for a ",
+        "price: For his first murder he loses protection from the werewolves, after his second murder he dies ",
+        "of exhaustion."
+      ],
+      "2": [
+        "You are a berserk. You fight in your ecstasy. You are invulnerable. Well, almost. You have an extra life ",
+        "against werewolf attacks. And if you want, you can also slice someone into pieces with your axes, but you ",
+        "will lose your protection against the werewolves."
+      ],
+      "3": [
+        "You are a berserk. A pretty tough and brutal companion. You have an extra life against werewolf attacks and ",
+        "can kill someone every night. But beware: It is life for life, for each life you take, you also lose one!"
+      ],
+      "4": [
+        "Your role is the berserk. You have an extra life against werewolf attacks and are waking up each night from ",
+        "your sleep with the possibility to kill someone. However, the Berserk loses a life for each attack."
+      ],
+      "5": [
+        "You are a berserk. You try to create justice with brutality. With toughness to destroy the werewolves. With ",
+        "your skill to escape the first attack of the werewolves. Or with your recklessness to murder someone. But ",
+        "no crime that doesn't have to be paid for! If you decide to kill someone, you lose your protection against ",
+        "the werewolves. And if you have no more protection, you will die in your extasy after you have successfully ",
+        "slain your victim."
+      ]
+    },
+    "berserkTwoLives": "You have 2 lives remaining.\n\n",
+    "berserkOneLive": "You have one live remaining.\n\n",
+    "berserkQuestion": {
+      "0": "Who do you want to murder?",
+      "1": "Who will you visit with your axes?",
+      "2": "Who shall be found with an axe in his head?",
+      "3": "Who could be a werewolf and must die for it?",
+      "4": "You get the opportunity to kill someone. Who will it be?",
+      "5": "Who will fall victim to the berserk tonight?",
+      "6": "It's time for you to kill someone!",
+      "7": "Who serves as a target for your nightly axe throwing?",
+      "8": "Who are you attacking in ecstasy?",
+      "9": "Who will you attack like a wild animal?"
+    },
+    "berserkResponsePre": {
+      "0": "You murdered ",
+      "1": "The berserk visited ",
+      "2": "You put an axe into ",
+      "3": "",
+      "4": "The berserk expected ",
+      "5": "The berserk assaulted ",
+      "6": "You killed ",
+      "7": "The berserk used ",
+      "8": "You attacked ",
+      "9": "The berserk attaked "
+    },
+    "berserkResponsePost": {
+      "0": ".",
+      "1": " with his axes.",
+      "2": "s head.",
+      "3": " must have been a werewolf.",
+      "4": " to be a werewolf and decapitated him quickly.",
+      "5": ".",
+      "6": ".",
+      "7": " as a target.",
+      "8": " in your ecstasy.",
+      "9": " like a wild animal.."
     },
     "changelog": [
       "Version 2.1.0\n- New roles: Little Red Riding Hood, White Wolf and Badass Bastard\n\n",
