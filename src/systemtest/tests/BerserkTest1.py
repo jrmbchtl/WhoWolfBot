@@ -61,7 +61,7 @@ class BerserkTest1(Systemtest):
         self.assertReceiveDict({'eventType': 'choiceField', 'choiceField':
             {'text': 'Du hast noch 2 Leben.\n\nWen willst du mit deinen Äxten besuchen?',
              'options': ['Player 2', 'Player 3', 'niemanden'], 'messageId': 0}, 'mode': 'write',
-             'target': 2, 'highlight': False, 'gameId': gameId, 'lang': 'DE'})
+            'target': 2, 'highlight': False, 'gameId': gameId, 'lang': 'DE'})
 
         self.sc.sendJSON({"commandType": "terminate", "fromId": 42, "gameId": gameId})
         self.clearRecBuffer()
