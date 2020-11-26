@@ -12,14 +12,14 @@ Wolfshund\
 Terrorwolf\
 Rotkaeppchen\
 Weisser Wolf\
-Harter Bursche
+Harter Bursche\
+Amor
 
 Testing:
 
 WIP:
 
-Planned:
-Amor\
+Planned:\
 Berserker\
 Terrorist\
 Superschurke\

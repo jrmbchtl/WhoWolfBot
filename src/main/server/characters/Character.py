@@ -11,6 +11,7 @@ class Character(object):
         self.alive = alive
         self.role = role
         self.team = team
+        self.beloved = None
 
     def isAlive(self):
         return self.alive
@@ -30,6 +31,12 @@ class Character(object):
     def getDescription(self, gameData):
         pass
 
+    def getBeloved(self):
+        return self.beloved
+
+    def setBeloved(self, beloved):
+        self.beloved = beloved
+
     def kill(self, gameData, playerId, dm=None):
         self.alive = False
         if dm is None:
@@ -38,6 +45,11 @@ class Character(object):
         gameData.dumpNextMessage(commandType="feedback")
         gameData.sendJSON(Factory.createMessageEvent(playerId, dm, highlight=True))
         gameData.dumpNextMessage(commandType="feedback")
+        if self.beloved is not None and self.beloved in gameData.getAlivePlayers():
+            belovedName = gameData.getAlivePlayers()[self.beloved].getName()
+            loveDm = belovedDm(gameData, belovedName)
+            gameData.getAlivePlayers()[self.beloved].getCharacter()\
+                .kill(gameData, self.beloved, loveDm)
 
     def wakeUp(self, gameData, playerId):
         pass
@@ -52,3 +64,8 @@ class Character(object):
 def deathMessage(gameData):
     dc = loc(gameData.getLang(), "deathMessage")
     return dc[str(random.randrange(0, len(dc)))]
+
+
+def belovedDm(gameData, name):
+    dc = loc(gameData.getLang(), "lovedOneKilled")
+    return name + dc[str(random.randrange(0, len(dc)))]

@@ -8,6 +8,7 @@ from .Player import Player
 from .characters import Teams
 from .characters.Types import CharacterType
 from .characters.village.BadassBastard import BadassBastard
+from .characters.village.Cupid import Cupid
 from .characters.village.Redhat import Redhat
 from .characters.village.Villager import Villager, Villagerf
 from .characters.village.Witch import Witch
@@ -29,7 +30,7 @@ class Server(object):
                                  gameId=gameId, menuMessageId=None, deleteQueue=deleteQueue)
         self.accusedDict = {}
         self.enabledRoles = ["wolfdog", "terrorwolf", "seer", "witch", "hunter"]
-        self.disabledRoles = ["badassbastard", "redhat", "whitewolf"]
+        self.disabledRoles = ["badassbastard", "redhat", "whitewolf", "cupid"]
         self.settingsMessageId = None
 
     def start(self):
@@ -180,7 +181,7 @@ class Server(object):
 
         unique = [CharacterType.HUNTER, CharacterType.SEER, CharacterType.WITCH,
                   CharacterType.WOLFDOG, CharacterType.TERRORWOLF, CharacterType.BADDASSBASTARD,
-                  CharacterType.REDHAT]
+                  CharacterType.REDHAT, CharacterType.CUPID]
 
         group_mod = self.gameData.random() * 0.2 + 0.9
         werewolfAmount = int(round(len(playerList) * (1.0 / 3.5) * group_mod, 0))
@@ -414,6 +415,14 @@ class Server(object):
             self.gameData.dumpNextMessage(commandType="feedback")
             return True
         else:
+            if len(self.gameData.getAlivePlayers()) == 2:
+                ids = self.gameData.getAlivePlayerList()
+                if self.gameData.getAlivePlayers()[ids[0]].getCharacter().getBeloved() == ids[1]:
+                    self.gameData.sendJSON(
+                        Factory.createMessageEvent(self.gameData.getOrigin(), self.loveWin(),
+                                                   highlight=True))
+                    self.gameData.dumpNextMessage()
+                    return True
             firstPlayerId = self.gameData.getAlivePlayerList()[0]
             team = self.gameData.getAlivePlayers()[firstPlayerId].getCharacter().getTeam()
             for player in self.gameData.getAlivePlayers():
@@ -463,6 +472,11 @@ class Server(object):
         choice = self.gameData.randrange(0, len(dc))
         return dc[str(choice)]
 
+    def loveWin(self):
+        dc = loc(self.gameData.getLang(), "loveWin")
+        choice = self.gameData.randrange(0, len(dc))
+        return dc[str(choice)]
+
     def getWerewolfRoleList(self, amountOfPlayers):
         werewolfRoleList = []
         for i in range(0, 40):
@@ -492,9 +506,16 @@ class Server(object):
         if "witch" in self.enabledRoles:
             for i in range(0, 28):
                 villageRoleList.append(Witch())
+
+        return self.getVillagerRoleListExtended(villageRoleList)
+
+    def getVillagerRoleListExtended(self, villageRoleList):
         if "badassbastard" in self.enabledRoles:
             for i in range(0, 28):
                 villageRoleList.append(BadassBastard())
+        if "cupid" in self.enabledRoles:
+            for i in range(0, 28):
+                villageRoleList.append(Cupid())
         return villageRoleList
 
 

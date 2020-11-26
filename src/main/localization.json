@@ -13,6 +13,7 @@
     "cancel": "Abbrechen",
     "join": "Mitspielen/Aussteigen",
     "start": "Start",
+    "and": "und",
     "roleConfig": "Hier können Rollen hinzugefügt oder entfernt werden",
     "removePre": "",
     "removePost": " deaktivieren",
@@ -36,7 +37,8 @@
       "wolfdog": "Wolfshund",
       "badassbastard": "Harter Bursche",
       "redhat": "Rotkäppchen",
-      "whitewolf": "Weißer Wolf"
+      "whitewolf": "Weißer Wolf",
+      "cupid": "Amor"
     },
     "accuseOptionsPre": {
       "0": "",
@@ -281,13 +283,17 @@
       "0": "Der weiße Werwolf gewinnt.",
       "1": "Es war ein langer Kampf, aber der weißse Werwolf hat sich durchgesetzt.",
       "2": "Es lebt nur noch der weiße Werwolf in Düsterwald!",
-      "3": ["Es gibt keine Dorfbewohner und keine normalen Werwölfe mehr, die von den dem weißen Werwolf verspeißt ",
-        "werden können."],
+      "3": [
+        "Es gibt keine Dorfbewohner und keine normalen Werwölfe mehr, die von den dem weißen Werwolf verspeißt ",
+        "werden können."
+      ],
       "4": "Es wird wieder friedlich in Düsterwald, da hier jetzt nur noch ein einsamer weißer Werwolf lebt.",
       "5": "Der weiße Werwolf hat gesiegt.",
       "6": "Der weiße Werwolf hat seine Dominanz bewiesen.",
-      "7": ["Der weiße Werwolf ist in Düsterwald anscheinend die stärkste Rasse. Zu dumm, dass er sich alleine nicht ",
-        "fortpflanzen kann..."],
+      "7": [
+        "Der weiße Werwolf ist in Düsterwald anscheinend die stärkste Rasse. Zu dumm, dass er sich alleine nicht ",
+        "fortpflanzen kann..."
+      ],
       "8": "Der weiße Werwolf feiert den Sieg der Einsamkeit in Düsterwald"
     },
     "villageWin": {
@@ -304,6 +310,18 @@
         "Die Dorfbewohner veranstalten zur Feier des Tages einen Fest und stopfen den ",
         "letzten Werwolf aus."
       ]
+    },
+    "loveWin": {
+      "0": "Das Liebespaar gewinnt.",
+      "1": "Die Liebe hat in Düsterwald gesiegt.",
+      "2": "Die Liebe bringt nun Licht nach Düsterwald!",
+      "3": "Es lebt nur noch das Liebespaar.",
+      "4": "Es wird wieder friedlich in Düsterwald, da das Liebespaar als letztes überlebt.",
+      "5": "Die Liebe bringt nun Frieden nach Düsterwald.",
+      "6": "Die Liebe hat ihre Überlegenheit demonstriert.",
+      "7": "Liebe überwindet alles.",
+      "8": "Die Liebe hat sich durchgesetzt.",
+      "9": "Das Liebespaar genießt die Ruhe zu zweit."
     },
     "deathMessage": {
       "1": " ist diese Nacht leider gestorben.",
@@ -966,15 +984,23 @@
       ]
     },
     "redhatDescription": {
-      "0": ["Du bist das Rotkäppchen. Solange der Jäger am Leben ist, bleibt das Rotkäppchen nachts immun gegen ",
-        "normale Angriffe von Werwölfen."],
-      "1": ["Deine Rolle ist das Rotkäppchen, welches nachts nicht von den Werwölfen gerissen werden kann, solange ",
-        "der Jäger noch lebt."],
+      "0": [
+        "Du bist das Rotkäppchen. Solange der Jäger am Leben ist, bleibt das Rotkäppchen nachts immun gegen ",
+        "normale Angriffe von Werwölfen."
+      ],
+      "1": [
+        "Deine Rolle ist das Rotkäppchen, welches nachts nicht von den Werwölfen gerissen werden kann, solange ",
+        "der Jäger noch lebt."
+      ],
       "2": "Du bist das Rotkäppchen. Dieses wird nachts vom Jäger, solange dieser lebt, vor Werwölfen beschützt.",
-      "3": ["Dein Charakter ist das Rotkäppchen, welches unter dem Schutz des Jägers steht, solange dieser lebt. ",
-        "Dies bedeutet, dass solange der Jäger lebt, das Rotkäppchen nicht nachts durch Werwölfe getötet werden kann."],
-      "4": ["Du bist das märchenhafte Rotkäppchen, welches zu Lebzeiten des Jägers von diesem vor Werwolfangriffen ",
-        "geschützt wird."],
+      "3": [
+        "Dein Charakter ist das Rotkäppchen, welches unter dem Schutz des Jägers steht, solange dieser lebt. ",
+        "Dies bedeutet, dass solange der Jäger lebt, das Rotkäppchen nicht nachts durch Werwölfe getötet werden kann."
+      ],
+      "4": [
+        "Du bist das märchenhafte Rotkäppchen, welches zu Lebzeiten des Jägers von diesem vor Werwolfangriffen ",
+        "geschützt wird."
+      ],
       "5": "Du bist das Rotkäppchen, welches nicht durch Werwolfangriffe sterben kann, solange der Jäger lebt."
     },
     "whitewolfDescription": {
@@ -1018,6 +1044,62 @@
       "5": "Welcher der Werwölfe ist zu auffällig?",
       "6": "Wessen Werwolfsfratze kannst du nicht leiden?"
     },
+    "cupidDescription": {
+      "0": [
+        "Du bist Amor. Amor bestimmt in der ersten Nacht zwei Spieler, die sich unsterblich ineinander verlieben. ",
+        "Diese spielen von nun an zusammen und können gemeinsam gewinnen, auch wenn sie in unterschiedlichen Teams sind."
+      ],
+      "1": [
+        "Du bist Amor. Mit seinem Bogen und seinen Herzpfeilen sorgt Amor für die Liebe im Düsterwald. Er schießt ",
+        "seine Pfeile auf zwei Dorfbewohner, die sich sofort unsterblich ineinander verlieben und einander bis in den ",
+        "Tod folgen würden. Ihre Liebe ist sogar stärker als ihr Zugehörigkeitsgefühl zu ihrer jeweiligen Partei."
+      ],
+      "2": [
+        "Dein Charakter ist Amor. Zu Beginn des Spieles bestimmt er zwei Spieler, die sofort in inniger Liebe ",
+        "zueinander entflammen (das kann auch er selbst sein). Stirbt im Laufe des Spiels einer der beiden Liebenden, ",
+        "so auch der andere aus Gram. Achtung: Ist einer der beiden Liebenden ein Werwolf und der andere ein Bürger, ",
+        "so haben sie ein gemeinsames neues Ziel: Überleben sie als einzige so gewinnen sie allein."
+      ],
+      "3": [
+        "Deine Rolle ist der Amor. Amor erwacht nur einmal in der allerersten Nacht, um zwei Spieler seiner Wahl ",
+        "miteinander zu verkuppeln (eventuell auch sich selbst). Danach schläft er wieder ein. Anschließend lernt sich",
+        " das frisch verliebte Paar kennen. Die Verliebten haben im Laufe des Spiels die Aufgabe, den Partner zu ",
+        "beschützen, denn wenn einer der beiden stirbt, macht es ihm der Partner trauernd nach; sie dürfen nie ",
+        "gegeneinander stimmen."
+      ],
+      "4": [
+        "Du bist Amor, welcher dafür sorgt, dass sich zwei Spieler unsterblich ineinander verlieben. Sollte einer ",
+        "von beiden zu Tode kommen, so nimmt sich der andere aus Trauer das Leben. Das Liebespaar kann gemeinsam ",
+        "gewinnen, auch wenn sie von unterschiedlichen Teams sind."
+      ],
+      "5": [
+        "Du bist Amor und machst dich in der ersten Nacht auf die Jagd nach einem Liebspaar, welches du verkuppelst. ",
+        "Dieses verliebt sich sofort und will sich nie wieder trennen. Sollte einer von beiden sterben, so bringt der ",
+        "Kummer des Anderen auch ihn ins Grab."
+      ]
+    },
+    "cupidQuestion": {
+      "0": "Wer soll sich dieses Spiel verlieben?",
+      "1": "Wen willst du mit deinen Liebespfeilen treffen?",
+      "2": "Wer gibt ein schönes Liebespaar ab?",
+      "3": "Wen willst du verkuppeln?",
+      "4": "Wer soll sich heute Nacht verlieben?",
+      "5": "Wer wird heute Nacht seinen Traumpartner finden?",
+      "6": "Wer wird sich gleich unsterblich verlieben?",
+      "7": "Wer findet die Liebe des Lebens?"
+    },
+    "fellInLovePre": "Du hast dich in ",
+    "fellInLovePost": " verliebt.",
+    "lovedOneKilled": {
+      "0": " stirbt aus Liebskummer.",
+      "1": " will nicht ohne seinen Partner weiterleben.",
+      "2": " kann alleine nicht überleben.",
+      "3": " hängt sich aus Trauer.",
+      "4": " wird todtraurig und stirbt.",
+      "5": " überlebt den Herzschmerz nicht.",
+      "6": " will nicht ohne Liebe leben.",
+      "7": " hält es alleine nicht mehr aus und begeht Suizid."
+    },
     "changelog": [
       "Version 2.1.0\n- Neue Rollen: Weißer Wolf, Rotkäppchen und Harter Bursche\n\n",
       "Version 2.0.8\n- Bot wehrt sich nun gegen Spam und spricht auch Englisch\n\n",
@@ -1046,6 +1128,7 @@
     "cancel": "Cancel",
     "join": "Join/Leave",
     "start": "Start",
+    "and": "and",
     "roleConfig": "You can add and remove roles for this game",
     "removePre": "remove ",
     "removePost": "",
@@ -1069,7 +1152,8 @@
       "wolfdog": "Wolfdog",
       "badassbastard": "Badass Bastard",
       "redhat": "Little Red Riding Hood",
-      "whitewolf": "White Wolf"
+      "whitewolf": "White Wolf",
+      "cupid": "Cupid"
     },
     "accuseOptionsPre": {
       "0": "accuse ",
@@ -1299,8 +1383,10 @@
       "4": "Peace returns to town, since there is only the white werewolf left here.",
       "5": "The white werewolf has won.",
       "6": "The white werewolf has proven his dominance.",
-      "7": ["The white werewolf is apparently the strongest race in town. Too bad that it cannot reproduce himself ",
-        "alone..."],
+      "7": [
+        "The white werewolf is apparently the strongest race in town. Too bad that it cannot reproduce himself ",
+        "alone..."
+      ],
       "8": "The white werewolf celebrates the victory of loneliness in town."
     },
     "villageWin": {
@@ -1314,6 +1400,18 @@
       "7": "The werewolves were apparently the weaker race in town.",
       "8": "After the death of the last werewolf the villagers now have peace.",
       "9": "The villagers organize a feast to celebrate the day and stuff the last werewolf."
+    },
+    "loveWin": {
+      "0": "The loving couple wins.",
+      "1": "Love has triumphed in town.",
+      "2": "Love now brings light into town!",
+      "3": "Only the loving couple is still alive.",
+      "4": "Peace returns to town, as the lovers are the last to survive.",
+      "5": "Love now brings peace to town.",
+      "6": "Love has demonstrated its superiority.",
+      "7": "Love conquered all.",
+      "8": "Love has prevailed.",
+      "9": "The couple enjoys the peace and quietness when being together."
     },
     "deathMessage": {
       "1": " sadly died tonight.",
@@ -1882,16 +1980,24 @@
       ]
     },
     "redhatDescription": {
-      "0": ["You are Little Red Riding Hood. As long as the hunter is alive, Little Red Riding Hood remains ",
-        "immune to normal werewolf attacks at night."],
-      "1": ["Your role is Little Red Riding Hood, which cannot be torn by the werewolves at night while the hunter ",
-        "is still alive."],
+      "0": [
+        "You are Little Red Riding Hood. As long as the hunter is alive, Little Red Riding Hood remains ",
+        "immune to normal werewolf attacks at night."
+      ],
+      "1": [
+        "Your role is Little Red Riding Hood, which cannot be torn by the werewolves at night while the hunter ",
+        "is still alive."
+      ],
       "2": "You are Little Red Riding Hood. You are protected from werewolves by the hunter at night as long as he lives.",
-      "3": ["Your character is Little Red Riding Hood, which is under the protection of the hunter as long as he ",
+      "3": [
+        "Your character is Little Red Riding Hood, which is under the protection of the hunter as long as he ",
         "lives. This means that as long as the hunter lives, Little Red Riding Hood cannot be killed by werewolves ",
-        "at night."],
-      "4": ["You are Little Red Riding Hood straight from the fairytale, which is protected from werewolf attacks by ",
-        "the hunter during his lifetime."],
+        "at night."
+      ],
+      "4": [
+        "You are Little Red Riding Hood straight from the fairytale, which is protected from werewolf attacks by ",
+        "the hunter during his lifetime."
+      ],
       "5": "You are Little Red Riding Hood, which cannot die by werewolf attacks as long as the hunter lives."
     },
     "whitewolfDescription": {
@@ -1932,6 +2038,59 @@
       "4": "Who may not wake up tomorrow?",
       "5": "Which of the werewolves is too flashy?",
       "6": "Whose werewolf face do you hate?"
+    },
+    "cupidDescription": {
+      "0": [
+        "You are Cupid. In the first night, Cupid chooses two players, who fall in love with each other forever. ",
+        "From now on they play together and can win together, even if they are in different teams."
+      ],
+      "1": [
+        "You are Cupid. With his bow and his arrows of love Cupid arranges for love in town. He shoots his arrows at ",
+        "two villagers who immediately fall in love with each other and follow each other even into death. Their love ",
+        "is even stronger than their sense of belonging to their respective parties."
+      ],
+      "2": [
+        "Your character is Cupid. At the beginning of the game he determines two players who immediately fall in love ",
+        "with each other (this can also be himself). If one of the two lovers dies in the course of the game, so does ",
+        "the other out of grief. Attention: If one of the two lovers is a werewolf and the other a citizen, they have ",
+        "a common new goal: If they survive together, they win together."
+      ],
+      "3": [
+        "Your role is Cupid. Cupid wakes up only once on the very first night to pair up two players of his choice ",
+        "(possibly himself). Afterwards he falls asleep again. Subsequently, the newly couple gets to know each other.",
+        "During the course of the game, the lovers have the task of protecting their partner, because if one of them",
+        " dies, the partner mournfully imitates him; they must never vote against each other."
+      ],
+      "4": [
+        "You are Cupid, who causes two players to fall madly in love with each other. If one of them should die, the ",
+        "other will take his own life out of grief. The lovers can win together, even if they are from different teams."
+      ],
+      "5": [
+        "You are Cupid and in the first night you go on the hunt for a couple of lovers, which you match up. They fall",
+        " in love immediately and never want to separate again. Should one of them die, the grief of the other one",
+        " will also put him in his grave."
+      ]
+    },
+    "cupidQuestion": {
+      "0": "Who should fall in love with this game?",
+      "1": "Who do you want to hit with your arrows of love?",
+      "2": "Who would make for a beautiful couple?",
+      "3": "Who are you trying to match up?",
+      "4": "Who should fall in love tonight?",
+      "5": "Who will find the love of his life tonight?",
+      "6": "Who will fall in love instantly?"
+    },
+    "fellInLovePre": "You fell in love with ",
+    "fellInLovePost": ".",
+    "lovedOneKilled": {
+      "0": " dies because of his broek heart",
+      "1": " does not want to live on without his beloved.",
+      "2": " cannot survive alone.",
+      "3": " hangs himself out of grief.",
+      "4": " becomes extremely sad and dies.",
+      "5": " does not survive with a broken heart.",
+      "6": " does not want to live without love.",
+      "7": " can't stand the loneliness anymore and commits suicide."
     },
     "changelog": [
       "Version 2.1.0\n- New roles: Little Red Riding Hood, White Wolf and Badass Bastard\n\n",

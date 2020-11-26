@@ -11,6 +11,7 @@ class TeamType(Enum):
 # negative means prior to werewolf, positive
 class CharacterType(Enum):
 	WOLFDOG = -10,
+	CUPID = -8,
 	NONE = 0
 	WEREWOLF = 1,
 	WHITEWOLF = 2,
