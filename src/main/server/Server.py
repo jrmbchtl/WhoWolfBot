@@ -224,41 +224,23 @@ class Server(object):
             else:
                 player.getCharacter().wakeUp(self.gameData, p)
 
-        self.killWerewolfTarget()
-        self.killWitchTarget()
-        self.killWhitewolfTarget()
-        self.killBerserkTarget()
+        self.killTarget(self.gameData.getWerewolfTarget, self.gameData.setWerewolfTarget)
+        self.killTarget(self.gameData.getWitchTarget, self.gameData.setWitchTarget)
+        self.killTarget(self.gameData.getWhitewolfTarget, self.gameData.setWhitewolfTarget)
+        self.killTarget(self.gameData.getBerserkTarget, self.gameData.setBerserkTarget)
 
-    def killWerewolfTarget(self):
-        if self.gameData.getWerewolfTarget() is not None:
-            werewolfTargetId = self.gameData.getWerewolfTarget()
-            if werewolfTargetId in self.gameData.getAlivePlayers():
-                werewolfTarget = self.gameData.getAlivePlayers()[werewolfTargetId].getCharacter()
-                werewolfTarget.kill(self.gameData, werewolfTargetId)
-                self.gameData.setWerewolfTarget(None)
+    def killTarget(self, getter, setter):
+        if isinstance(getter(), list):
+            for i in getter():
+                self.killTargetSub(i, setter)
+        elif getter() is not None:
+            self.killTargetSub(getter(), setter)
 
-    def killWitchTarget(self):
-        if self.gameData.getWitchTarget() is not None:
-            witchTargetId = self.gameData.getWitchTarget()
-            if witchTargetId in self.gameData.getAlivePlayers():
-                witchTarget = self.gameData.getAlivePlayers()[witchTargetId].getCharacter()
-                witchTarget.kill(self.gameData, witchTargetId)
-                self.gameData.setWitchTarget(None)
-
-    def killWhitewolfTarget(self):
-        if self.gameData.getWhitewolfTarget() is not None:
-            whitewolfTargetId = self.gameData.getWhitewolfTarget()
-            if whitewolfTargetId in self.gameData.getAlivePlayers():
-                whitewolfTarget = self.gameData.getAlivePlayers()[whitewolfTargetId].getCharacter()
-                whitewolfTarget.kill(self.gameData, whitewolfTargetId)
-                self.gameData.setWhitewolfTarget(None)
-
-    def killBerserkTarget(self):
-        for targetId in self.gameData.getBerserkTarget():
-            if targetId in self.gameData.getAlivePlayers():
-                target = self.gameData.getAlivePlayers()[targetId].getCharacter()
-                target.kill(self.gameData, targetId)
-                self.gameData.clearBerserkTarget()
+    def killTargetSub(self, targetId, setter):
+        if targetId in self.gameData.getAlivePlayers():
+            target = self.gameData.getAlivePlayers()[targetId].getCharacter()
+            target.kill(self.gameData, targetId)
+            setter(None)
 
     def accuseAll(self):
         self.accusedDict = {}

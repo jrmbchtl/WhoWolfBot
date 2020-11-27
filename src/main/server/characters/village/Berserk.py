@@ -34,7 +34,7 @@ class Berserk(VillagerTeam):
             playerId, text, messageId, Factory.EditMode.EDIT))
         gameData.dumpNextMessage("feedback", playerId)
 
-        gameData.clearBerserkTarget()
+        gameData.setBerserkTarget(None)
         if choice < len(players):
             self.lives -= 1
             gameData.addBerserkTarget(gameData.getAlivePlayerList()[choice])

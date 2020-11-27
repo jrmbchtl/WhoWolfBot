@@ -210,8 +210,11 @@ class GameData(object):
     def addBerserkTarget(self, target):
         self.berserkTarget.append(target)
 
-    def clearBerserkTarget(self):
-        self.berserkTarget = []
+    def setBerserkTarget(self, berserkTarget):
+        if berserkTarget is None:
+            self.berserkTarget = []
+        else:
+            self.berserkTarget = berserkTarget
 
     def getBerserkTarget(self):
         return self.berserkTarget
