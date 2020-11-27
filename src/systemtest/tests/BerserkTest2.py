@@ -36,7 +36,7 @@ class BerserkTest2(Systemtest):
                           "gameId": gameId})
         self.assertAnyMessage()
         self.assertReceiveDict({'eventType': 'choiceField', 'choiceField':
-            {'text': 'Du hast noch 2 Leben.\n\nWen greifst du diese Nacht im Rausch an?',
+            {'text': 'Du hast noch ein Leben.\n\nWen greifst du diese Nacht im Rausch an?',
             'options': ['Player 1', 'Player 2', 'Player 3', 'Player 4', 'niemanden'],
             'messageId': 0}, 'mode': 'write', 'target': 2, 'highlight': False, 'gameId': gameId,
             'lang': 'DE'})

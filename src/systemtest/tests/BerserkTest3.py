@@ -36,7 +36,7 @@ class BerserkTest3(Systemtest):
                           "gameId": gameId})
         self.assertAnyMessage()
         self.assertReceiveDict({'eventType': 'choiceField', 'choiceField':
-            {'text': 'Du hast noch 2 Leben.\n\nWen greifst du diese Nacht im Rausch an?',
+            {'text': 'Du hast noch ein Leben.\n\nWen greifst du diese Nacht im Rausch an?',
             'options': ['Player 1', 'Player 2', 'Player 3', 'Player 4', 'niemanden'],
             'messageId': 0}, 'mode': 'write', 'target': 2, 'highlight': False, 'gameId': gameId,
             'lang': 'DE'})
@@ -44,13 +44,14 @@ class BerserkTest3(Systemtest):
                           "gameId": gameId})
         self.assertAnyMessage()
         self.assertReceiveDict({'eventType': 'message', 'message':
-            {'text': 'Player 2 hat leider ins Gras gebissen.', 'messageId': 0}, 'mode': 'write',
-            'target': 0, 'highlight': True, 'gameId': gameId, 'lang': 'DE'})
-        self.assertAnyMessage()
-        self.assertReceiveDict({'eventType': 'message', 'message':
-            {'text': 'Player 3 wird nie wieder an den Freuden des Dorfes teilhaben.',
+            {'text': 'Player 3 hat leider ins Gras gebissen.',
              'messageId': 0}, 'mode': 'write', 'target': 0, 'highlight': True, 'gameId': gameId,
             'lang': 'DE'})
+        self.assertAnyMessage()
+        self.assertReceiveDict({'eventType': 'message', 'message':
+            {'text': 'Player 2 wird nie wieder an den Freuden des Dorfes teilhaben.',
+             'messageId': 0}, 'mode': 'write',
+            'target': 0, 'highlight': True, 'gameId': gameId, 'lang': 'DE'})
         self.assertAnyMessage()
         self.assertReceiveDict({'eventType': 'message', 'message':
             {'text': ('Die Dorfbewohner veranstalten zur Feier des Tages einen Fest und stopfen '

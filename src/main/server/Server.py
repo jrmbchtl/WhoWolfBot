@@ -234,14 +234,7 @@ class Server(object):
             werewolfTargetId = self.gameData.getWerewolfTarget()
             if werewolfTargetId in self.gameData.getAlivePlayers():
                 werewolfTarget = self.gameData.getAlivePlayers()[werewolfTargetId].getCharacter()
-                if werewolfTarget.getRole() == CharacterType.BADDASSBASTARD \
-                        and werewolfTarget.hasSecondLive():
-                    werewolfTarget.removeSecondLive()
-                elif werewolfTarget.getRole() == CharacterType.REDHAT \
-                        and not werewolfTarget.canBeKilled(self.gameData):
-                    pass
-                elif werewolfTarget.werewolfKillAttempt():
-                    werewolfTarget.kill(self.gameData, werewolfTargetId)
+                werewolfTarget.kill(self.gameData, werewolfTargetId)
                 self.gameData.setWerewolfTarget(None)
 
     def killWitchTarget(self):

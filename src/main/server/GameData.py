@@ -179,8 +179,18 @@ class GameData(object):
     def getMenuMessageId(self):
         return self.menuMessageId
 
-    def setWerewolfTarget(self, werewolfTarget):
-        self.werewolfTarget = werewolfTarget
+    def setWerewolfTarget(self, werewolfTargetId):
+        if werewolfTargetId is None:
+            self.werewolfTarget = None
+            return
+        werewolfTarget = self.getAlivePlayers()[werewolfTargetId].getCharacter()
+        print(self.getAlivePlayers()[werewolfTargetId].getName())
+        if werewolfTarget.hasSecondLive():  # badass bastard
+            werewolfTarget.removeSecondLive()
+        elif not werewolfTarget.canBeKilled(self):  # redhat
+            pass
+        elif werewolfTarget.werewolfKillAttempt():  # berserk
+            self.werewolfTarget = werewolfTargetId
 
     def getWerewolfTarget(self):
         return self.werewolfTarget

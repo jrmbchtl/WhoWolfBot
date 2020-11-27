@@ -40,6 +40,9 @@ class Character(object):
     def werewolfKillAttempt(self):
         return True
 
+    def hasSecondLive(self):
+        return False
+
     def kill(self, gameData, playerId, dm=None):
         self.alive = False
         if dm is None:
