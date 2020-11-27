@@ -7,11 +7,7 @@ from src.main.localization import getLocalization as loc
 
 class Seer(VillagerTeam):
     def __init__(self, alive=True):
-        super(Seer, self).__init__(CharacterType.SEER, alive)
-
-    def getDescription(self, gameData):
-        dc = loc(gameData.getLang(), "seerDescription")
-        return dc[str(gameData.randrange(0, len(dc)))]
+        super(Seer, self).__init__(CharacterType.SEER, "seerDescription", alive)
 
     def wakeUp(self, gameData, playerId):
         options = []

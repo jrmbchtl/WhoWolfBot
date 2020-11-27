@@ -6,13 +6,9 @@ from src.main.localization import getLocalization as loc
 
 class Witch(VillagerTeam):
     def __init__(self, alive=True):
-        super(Witch, self).__init__(CharacterType.WITCH, alive)
+        super(Witch, self).__init__(CharacterType.WITCH, "witchDescription", alive)
         self.hasLivePotion = True
         self.hasDeathPotion = True
-
-    def getDescription(self, gameData):
-        dc = loc(gameData.getLang(), "witchDescription")
-        return dc[str(gameData.randrange(0, len(dc)))]
 
     def wakeUp(self, gameData, playerId):
         if self.hasLivePotion and gameData.getWerewolfTarget() is not None:

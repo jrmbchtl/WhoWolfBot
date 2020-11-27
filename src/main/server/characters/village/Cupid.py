@@ -6,12 +6,8 @@ from src.main.localization import getLocalization as loc
 
 class Cupid(VillagerTeam):
     def __init__(self, alive=True):
-        super(Cupid, self).__init__(CharacterType.CUPID, alive)
+        super(Cupid, self).__init__(CharacterType.CUPID, "cupidDescription", alive)
         self.wasWaked = False
-
-    def getDescription(self, gameData):
-        dc = loc(gameData.getLang(), "cupidDescription")
-        return dc[str(gameData.randrange(0, len(dc)))]
 
     def wakeUp(self, gameData, playerId):
         if self.wasWaked:

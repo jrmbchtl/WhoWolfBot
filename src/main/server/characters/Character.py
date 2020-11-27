@@ -6,12 +6,13 @@ from src.main.localization import getLocalization as loc
 
 class Character(object):
 
-    def __init__(self, team, role, alive=True):
+    def __init__(self, team, role, descString, alive=True):
         super(Character, self)
         self.alive = alive
         self.role = role
         self.team = team
         self.beloved = None
+        self.descString = descString
 
     def isAlive(self):
         return self.alive
@@ -29,7 +30,8 @@ class Character(object):
         self.role = role
 
     def getDescription(self, gameData):
-        pass
+        dc = loc(gameData.getLang(), self.descString)
+        return dc[str(gameData.randrange(0, len(dc)))]
 
     def getBeloved(self):
         return self.beloved

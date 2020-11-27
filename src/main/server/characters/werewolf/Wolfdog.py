@@ -7,11 +7,7 @@ from src.main.localization import getLocalization as loc
 
 class Wolfdog(Character):
     def __init__(self, alive=True):
-        super(Wolfdog, self).__init__(None, CharacterType.WOLFDOG, alive)
-
-    def getDescription(self, gameData):
-        dc = loc(gameData.getLang(), "wolfdogDescription")
-        return dc[str(gameData.randrange(0, len(dc)))]
+        super(Wolfdog, self).__init__(None, CharacterType.WOLFDOG, "wolfdogDescription", alive)
 
     def wakeUp(self, gameData, playerId):
         if self.getTeam() is not None:

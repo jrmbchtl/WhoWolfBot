@@ -6,12 +6,8 @@ from src.main.localization import getLocalization as loc
 
 class Berserk(VillagerTeam):
     def __init__(self, alive=True):
-        super(Berserk, self).__init__(CharacterType.BERSERK, alive)
+        super(Berserk, self).__init__(CharacterType.BERSERK, "berserkDescription", alive)
         self.lives = 2
-
-    def getDescription(self, gameData):
-        dc = loc(gameData.getLang(), "berserkDescription")
-        return dc[str(gameData.randrange(0, len(dc)))]
 
     def wakeUp(self, gameData, playerId):
         if self.lives == 2:

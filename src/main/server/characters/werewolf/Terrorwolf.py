@@ -6,11 +6,7 @@ from src.main.localization import getLocalization as loc
 
 class Terrorwolf(WerewolfTeam):
     def __init__(self, alive=True):
-        super(Terrorwolf, self).__init__(CharacterType.TERRORWOLF, alive)
-
-    def getDescription(self, gameData):
-        dc = loc(gameData.getLang(), "terrorwolfDescription")
-        return dc[str(gameData.randrange(0, len(dc)))]
+        super(Terrorwolf, self).__init__(CharacterType.TERRORWOLF, "terrorwolfDescription", alive)
 
     def kill(self, gameData, playerId, dm=None):
         super(Terrorwolf, self).kill(gameData, playerId)

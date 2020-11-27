@@ -6,11 +6,7 @@ from src.main.localization import getLocalization as loc
 
 class Hunter(VillagerTeam):
     def __init__(self, alive=True):
-        super(Hunter, self).__init__(CharacterType.HUNTER, alive)
-
-    def getDescription(self, gameData):
-        dc = loc(gameData.getLang(), "hunterDescription")
-        return dc[str(gameData.randrange(0, len(dc)))]
+        super(Hunter, self).__init__(CharacterType.HUNTER, "hunterDescription", alive)
 
     def kill(self, gameData, playerId, dm=None):
         super(Hunter, self).kill(gameData, playerId, dm)

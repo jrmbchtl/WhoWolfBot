@@ -7,12 +7,8 @@ from src.main.localization import getLocalization as loc
 
 class Whitewolf(WhitewolfTeam):
     def __init__(self, alive=True):
-        super(Whitewolf, self).__init__(CharacterType.WHITEWOLF, alive)
+        super(Whitewolf, self).__init__(CharacterType.WHITEWOLF, "whitewolfDescription", alive)
         self.dontWake = False
-
-    def getDescription(self, gameData):
-        dc = loc(gameData.getLang(), "whitewolfDescription")
-        return dc[str(gameData.randrange(0, len(dc)))]
 
     def wakeUp(self, gameData, playerId):
         if self.dontWake:
