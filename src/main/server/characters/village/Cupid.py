@@ -14,7 +14,7 @@ class Cupid(VillagerTeam):
             return
         else:
             self.wasWaked = True
-        text = cupidQuestion(gameData)
+        text = gameData.getMessage("cupidQuestion", rndm=True)
         options = []
         optionId = []
         playerList = gameData.getAlivePlayerList()
@@ -42,17 +42,6 @@ class Cupid(VillagerTeam):
             else:
                 belovedName = players[optionId[choice][0]].getName()
                 players[optionId[choice][1]].getCharacter().setBeloved(optionId[choice][0])
-            text = fellInLove(gameData, belovedName)
+            text = gameData.getMessagePrePost("fellInLove", belovedName)
             gameData.sendJSON(Factory.createMessageEvent(i, text))
             gameData.dumpNextMessage("feedback", i)
-
-
-def cupidQuestion(gameData):
-    dc = loc(gameData.getLang(), "cupidQuestion")
-    return dc[str(gameData.randrange(0, len(dc)))]
-
-
-def fellInLove(gameData, name):
-    pre = loc(gameData.getLang(), "fellInLovePre")
-    post = loc(gameData.getLang(), "fellInLovePost")
-    return pre + name + post

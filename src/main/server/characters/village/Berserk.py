@@ -14,7 +14,7 @@ class Berserk(VillagerTeam):
             text = loc(gameData.getLang(), "berserkTwoLives")
         else:
             text = loc(gameData.getLang(), "berserkOneLive")
-        option, question = berserkQuestion(gameData)
+        option, question = gameData.getMessage("berserkQuestion", rndm=True, retOpt=True)
         text += question
         options = []
         players = gameData.getAlivePlayers()
@@ -25,7 +25,8 @@ class Berserk(VillagerTeam):
         messageId = gameData.getNextMessage("feedback", playerId)
 
         choice = gameData.getNextMessage("reply", playerId)["reply"]["choiceIndex"]
-        text += "\n\n" + berserkResponse(gameData, options[choice], option)
+        text += "\n\n" + gameData.getMessagePrePost(
+            "berserkResponse", options[choice], option=option)
         gameData.sendJSON(Factory.createMessageEvent(
             playerId, text, messageId, Factory.EditMode.EDIT))
         gameData.dumpNextMessage("feedback", playerId)
@@ -43,15 +44,3 @@ class Berserk(VillagerTeam):
             return True
         else:
             return False
-
-
-def berserkQuestion(gameData):
-    dc = loc(gameData.getLang(), "berserkQuestion")
-    option = gameData.randrange(0, len(dc))
-    return option, dc[str(option)]
-
-
-def berserkResponse(gameData, name, option):
-    pre = loc(gameData.getLang(), "berserkResponsePre", option)
-    post = loc(gameData.getLang(), "berserkResponsePost", option)
-    return pre + name + post

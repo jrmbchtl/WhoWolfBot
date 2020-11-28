@@ -28,7 +28,7 @@ class Whitewolf(WhitewolfTeam):
             player = gameData.getAlivePlayers()[w]
             options.append(player.getName())
         options.append(loc(gameData.getLang(), "Noone"))
-        text = whitewolfChooseTarget(gameData)
+        text = gameData.getMessage("whitewolfQuestion", rndm=True)
         gameData.sendJSON(Factory.createChoiceFieldEvent(playerId, text, options))
         messageId = gameData.getNextMessage("feedback", playerId)
 
@@ -43,8 +43,3 @@ class Whitewolf(WhitewolfTeam):
         gameData.sendJSON(
             Factory.createMessageEvent(playerId, text, messageId, Factory.EditMode.EDIT))
         gameData.dumpNextMessage("feedback", playerId)
-
-
-def whitewolfChooseTarget(gameData):
-    dc = loc(gameData.getLang(), "whitewolfQuestion")
-    return dc[str(gameData.randrange(0, len(dc)))]

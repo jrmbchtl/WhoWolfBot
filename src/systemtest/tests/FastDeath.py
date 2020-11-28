@@ -42,7 +42,7 @@ class FastDeath(Systemtest):
             "highlight": False, "gameId": gameId, 'lang': 'DE'})
 
         self.assertReceiveDict({"eventType": "message", "message":
-            {"text": "Du bist für Player 1 ausversehen zu spät gekommen.",
+            {"text": "Du hast Player 1 sterben gelassen.",
              "messageId": 0}, "mode": "write", "target": 4,
             "highlight": False, "gameId": gameId, 'lang': 'DE'})
 
@@ -59,12 +59,9 @@ class FastDeath(Systemtest):
                           "fromId": 4, "gameId": gameId})
 
         self.assertReceiveDict({"eventType": "message", "message":
-            {"text": "Willst du noch jemanden t\u00f6ten?", "messageId": 29},
+            {"text": ("Willst du noch jemanden t\u00f6ten?\n\nDu hast Player 3 eine Überdosis "
+                      "Morphium verabreicht."), "messageId": 29},
             "mode": "edit", "target": 4, "highlight": False, "gameId": gameId, 'lang': 'DE'})
-
-        self.assertReceiveDict({"eventType": "message", "message":
-            {"text": "Du hast Player 3 eine Überdosis Morphium verabreicht.", "messageId": 0},
-            "mode": "write", "target": 4, "highlight": False, "gameId": gameId, 'lang': 'DE'})
 
         self.assertReceiveDict({"eventType": "message", "message":
             {"text": "Player 1 hat den Löffel abgegeben.", "messageId": 0},
@@ -89,7 +86,7 @@ class FastDeath(Systemtest):
                           "fromId": 1, "gameId": gameId})
 
         self.assertReceiveDict({"eventType": "message", "message":
-            {"text": "Wen möchtest du mit ins Grab nehmen?", "messageId": 35},
+            {"text": "Wen möchtest du mit ins Grab nehmen?", "messageId": 34},
             "mode": "edit", "target": 1, "highlight": False, "gameId": gameId, 'lang': 'DE'})
 
         self.assertReceiveDict({"eventType": "message", "message":

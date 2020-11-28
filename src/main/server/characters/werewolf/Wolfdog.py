@@ -2,7 +2,6 @@ from src.main.server import Factory
 from src.main.server.characters.Character import Character
 from src.main.server.characters.Types import CharacterType
 from src.main.server.characters.Types import TeamType
-from src.main.localization import getLocalization as loc
 
 
 class Wolfdog(Character):
@@ -12,9 +11,11 @@ class Wolfdog(Character):
     def wakeUp(self, gameData, playerId):
         if self.getTeam() is not None:
             return
-        intro = wolfdogOptions(gameData)
-        indexWerewolf, optionWerewolf = wolfdogChooseWerewolf(gameData)
-        indexVillage, optionVillage = wolfdogChooseVillage(gameData)
+        intro = gameData.getMessage("wolfdogQuestion", rndm=True)
+        indexWerewolf, optionWerewolf = gameData.getMessage(
+            "wolfdogChooseWerewolf", rndm=True, retOpt=True)
+        indexVillage, optionVillage = gameData.getMessage(
+            "wolfdogChooseVillage", rndm=True, retOpt=True)
         gameData.sendJSON(
             Factory.createChoiceFieldEvent(playerId, intro, [optionWerewolf, optionVillage]))
         messageId = gameData.getNextMessage(
@@ -23,37 +24,12 @@ class Wolfdog(Character):
         rec = gameData.getNextMessage(commandType="reply", fromId=playerId)
         if rec["reply"]["choiceIndex"] == 0:
             self.setTeam(TeamType.WEREWOLF)
-            intro += "\n\n" + wolfdogChoseWerewolf(gameData, indexWerewolf)
+            intro += "\n\n" + gameData.getMessage("wolfdogChoseWerewolf", indexWerewolf)
         elif rec["reply"]["choiceIndex"] == 1:
             self.setTeam(TeamType.VILLAGER)
-            intro += "\n\n" + wolfdogChoseVillage(gameData, indexVillage)
+            intro += "\n\n" + gameData.getMessage("wolfdogChoseVillage", indexVillage)
         else:
             raise ValueError("How can u choose option " + rec["reply"]["choiceIndex"])
         gameData.sendJSON(
             Factory.createMessageEvent(playerId, intro, messageId, Factory.EditMode.EDIT))
         gameData.dumpNextMessage(commandType="feedback", fromId=playerId)
-
-
-def wolfdogOptions(gameData):
-    dc = loc(gameData.getLang(), "wolfdogQuestion")
-    return dc[str(gameData.randrange(0, len(dc)))]
-
-
-def wolfdogChooseWerewolf(gameData):
-    dc = loc(gameData.getLang(), "wolfdogChooseWerewolf")
-    option = gameData.randrange(0, len(dc))
-    return option, dc[str(option)]
-
-
-def wolfdogChoseWerewolf(gameData, option):
-    return loc(gameData.getLang(), "wolfdogChoseWerewolf", option)
-
-
-def wolfdogChooseVillage(gameData):
-    dc = loc(gameData.getLang(), "wolfdogChooseVillage")
-    option = gameData.randrange(0, len(dc))
-    return option, dc[str(option)]
-
-
-def wolfdogChoseVillage(gameData, option):
-    return loc(gameData.getLang(), "wolfdogChoseVillage", option)

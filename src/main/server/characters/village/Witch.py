@@ -14,8 +14,9 @@ class Witch(VillagerTeam):
         if self.hasLivePotion and gameData.getWerewolfTarget() is not None:
             targetName = gameData.getPlayers()[gameData.getWerewolfTarget()].getName()
             text = targetName + (loc(gameData.getLang(), "witchSaveQuestion"))
-            noSave, optionSave = witchSave(gameData)
-            noLetDie, optionLetDie = witchLetDie(gameData)
+            noSave, optionSave = gameData.getMessage("witchSave", rndm=True, retOpt=True)
+            noLetDie, optionLetDie = gameData.getMessage(
+                "witchLetDie", rndm=True, retOpt=True)
             gameData.sendJSON(Factory.createChoiceFieldEvent(
                 playerId, text, [optionSave, optionLetDie]))
             messageId = gameData.getNextMessage(commandType="feedback")["feedback"]["messageId"]
@@ -29,10 +30,12 @@ class Witch(VillagerTeam):
                 gameData.setWerewolfTarget(None)
                 self.hasLivePotion = False
                 gameData.sendJSON(Factory.createMessageEvent(
-                    playerId, witchDidSave(gameData, noSave, targetName)))
+                    playerId, gameData.getMessagePrePost(
+                        "witchDidSave", targetName, option=noSave)))
             elif choice == 1:
                 gameData.sendJSON(Factory.createMessageEvent(
-                    playerId, witchDidLetDie(gameData, noLetDie, targetName)))
+                    playerId, gameData.getMessagePrePost(
+                        "witchDidLetDie", targetName, option=noSave)))
             else:
                 raise ValueError("The witch shouldn't have a choice " + choice + "!")
             gameData.dumpNextMessage(commandType="feedback")
@@ -46,66 +49,30 @@ class Witch(VillagerTeam):
             for player in gameData.getAlivePlayerList():
                 if player != playerId:
                     name = gameData.getAlivePlayers()[player].getName()
-                    no, option = witchKill(gameData, name)
+                    no, option = gameData.getMessagePrePost(
+                        "witchKill", name, rndm=True, retOpt=True)
                     options.append(option)
                     idToNo[player] = no
                     indexToId[index] = player
                     index += 1
-
-            no, option = witchKill(gameData, loc(gameData.getLang(), "Noone"))
+            no, option = gameData.getMessagePrePost(
+                "witchKill", loc(gameData.getLang(), "Noone"), rndm=True, retOpt=True)
             options.append(option)
 
             gameData.sendJSON(Factory.createChoiceFieldEvent(playerId, text, options))
             messageId = gameData.getNextMessage(commandType="feedback")["feedback"]["messageId"]
 
             choice = gameData.getNextMessage(commandType="reply")["reply"]["choiceIndex"]
-            gameData.sendJSON(Factory.createMessageEvent(
-                playerId, text, messageId, Factory.EditMode.EDIT))
-            gameData.dumpNextMessage(commandType="feedback")
 
             if choice == len(gameData.getAlivePlayerList()) - 1:
                 gameData.setWitchTarget(None)
+                targetName = loc(gameData.getLang(), "noone")
             else:
                 self.hasDeathPotion = False
                 gameData.setWitchTarget(indexToId[choice])
                 targetName = gameData.getAlivePlayers()[indexToId[choice]].getName()
-                text = witchDidKill(gameData, idToNo[indexToId[choice]], targetName)
-                gameData.sendJSON(Factory.createMessageEvent(playerId, text))
-                gameData.dumpNextMessage(commandType="feedback")
-
-
-def witchSave(gameData):
-    dc = loc(gameData.getLang(), "witchSave")
-    option = gameData.randrange(0, len(dc))
-    return option, dc[str(option)]
-
-
-def witchLetDie(gameData):
-    dc = loc(gameData.getLang(), "witchLetDie")
-    option = gameData.randrange(0, len(dc))
-    return option, dc[str(option)]
-
-
-def witchDidSave(gameData, option, name):
-    pre = loc(gameData.getLang(), "witchDidSavePre", option)
-    post = loc(gameData.getLang(), "witchDidSavePost", option)
-    return pre + name + post
-
-
-def witchDidLetDie(gameData, option, name):
-    pre = loc(gameData.getLang(), "witchDidLetDiePre", option)
-    post = loc(gameData.getLang(), "witchDidLetDiePost", option)
-    return pre + name + post
-
-
-def witchKill(gameData, name):
-    pre = loc(gameData.getLang(), "witchKillPre")
-    post = loc(gameData.getLang(), "witchKillPost")
-    option = gameData.randrange(0, len(pre))
-    return option, pre[str(option)] + name + post[str(option)]
-
-
-def witchDidKill(gameData, option, name):
-    pre = loc(gameData.getLang(), "witchDidKillPre", option)
-    post = loc(gameData.getLang(), "witchDidKillPost", option)
-    return pre + name + post
+                no = idToNo[indexToId[choice]]
+            text += "\n\n" + gameData.getMessagePrePost("witchDidKill", targetName, no)
+            gameData.sendJSON(Factory.createMessageEvent(
+                playerId, text, messageId, Factory.EditMode.EDIT))
+            gameData.dumpNextMessage(commandType="feedback")

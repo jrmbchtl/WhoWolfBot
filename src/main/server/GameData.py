@@ -1,6 +1,7 @@
 import os
 import random
 import json
+from src.main.localization import getLocalization as loc
 
 
 class GameData(object):
@@ -268,3 +269,37 @@ class GameData(object):
             return False
         else:
             return True
+
+    def getMessage(self, key, option=None, rndm=False, retOpt=False):
+        ret = ""
+        if option is None and not rndm:
+            ret = loc(self.lang, key)
+        elif option is not None:
+            ret = loc(self.lang, key, option)
+        else:
+            dc = loc(self.lang, key)
+            option = self.randrange(0, len(dc))
+            ret = dc[str(option)]
+        if retOpt:
+            return option, ret
+        else:
+            return ret
+
+    def getMessagePrePost(self, key, name, option=None, rndm=False, retOpt=False):
+        ret = ""
+        if option is None and not rndm:
+            ret = loc(self.lang, key + "Pre")
+            ret += name
+            ret += loc(self.lang, key + "Post")
+        elif option is not None:
+            ret = loc(self.lang, key + "Pre", option)
+            ret += name
+            ret += loc(self.lang, key + "Post", option)
+        else:
+            dc = loc(self.lang, key + "Pre")
+            option = self.randrange(0, len(dc))
+            return self.getMessagePrePost(key, name, option, rndm, retOpt)
+        if retOpt:
+            return option, ret
+        else:
+            return ret

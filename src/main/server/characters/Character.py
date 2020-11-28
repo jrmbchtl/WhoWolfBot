@@ -1,5 +1,3 @@
-import random
-
 from src.main.server import Factory
 from src.main.localization import getLocalization as loc
 
@@ -48,14 +46,15 @@ class Character(object):
     def kill(self, gameData, playerId, dm=None):
         self.alive = False
         if dm is None:
-            dm = gameData.getPlayers()[playerId].getName() + deathMessage(gameData)
+            dm = gameData.getPlayers()[playerId].getName() + gameData.getMessage(
+                "deathMessage", rndm=True)
         gameData.sendJSON(Factory.createMessageEvent(gameData.getOrigin(), dm, highlight=True))
         gameData.dumpNextMessage(commandType="feedback")
         gameData.sendJSON(Factory.createMessageEvent(playerId, dm, highlight=True))
         gameData.dumpNextMessage(commandType="feedback")
         if self.beloved is not None and self.beloved in gameData.getAlivePlayers():
             belovedName = gameData.getAlivePlayers()[self.beloved].getName()
-            loveDm = belovedDm(gameData, belovedName)
+            loveDm = belovedName + gameData.getMessage("lovedOneKilled", rndm=True)
             gameData.getAlivePlayers()[self.beloved].getCharacter()\
                 .kill(gameData, self.beloved, loveDm)
 
@@ -67,13 +66,3 @@ class Character(object):
 
     def canBeKilled(self, gameData):
         return True
-
-
-def deathMessage(gameData):
-    dc = loc(gameData.getLang(), "deathMessage")
-    return dc[str(random.randrange(0, len(dc)))]
-
-
-def belovedDm(gameData, name):
-    dc = loc(gameData.getLang(), "lovedOneKilled")
-    return name + dc[str(random.randrange(0, len(dc)))]
