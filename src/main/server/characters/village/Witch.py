@@ -11,8 +11,13 @@ class Witch(VillagerTeam):
         self.hasDeathPotion = True
 
     def wakeUp(self, gameData, playerId):
-        if self.hasLivePotion and gameData.getWerewolfTarget() is not None:
-            targetName = gameData.getPlayers()[gameData.getWerewolfTarget()].getName()
+        werewolfTarget = None
+        for i in gameData.getNightlyTarget():
+            if gameData.getNightlyTarget()[i] == CharacterType.WEREWOLF:
+                werewolfTarget = i
+                break
+        if self.hasLivePotion and werewolfTarget is not None:
+            targetName = gameData.getPlayers()[werewolfTarget].getName()
             text = targetName + (loc(gameData.getLang(), "witchSaveQuestion"))
             noSave, optionSave = gameData.getMessage("witchSave", rndm=True, retOpt=True)
             noLetDie, optionLetDie = gameData.getMessage(
@@ -27,7 +32,7 @@ class Witch(VillagerTeam):
                 playerId, text, messageId, Factory.EditMode.EDIT))
             gameData.dumpNextMessage(commandType="feedback")
             if choice == 0:
-                gameData.setWerewolfTarget(None)
+                gameData.removeNightlyTarget(werewolfTarget)
                 self.hasLivePotion = False
                 gameData.sendJSON(Factory.createMessageEvent(
                     playerId, gameData.getMessagePrePost(
@@ -65,11 +70,10 @@ class Witch(VillagerTeam):
             choice = gameData.getNextMessage(commandType="reply")["reply"]["choiceIndex"]
 
             if choice == len(gameData.getAlivePlayerList()) - 1:
-                gameData.setWitchTarget(None)
                 targetName = loc(gameData.getLang(), "noone")
             else:
                 self.hasDeathPotion = False
-                gameData.setWitchTarget(indexToId[choice])
+                gameData.setNightlyTarget(indexToId[choice], CharacterType.WITCH)
                 targetName = gameData.getAlivePlayers()[indexToId[choice]].getName()
                 no = idToNo[indexToId[choice]]
             text += "\n\n" + gameData.getMessagePrePost("witchDidKill", targetName, no)

@@ -37,7 +37,7 @@ class Whitewolf(WhitewolfTeam):
         targetName = loc(gameData.getLang(), "Noone")
         if choice < len(wwList):
             targetId = wwList[choice]
-            gameData.setWhitewolfTarget(targetId)
+            gameData.setNightlyTarget(targetId, CharacterType.WHITEWOLF)
             targetName = gameData.getAlivePlayers()[targetId].getName()
         text += "\n" + targetName
         gameData.sendJSON(

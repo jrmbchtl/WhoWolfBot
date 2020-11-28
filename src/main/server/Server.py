@@ -10,6 +10,7 @@ from .characters.Types import CharacterType
 from .characters.village.BadassBastard import BadassBastard
 from .characters.village.Berserk import Berserk
 from .characters.village.Cupid import Cupid
+from .characters.village.Psychopath import Psychopath
 from .characters.village.Redhat import Redhat
 from .characters.village.Villager import Villager, Villagerf
 from .characters.village.Witch import Witch
@@ -31,7 +32,7 @@ class Server(object):
                                  gameId=gameId, menuMessageId=None, deleteQueue=deleteQueue)
         self.accusedDict = {}
         self.enabledRoles = ["wolfdog", "terrorwolf", "seer", "witch", "hunter"]
-        self.disabledRoles = ["badassbastard", "redhat", "whitewolf", "cupid", "berserk"]
+        self.disabledRoles = ["badassbastard", "redhat", "whitewolf", "cupid", "berserk", "psycho"]
         self.settingsMessageId = None
 
     def start(self):
@@ -182,7 +183,8 @@ class Server(object):
 
         unique = [CharacterType.HUNTER, CharacterType.SEER, CharacterType.WITCH,
                   CharacterType.WOLFDOG, CharacterType.TERRORWOLF, CharacterType.BADDASSBASTARD,
-                  CharacterType.REDHAT, CharacterType.CUPID, CharacterType.BERSERK]
+                  CharacterType.REDHAT, CharacterType.CUPID, CharacterType.BERSERK,
+                  CharacterType.PSYCHOPATH]
 
         group_mod = self.gameData.random() * 0.2 + 0.9
         werewolfAmount = int(round(len(playerList) * (1.0 / 3.5) * group_mod, 0))
@@ -224,23 +226,17 @@ class Server(object):
             else:
                 player.getCharacter().wakeUp(self.gameData, p)
 
-        self.killTarget(self.gameData.getWerewolfTarget, self.gameData.setWerewolfTarget)
-        self.killTarget(self.gameData.getWitchTarget, self.gameData.setWitchTarget)
-        self.killTarget(self.gameData.getWhitewolfTarget, self.gameData.setWhitewolfTarget)
-        self.killTarget(self.gameData.getBerserkTarget, self.gameData.setBerserkTarget)
+        tl = []
+        for target in self.gameData.getNightlyTarget():
+            tl.append(target)
+            self.killTarget(target)
+        for t in tl:
+            self.gameData.removeNightlyTarget(t)
 
-    def killTarget(self, getter, setter):
-        if isinstance(getter(), list):
-            for i in getter():
-                self.killTargetSub(i, setter)
-        elif getter() is not None:
-            self.killTargetSub(getter(), setter)
-
-    def killTargetSub(self, targetId, setter):
+    def killTarget(self, targetId):
         if targetId in self.gameData.getAlivePlayers():
             target = self.gameData.getAlivePlayers()[targetId].getCharacter()
             target.kill(self.gameData, targetId)
-            setter(None)
 
     def accuseAll(self):
         self.accusedDict = {}
@@ -503,6 +499,9 @@ class Server(object):
         if "berserk" in self.enabledRoles:
             for i in range(0, 28):
                 villageRoleList.append(Berserk())
+        if "psycho" in self.enabledRoles:
+            for i in range(0, 28):
+                villageRoleList.append(Psychopath())
         return villageRoleList
 
 

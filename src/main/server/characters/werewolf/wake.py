@@ -3,6 +3,7 @@ from src.main.server.GameData import GameData
 from src.main.server.characters import Types
 from src.main.server.characters.Character import Character
 from src.main.localization import getLocalization as loc
+from src.main.server.characters.Types import CharacterType
 
 
 def wake(gameData: GameData):
@@ -60,11 +61,10 @@ def publishDecision(gameData, werewolfList, voteDict, optionIndexList, text, mes
 
     if decisionIndex == len(gameData.getAlivePlayerList()):
         targetName = "niemanden"
-        gameData.setWerewolfTarget(None)
     else:
         targetId = gameData.getAlivePlayerList()[decisionIndex]
         targetName = gameData.getAlivePlayers()[targetId].getName()
-        gameData.setWerewolfTarget(targetId)
+        gameData.setNightlyTarget(targetId, CharacterType.WEREWOLF)
 
     decision = loc(gameData.getLang(), "werewolfDecision") + gameData.getMessagePrePost(
         "werewolfResponse", targetName, optionIndexList[decisionIndex])

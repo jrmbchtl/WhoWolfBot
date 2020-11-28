@@ -14,7 +14,8 @@ Rotkaeppchen\
 Weisser Wolf\
 Harter Bursche\
 Amor\
-Berserker
+Berserker\
+Psychopath
 
 Testing:
 

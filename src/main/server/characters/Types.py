@@ -18,6 +18,7 @@ class CharacterType(Enum):
 	WITCH = 3,
 	SEER = 4,
 	BERSERK = 5,
+	PSYCHOPATH = 99,
 	VILLAGER = 100,
 	VILLAGERF = 101,
 	HUNTER = 102,

@@ -9,6 +9,8 @@ from src.systemtest.tests.Exampletest import Exampletest
 from src.systemtest.tests.FastDeath import FastDeath
 from src.systemtest.tests.LoveWin import LoveWinTest
 from src.systemtest.tests.PattTest import PattTest
+from src.systemtest.tests.PsychopathTest import PsychopathTest
+from src.systemtest.tests.PsychopathTest2 import PsychopathTest2
 from src.systemtest.tests.RedhatTest import RedhatTest
 from src.systemtest.tests.SeherinTest import SeherinTest
 from src.systemtest.tests.TerrorwolfTest import TerrorwolfTest
@@ -36,3 +38,5 @@ class SystemTestRegistration(object):
         self.main.register(BerserkTest1)
         self.main.register(BerserkTest2)
         self.main.register(BerserkTest3)
+        self.main.register(PsychopathTest)
+        self.main.register(PsychopathTest2)

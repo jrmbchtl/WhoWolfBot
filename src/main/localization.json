@@ -39,7 +39,8 @@
       "redhat": "Rotkäppchen",
       "whitewolf": "Weißer Wolf",
       "cupid": "Amor",
-      "berserk": "Berserker"
+      "berserk": "Berserker",
+      "psycho": "Psychopath"
     },
     "accuseOptionsPre": {
       "0": "",
@@ -1172,6 +1173,97 @@
       "8": " in deinem Rausch angegriffen.",
       "9": " wie ein wildes Tier angefallen."
     },
+    "psychopathDescription": {
+      "0": [
+        "Du bist der Psychopath. Der Psychopath erwacht als letzter Spieler. Wenn in der Nacht niemand gestorben ",
+        "wäre, muss er einen Spieler töten."
+      ],
+      "1": [
+        "Du bist ein Psychopath, der Menschen sterben sehen will. Sollte in einer Nacht niemand gestorben sein, so ",
+        "erwachst du und musst einen Dorfbewohner töten."
+      ],
+      "2": [
+        "Du bist ein Psychopath. Wenn du am morgen kein Blut siehst, stimmt dich das traurig. Deshalb erwachst du ",
+        "als letzter Spieler, wenn keiner gestorben ist, und sucht dir dein Opfer."
+      ],
+      "3": [
+        "Du ist ein Psychopath. Also so ein richtig harter. Eigentich gehörst du in die Klapse, aber bisher ist dir ",
+        "noch niemand auf die Schliche gekommen. Wenn in einer Nacht niemand gestorben ist, so schreckt du kurz vor ",
+        "dem Morgengrauen auf und erdrosselst noch kurz einen Mitspieler."
+      ],
+      "4": [
+        "Deine Rolle ist der Psychopath. Sollte in einer Nacht niemand gestorben sein, so wirst du geweckt und ",
+        "musst noch jemanden töten."
+      ],
+      "5": [
+        "Du bist ein Psychopath. Du hast Lust am morden. Und am Menschen sterben sehen. Deshalb willst du, das jede ",
+        "Nacht jemand stirbt. Un wenn niemand stirbt, stehst du kurz vor Morgendämmerung auf und ermordest noch ",
+        "jemanden."
+      ]
+    },
+    "psychopathQuestion": {
+      "0": "Es ist bisher niemand gestorben. Das wird sich jetzt ändern...",
+      "1": "Der Psychopath erwacht und verspürt Lust auf einen Mord.",
+      "2": "Der Psychopath hat das Verlangen, jemanden zu töten.",
+      "3": [
+        "Du schaust dich in der Morgendämmerung im Dorf um un siehst: Bisher ist niemand gestorben. Das kannst ",
+        "du nicht so lassen."
+      ],
+      "4": "Der Psychopath erwacht im Angstschweiß: Bisher ist diese Nacht noch niemand gestorben...",
+      "5": "Wähle dein Opfer, Psychopath!",
+      "6": "Es ist Zeit für dich, jemanden zu töten!",
+      "7": "Du denkst dir: Man kann ja so eine Nacht nicht ohne einen Toten beenden...",
+      "8": "In den frühen Morgenstunden machst du dich auf und suchst dein Opfer...",
+      "9": "Eine Nacht ohne Blut ist doch keine Nacht..."
+    },
+    "psychopathOptionPre": {
+      "0": "",
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "9": ""
+    },
+    "psychopathOptionPost": {
+      "0": " strangulieren",
+      "1": " ermorden",
+      "2": " kaltblütig zerstückeln",
+      "3": " überfahren",
+      "4": " von einer Klippe stoßen",
+      "5": " einmauern",
+      "6": " ein Messer in die Brust rammen",
+      "7": " in eine Sprengfalle locken",
+      "8": " mit einem Löffel erschlagen",
+      "9": " in den Backofen stecken"
+    },
+    "psychopathResponsePre": {
+      "0": "Du hast ",
+      "1": "Der Psychopath hat ",
+      "2": "Du hast ",
+      "3": "Der Psychopath hat ",
+      "4": "Der Psychopath hat ",
+      "5": "Der Psychopath hat ",
+      "6": "Der Psychopath hat ",
+      "7": "Du hast ",
+      "8": "Du hast ",
+      "9": "Der Psychopath hat "
+    },
+    "psychopathResponsePost": {
+      "0": " stranguliert.",
+      "1": " ermordet.",
+      "2": " kaltblütig zerstückelt.",
+      "3": " überfahren.",
+      "4": " von einer Klippe gestoßen.",
+      "5": " eingemauert.",
+      "6": " ein Messer in die Brust gerammt.",
+      "7": " in eine Sprengfalle gelockt.",
+      "8": " mit einem Löffel erschlagen.",
+      "9": " in den Backofen gesteckt."
+    },
     "changelog": [
       "Version 2.1.0\n- Neue Rollen: Weißer Wolf, Rotkäppchen und Harter Bursche\n\n",
       "Version 2.0.8\n- Bot wehrt sich nun gegen Spam und spricht auch Englisch\n\n",
@@ -1226,7 +1318,8 @@
       "redhat": "Little Red Riding Hood",
       "whitewolf": "White Wolf",
       "cupid": "Cupid",
-      "berserk": "Berserk"
+      "berserk": "Berserk",
+      "psycho": "Psychopath"
     },
     "accuseOptionsPre": {
       "0": "accuse ",
@@ -2233,6 +2326,89 @@
       "7": " as a target.",
       "8": " in your ecstasy.",
       "9": " like a wild animal.."
+    },
+    "psychopathDescription": {
+      "0": [
+        "You are the psychopath. The psychopath is the last player to wake up. If no one died that night, he must ",
+        "kill another player."
+      ],
+      "1": [
+        "You are a psychopath who wants to see people die. If nobody died that night, you wake up and have to kill ",
+        "another villager."
+      ],
+      "2": [
+        "You are a psychopath. If you don't see blood in the morning, it makes you sad. That's why you are the last ",
+        "player to wake up when no one has died and look for your victim."
+      ],
+      "3": [
+        "You are a psychopath. A really rough one. You belong in a madhouse, but so far nobody has found out about ",
+        "you. If no one has died during the night, you wake up just before dawn and strangle another player."
+      ],
+      "4": "Your role is the psychopath. If no one has died that night, you wake up and have to kill someone else.",
+      "5": [
+        "You are a psychopath. You enjoy killing. And watching people die. So you want someone to die each and every ",
+        "night. And if no one dies, you get up just before dawn and murder someone."
+      ]
+    },
+    "psychopathQuestion": {
+      "0": "Nobody has died yet. This will change now...",
+      "1": "The psychopath awakens and has a desire to kill.",
+      "2": "The psychopath has the desire to kill someone.",
+      "3": "You look around the village at dawn recognize: Noone has died yet. You can't leave it like this!",
+      "4": "The psychopath wakes up in a cold sweat: So far nobody has died this night...",
+      "5": "Choose your victim, psychopath!",
+      "6": "It's time for you to kill someone!",
+      "7": "You think to yourself: such a night cannot end without a corpse...",
+      "8": "Early in the morning you get up and look for your victim...",
+      "9": "A night without bloodshed isn't a real night..."
+    },
+    "psychopathOptionPre": {
+      "0": "strangle ",
+      "1": "murder ",
+      "2": "dismember ",
+      "3": "push ",
+      "4": "wall ",
+      "5": "ram a knife into ",
+      "6": "lure ",
+      "7": "beat ",
+      "8": "run ",
+      "9": "put "
+    },
+    "psychopathOptionPost": {
+      "0": "",
+      "1": "",
+      "2": " coldblooded",
+      "3": " off a cliff",
+      "4": " in",
+      "5": "s chest",
+      "6": " into a booby trap",
+      "7": " to death with a spoon",
+      "8": " over",
+      "9": " into the oven"
+    },
+    "psychopathResponsePre": {
+      "0": "You strangled ",
+      "1": "The psycho murdered ",
+      "2": "You dismembered ",
+      "3": "The psychopath knocked ",
+      "4": "You walled ",
+      "5": "The psychopath rammed a knife into ",
+      "6": "You lured ",
+      "7": "You have beaten ",
+      "8": "The psychopath ran ",
+      "9": "The psychopath watched "
+    },
+    "psychopathResponsePost": {
+      "0": ".",
+      "1": ".",
+      "2": " coldblooded.",
+      "3": " off a cliff.",
+      "4": " in.",
+      "5": "s chest.",
+      "6": " into a booby trap.",
+      "7": " to death. With a knife.",
+      "8": " over.",
+      "9": " getting baked like a tasty turkey."
     },
     "changelog": [
       "Version 2.1.0\n- New roles: Little Red Riding Hood, White Wolf and Badass Bastard\n\n",

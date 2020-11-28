@@ -18,7 +18,7 @@ class Hunter(VillagerTeam):
         idToChoice = {}
         idList = []
         for player in gameData.getAlivePlayerList():
-            if player == gameData.getWerewolfTarget() or player == gameData.getWitchTarget():
+            if player in gameData.getNightlyTarget():
                 continue
             name = gameData.getPlayers()[player].getName()
             choice, message = gameData.getMessagePrePost(

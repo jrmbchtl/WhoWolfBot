@@ -31,12 +31,11 @@ class Berserk(VillagerTeam):
             playerId, text, messageId, Factory.EditMode.EDIT))
         gameData.dumpNextMessage("feedback", playerId)
 
-        gameData.setBerserkTarget(None)
         if choice < len(players):
             self.lives -= 1
-            gameData.addBerserkTarget(gameData.getAlivePlayerList()[choice])
+            gameData.setNightlyTarget(gameData.getAlivePlayerList()[choice], CharacterType.BERSERK)
             if self.lives <= 0:
-                gameData.addBerserkTarget(playerId)
+                gameData.setNightlyTarget(playerId, CharacterType.BERSERK)
 
     def werewolfKillAttempt(self):
         self.lives -= 1

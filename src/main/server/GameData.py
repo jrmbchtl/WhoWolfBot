@@ -2,6 +2,7 @@ import os
 import random
 import json
 from src.main.localization import getLocalization as loc
+from src.main.server.characters import Types
 
 
 class GameData(object):
@@ -22,10 +23,7 @@ class GameData(object):
         self.menuMessageId = menuMessageId
         self.deleteQueue = deleteQueue
         self.lang = "EN"
-        self.werewolfTarget = None
-        self.whitewolfTarget = None
-        self.witchTarget = None
-        self.berserkTarget = []
+        self.nightlyTarget = {}  # holds id -> from role
         self.recList = []
         self.numberSent = 0
         if "numberSent" in dc["newGame"] and "recList" in dc["newGame"]:
@@ -180,45 +178,23 @@ class GameData(object):
     def getMenuMessageId(self):
         return self.menuMessageId
 
-    def setWerewolfTarget(self, werewolfTargetId):
-        if werewolfTargetId is None:
-            self.werewolfTarget = None
-            return
-        werewolfTarget = self.getAlivePlayers()[werewolfTargetId].getCharacter()
-        print(self.getAlivePlayers()[werewolfTargetId].getName())
-        if werewolfTarget.hasSecondLive():  # badass bastard
-            werewolfTarget.removeSecondLive()
-        elif not werewolfTarget.canBeKilled(self):  # redhat
-            pass
-        elif werewolfTarget.werewolfKillAttempt():  # berserk
-            self.werewolfTarget = werewolfTargetId
-
-    def getWerewolfTarget(self):
-        return self.werewolfTarget
-
-    def setWhitewolfTarget(self, whitewolfTarget):
-        self.whitewolfTarget = whitewolfTarget
-
-    def getWhitewolfTarget(self):
-        return self.whitewolfTarget
-
-    def setWitchTarget(self, witchTarget):
-        self.witchTarget = witchTarget
-
-    def getWitchTarget(self):
-        return self.witchTarget
-
-    def addBerserkTarget(self, target):
-        self.berserkTarget.append(target)
-
-    def setBerserkTarget(self, berserkTarget):
-        if berserkTarget is None:
-            self.berserkTarget = []
+    def setNightlyTarget(self, targetId, fromRole):
+        if fromRole == Types.CharacterType.WEREWOLF:
+            target = self.getAlivePlayers()[targetId].getCharacter()
+            if target.hasSecondLive():  # badass bastard
+                target.removeSecondLive()
+            elif not target.canBeKilled(self):  # redhat
+                pass
+            elif target.werewolfKillAttempt():  # berserk
+                self.nightlyTarget[targetId] = fromRole
         else:
-            self.berserkTarget = berserkTarget
+            self.nightlyTarget[targetId] = fromRole
 
-    def getBerserkTarget(self):
-        return self.berserkTarget
+    def removeNightlyTarget(self, target):
+        self.nightlyTarget.pop(target, None)
+
+    def getNightlyTarget(self):
+        return self.nightlyTarget
 
     def setLang(self, lang):
         self.lang = lang
@@ -271,7 +247,6 @@ class GameData(object):
             return True
 
     def getMessage(self, key, option=None, rndm=False, retOpt=False):
-        ret = ""
         if option is None and not rndm:
             ret = loc(self.lang, key)
         elif option is not None:
@@ -286,7 +261,6 @@ class GameData(object):
             return ret
 
     def getMessagePrePost(self, key, name, option=None, rndm=False, retOpt=False):
-        ret = ""
         if option is None and not rndm:
             ret = loc(self.lang, key + "Pre")
             ret += name
