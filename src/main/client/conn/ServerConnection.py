@@ -1,3 +1,4 @@
+from time import sleep
 
 
 class ServerConnection(object):
@@ -14,5 +15,6 @@ class ServerConnection(object):
 		return data
 
 	def sendJSON(self, dc):
+		sleep(0.01)
 		print("Client - Sending: " + str(dc))
 		self.sendQueue.put(dc)
