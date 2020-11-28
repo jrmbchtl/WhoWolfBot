@@ -1,6 +1,7 @@
 import os
 import random
 import json
+
 from src.main.localization import getLocalization as loc
 from src.main.server.characters import Types
 
@@ -56,6 +57,10 @@ class GameData(object):
 
     def dumpNextMessage(self, commandType=None, fromId=None):
         print("Dumped: " + str(self.getNextMessage(commandType, fromId)))
+
+    def clearQueue(self):
+        while not self.gameQueue.empty():
+            print("Cleared: " + str(self.gameQueue.get_nowait()))
 
     def addToDeleteQueue(self, data):
         if data["commandType"] != "feedback" or data["feedback"]["success"] == 0:

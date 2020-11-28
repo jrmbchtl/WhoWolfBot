@@ -216,12 +216,14 @@ class Server(object):
         sortedPlayerDict = self.gameData.getAlivePlayersSortedDict()
         wakeWerewolf = False
         for p in sortedPlayerDict:
+            self.gameData.clearQueue()
             player = sortedPlayerDict[p]
             if player.getCharacter().getRole().value[0] < 0:
                 player.getCharacter().wakeUp(self.gameData, p)
             elif not wakeWerewolf:
                 wakeWerewolf = True
                 wake.wake(self.gameData)
+                self.gameData.clearQueue()
                 player.getCharacter().wakeUp(self.gameData, p)
             else:
                 player.getCharacter().wakeUp(self.gameData, p)
@@ -269,6 +271,7 @@ class Server(object):
                 target = self.accusedDict[entry]
                 newText += self.gameData.idToName(entry)
                 newText += self.accuseText(idToChoice[target], self.gameData.idToName(target))
+                newText += "\n"
             self.gameData.sendJSON(Factory.createChoiceFieldEvent(
                 self.gameData.getOrigin(), newText, options, messageId, Factory.EditMode.EDIT))
             self.gameData.dumpNextMessage(commandType="feedback")
@@ -276,6 +279,7 @@ class Server(object):
         self.gameData.sendJSON(Factory.createMessageEvent(
             self.gameData.getOrigin(), newText, messageId, Factory.EditMode.EDIT))
         self.gameData.dumpNextMessage(commandType="feedback")
+        self.gameData.clearQueue()
 
     def accuseOptions(self, name):
         pre = loc(self.gameData.getLang(), "accuseOptionsPre")
@@ -356,6 +360,7 @@ class Server(object):
         # change voteDict to store voterId -> votedId
         for p in voteDict:
             voteDict[p] = indexToId[voteDict[p]]
+        self.gameData.clearQueue()
         return idToChoice, voteDict
 
     def voteIntro(self):
