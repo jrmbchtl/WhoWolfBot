@@ -64,14 +64,22 @@ class TelegramClient(object):
 
     def writeBanList(self):
         with open("banList.json", "w") as file:
+            print(self.banList)
             json.dump(self.banList, file)
 
     def isSpam(self, update):
-        userId = update.message.from_user.id
+        if update.callback_query is not None:
+            userId = update.callback_query.from_user.id
+            name = update.callback_query.from_user.first_name
+            chatId = update.callback_query.message.chat_id
+        else:
+            userId = update.message.from_user.id
+            name = update.message.from_user.first_name
+            chatId = update.message.chat_id
+
         if userId in self.banList:
             return True
-        chatId = update.message.chat_id
-        name = update.message.chat.first_name
+
         now = datetime.datetime.now()
         if userId not in self.spamDict:
             self.spamDict[userId] = [now]
@@ -140,6 +148,7 @@ class TelegramClient(object):
                          parseMode=ParseMode.MARKDOWN_V2)
 
     def buttonHandler(self, update, context):
+        print(update)
         if self.isSpam(update):
             return
         callbackData = update.callback_query.data

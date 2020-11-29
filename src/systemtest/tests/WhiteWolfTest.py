@@ -21,7 +21,7 @@ class WhiteWolfTest(Systemtest):
             self.sc.sendJSON({"commandType": "remove", "remove": {"role": role}, "fromId": 42,
                               "gameId": gameId})
             self.assertAnyMessage()
-        self.sc.sendJSON({"commandType": "add", "add": {"role": "Weißer Wolf"},
+        self.sc.sendJSON({"commandType": "add", "add": {"role": "Weißer\xa0Wolf"},
                           "fromId": 42, "gameId": gameId})
         self.assertAnyMessage()
         for i in range(1, 7):
