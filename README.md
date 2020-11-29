@@ -1,7 +1,7 @@
 # WhoWolfBot
 Telegram Bot for playing Werwolf
 
-Current Version: 2.1.0
+Current Version: 2.1.1
 
 Implemented Roles:\
 Villager/in\
@@ -15,12 +15,12 @@ Weisser Wolf\
 Harter Bursche\
 Amor\
 Berserker\
-Psychopath
+Psychopath\
+Superschurke
 
 Testing:
 
 WIP:
-Superschurke
 
 Planned:\
 Terrorist\
