@@ -60,8 +60,11 @@ class DoublePattTest(Systemtest):
                               "fromId": i + 1, "gameId": gameId})
             self.assertAnyMessage()
 
-        for i in range(0, 2):
-            self.assertAnyMessage()
+        self.assertAnyMessage()
+        self.assertReceiveDict({'eventType': 'message', 'message':
+            {'text': 'Die Demokratie ist überfordert und beschließt, niemanden hinzurichten.',
+             'messageId': 0}, 'mode': 'write', 'target': 0, 'highlight': False, 'gameId': gameId,
+            'lang': 'DE'})
 
         self.assertReceiveDict({"eventType": "message", "message":
             {"text": ("Nach einem anstrengenden Tag hoffen viele Dorfbewohner nun auf eine "

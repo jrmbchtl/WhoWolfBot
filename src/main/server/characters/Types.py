@@ -11,14 +11,18 @@ class TeamType(Enum):
 # negative means prior to werewolf, positive
 class CharacterType(Enum):
 	WOLFDOG = -10,
+	CUPID = -8,
 	NONE = 0
 	WEREWOLF = 1,
 	WHITEWOLF = 2,
 	WITCH = 3,
 	SEER = 4,
+	BERSERK = 5,
+	SCALLYWAG = 10,
+	PSYCHOPATH = 99,
 	VILLAGER = 100,
 	VILLAGERF = 101,
 	HUNTER = 102,
 	BADDASSBASTARD = 103,
 	TERRORWOLF = 104,
-	REDHAT = 104,
+	REDHAT = 105,

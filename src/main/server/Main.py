@@ -2,7 +2,7 @@ import argparse
 import sys
 import os
 import json
-from multiprocessing import Process, SimpleQueue
+from multiprocessing import Process, Queue
 
 from src.main.client.TelegramClient import TelegramClient
 from src.main.server import Factory
@@ -20,8 +20,8 @@ class Main(object):
         self.gameId = 1
         self.port = 32000
         self.games = {}
-        self.fromServerQueue = SimpleQueue()
-        self.toServerQueue = SimpleQueue()
+        self.fromServerQueue = Queue()
+        self.toServerQueue = Queue()
         self.sc = ServerConnection(self.toServerQueue, self.fromServerQueue)
         self.clientList = []
         if enableTclient:
@@ -123,9 +123,9 @@ class Main(object):
                     self.initGame(gameId, sc, dc, s)
 
     def initGame(self, gameId, sc, dc, seed):
-        self.games[gameId] = {"toProcessQueue": SimpleQueue()}
+        self.games[gameId] = {"toProcessQueue": Queue()}
         self.games[gameId]["admin"] = dc["fromId"]
-        self.games[gameId]["deleteQueue"] = SimpleQueue()  # dicts with messageId, target
+        self.games[gameId]["deleteQueue"] = Queue()  # dicts with messageId, target
         self.games[gameId]["process"] = \
             Process(target=startNewGame,
                     args=(sc, dc, gameId, self.games[gameId]["toProcessQueue"], seed,

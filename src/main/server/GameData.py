@@ -2,6 +2,9 @@ import os
 import random
 import json
 
+from src.main.localization import getLocalization as loc
+from src.main.server.characters import Types
+
 
 class GameData(object):
     """stores data for each game"""
@@ -21,9 +24,7 @@ class GameData(object):
         self.menuMessageId = menuMessageId
         self.deleteQueue = deleteQueue
         self.lang = "EN"
-        self.werewolfTarget = None
-        self.whitewolfTarget = None
-        self.witchTarget = None
+        self.nightlyTarget = {}  # holds id -> from role
         self.recList = []
         self.numberSent = 0
         if "numberSent" in dc["newGame"] and "recList" in dc["newGame"]:
@@ -56,6 +57,10 @@ class GameData(object):
 
     def dumpNextMessage(self, commandType=None, fromId=None):
         print("Dumped: " + str(self.getNextMessage(commandType, fromId)))
+
+    def clearQueue(self):
+        while not self.gameQueue.empty():
+            print("Cleared: " + str(self.gameQueue.get_nowait()))
 
     def addToDeleteQueue(self, data):
         if data["commandType"] != "feedback" or data["feedback"]["success"] == 0:
@@ -178,23 +183,23 @@ class GameData(object):
     def getMenuMessageId(self):
         return self.menuMessageId
 
-    def setWerewolfTarget(self, werewolfTarget):
-        self.werewolfTarget = werewolfTarget
+    def setNightlyTarget(self, targetId, fromRole):
+        if fromRole == Types.CharacterType.WEREWOLF:
+            target = self.getAlivePlayers()[targetId].getCharacter()
+            if target.hasSecondLive():  # badass bastard
+                target.removeSecondLive()
+            elif not target.canBeKilled(self):  # redhat
+                pass
+            elif target.werewolfKillAttempt():  # berserk
+                self.nightlyTarget[targetId] = fromRole
+        else:
+            self.nightlyTarget[targetId] = fromRole
 
-    def getWerewolfTarget(self):
-        return self.werewolfTarget
+    def removeNightlyTarget(self, target):
+        self.nightlyTarget.pop(target, None)
 
-    def setWhitewolfTarget(self, whitewolfTarget):
-        self.whitewolfTarget = whitewolfTarget
-
-    def getWhitewolfTarget(self):
-        return self.whitewolfTarget
-
-    def setWitchTarget(self, witchTarget):
-        self.witchTarget = witchTarget
-
-    def getWitchTarget(self):
-        return self.witchTarget
+    def getNightlyTarget(self):
+        return self.nightlyTarget
 
     def setLang(self, lang):
         self.lang = lang
@@ -245,3 +250,35 @@ class GameData(object):
             return False
         else:
             return True
+
+    def getMessage(self, key, option=None, rndm=False, retOpt=False):
+        if option is None and not rndm:
+            ret = loc(self.lang, key)
+        elif option is not None:
+            ret = loc(self.lang, key, option)
+        else:
+            dc = loc(self.lang, key)
+            option = self.randrange(0, len(dc))
+            ret = dc[str(option)]
+        if retOpt:
+            return option, ret
+        else:
+            return ret
+
+    def getMessagePrePost(self, key, name, option=None, rndm=False, retOpt=False):
+        if option is None and not rndm:
+            ret = loc(self.lang, key + "Pre")
+            ret += name
+            ret += loc(self.lang, key + "Post")
+        elif option is not None:
+            ret = loc(self.lang, key + "Pre", option)
+            ret += name
+            ret += loc(self.lang, key + "Post", option)
+        else:
+            dc = loc(self.lang, key + "Pre")
+            option = self.randrange(0, len(dc))
+            return self.getMessagePrePost(key, name, option, rndm, retOpt)
+        if retOpt:
+            return option, ret
+        else:
+            return ret

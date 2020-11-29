@@ -13,6 +13,7 @@
     "cancel": "Abbrechen",
     "join": "Mitspielen/Aussteigen",
     "start": "Start",
+    "and": "und",
     "roleConfig": "Hier können Rollen hinzugefügt oder entfernt werden",
     "removePre": "",
     "removePost": " deaktivieren",
@@ -36,7 +37,11 @@
       "wolfdog": "Wolfshund",
       "badassbastard": "Harter Bursche",
       "redhat": "Rotkäppchen",
-      "whitewolf": "Weißer Wolf"
+      "whitewolf": "Weißer Wolf",
+      "cupid": "Amor",
+      "berserk": "Berserker",
+      "psycho": "Psychopath",
+      "scallywag": "Superschurke"
     },
     "accuseOptionsPre": {
       "0": "",
@@ -281,13 +286,17 @@
       "0": "Der weiße Werwolf gewinnt.",
       "1": "Es war ein langer Kampf, aber der weißse Werwolf hat sich durchgesetzt.",
       "2": "Es lebt nur noch der weiße Werwolf in Düsterwald!",
-      "3": ["Es gibt keine Dorfbewohner und keine normalen Werwölfe mehr, die von den dem weißen Werwolf verspeißt ",
-        "werden können."],
+      "3": [
+        "Es gibt keine Dorfbewohner und keine normalen Werwölfe mehr, die von den dem weißen Werwolf verspeißt ",
+        "werden können."
+      ],
       "4": "Es wird wieder friedlich in Düsterwald, da hier jetzt nur noch ein einsamer weißer Werwolf lebt.",
       "5": "Der weiße Werwolf hat gesiegt.",
       "6": "Der weiße Werwolf hat seine Dominanz bewiesen.",
-      "7": ["Der weiße Werwolf ist in Düsterwald anscheinend die stärkste Rasse. Zu dumm, dass er sich alleine nicht ",
-        "fortpflanzen kann..."],
+      "7": [
+        "Der weiße Werwolf ist in Düsterwald anscheinend die stärkste Rasse. Zu dumm, dass er sich alleine nicht ",
+        "fortpflanzen kann..."
+      ],
       "8": "Der weiße Werwolf feiert den Sieg der Einsamkeit in Düsterwald"
     },
     "villageWin": {
@@ -304,6 +313,18 @@
         "Die Dorfbewohner veranstalten zur Feier des Tages einen Fest und stopfen den ",
         "letzten Werwolf aus."
       ]
+    },
+    "loveWin": {
+      "0": "Das Liebespaar gewinnt.",
+      "1": "Die Liebe hat in Düsterwald gesiegt.",
+      "2": "Die Liebe bringt nun Licht nach Düsterwald!",
+      "3": "Es lebt nur noch das Liebespaar.",
+      "4": "Es wird wieder friedlich in Düsterwald, da das Liebespaar als letztes überlebt.",
+      "5": "Die Liebe bringt nun Frieden nach Düsterwald.",
+      "6": "Die Liebe hat ihre Überlegenheit demonstriert.",
+      "7": "Liebe überwindet alles.",
+      "8": "Die Liebe hat sich durchgesetzt.",
+      "9": "Das Liebespaar genießt die Ruhe zu zweit."
     },
     "deathMessage": {
       "1": " ist diese Nacht leider gestorben.",
@@ -966,15 +987,23 @@
       ]
     },
     "redhatDescription": {
-      "0": ["Du bist das Rotkäppchen. Solange der Jäger am Leben ist, bleibt das Rotkäppchen nachts immun gegen ",
-        "normale Angriffe von Werwölfen."],
-      "1": ["Deine Rolle ist das Rotkäppchen, welches nachts nicht von den Werwölfen gerissen werden kann, solange ",
-        "der Jäger noch lebt."],
+      "0": [
+        "Du bist das Rotkäppchen. Solange der Jäger am Leben ist, bleibt das Rotkäppchen nachts immun gegen ",
+        "normale Angriffe von Werwölfen."
+      ],
+      "1": [
+        "Deine Rolle ist das Rotkäppchen, welches nachts nicht von den Werwölfen gerissen werden kann, solange ",
+        "der Jäger noch lebt."
+      ],
       "2": "Du bist das Rotkäppchen. Dieses wird nachts vom Jäger, solange dieser lebt, vor Werwölfen beschützt.",
-      "3": ["Dein Charakter ist das Rotkäppchen, welches unter dem Schutz des Jägers steht, solange dieser lebt. ",
-        "Dies bedeutet, dass solange der Jäger lebt, das Rotkäppchen nicht nachts durch Werwölfe getötet werden kann."],
-      "4": ["Du bist das märchenhafte Rotkäppchen, welches zu Lebzeiten des Jägers von diesem vor Werwolfangriffen ",
-        "geschützt wird."],
+      "3": [
+        "Dein Charakter ist das Rotkäppchen, welches unter dem Schutz des Jägers steht, solange dieser lebt. ",
+        "Dies bedeutet, dass solange der Jäger lebt, das Rotkäppchen nicht nachts durch Werwölfe getötet werden kann."
+      ],
+      "4": [
+        "Du bist das märchenhafte Rotkäppchen, welches zu Lebzeiten des Jägers von diesem vor Werwolfangriffen ",
+        "geschützt wird."
+      ],
       "5": "Du bist das Rotkäppchen, welches nicht durch Werwolfangriffe sterben kann, solange der Jäger lebt."
     },
     "whitewolfDescription": {
@@ -1018,7 +1047,297 @@
       "5": "Welcher der Werwölfe ist zu auffällig?",
       "6": "Wessen Werwolfsfratze kannst du nicht leiden?"
     },
+    "cupidDescription": {
+      "0": [
+        "Du bist Amor. Amor bestimmt in der ersten Nacht zwei Spieler, die sich unsterblich ineinander verlieben. ",
+        "Diese spielen von nun an zusammen und können gemeinsam gewinnen, auch wenn sie in unterschiedlichen Teams sind."
+      ],
+      "1": [
+        "Du bist Amor. Mit seinem Bogen und seinen Herzpfeilen sorgt Amor für die Liebe im Düsterwald. Er schießt ",
+        "seine Pfeile auf zwei Dorfbewohner, die sich sofort unsterblich ineinander verlieben und einander bis in den ",
+        "Tod folgen würden. Ihre Liebe ist sogar stärker als ihr Zugehörigkeitsgefühl zu ihrer jeweiligen Partei."
+      ],
+      "2": [
+        "Dein Charakter ist Amor. Zu Beginn des Spieles bestimmt er zwei Spieler, die sofort in inniger Liebe ",
+        "zueinander entflammen (das kann auch er selbst sein). Stirbt im Laufe des Spiels einer der beiden Liebenden, ",
+        "so auch der andere aus Gram. Achtung: Ist einer der beiden Liebenden ein Werwolf und der andere ein Bürger, ",
+        "so haben sie ein gemeinsames neues Ziel: Überleben sie als einzige so gewinnen sie allein."
+      ],
+      "3": [
+        "Deine Rolle ist der Amor. Amor erwacht nur einmal in der allerersten Nacht, um zwei Spieler seiner Wahl ",
+        "miteinander zu verkuppeln (eventuell auch sich selbst). Danach schläft er wieder ein. Anschließend lernt sich",
+        " das frisch verliebte Paar kennen. Die Verliebten haben im Laufe des Spiels die Aufgabe, den Partner zu ",
+        "beschützen, denn wenn einer der beiden stirbt, macht es ihm der Partner trauernd nach; sie dürfen nie ",
+        "gegeneinander stimmen."
+      ],
+      "4": [
+        "Du bist Amor, welcher dafür sorgt, dass sich zwei Spieler unsterblich ineinander verlieben. Sollte einer ",
+        "von beiden zu Tode kommen, so nimmt sich der andere aus Trauer das Leben. Das Liebespaar kann gemeinsam ",
+        "gewinnen, auch wenn sie von unterschiedlichen Teams sind."
+      ],
+      "5": [
+        "Du bist Amor und machst dich in der ersten Nacht auf die Jagd nach einem Liebspaar, welches du verkuppelst. ",
+        "Dieses verliebt sich sofort und will sich nie wieder trennen. Sollte einer von beiden sterben, so bringt der ",
+        "Kummer des Anderen auch ihn ins Grab."
+      ]
+    },
+    "cupidQuestion": {
+      "0": "Wer soll sich dieses Spiel verlieben?",
+      "1": "Wen willst du mit deinen Liebespfeilen treffen?",
+      "2": "Wer gibt ein schönes Liebespaar ab?",
+      "3": "Wen willst du verkuppeln?",
+      "4": "Wer soll sich heute Nacht verlieben?",
+      "5": "Wer wird heute Nacht seinen Traumpartner finden?",
+      "6": "Wer wird sich gleich unsterblich verlieben?",
+      "7": "Wer findet die Liebe des Lebens?"
+    },
+    "fellInLovePre": "Du hast dich in ",
+    "fellInLovePost": " verliebt.",
+    "lovedOneKilled": {
+      "0": " stirbt aus Liebskummer.",
+      "1": " will nicht ohne seinen Partner weiterleben.",
+      "2": " kann alleine nicht überleben.",
+      "3": " hängt sich aus Trauer.",
+      "4": " wird todtraurig und stirbt.",
+      "5": " überlebt den Herzschmerz nicht.",
+      "6": " will nicht ohne Liebe leben.",
+      "7": " hält es alleine nicht mehr aus und begeht Suizid."
+    },
+    "berserkDescription": {
+      "0": [
+        "Du bist der Berserker. Der Berserker hat ein Extraleben gegen Werwolfangriffe. Zusätzlich kann er jede ",
+        "Nacht einen Spieler töten, verliert dabei aber auch selbst ein Leben!"
+      ],
+      "1": [
+        "Du bist ein Berserker, welcher den ersten Werwolfangriff überlebt. Außerdem kann er jede Nacht jemanden ",
+        "töten, allerdings für einen Preis: Für seinen ersten Mord verliert er den Schutz vor den Werölfen, nach ",
+        "seinem zweiten Mord stirbt er vor Erschöpfung."
+      ],
+      "2": [
+        "Du bist ein Berserker. Du kämpfst in deinem Rausch. Du bist unverwundbar. Naja so fast. Du hast ein ",
+        "Extraleben gegen Werwolfangriffe. Und wenn du willst, kannst du auch jemanden mit deinen Äxten zerstückeln, ",
+        "allerdings verlierst du dann deinen Schutz gegen die Werwölfe."
+      ],
+      "3": [
+        "Du ist ein Berserker. Ein ziemlich harter und brutaler Zeitgenosse. Du hast ein Extraleben gegen ",
+        "Werwolfangriffe und kannst jede Nacht jemanden töten. Aber Vorsicht: Es gilt Leben für Leben, für jedes Leben, ",
+        "dass du nimmst, verlierst auch du eines!"
+      ],
+      "4": [
+        "Deine Rolle ist der Berserker. Dieser hat ein Extraleben gegen Werwolfangriffe und schreckt jede Nacht ",
+        "aus seinem Schlaf hoch, mit der Möglichkeit jemanden zu töten. Allerdings verliert der Berserker für jeden ",
+        "Angriff selbst ein Leben."
+      ],
+      "5": [
+        "Du bist ein Berserker. Du versuchst, mit Brutalität Gerechtigkeit zu schaffen. Mit deiner Härte, die ",
+        "Werwölfe zu vernichten. Mit deinem Geschick, dem ersten Angriff der Werwölfe zu entkommen. Oder mit deiner ",
+        "Eiseskälte, jemanden zu ermorden. Aber kein Verbrechen, für das nicht bezahlt werden müsste! Beschließt du ",
+        "jemanden zu töten, so verlöierst du deinem Schutz gegen die Werwölfe. Und solltest du keinen Schutz mehr haben,",
+        " so stirbst du in deinem Wahn, nachdem du dein Opfer erfolgreich erschlagen hast."
+      ]
+    },
+    "berserkTwoLives": "Du hast noch 2 Leben.\n\n",
+    "berserkOneLive": "Du hast noch ein Leben.\n\n",
+    "berserkQuestion": {
+      "0": "Wen möchtest du ermorden?",
+      "1": "Wen willst du mit deinen Äxten besuchen?",
+      "2": "Wer soll morgens mit einer Axt im Kopf aufgefunden werden?",
+      "3": "Wer könnte ein Werwolf sein und muss dafür sterben?",
+      "4": "Du erhälst die Möglichkeit, jemanden zu töten. Wer wird es sein?",
+      "5": "Wer wird heute Nacht dem Berserker zum Opfer fallen?",
+      "6": "Es ist Zeit für dich, jemanden zu töten!",
+      "7": "Wer dient als Zielscheibe für dein nächtliches Axtwerfen?",
+      "8": "Wen greifst du diese Nacht im Rausch an?",
+      "9": "Wen willst du wie ein wildes Tier anfallen?"
+    },
+    "berserkResponsePre": {
+      "0": "Du hast ",
+      "1": "Der Berserker hat ",
+      "2": "Du hast ",
+      "3": "Du hast ",
+      "4": "Der Berserker hat vermutet, dass ",
+      "5": "Der Berserker hat ",
+      "6": "Der Berserker hat ",
+      "7": "Der Berserker hat ",
+      "8": "Du hast ",
+      "9": "Der Berserker hat "
+    },
+    "berserkResponsePost": {
+      "0": " ermordet.",
+      "1": " mit seinen Äxten besucht.",
+      "2": " eine Axt in den Kopf geschlagen.",
+      "3": " sterben lassen.",
+      "4": " ein Werwolf ist, kurzen Prozess gemacht und ihn schnell enthauptet.",
+      "5": " überfallen.",
+      "6": " getötet.",
+      "7": " als Zielscheibe genutzt.",
+      "8": " in deinem Rausch angegriffen.",
+      "9": " wie ein wildes Tier angefallen."
+    },
+    "psychopathDescription": {
+      "0": [
+        "Du bist der Psychopath. Der Psychopath erwacht als letzter Spieler. Wenn in der Nacht niemand gestorben ",
+        "wäre, muss er einen Spieler töten."
+      ],
+      "1": [
+        "Du bist ein Psychopath, der Menschen sterben sehen will. Sollte in einer Nacht niemand gestorben sein, so ",
+        "erwachst du und musst einen Dorfbewohner töten."
+      ],
+      "2": [
+        "Du bist ein Psychopath. Wenn du am morgen kein Blut siehst, stimmt dich das traurig. Deshalb erwachst du ",
+        "als letzter Spieler, wenn keiner gestorben ist, und sucht dir dein Opfer."
+      ],
+      "3": [
+        "Du ist ein Psychopath. Also so ein richtig harter. Eigentich gehörst du in die Klapse, aber bisher ist dir ",
+        "noch niemand auf die Schliche gekommen. Wenn in einer Nacht niemand gestorben ist, so schreckt du kurz vor ",
+        "dem Morgengrauen auf und erdrosselst noch kurz einen Mitspieler."
+      ],
+      "4": [
+        "Deine Rolle ist der Psychopath. Sollte in einer Nacht niemand gestorben sein, so wirst du geweckt und ",
+        "musst noch jemanden töten."
+      ],
+      "5": [
+        "Du bist ein Psychopath. Du hast Lust am morden. Und am Menschen sterben sehen. Deshalb willst du, das jede ",
+        "Nacht jemand stirbt. Un wenn niemand stirbt, stehst du kurz vor Morgendämmerung auf und ermordest noch ",
+        "jemanden."
+      ]
+    },
+    "psychopathQuestion": {
+      "0": "Es ist bisher niemand gestorben. Das wird sich jetzt ändern...",
+      "1": "Der Psychopath erwacht und verspürt Lust auf einen Mord.",
+      "2": "Der Psychopath hat das Verlangen, jemanden zu töten.",
+      "3": [
+        "Du schaust dich in der Morgendämmerung im Dorf um un siehst: Bisher ist niemand gestorben. Das kannst ",
+        "du nicht so lassen."
+      ],
+      "4": "Der Psychopath erwacht im Angstschweiß: Bisher ist diese Nacht noch niemand gestorben...",
+      "5": "Wähle dein Opfer, Psychopath!",
+      "6": "Es ist Zeit für dich, jemanden zu töten!",
+      "7": "Du denkst dir: Man kann ja so eine Nacht nicht ohne einen Toten beenden...",
+      "8": "In den frühen Morgenstunden machst du dich auf und suchst dein Opfer...",
+      "9": "Eine Nacht ohne Blut ist doch keine Nacht..."
+    },
+    "psychopathOptionPre": {
+      "0": "",
+      "1": "",
+      "2": "",
+      "3": "",
+      "4": "",
+      "5": "",
+      "6": "",
+      "7": "",
+      "8": "",
+      "9": ""
+    },
+    "psychopathOptionPost": {
+      "0": " strangulieren",
+      "1": " ermorden",
+      "2": " kaltblütig zerstückeln",
+      "3": " überfahren",
+      "4": " von einer Klippe stoßen",
+      "5": " einmauern",
+      "6": " ein Messer in die Brust rammen",
+      "7": " in eine Sprengfalle locken",
+      "8": " mit einem Löffel erschlagen",
+      "9": " in den Backofen stecken"
+    },
+    "psychopathResponsePre": {
+      "0": "Du hast ",
+      "1": "Der Psychopath hat ",
+      "2": "Du hast ",
+      "3": "Der Psychopath hat ",
+      "4": "Der Psychopath hat ",
+      "5": "Der Psychopath hat ",
+      "6": "Der Psychopath hat ",
+      "7": "Du hast ",
+      "8": "Du hast ",
+      "9": "Der Psychopath hat "
+    },
+    "psychopathResponsePost": {
+      "0": " stranguliert.",
+      "1": " ermordet.",
+      "2": " kaltblütig zerstückelt.",
+      "3": " überfahren.",
+      "4": " von einer Klippe gestoßen.",
+      "5": " eingemauert.",
+      "6": " ein Messer in die Brust gerammt.",
+      "7": " in eine Sprengfalle gelockt.",
+      "8": " mit einem Löffel erschlagen.",
+      "9": " in den Backofen gesteckt."
+    },
+    "scallywagDescription": {
+      "0": [
+        "Du bist der Superschurke! Der Superschurke gibt in der ersten Nacht einem Spieler seine herzförmige ",
+        "Bombe. Die Bombe wird am Ende jedes Tages im Uhrzeigersinn weitergegeben. Wenn der Superschurke stirbt, ",
+        "explodiert die Bombe und töten den Spieler, vor dem sie gerade liegt."
+      ],
+      "1": [
+        "Du bist gewitzt. Du bist brutal. Du bist der Superschurke. Als dieser verdonnerst du in der ersten Nacht ",
+        "mittels einer \"Halt mal kurz\" einen Mitspieler zum Halten einer herzförmigen Bome. Diese wird am Ende jedes ",
+        "Tages im Kreis weitergegeben. Solltest du wider Erwartens zu Tode kommen, so explodiert auch deine herzförmige ",
+        "Bombe und tötet den Spieler, vor dem sie liegt."
+      ],
+      "2": [
+        "Dein Charakter ist der Superschurke. Du versteckst in der ersten Nacht eine herzförmige Bombe bei einem ",
+        "Spieler. Dieser findet sie am Ende des Tages und versteckt diese beim nächsten Spieler im Uhrzeigersinn. Wenn ",
+        "du stirbst, detoniert auch die Bombe und sorgt für einen weiteren Toten."
+      ],
+      "3": [
+        "Bei deiner Rolle handelt es sich um den Superschurken. Dieser kann einem Mitspieler in der ersten nacht ",
+        "eine herzförmige Bombe unterjubeln. Diese wird wie eine heiße Kartoffel am Ende jedes Tages im Uhrzeigersinn ",
+        "weitergeworfen. Wenn dein Herz nicht mehr schlägt, tickt die Bombe ein letztes Mal und tötet den Spieler, der ",
+        "diese momentan hält."
+      ],
+      "4": [
+        "Dein Charakter ist der Superschurke. Dieser zwingt in der ersten Nacht jemanden dazu, seine herzförmige ",
+        "Bombe zu halten. Dieser ist nicht sonderlich davon begeistert und gibt sie am Ende des Tages im Uhrzeigersinn ",
+        "weiter. Soltest du sterben, so explodiert die Bombe und töten den Halter."
+      ],
+      "5": [
+        "Du bist der Superschurke und ein riesiger Fan von Russischem Roulette. Daher bastelst du dir eine ",
+        "herzförmige Bombe, welche du in der ersten Nacht einen Mitspieler gibst. Am Ende jedes Tages wird die Bombe ",
+        "im Uhrzeigersinn weitergegeben. Im Falle deines Ablebens detoniert die Bombe und sorgt dafür, dass der Halter ",
+        "danach aus mehr Einzelteilen besteht als eine Glaswand, die soeben von einem Panzer durchbrochen wurde."
+      ]
+    },
+    "scallywagQuestion": {
+      "0": "Wem willst du die herzförmige Bombe geben?",
+      "1": "Wem möchtest du mit einer herzförmigen Bombe deine Liebe vorspielen?",
+      "2": "Wem willst du mit der herzförmigen Bombe zu einem \"Halt mal kurz\" verdonnern?",
+      "3": "Wer muss die herzförmige Bombe zu Beginn halten?",
+      "4": "Wer darf als erstes bei deiner Version von russischem Roulette die Bombe halten?",
+      "5": "Wer bekommt die heiße Kartoffel?",
+      "6": "Wer soll der erste stolze Besitzer der herzförmigen Bombe werden?",
+      "7": "Wem willst du die herzförmige Bombe unterjubeln?",
+      "8": "Wessen Kissen tauschst du diese Nacht gegen die herzförmige Bombe aus?",
+      "9": "Wer bekommt die Ehre, Halter der herzförmigen Bombe zu werden?"
+    },
+    "scallywagResponsePre": {
+      "0": "Du hast ",
+      "1": "Der Superschurke hat ",
+      "2": "Du hast ",
+      "3": "Der Superschurke hat ",
+      "4": "Der Superschurke hat ",
+      "5": "Der Superschurke hat ",
+      "6": "Der Superschurke hat ",
+      "7": "Du hast ",
+      "8": "Du hast ",
+      "9": "Der Superschurke hat "
+    },
+    "scallywagResponsePost": {
+      "0": " die Bombe gegeben.",
+      "1": " seine Liebe mit einer herzförmigen Bombe vorgespielt.",
+      "2": " mit einem \"Halt mal kurz\" erwischt.",
+      "3": " die Bombe gegeben.",
+      "4": " als ersten Mitspieler von russischem Roulette ausgesucht.",
+      "5": " die heiße Kartoffel gegeben.",
+      "6": " zum stolzen Besitzer der herzförmigen Bombe ernannt.",
+      "7": " die Bombe untergejubelt.",
+      "8": "s Kissen mit der herzförmigen Bombe ausgetauscht.",
+      "9": " die Bombe in die Hand gedrückt."
+    },
     "changelog": [
+      "Version 2.1.1\n- Neue Rollen: Amor, Berserker, Psychopath und Superschurke\n\n",
       "Version 2.1.0\n- Neue Rollen: Weißer Wolf, Rotkäppchen und Harter Bursche\n\n",
       "Version 2.0.8\n- Bot wehrt sich nun gegen Spam und spricht auch Englisch\n\n",
       "Version 2.0.7\n- Backend Änderung von Netzwerk zu Queues\n\n",
@@ -1046,6 +1365,7 @@
     "cancel": "Cancel",
     "join": "Join/Leave",
     "start": "Start",
+    "and": "and",
     "roleConfig": "You can add and remove roles for this game",
     "removePre": "remove ",
     "removePost": "",
@@ -1069,7 +1389,11 @@
       "wolfdog": "Wolfdog",
       "badassbastard": "Badass Bastard",
       "redhat": "Little Red Riding Hood",
-      "whitewolf": "White Wolf"
+      "whitewolf": "White Wolf",
+      "cupid": "Cupid",
+      "berserk": "Berserk",
+      "psycho": "Psychopath",
+      "scallywag": "Superschurke"
     },
     "accuseOptionsPre": {
       "0": "accuse ",
@@ -1299,8 +1623,10 @@
       "4": "Peace returns to town, since there is only the white werewolf left here.",
       "5": "The white werewolf has won.",
       "6": "The white werewolf has proven his dominance.",
-      "7": ["The white werewolf is apparently the strongest race in town. Too bad that it cannot reproduce himself ",
-        "alone..."],
+      "7": [
+        "The white werewolf is apparently the strongest race in town. Too bad that it cannot reproduce himself ",
+        "alone..."
+      ],
       "8": "The white werewolf celebrates the victory of loneliness in town."
     },
     "villageWin": {
@@ -1314,6 +1640,18 @@
       "7": "The werewolves were apparently the weaker race in town.",
       "8": "After the death of the last werewolf the villagers now have peace.",
       "9": "The villagers organize a feast to celebrate the day and stuff the last werewolf."
+    },
+    "loveWin": {
+      "0": "The loving couple wins.",
+      "1": "Love has triumphed in town.",
+      "2": "Love now brings light into town!",
+      "3": "Only the loving couple is still alive.",
+      "4": "Peace returns to town, as the lovers are the last to survive.",
+      "5": "Love now brings peace to town.",
+      "6": "Love has demonstrated its superiority.",
+      "7": "Love conquered all.",
+      "8": "Love has prevailed.",
+      "9": "The couple enjoys the peace and quietness when being together."
     },
     "deathMessage": {
       "1": " sadly died tonight.",
@@ -1882,16 +2220,24 @@
       ]
     },
     "redhatDescription": {
-      "0": ["You are Little Red Riding Hood. As long as the hunter is alive, Little Red Riding Hood remains ",
-        "immune to normal werewolf attacks at night."],
-      "1": ["Your role is Little Red Riding Hood, which cannot be torn by the werewolves at night while the hunter ",
-        "is still alive."],
+      "0": [
+        "You are Little Red Riding Hood. As long as the hunter is alive, Little Red Riding Hood remains ",
+        "immune to normal werewolf attacks at night."
+      ],
+      "1": [
+        "Your role is Little Red Riding Hood, which cannot be torn by the werewolves at night while the hunter ",
+        "is still alive."
+      ],
       "2": "You are Little Red Riding Hood. You are protected from werewolves by the hunter at night as long as he lives.",
-      "3": ["Your character is Little Red Riding Hood, which is under the protection of the hunter as long as he ",
+      "3": [
+        "Your character is Little Red Riding Hood, which is under the protection of the hunter as long as he ",
         "lives. This means that as long as the hunter lives, Little Red Riding Hood cannot be killed by werewolves ",
-        "at night."],
-      "4": ["You are Little Red Riding Hood straight from the fairytale, which is protected from werewolf attacks by ",
-        "the hunter during his lifetime."],
+        "at night."
+      ],
+      "4": [
+        "You are Little Red Riding Hood straight from the fairytale, which is protected from werewolf attacks by ",
+        "the hunter during his lifetime."
+      ],
       "5": "You are Little Red Riding Hood, which cannot die by werewolf attacks as long as the hunter lives."
     },
     "whitewolfDescription": {
@@ -1933,8 +2279,276 @@
       "5": "Which of the werewolves is too flashy?",
       "6": "Whose werewolf face do you hate?"
     },
+    "cupidDescription": {
+      "0": [
+        "You are Cupid. In the first night, Cupid chooses two players, who fall in love with each other forever. ",
+        "From now on they play together and can win together, even if they are in different teams."
+      ],
+      "1": [
+        "You are Cupid. With his bow and his arrows of love Cupid arranges for love in town. He shoots his arrows at ",
+        "two villagers who immediately fall in love with each other and follow each other even into death. Their love ",
+        "is even stronger than their sense of belonging to their respective parties."
+      ],
+      "2": [
+        "Your character is Cupid. At the beginning of the game he determines two players who immediately fall in love ",
+        "with each other (this can also be himself). If one of the two lovers dies in the course of the game, so does ",
+        "the other out of grief. Attention: If one of the two lovers is a werewolf and the other a citizen, they have ",
+        "a common new goal: If they survive together, they win together."
+      ],
+      "3": [
+        "Your role is Cupid. Cupid wakes up only once on the very first night to pair up two players of his choice ",
+        "(possibly himself). Afterwards he falls asleep again. Subsequently, the newly couple gets to know each other.",
+        "During the course of the game, the lovers have the task of protecting their partner, because if one of them",
+        " dies, the partner mournfully imitates him; they must never vote against each other."
+      ],
+      "4": [
+        "You are Cupid, who causes two players to fall madly in love with each other. If one of them should die, the ",
+        "other will take his own life out of grief. The lovers can win together, even if they are from different teams."
+      ],
+      "5": [
+        "You are Cupid and in the first night you go on the hunt for a couple of lovers, which you match up. They fall",
+        " in love immediately and never want to separate again. Should one of them die, the grief of the other one",
+        " will also put him in his grave."
+      ]
+    },
+    "cupidQuestion": {
+      "0": "Who should fall in love with this game?",
+      "1": "Who do you want to hit with your arrows of love?",
+      "2": "Who would make for a beautiful couple?",
+      "3": "Who are you trying to match up?",
+      "4": "Who should fall in love tonight?",
+      "5": "Who will find the love of his life tonight?",
+      "6": "Who will fall in love instantly?"
+    },
+    "fellInLovePre": "You fell in love with ",
+    "fellInLovePost": ".",
+    "lovedOneKilled": {
+      "0": " dies because of his broek heart",
+      "1": " does not want to live on without his beloved.",
+      "2": " cannot survive alone.",
+      "3": " hangs himself out of grief.",
+      "4": " becomes extremely sad and dies.",
+      "5": " does not survive with a broken heart.",
+      "6": " does not want to live without love.",
+      "7": " can't stand the loneliness anymore and commits suicide."
+    },
+    "berserkDescription": {
+      "0": [
+        "You are the Berserk. The Berserk has an extra life against werewolf attacks. Additionally he can kill a ",
+        "player every night, but he also loses a life himself!"
+      ],
+      "1": [
+        "You are a berserk who survives the first werewolf attack. He can also kill someone every night, but for a ",
+        "price: For his first murder he loses protection from the werewolves, after his second murder he dies ",
+        "of exhaustion."
+      ],
+      "2": [
+        "You are a berserk. You fight in your ecstasy. You are invulnerable. Well, almost. You have an extra life ",
+        "against werewolf attacks. And if you want, you can also slice someone into pieces with your axes, but you ",
+        "will lose your protection against the werewolves."
+      ],
+      "3": [
+        "You are a berserk. A pretty tough and brutal companion. You have an extra life against werewolf attacks and ",
+        "can kill someone every night. But beware: It is life for life, for each life you take, you also lose one!"
+      ],
+      "4": [
+        "Your role is the berserk. You have an extra life against werewolf attacks and are waking up each night from ",
+        "your sleep with the possibility to kill someone. However, the Berserk loses a life for each attack."
+      ],
+      "5": [
+        "You are a berserk. You try to create justice with brutality. With toughness to destroy the werewolves. With ",
+        "your skill to escape the first attack of the werewolves. Or with your recklessness to murder someone. But ",
+        "no crime that doesn't have to be paid for! If you decide to kill someone, you lose your protection against ",
+        "the werewolves. And if you have no more protection, you will die in your extasy after you have successfully ",
+        "slain your victim."
+      ]
+    },
+    "berserkTwoLives": "You have 2 lives remaining.\n\n",
+    "berserkOneLive": "You have one live remaining.\n\n",
+    "berserkQuestion": {
+      "0": "Who do you want to murder?",
+      "1": "Who will you visit with your axes?",
+      "2": "Who shall be found with an axe in his head?",
+      "3": "Who could be a werewolf and must die for it?",
+      "4": "You get the opportunity to kill someone. Who will it be?",
+      "5": "Who will fall victim to the berserk tonight?",
+      "6": "It's time for you to kill someone!",
+      "7": "Who serves as a target for your nightly axe throwing?",
+      "8": "Who are you attacking in ecstasy?",
+      "9": "Who will you attack like a wild animal?"
+    },
+    "berserkResponsePre": {
+      "0": "You murdered ",
+      "1": "The berserk visited ",
+      "2": "You put an axe into ",
+      "3": "",
+      "4": "The berserk expected ",
+      "5": "The berserk assaulted ",
+      "6": "You killed ",
+      "7": "The berserk used ",
+      "8": "You attacked ",
+      "9": "The berserk attaked "
+    },
+    "berserkResponsePost": {
+      "0": ".",
+      "1": " with his axes.",
+      "2": "s head.",
+      "3": " must have been a werewolf.",
+      "4": " to be a werewolf and decapitated him quickly.",
+      "5": ".",
+      "6": ".",
+      "7": " as a target.",
+      "8": " in your ecstasy.",
+      "9": " like a wild animal.."
+    },
+    "psychopathDescription": {
+      "0": [
+        "You are the psychopath. The psychopath is the last player to wake up. If no one died that night, he must ",
+        "kill another player."
+      ],
+      "1": [
+        "You are a psychopath who wants to see people die. If nobody died that night, you wake up and have to kill ",
+        "another villager."
+      ],
+      "2": [
+        "You are a psychopath. If you don't see blood in the morning, it makes you sad. That's why you are the last ",
+        "player to wake up when no one has died and look for your victim."
+      ],
+      "3": [
+        "You are a psychopath. A really rough one. You belong in a madhouse, but so far nobody has found out about ",
+        "you. If no one has died during the night, you wake up just before dawn and strangle another player."
+      ],
+      "4": "Your role is the psychopath. If no one has died that night, you wake up and have to kill someone else.",
+      "5": [
+        "You are a psychopath. You enjoy killing. And watching people die. So you want someone to die each and every ",
+        "night. And if no one dies, you get up just before dawn and murder someone."
+      ]
+    },
+    "psychopathQuestion": {
+      "0": "Nobody has died yet. This will change now...",
+      "1": "The psychopath awakens and has a desire to kill.",
+      "2": "The psychopath has the desire to kill someone.",
+      "3": "You look around the village at dawn recognize: Noone has died yet. You can't leave it like this!",
+      "4": "The psychopath wakes up in a cold sweat: So far nobody has died this night...",
+      "5": "Choose your victim, psychopath!",
+      "6": "It's time for you to kill someone!",
+      "7": "You think to yourself: such a night cannot end without a corpse...",
+      "8": "Early in the morning you get up and look for your victim...",
+      "9": "A night without bloodshed isn't a real night..."
+    },
+    "psychopathOptionPre": {
+      "0": "strangle ",
+      "1": "murder ",
+      "2": "dismember ",
+      "3": "push ",
+      "4": "wall ",
+      "5": "ram a knife into ",
+      "6": "lure ",
+      "7": "beat ",
+      "8": "run ",
+      "9": "put "
+    },
+    "psychopathOptionPost": {
+      "0": "",
+      "1": "",
+      "2": " coldblooded",
+      "3": " off a cliff",
+      "4": " in",
+      "5": "s chest",
+      "6": " into a booby trap",
+      "7": " to death with a spoon",
+      "8": " over",
+      "9": " into the oven"
+    },
+    "psychopathResponsePre": {
+      "0": "You strangled ",
+      "1": "The psycho murdered ",
+      "2": "You dismembered ",
+      "3": "The psychopath knocked ",
+      "4": "You walled ",
+      "5": "The psychopath rammed a knife into ",
+      "6": "You lured ",
+      "7": "You have beaten ",
+      "8": "The psychopath ran ",
+      "9": "The psychopath watched "
+    },
+    "psychopathResponsePost": {
+      "0": ".",
+      "1": ".",
+      "2": " coldblooded.",
+      "3": " off a cliff.",
+      "4": " in.",
+      "5": "s chest.",
+      "6": " into a booby trap.",
+      "7": " to death. With a knife.",
+      "8": " over.",
+      "9": " getting baked like a tasty turkey."
+    },
+    "scallywagDescription": {
+      "0": [
+        "You are the scallywag! The scallywag gives a player his heart-shaped bomb on the first night. The bomb is ",
+        "passed clockwise at the end of each day. When the super villain dies, the bomb explodes and kills the player ",
+        "holding the bomb."
+      ],
+      "1": [
+        "You are smart. You're brutal. You are the scallywag. The scallywag asks another player to \"Hold that for a ",
+        "second\" and gives him a bomb during the first night. This bomb is passed around in a circle at the end of ",
+        "each day. If you should die, your bomb will also explode and kill the player holding it."
+      ],
+      "2": [
+        "Your character is the scallywag. You hide a heart-shaped bomb in a player's house the first night. This one ",
+        "finds them at the end of the day and passes it on to the next player. When you die, the bomb also detonates ",
+        "and causes another death."
+      ],
+      "3": [
+        "Your role is the scallywag. He can plant a heart-shaped bomb on a fellow player during the first night. This ",
+        "bomb is thrown clockwise like a hot potato at the end of each day. When your heart stops beating, the bomb ",
+        "ticks one last time and kills the player who is currently holding it."
+      ],
+      "4": [
+        "Your character is the scallywag. He forces someone to hold his heart-shaped bomb on the first night. The now ",
+        "owner is not very enthusiastic about that and passes it on clockwise at the end of the day. If you die, the ",
+        "bomb explodes and kills the holder."
+      ],
+      "5": [
+        "You are the scallywag and a massive fan of Russian Roulette. So you construct a heart-shaped bomb, which you ",
+        "give to a fellow player on the first night. At the end of each day, the bomb is passed on. If you die, the b",
+        "omb will detonate and make sure that the holder will consist of more parts than a glass wall broken by a tank."
+      ]
+    },
+    "scallywagQuestion": {
+      "0": "Who will you give the heart-shaped bomb to?",
+      "1": "Who do you want to show your love with a heart-shaped bomb?",
+      "2": "Who has to hold the heart-shaped bomb at the beginning?",
+      "3": "Who gets to hold the bomb first in your special version of Russian roulette?",
+      "4": "Who will get the hot potato?",
+      "5": "Who will be the first proud owner of the heart-shaped bomb?",
+      "6": "Whose pillow will you replace this night with the heart-shaped bomb?",
+      "7": "Who gets the honor of becoming the first holder of the heart-shaped bomb?"
+    },
+    "scallywagResponsePre": {
+      "0": "You gave the bomb to ",
+      "1": "The scallywag tried to prove his love to ",
+      "2": "You chose ",
+      "3": "The scallywag chose ",
+      "4": "The scallywag gave the hot potao to ",
+      "5": "The scallywag announced ",
+      "6": "You exchanged ",
+      "7": "The scallywag gave the bomb to "
+    },
+    "scallywagResponsePost": {
+      "0": ".",
+      "1": " with a heart-shaped bomb.",
+      "2": " to hold the bomb.",
+      "3": " as the first player of his special Russian Roulette.",
+      "4": ".",
+      "5": " to be the proud owner os his creation.",
+      "6": "s pillow with a lovely heart-shaped bomb.",
+      "7": "."
+    },
     "changelog": [
-      "Version 2.1.0\n- New roles: Little Red Riding Hood, White Wolf and Badass Bastard\n\n",
+      "Version 2.1.1\n- New characters: Psychopath, Berserk, Scallywag and Cupid\n\n",
+      "Version 2.1.0\n- New characters: Little Red Riding Hood, White Wolf and Badass Bastard\n\n",
       "Version 2.0.8\n- Added localization and spam protection\n\n",
       "Version 2.0.7\n- Backend changes from network to queue\n\n",
       "Version 2.0.6.2\n- Hotfix for adding/removing roles\n\n",

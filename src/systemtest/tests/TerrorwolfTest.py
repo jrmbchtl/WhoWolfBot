@@ -79,7 +79,7 @@ class TerrorwolfTest(Systemtest):
                           "fromId": 2, "gameId": gameId})
         self.assertAnyMessage()
         self.assertReceiveDict({"eventType": "message", "message":
-            {"text": "Du hast Player 4 sterben gelassen.", "messageId": 0},
+            {"text": "Die Hexe hat lieber geschlafen, als Player 4 zu helfen.", "messageId": 0},
             "mode": "write", "target": 2, "highlight": False, "gameId": gameId, 'lang': 'DE'})
         self.assertReceiveDict({"eventType": "choiceField", "choiceField":
             {"text": "Willst du noch jemanden t\u00f6ten?", "options":

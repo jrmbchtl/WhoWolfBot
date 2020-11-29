@@ -7,12 +7,8 @@ from src.main.localization import getLocalization as loc
 
 class Whitewolf(WhitewolfTeam):
     def __init__(self, alive=True):
-        super(Whitewolf, self).__init__(CharacterType.WHITEWOLF, alive)
+        super(Whitewolf, self).__init__(CharacterType.WHITEWOLF, "whitewolfDescription", alive)
         self.dontWake = False
-
-    def getDescription(self, gameData):
-        dc = loc(gameData.getLang(), "whitewolfDescription")
-        return dc[str(gameData.randrange(0, len(dc)))]
 
     def wakeUp(self, gameData, playerId):
         if self.dontWake:
@@ -32,7 +28,7 @@ class Whitewolf(WhitewolfTeam):
             player = gameData.getAlivePlayers()[w]
             options.append(player.getName())
         options.append(loc(gameData.getLang(), "Noone"))
-        text = whitewolfChooseTarget(gameData)
+        text = gameData.getMessage("whitewolfQuestion", rndm=True)
         gameData.sendJSON(Factory.createChoiceFieldEvent(playerId, text, options))
         messageId = gameData.getNextMessage("feedback", playerId)
 
@@ -41,14 +37,9 @@ class Whitewolf(WhitewolfTeam):
         targetName = loc(gameData.getLang(), "Noone")
         if choice < len(wwList):
             targetId = wwList[choice]
-            gameData.setWhitewolfTarget(targetId)
+            gameData.setNightlyTarget(targetId, CharacterType.WHITEWOLF)
             targetName = gameData.getAlivePlayers()[targetId].getName()
         text += "\n" + targetName
         gameData.sendJSON(
             Factory.createMessageEvent(playerId, text, messageId, Factory.EditMode.EDIT))
         gameData.dumpNextMessage("feedback", playerId)
-
-
-def whitewolfChooseTarget(gameData):
-    dc = loc(gameData.getLang(), "whitewolfQuestion")
-    return dc[str(gameData.randrange(0, len(dc)))]

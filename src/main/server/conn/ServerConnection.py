@@ -1,8 +1,8 @@
-from multiprocessing.queues import SimpleQueue
+from multiprocessing.queues import Queue
 
 
 class ServerConnection(object):
-	def __init__(self, recQueue, sendQueue: SimpleQueue):
+	def __init__(self, recQueue, sendQueue: Queue):
 		super(ServerConnection, self)
 		self.recQueue = recQueue
 		self.sendQueue = sendQueue

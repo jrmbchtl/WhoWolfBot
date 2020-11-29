@@ -23,7 +23,7 @@ class SystemTestMain(object):
         self.serverConnection.sendJSON({"commandType": "close"})
 
     def register(self, test):
-        self.tests.append(test)
+        self.tests.append(test(self.serverConnection))
 
     def getSc(self):
         return self.serverConnection

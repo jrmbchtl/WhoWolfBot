@@ -1,16 +1,16 @@
-import random
-
 from src.main.server import Factory
 from src.main.localization import getLocalization as loc
 
 
 class Character(object):
 
-    def __init__(self, team, role, alive=True):
+    def __init__(self, team, role, descString, alive=True):
         super(Character, self)
         self.alive = alive
         self.role = role
         self.team = team
+        self.beloved = None
+        self.descString = descString
 
     def isAlive(self):
         return self.alive
@@ -28,16 +28,35 @@ class Character(object):
         self.role = role
 
     def getDescription(self, gameData):
-        pass
+        dc = loc(gameData.getLang(), self.descString)
+        return dc[str(gameData.randrange(0, len(dc)))]
+
+    def getBeloved(self):
+        return self.beloved
+
+    def setBeloved(self, beloved):
+        self.beloved = beloved
+
+    def werewolfKillAttempt(self):
+        return True
+
+    def hasSecondLive(self):
+        return False
 
     def kill(self, gameData, playerId, dm=None):
         self.alive = False
         if dm is None:
-            dm = gameData.getPlayers()[playerId].getName() + deathMessage(gameData)
+            dm = gameData.getPlayers()[playerId].getName() + gameData.getMessage(
+                "deathMessage", rndm=True)
         gameData.sendJSON(Factory.createMessageEvent(gameData.getOrigin(), dm, highlight=True))
         gameData.dumpNextMessage(commandType="feedback")
         gameData.sendJSON(Factory.createMessageEvent(playerId, dm, highlight=True))
         gameData.dumpNextMessage(commandType="feedback")
+        if self.beloved is not None and self.beloved in gameData.getAlivePlayers():
+            belovedName = gameData.getAlivePlayers()[self.beloved].getName()
+            loveDm = belovedName + gameData.getMessage("lovedOneKilled", rndm=True)
+            gameData.getAlivePlayers()[self.beloved].getCharacter()\
+                .kill(gameData, self.beloved, loveDm)
 
     def wakeUp(self, gameData, playerId):
         pass
@@ -47,8 +66,3 @@ class Character(object):
 
     def canBeKilled(self, gameData):
         return True
-
-
-def deathMessage(gameData):
-    dc = loc(gameData.getLang(), "deathMessage")
-    return dc[str(random.randrange(0, len(dc)))]

@@ -58,8 +58,9 @@ class Systemtest(object):
         self.assertAnyMessage()
         self.assertReceiveDict({"eventType": "choiceField", "choiceField":
             {"text": "Hier k\u00f6nnen Rollen hinzugef\u00fcgt oder entfernt werden",
-             "options": ['Harter Bursche hinzufügen', 'Jäger deaktivieren',
-                         'Rotkäppchen hinzufügen', 'Seherin deaktivieren',
+             "options": ['Harter Bursche hinzufügen', 'Berserker hinzufügen', 'Amor hinzufügen',
+                         'Jäger deaktivieren', 'Psychopath hinzufügen', 'Rotkäppchen hinzufügen',
+                         'Superschurke hinzufügen', 'Seherin deaktivieren',
                          'Terrorwolf deaktivieren', 'Weißer Wolf hinzufügen', 'Hexe deaktivieren',
                          'Wolfshund deaktivieren'],
              "messageId": 0}, "mode": "write", "target": 42, "highlight": False, "gameId": gameId,

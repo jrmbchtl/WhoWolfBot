@@ -1,30 +1,25 @@
 from src.main.server import Factory
 from src.main.server.characters.Teams import WerewolfTeam
 from src.main.server.characters.Types import CharacterType
-from src.main.localization import getLocalization as loc
 
 
 class Terrorwolf(WerewolfTeam):
     def __init__(self, alive=True):
-        super(Terrorwolf, self).__init__(CharacterType.TERRORWOLF, alive)
-
-    def getDescription(self, gameData):
-        dc = loc(gameData.getLang(), "terrorwolfDescription")
-        return dc[str(gameData.randrange(0, len(dc)))]
+        super(Terrorwolf, self).__init__(CharacterType.TERRORWOLF, "terrorwolfDescription", alive)
 
     def kill(self, gameData, playerId, dm=None):
         super(Terrorwolf, self).kill(gameData, playerId)
+        name = gameData.getPlayers()[playerId].getName()
+        text = name + gameData.getMessage("terrorwolfReveal", rndm=True)
         gameData.sendJSON(
-            Factory.createMessageEvent(gameData.getOrigin(),
-                                       gameData.getPlayers()[playerId].getName()
-                                       + terrorwolfReveal(gameData)))
+            Factory.createMessageEvent(gameData.getOrigin(), text))
         gameData.dumpNextMessage(commandType="feedback", fromId=gameData.getOrigin())
 
         options = []
         for player in gameData.getAlivePlayers():
             options.append(gameData.getAlivePlayers()[player].getName())
 
-        text = terrorwolfChooseTarget(gameData)
+        text = gameData.getMessage("terrorwolfQuestion", rndm=True)
         gameData.sendJSON(Factory.createChoiceFieldEvent(playerId, text, options))
         messageId = gameData.getNextMessage(
             commandType="feedback", fromId=playerId)["feedback"]["messageId"]
@@ -35,22 +30,6 @@ class Terrorwolf(WerewolfTeam):
         gameData.dumpNextMessage(commandType="feedback", fromId=playerId)
 
         targetId = gameData.getAlivePlayerList()[rec["reply"]["choiceIndex"]]
-
-        gameData.getAlivePlayers()[targetId].getCharacter() \
-            .kill(gameData, targetId,
-                  gameData.getAlivePlayers()[targetId].getName() + terrorwolfKill(gameData))
-
-
-def terrorwolfReveal(gameData):
-    dc = loc(gameData.getLang(), "terrorwolfReveal")
-    return dc[str(gameData.randrange(0, len(dc)))]
-
-
-def terrorwolfChooseTarget(gameData):
-    dc = loc(gameData.getLang(), "terrorwolfQuestion")
-    return dc[str(gameData.randrange(0, len(dc)))]
-
-
-def terrorwolfKill(gameData):
-    dc = loc(gameData.getLang(), "terrorwolfKill")
-    return dc[str(gameData.randrange(0, len(dc)))]
+        name = gameData.getAlivePlayers()[targetId].getName()
+        dm = name + gameData.getMessage("terrorwolfKill", rndm=True)
+        gameData.getAlivePlayers()[targetId].getCharacter().kill(gameData, targetId, dm)
