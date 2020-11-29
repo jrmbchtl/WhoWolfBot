@@ -12,6 +12,7 @@ from .characters.village.Berserk import Berserk
 from .characters.village.Cupid import Cupid
 from .characters.village.Psychopath import Psychopath
 from .characters.village.Redhat import Redhat
+from .characters.village.Scallywag import Scallywag
 from .characters.village.Villager import Villager, Villagerf
 from .characters.village.Witch import Witch
 from .characters.village.Hunter import Hunter
@@ -32,7 +33,8 @@ class Server(object):
                                  gameId=gameId, menuMessageId=None, deleteQueue=deleteQueue)
         self.accusedDict = {}
         self.enabledRoles = ["wolfdog", "terrorwolf", "seer", "witch", "hunter"]
-        self.disabledRoles = ["badassbastard", "redhat", "whitewolf", "cupid", "berserk", "psycho"]
+        self.disabledRoles = ["badassbastard", "redhat", "whitewolf", "cupid", "berserk", "psycho",
+                              "scallywag"]
         self.settingsMessageId = None
 
     def start(self):
@@ -184,7 +186,7 @@ class Server(object):
         unique = [CharacterType.HUNTER, CharacterType.SEER, CharacterType.WITCH,
                   CharacterType.WOLFDOG, CharacterType.TERRORWOLF, CharacterType.BADDASSBASTARD,
                   CharacterType.REDHAT, CharacterType.CUPID, CharacterType.BERSERK,
-                  CharacterType.PSYCHOPATH]
+                  CharacterType.PSYCHOPATH, CharacterType.SCALLYWAG]
 
         group_mod = self.gameData.random() * 0.2 + 0.9
         werewolfAmount = int(round(len(playerList) * (1.0 / 3.5) * group_mod, 0))
@@ -507,6 +509,13 @@ class Server(object):
         if "psycho" in self.enabledRoles:
             for i in range(0, 28):
                 villageRoleList.append(Psychopath())
+
+        return self.getVillagerRoleListExtended2(villageRoleList)
+
+    def getVillagerRoleListExtended2(self, villageRoleList):
+        if "scallywag" in self.enabledRoles:
+            for i in range(0, 28):
+                villageRoleList.append(Scallywag())
         return villageRoleList
 
 

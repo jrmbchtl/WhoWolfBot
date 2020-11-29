@@ -20,10 +20,10 @@ Psychopath
 Testing:
 
 WIP:
+Superschurke
 
 Planned:\
 Terrorist\
-Superschurke\
 Kerkermeister\
 Parasit\
 Flittchen\

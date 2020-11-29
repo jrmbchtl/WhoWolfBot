@@ -60,8 +60,9 @@ class Systemtest(object):
             {"text": "Hier k\u00f6nnen Rollen hinzugef\u00fcgt oder entfernt werden",
              "options": ['Harter Bursche hinzufügen', 'Berserker hinzufügen', 'Amor hinzufügen',
                          'Jäger deaktivieren', 'Psychopath hinzufügen', 'Rotkäppchen hinzufügen',
-                         'Seherin deaktivieren', 'Terrorwolf deaktivieren',
-                         'Weißer Wolf hinzufügen', 'Hexe deaktivieren', 'Wolfshund deaktivieren'],
+                         'Superschurke hinzufügen', 'Seherin deaktivieren',
+                         'Terrorwolf deaktivieren', 'Weißer Wolf hinzufügen', 'Hexe deaktivieren',
+                         'Wolfshund deaktivieren'],
              "messageId": 0}, "mode": "write", "target": 42, "highlight": False, "gameId": gameId,
             "lang": "DE"})
         for i in range(1, numberOfPlayers + 1):

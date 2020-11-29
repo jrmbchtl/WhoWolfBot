@@ -40,7 +40,8 @@
       "whitewolf": "Weißer Wolf",
       "cupid": "Amor",
       "berserk": "Berserker",
-      "psycho": "Psychopath"
+      "psycho": "Psychopath",
+      "scallywag": "Superschurke"
     },
     "accuseOptionsPre": {
       "0": "",
@@ -1264,6 +1265,77 @@
       "8": " mit einem Löffel erschlagen.",
       "9": " in den Backofen gesteckt."
     },
+    "scallywagDescription": {
+      "0": [
+        "Du bist der Superschurke! Der Superschurke gibt in der ersten Nacht einem Spieler seine herzförmige ",
+        "Bombe. Die Bombe wird am Ende jedes Tages im Uhrzeigersinn weitergegeben. Wenn der Superschurke stirbt, ",
+        "explodiert die Bombe und töten den Spieler, vor dem sie gerade liegt."
+      ],
+      "1": [
+        "Du bist gewitzt. Du bist brutal. Du bist der Superschurke. Als dieser verdonnerst du in der ersten Nacht ",
+        "mittels einer \"Halt mal kurz\" einen Mitspieler zum Halten einer herzförmigen Bome. Diese wird am Ende jedes ",
+        "Tages im Kreis weitergegeben. Solltest du wider Erwartens zu Tode kommen, so explodiert auch deine herzförmige ",
+        "Bombe und tötet den Spieler, vor dem sie liegt."
+      ],
+      "2": [
+        "Dein Charakter ist der Superschurke. Du versteckst in der ersten Nacht eine herzförmige Bombe bei einem ",
+        "Spieler. Dieser findet sie am Ende des Tages und versteckt diese beim nächsten Spieler im Uhrzeigersinn. Wenn ",
+        "du stirbst, detoniert auch die Bombe und sorgt für einen weiteren Toten."
+      ],
+      "3": [
+        "Bei deiner Rolle handelt es sich um den Superschurken. Dieser kann einem Mitspieler in der ersten nacht ",
+        "eine herzförmige Bombe unterjubeln. Diese wird wie eine heiße Kartoffel am Ende jedes Tages im Uhrzeigersinn ",
+        "weitergeworfen. Wenn dein Herz nicht mehr schlägt, tickt die Bombe ein letztes Mal und tötet den Spieler, der ",
+        "diese momentan hält."
+      ],
+      "4": [
+        "Dein Charakter ist der Superschurke. Dieser zwingt in der ersten Nacht jemanden dazu, seine herzförmige ",
+        "Bombe zu halten. Dieser ist nicht sonderlich davon begeistert und gibt sie am Ende des Tages im Uhrzeigersinn ",
+        "weiter. Soltest du sterben, so explodiert die Bombe und töten den Halter."
+      ],
+      "5": [
+        "Du bist der Superschurke und ein riesiger Fan von Russischem Roulette. Daher bastelst du dir eine ",
+        "herzförmige Bombe, welche du in der ersten Nacht einen Mitspieler gibst. Am Ende jedes Tages wird die Bombe ",
+        "im Uhrzeigersinn weitergegeben. Im Falle deines Ablebens detoniert die Bombe und sorgt dafür, dass der Halter ",
+        "danach aus mehr Einzelteilen besteht als eine Glaswand, die soeben von einem Panzer durchbrochen wurde."
+      ]
+    },
+    "scallywagQuestion": {
+      "0": "Wem willst du die herzförmige Bombe geben?",
+      "1": "Wem möchtest du mit einer herzförmigen Bombe deine Liebe vorspielen?",
+      "2": "Wem willst du mit der herzförmigen Bombe zu einem \"Halt mal kurz\" verdonnern?",
+      "3": "Wer muss die herzförmige Bombe zu Beginn halten?",
+      "4": "Wer darf als erstes bei deiner Version von russischem Roulette die Bombe halten?",
+      "5": "Wer bekommt die heiße Kartoffel?",
+      "6": "Wer soll der erste stolze Besitzer der herzförmigen Bombe werden?",
+      "7": "Wem willst du die herzförmige Bombe unterjubeln?",
+      "8": "Wessen Kissen tauschst du diese Nacht gegen die herzförmige Bombe aus?",
+      "9": "Wer bekommt die Ehre, Halter der herzförmigen Bombe zu werden?"
+    },
+    "scallywagResponsePre": {
+      "0": "Du hast ",
+      "1": "Der Superschurke hat ",
+      "2": "Du hast ",
+      "3": "Der Superschurke hat ",
+      "4": "Der Superschurke hat ",
+      "5": "Der Superschurke hat ",
+      "6": "Der Superschurke hat ",
+      "7": "Du hast ",
+      "8": "Du hast ",
+      "9": "Der Superschurke hat "
+    },
+    "scallywagResponsePost": {
+      "0": " die Bombe gegeben.",
+      "1": " seine Liebe mit einer herzförmigen Bombe vorgespielt.",
+      "2": " mit einem \"Halt mal kurz\" erwischt.",
+      "3": " die Bombe gegeben.",
+      "4": " als ersten Mitspieler von russischem Roulette ausgesucht.",
+      "5": " die heiße Kartoffel gegeben.",
+      "6": " zum stolzen Besitzer der herzförmigen Bombe ernannt.",
+      "7": " die Bombe untergejubelt.",
+      "8": "s Kissen mit der herzförmigen Bombe ausgetauscht.",
+      "9": " die Bombe in die Hand gedrückt."
+    },
     "changelog": [
       "Version 2.1.0\n- Neue Rollen: Weißer Wolf, Rotkäppchen und Harter Bursche\n\n",
       "Version 2.0.8\n- Bot wehrt sich nun gegen Spam und spricht auch Englisch\n\n",
@@ -1319,7 +1391,8 @@
       "whitewolf": "White Wolf",
       "cupid": "Cupid",
       "berserk": "Berserk",
-      "psycho": "Psychopath"
+      "psycho": "Psychopath",
+      "scallywag": "Superschurke"
     },
     "accuseOptionsPre": {
       "0": "accuse ",
@@ -2409,6 +2482,68 @@
       "7": " to death. With a knife.",
       "8": " over.",
       "9": " getting baked like a tasty turkey."
+    },
+    "scallywagDescription": {
+      "0": [
+        "You are the scallywag! The scallywag gives a player his heart-shaped bomb on the first night. The bomb is ",
+        "passed clockwise at the end of each day. When the super villain dies, the bomb explodes and kills the player ",
+        "holding the bomb."
+      ],
+      "1": [
+        "You are smart. You're brutal. You are the scallywag. The scallywag asks another player to \"Hold that for a ",
+        "second\" and gives him a bomb during the first night. This bomb is passed around in a circle at the end of ",
+        "each day. If you should die, your bomb will also explode and kill the player holding it."
+      ],
+      "2": [
+        "Your character is the scallywag. You hide a heart-shaped bomb in a player's house the first night. This one ",
+        "finds them at the end of the day and passes it on to the next player. When you die, the bomb also detonates ",
+        "and causes another death."
+      ],
+      "3": [
+        "Your role is the scallywag. He can plant a heart-shaped bomb on a fellow player during the first night. This ",
+        "bomb is thrown clockwise like a hot potato at the end of each day. When your heart stops beating, the bomb ",
+        "ticks one last time and kills the player who is currently holding it."
+      ],
+      "4": [
+        "Your character is the scallywag. He forces someone to hold his heart-shaped bomb on the first night. The now ",
+        "owner is not very enthusiastic about that and passes it on clockwise at the end of the day. If you die, the ",
+        "bomb explodes and kills the holder."
+      ],
+      "5": [
+        "You are the scallywag and a massive fan of Russian Roulette. So you construct a heart-shaped bomb, which you ",
+        "give to a fellow player on the first night. At the end of each day, the bomb is passed on. If you die, the b",
+        "omb will detonate and make sure that the holder will consist of more parts than a glass wall broken by a tank."
+      ]
+    },
+    "scallywagQuestion": {
+      "0": "Who will you give the heart-shaped bomb to?",
+      "1": "Who do you want to show your love with a heart-shaped bomb?",
+      "2": "Who has to hold the heart-shaped bomb at the beginning?",
+      "3": "Who gets to hold the bomb first in your special version of Russian roulette?",
+      "4": "Who will get the hot potato?",
+      "5": "Who will be the first proud owner of the heart-shaped bomb?",
+      "6": "Whose pillow will you replace this night with the heart-shaped bomb?",
+      "7": "Who gets the honor of becoming the first holder of the heart-shaped bomb?"
+    },
+    "scallywagResponsePre": {
+      "0": "You gave the bomb to ",
+      "1": "The scallywag tried to prove his love to ",
+      "2": "You chose ",
+      "3": "The scallywag chose ",
+      "4": "The scallywag gave the hot potao to ",
+      "5": "The scallywag announced ",
+      "6": "You exchanged ",
+      "7": "The scallywag gave the bomb to "
+    },
+    "scallywagResponsePost": {
+      "0": ".",
+      "1": " with a heart-shaped bomb.",
+      "2": " to hold the bomb.",
+      "3": " as the first player of his special Russian Roulette.",
+      "4": ".",
+      "5": " to be the proud owner os his creation.",
+      "6": "s pillow with a lovely heart-shaped bomb.",
+      "7": "."
     },
     "changelog": [
       "Version 2.1.0\n- New roles: Little Red Riding Hood, White Wolf and Badass Bastard\n\n",
