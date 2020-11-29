@@ -1,5 +1,6 @@
 import json
 import os
+import time
 
 from src.main.client.conn.ServerConnection import ServerConnection
 from src.systemtest.SystemTestRegistration import SystemTestRegistration
@@ -19,6 +20,7 @@ class SystemTestMain(object):
             print("Running test " + test.getName() + "\n\n")
             test.run()
             print("\n\n")
+            time.sleep(2)
         self.cleanUp()
         self.serverConnection.sendJSON({"commandType": "close"})
 

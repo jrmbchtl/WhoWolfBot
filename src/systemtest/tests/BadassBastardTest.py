@@ -21,7 +21,7 @@ class BadassBastardTest(Systemtest):
             self.sc.sendJSON({"commandType": "remove", "remove": {"role": role}, "fromId": 42,
                               "gameId": gameId})
             self.assertAnyMessage()
-        self.sc.sendJSON({"commandType": "add", "add": {"role": "Harter Bursche"},
+        self.sc.sendJSON({"commandType": "add", "add": {"role": "Harter\xa0Bursche"},
                           "fromId": 42, "gameId": gameId})
         self.assertAnyMessage()
         for i in range(1, 5):
