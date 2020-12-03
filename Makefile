@@ -3,6 +3,7 @@ PY=python -m py_compile
     test
     server
     analyze
+    flawfinder
 test:
     pymake analyze
     python3 src/main/server/Main.py --systemtest
@@ -32,3 +33,5 @@ pylama_client:
     pylama -i W191,E501,E128,W503 src/main/client
 pylama_systemtest:
     pylama -i W191,E501,E128,W503 src/systemtest
+flawfinder:
+	python3 Flawfinder.py
