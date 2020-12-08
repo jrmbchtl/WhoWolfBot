@@ -3,16 +3,16 @@ PY=python -m py_compile
     test
     server
     analyze
-    flawfinder
 test:
     pymake analyze
-    python3 src/main/server/Main.py --systemtest
+    python3 src/main/server/main.py --systemtest
 server:
-    python3 src/main/server/Main.py --telegram
+    python3 src/main/server/main.py --telegram
 analyze:
+	python3 pylint_check.py
     pymake flake
     pymake pylama
-    python3 checkLocalization.py
+    python3 check_localization.py
 flake:
     pymake flake_main
     pymake flake_client
@@ -33,5 +33,3 @@ pylama_client:
     pylama -i W191,E501,E128,W503 src/main/client
 pylama_systemtest:
     pylama -i W191,E501,E128,W503 src/systemtest
-flawfinder:
-	python3 Flawfinder.py

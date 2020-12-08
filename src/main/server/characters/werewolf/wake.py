@@ -1,76 +1,94 @@
-from src.main.server import Factory
-from src.main.server.GameData import GameData
-from src.main.server.characters import Types
-from src.main.server.characters.Character import Character
-from src.main.localization import getLocalization as loc
-from src.main.server.characters.Types import CharacterType
+"""module for waking werewolves"""
+from src.main.localization import get_localization as loc
+from src.main.server import factory
+from src.main.server.characters.character import Character
+from src.main.server.characters.types import CharacterType
+from src.main.server.characters.types import TeamType
+from src.main.server.factory import EditMode
+from src.main.server.utils import Utils
 
 
-def wake(gameData: GameData):
-    werewolfList = []
+def wake(game_data):
+    """waking up all werewolves"""
+    werewolf_list = []
     options = []
-    optionIndexList = []
-    for player in gameData.getAlivePlayerList():
-        c: Character = gameData.getAlivePlayers()[player].getCharacter()
-        if c.getTeam() == Types.TeamType.WEREWOLF or c.getTeam() == Types.TeamType.WHITEWOLF:
-            werewolfList.append(player)
-        name = gameData.getAlivePlayers()[player].getName()
-        index, option = gameData.getMessagePrePost("werewolfOptions", name, rndm=True, retOpt=True)
+    option_index_list = []
+    for player in game_data.get_alive_player_list():
+        character: Character = game_data.get_alive_players()[player].get_character()
+        if character.get_team() == TeamType.WEREWOLF or character.get_team() == TeamType.WHITEWOLF:
+            werewolf_list.append(player)
+        index, option = game_data.get_message_pre_post(
+            "werewolfOptions", game_data.id_to_name(player), config={"rndm": True, "ret_opt": True})
         options.append(option)
-        optionIndexList.append(index)
-    name = loc(gameData.getLang(), "noone")
-    index, option = gameData.getMessagePrePost("werewolfOptions", name, rndm=True, retOpt=True)
+        option_index_list.append(index)
+    index, option = game_data.get_message_pre_post(
+        "werewolfOptions", loc(game_data.get_lang(), "noone"),
+        config={"rndm": True, "ret_opt": True})
     options.append(option)
-    optionIndexList.append(index)
-    text = gameData.getMessage("werewolfQuestion", rndm=True)
+    option_index_list.append(index)
+    text = game_data.get_message("werewolfQuestion", config={"rndm": True})
 
-    messageIdDict = {}  # werewolfId to MessageId
-    for werewolf in werewolfList:
-        gameData.sendJSON(Factory.createChoiceFieldEvent(werewolf, text, options))
-        messageIdDict[werewolf] = gameData.getNextMessage(
-            commandType="feedback", fromId=werewolf)["feedback"]["messageId"]
+    message_id_dict = {}  # werewolfId to MessageId
+    for werewolf in werewolf_list:
+        game_data.send_json(factory.create_choice_field_event(werewolf, text, options))
+        message_id_dict[werewolf] = game_data.get_next_message(
+            command_type="feedback", from_id=werewolf)["feedback"]["messageId"]
 
-    newText = ""
-    voteDict = {}  # stores werewolf and which index he voted for
-    while len(werewolfList) > len(voteDict) or not GameData.uniqueDecision(voteDict):
-        rec = gameData.getNextMessage(commandType="reply")
-        voteDict[rec["fromId"]] = rec["reply"]["choiceIndex"]
-        newText = text + "\n\n"
-        for key in voteDict:
-            werewolfName = gameData.getAlivePlayers()[key].getName()
-            if voteDict[key] == len(gameData.getAlivePlayerList()):
-                targetName = loc(gameData.getLang(), "noone")
+    new_text, vote_dict = get_decision(
+        {"game_data": game_data, "werewolf_list": werewolf_list}, text, option_index_list, options,
+        message_id_dict)
+
+    publish_decision({"game_data": game_data, "werewolf_list": werewolf_list}, vote_dict,
+                     option_index_list, new_text, message_id_dict)
+
+
+def get_decision(data, text, option_index_list, options, message_id_dict):
+    """returns the decision of the werewolves"""
+    game_data = data["game_data"]
+    werewolf_list = data["werewolf_list"]
+    new_text = ""
+    vote_dict = {}  # stores werewolf and which index he voted for
+    while len(werewolf_list) > len(vote_dict) or not Utils.unique_decision(vote_dict):
+        rec = game_data.get_next_message(command_type="reply")
+        vote_dict[rec["fromId"]] = rec["reply"]["choiceIndex"]
+        new_text = text + "\n\n"
+        for key in vote_dict:
+            if vote_dict[key] == len(game_data.get_alive_player_list()):
+                target_name = loc(game_data.get_lang(), "noone")
             else:
-                targetId = gameData.getAlivePlayerList()[voteDict[key]]
-                targetName = gameData.getAlivePlayers()[targetId].getName()
-            newText += werewolfName + loc(
-                gameData.getLang(), "werewolfSuggest") + gameData.getMessagePrePost(
-                "werewolfResponse", targetName, optionIndexList[voteDict[key]]) + "\n"
-        if len(werewolfList) == len(voteDict) and GameData.uniqueDecision(voteDict):
+                target_id = game_data.get_alive_player_list()[vote_dict[key]]
+                target_name = game_data.get_alive_players()[target_id].get_name()
+            new_text += game_data.id_to_name(key) + loc(
+                game_data.get_lang(), "werewolfSuggest") + game_data.get_message_pre_post(
+                "werewolfResponse", target_name, option_index_list[vote_dict[key]]) + "\n"
+        if len(werewolf_list) == len(vote_dict) and Utils.unique_decision(vote_dict):
             break
-        for werewolf in werewolfList:
-            gameData.sendJSON(Factory.createChoiceFieldEvent(
-                werewolf, newText, options, messageIdDict[werewolf], Factory.EditMode.EDIT))
-            gameData.dumpNextMessage(commandType="feedback")
+        for werewolf in werewolf_list:
+            game_data.send_json(factory.create_choice_field_event(
+                werewolf, new_text, options, message_id_dict[werewolf], {"mode": EditMode.EDIT}))
+            game_data.dump_next_message(command_type="feedback")
 
-    publishDecision(gameData, werewolfList, voteDict, optionIndexList, newText, messageIdDict)
+    return new_text, vote_dict
 
 
-def publishDecision(gameData, werewolfList, voteDict, optionIndexList, text, messageIdDict):
-    decisionIndex = GameData.getDecision(voteDict)
+def publish_decision(data, vote_dict, option_index_list, text, message_id_dict):
+    """sends the werewolf decision to all werewolves and sets the nightly target"""
+    game_data = data["game_data"]
+    werewolf_list = data["werewolf_list"]
+    decision_index = Utils.get_decision(vote_dict)
 
-    if decisionIndex == len(gameData.getAlivePlayerList()):
-        targetName = "niemanden"
+    if decision_index == len(game_data.get_alive_player_list()):
+        target_name = "niemanden"
     else:
-        targetId = gameData.getAlivePlayerList()[decisionIndex]
-        targetName = gameData.getAlivePlayers()[targetId].getName()
-        gameData.setNightlyTarget(targetId, CharacterType.WEREWOLF)
+        target_id = game_data.get_alive_player_list()[decision_index]
+        target_name = game_data.get_alive_players()[target_id].get_name()
+        game_data.set_nightly_target(target_id, CharacterType.WEREWOLF)
 
-    decision = loc(gameData.getLang(), "werewolfDecision") + gameData.getMessagePrePost(
-        "werewolfResponse", targetName, optionIndexList[decisionIndex])
+    decision = loc(game_data.get_lang(), "werewolfDecision") + game_data.get_message_pre_post(
+        "werewolfResponse", target_name, option_index_list[decision_index])
     text += "\n" + decision
 
-    for werewolf in werewolfList:
-        gameData.sendJSON(Factory.createMessageEvent(
-            werewolf, text, messageIdDict[werewolf], Factory.EditMode.EDIT))
-        gameData.dumpNextMessage(commandType="feedback")
+    for werewolf in werewolf_list:
+        game_data.send_json(factory.create_message_event(
+            werewolf, text, message_id_dict[werewolf], config={"mode": factory.EditMode.EDIT}))
+        game_data.dump_next_message(command_type="feedback")
