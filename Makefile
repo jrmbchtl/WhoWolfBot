@@ -18,11 +18,11 @@ flake:
     pymake flake_client
     pymake flake_systemtest
 flake_main:
-    flake8 --format=html --htmldir=flake-report src/main/server
+    flake8 --format=html --htmldir=flake-report src/main/server --ignore=E126,W503
 flake_client:
-    flake8 --format=html --htmldir=flake-report src/main/client
+    flake8 --format=html --htmldir=flake-report src/main/client --ignore=E126,W503
 flake_systemtest:
-    flake8 --format=html --htmldir=flake-report src/systemtest
+    flake8 --format=html --htmldir=flake-report src/systemtest --ignore=E126,W503
 pylama:
     pymake pylama_main
     pymake pylama_client

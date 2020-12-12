@@ -60,7 +60,7 @@ def get_decision(data, text, option_index_list, options, message_id_dict):
                 target_name = game_data.get_alive_players()[target_id].get_name()
             new_text += game_data.id_to_name(key) + loc(
                 game_data.get_lang(), "werewolfSuggest") + game_data.get_message_pre_post(
-                "werewolfResponse", target_name, option_index_list[vote_dict[key]]) + "\n"
+                    "werewolfResponse", target_name, option_index_list[vote_dict[key]]) + "\n"
         if len(werewolf_list) == len(vote_dict) and Utils.unique_decision(vote_dict):
             break
         for werewolf in werewolf_list:

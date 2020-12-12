@@ -66,13 +66,13 @@ class PattTest(DrawTest):
                             "fromId": i + 1, "gameId": game_id})
             self.assert_any_message()
 
-        self.assert_receive_dict({'eventType': 'message', 'message':
-            {'text': ('Es kann nur eine Person hingerichtet werden, irgendjemand sollte seine '
-                      'Meinung ändern!\n\nPlayer 1 will Player 2 auf dem Scheiterhaufen sehen!\n'
-                      'Player 2 will Player 2 auf dem Scheiterhaufen sehen!\nPlayer 3 will Player '
-                      '2 auf dem Scheiterhaufen sehen!\nPlayer 4 will Player 2 auf dem '
-                      'Scheiterhaufen sehen!'), 'messageId': 42}, 'mode': 'edit', 'target': 0,
-            'highlight': False, 'gameId': game_id, 'lang': 'DE'})
+        self.assert_receive_dict({'eventType': 'message', 'message': {
+            'text': ('Es kann nur eine Person hingerichtet werden, irgendjemand sollte seine '
+                     'Meinung ändern!\n\nPlayer 1 will Player 2 auf dem Scheiterhaufen sehen!\n'
+                     'Player 2 will Player 2 auf dem Scheiterhaufen sehen!\nPlayer 3 will Player '
+                     '2 auf dem Scheiterhaufen sehen!\nPlayer 4 will Player 2 auf dem '
+                     'Scheiterhaufen sehen!'), 'messageId': 42}, 'mode': 'edit', 'target': 0,
+                                  'highlight': False, 'gameId': game_id, 'lang': 'DE'})
         self.assert_any_message()
 
         self.send_json({"commandType": "terminate", "fromId": 42, "gameId": game_id})
@@ -99,16 +99,16 @@ class DoublePattTest(DrawTest):
             self.assert_any_message()
 
         self.assert_any_message()
-        self.assert_receive_dict({'eventType': 'message', 'message':
-            {'text': 'Die Demokratie ist überfordert und beschließt, niemanden hinzurichten.',
-             'messageId': 0}, 'mode': 'write', 'target': 0, 'highlight': False, 'gameId': game_id,
-            'lang': 'DE'})
+        self.assert_receive_dict({'eventType': 'message', 'message': {
+            'text': 'Die Demokratie ist überfordert und beschließt, niemanden hinzurichten.',
+            'messageId': 0}, 'mode': 'write', 'target': 0, 'highlight': False, 'gameId': game_id,
+                                  'lang': 'DE'})
 
-        self.assert_receive_dict({"eventType": "message", "message":
-            {"text": ("Nach einem anstrengenden Tag hoffen viele Dorfbewohner nun auf eine "
-                      "erholsame Nacht. Doch diese Nacht werden nicht alle gut schlafen..."),
-             "messageId": 0}, "mode": "write", "target": 0, "highlight": False, "gameId": game_id,
-            'lang': 'DE'})
+        self.assert_receive_dict({"eventType": "message", "message": {
+            "text": ("Nach einem anstrengenden Tag hoffen viele Dorfbewohner nun auf eine "
+                     "erholsame Nacht. Doch diese Nacht werden nicht alle gut schlafen..."),
+            "messageId": 0}, "mode": "write", "target": 0, "highlight": False, "gameId": game_id,
+                                  'lang': 'DE'})
 
         self.send_json({"commandType": "terminate", "fromId": 42, "gameId": game_id})
         self.clear_rec_buffer()

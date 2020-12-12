@@ -28,9 +28,10 @@ class BadassBastardTest(Systemtest):
                             "fromId": i + 1, "gameId": game_id})
             self.assert_any_message()
         self.snippet_1(game_id)
-        self.assert_receive_dict({'eventType': 'message', 'message':
-            {'text': 'Player 4 hat die letzten Stunden nicht überlebt.', 'messageId': 0},
-            'mode': 'write', 'target': 0, 'highlight': True, 'gameId': game_id, 'lang': 'DE'})
+        self.assert_receive_dict({'eventType': 'message', 'message': {
+            'text': 'Player 4 hat die letzten Stunden nicht überlebt.', 'messageId': 0},
+                                  'mode': 'write', 'target': 0, 'highlight': True,
+                                  'gameId': game_id, 'lang': 'DE'})
 
         self.send_json({"commandType": "terminate", "fromId": 42, "gameId": game_id})
         self.clear_rec_buffer()

@@ -47,6 +47,7 @@ class Server:
                                "scallywag"]
         self.settings_message_id = None
         self.menu_message_id = None
+        self.game_id = game_id
 
     def start(self):
         """main method with game loop"""
@@ -66,8 +67,8 @@ class Server:
         target = self.game_data.get_origin()
         self.game_data.send_json({"eventType": "message", "message": {"messageId": message_id},
                                   "target": target, "mode": "delete"})
-        print("game " + str(self.game_data.get_game_id()) + " is over")
-        file = "games/" + str(self.game_data.get_game_id()) + ".game"
+        print("game " + str(self.game_id) + " is over")
+        file = "games/" + str(self.game_id) + ".game"
         if os.path.isfile(file):
             os.remove(file)
 
@@ -95,6 +96,7 @@ class Server:
     def update_register_menu(self, disable=False):
         """send updated register-menu to client"""
         message = loc(self.game_data.get_lang(), "gameMenu")
+        message += "Code: " + self.game_id + "\n\n"
         message += loc(self.game_data.get_lang(), "players") + ":\n"
         for player in self.game_data.get_players():
             message += self.game_data.get_players()[player].get_name() + "\n"
@@ -125,26 +127,11 @@ class Server:
                or rec["fromId"] != self.game_data.get_admin()
                or len(self.game_data.get_players()) < 4):
             if rec["commandType"] == "register":
-                if rec["fromId"] not in self.game_data.get_players():
-                    self.game_data.send_json(
-                        factory.create_message_event(rec["fromId"],
-                                                     loc(self.game_data.get_lang(), "hello")))
-                    tmp = self.game_data.get_next_message(command_type="feedback")
-                    if tmp["feedback"]["success"] == 0:
-                        self.game_data.send_json(factory.create_message_event(
-                            self.game_data.get_origin(), rec["register"]["name"]
-                            + loc(self.game_data.get_lang(), "plsOpen")))
-                        self.game_data.dump_next_message(command_type="feedback")
-                    else:
-                        self.game_data.send_json(
-                            factory.create_message_event(
-                                rec["fromId"], "", tmp["feedback"]["messageId"],
-                                {"mode": factory.EditMode.DELETE}))
-                        self.game_data.dump_next_message(command_type="feedback")
-                        player = Player(rec["register"]["name"])
-                        self.game_data.get_players()[rec["fromId"]] = player
-                else:
-                    self.game_data.get_players().pop(rec["fromId"], None)
+                self.__handle_register(rec)
+            elif rec["commandType"] == "join":
+                player = Player(rec["register"]["name"])
+                self.game_data.get_players()[rec["fromId"]] = player
+                self.game_data.add_origin(rec["fromId"])
                 self.update_register_menu()
             elif rec["commandType"] == "add":
                 role = rev_lookup(loc(self.game_data.get_lang(), "roles"), rec["add"]["role"])
@@ -165,6 +152,30 @@ class Server:
                                          message_id=self.settings_message_id,
                                          config={"mode": factory.EditMode.DELETE}))
         self.game_data.dump_next_message(command_type="feedback")
+
+    def __handle_register(self, rec):
+        """handles a client register"""
+        if rec["fromId"] not in self.game_data.get_players():
+            self.game_data.send_json(
+                factory.create_message_event(rec["fromId"],
+                                             loc(self.game_data.get_lang(), "hello")))
+            tmp = self.game_data.get_next_message(command_type="feedback")
+            if tmp["feedback"]["success"] == 0:
+                self.game_data.send_json(factory.create_message_event(
+                    self.game_data.get_origin(),
+                    rec["register"]["name"] + loc(self.game_data.get_lang(), "plsOpen")))
+                self.game_data.dump_next_message(command_type="feedback")
+            else:
+                self.game_data.send_json(
+                    factory.create_message_event(
+                        rec["fromId"], "", tmp["feedback"]["messageId"],
+                        {"mode": factory.EditMode.DELETE}))
+                self.game_data.dump_next_message(command_type="feedback")
+                player = Player(rec["register"]["name"])
+                self.game_data.get_players()[rec["fromId"]] = player
+        else:
+            self.game_data.get_players().pop(rec["fromId"], None)
+        self.update_register_menu()
 
     def send_settings(self):
         """sends settings to admin"""

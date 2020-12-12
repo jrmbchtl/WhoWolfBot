@@ -2,6 +2,8 @@
 import argparse
 import json
 import os
+import random
+import string
 import sys
 from multiprocessing import Process
 from multiprocessing import Queue
@@ -36,48 +38,55 @@ class Main:
             self.client_list.append(Process(target=start_testing,
                                             args=(self.from_server_queue, self.to_server_queue,)))
             self.client_list[len(self.client_list) - 1].start()
+            random.seed(42)
 
     def main(self, seed=42):
         """main loop"""
         self.restore_games(self.server_conn)
         self.game_id = self.get_next_game_id()
         try:
-            self.game_loop(seed)
+            while True:
+                self.game_loop(seed)
         except KeyboardInterrupt:
             self.close_server()
 
     def game_loop(self, seed):
-        """handling commandsa from  clients"""
-        while True:
-            dic = self.server_conn.receive_json()
-            command_type = dic["commandType"]
-            if command_type == "newGame" and dic["newGame"]["origin"] == dic["fromId"]:
-                send = factory.create_message_event(
-                    dic["fromId"], loc(LANG, "privateNotAllowed"))
-                send["gameId"] = 0
-                self.server_conn.send_json(send)
-                self.server_conn.receive_json()
-            elif command_type == "newGame":
-                if "seed" not in dic["newGame"]:
-                    dic["newGame"]["seed"] = seed
-                self.init_game(self.game_id, self.server_conn, dic)
-                self.game_id = self.get_next_game_id()
-            elif command_type == "terminate":
-                id_to_terminate = dic["gameId"]
-                if id_to_terminate in self.games:
-                    self.safe_terminate(dic)
-                    self.clean_up()
-            elif command_type == "close":
-                self.close_server()
-            elif command_type == "changelog":
-                send = factory.create_message_event(dic["fromId"], loc(LANG, "changelog"))
-                send["gameId"] = 0
-                self.server_conn.send_json(send)
-                self.server_conn.receive_json()
-            elif dic["gameId"] in self.games:
-                self.games[dic["gameId"]]["toProcessQueue"].put(dic)
-            else:
-                print("can't find a game with id " + str(dic["gameId"]))
+        """handling commands from  clients"""
+        dic = self.server_conn.receive_json()
+        command_type = dic["commandType"]
+        # if command_type == "newGame" and dic["newGame"]["origin"] == dic["fromId"]:
+        #     send = factory.create_message_event(
+        #         dic["fromId"], loc(LANG, "privateNotAllowed"))
+        #     send["gameId"] = 0
+        #     self.server_conn.send_json(send)
+        #     self.server_conn.receive_json()
+        if command_type == "newGame":
+            if "seed" not in dic["newGame"]:
+                dic["newGame"]["seed"] = seed
+            self.init_game(self.game_id, self.server_conn, dic)
+            self.game_id = self.get_next_game_id()
+        elif command_type == "terminate":
+            id_to_terminate = dic["gameId"]
+            if id_to_terminate in self.games:
+                self.safe_terminate(dic)
+                self.clean_up()
+        elif command_type == "close":
+            self.close_server()
+        elif command_type == "changelog":
+            send = factory.create_message_event(dic["fromId"], loc(LANG, "changelog"))
+            send["gameId"] = 0
+            self.server_conn.send_json(send)
+            self.server_conn.receive_json()
+        elif dic["gameId"] in self.games:
+            self.games[dic["gameId"]]["toProcessQueue"].put(dic)
+        elif command_type == "join":
+            text = loc(LANG, "noSuchGamePre") + dic["gameId"] + loc(LANG, "noSuchGamePost")
+            self.server_conn.send_json({'eventType': 'message', 'message': {
+                'text': text, 'messageId': 0}, 'mode': 'write', 'target': dic["fromId"],
+                                        'highlight': False, 'gameId': dic["gameId"],
+                                        'lang': 'DE'})
+        else:
+            print("can't find a game with id " + str(dic["gameId"]))
 
     def close_server(self):
         """closes the server"""
@@ -114,7 +123,7 @@ class Main:
                     continue
                 if file.endswith(".game"):
                     try:
-                        game_id = int(file.split(".")[0])
+                        game_id = file.split(".")[0]
                     except ValueError:
                         continue
                     with open("games/" + file) as json_file:
@@ -124,9 +133,9 @@ class Main:
                     seed = data["seed"]
                     number_sent = data["numberSent"]
                     rec_list = data["recList"]
-                    dic = {"commandType": "newGame", "newGame":
-                        {"numberSent": number_sent, "recList": rec_list, "origin": chat_id,
-                         "seed": seed}, "fromId": admin}
+                    dic = {"commandType": "newGame", "newGame": {
+                        "numberSent": number_sent, "recList": rec_list, "origin": chat_id,
+                        "seed": seed}, "fromId": admin}
                     self.init_game(game_id, server_conn, dic)
 
     def init_game(self, game_id, server_conn, dic):
@@ -143,9 +152,11 @@ class Main:
     def get_next_game_id(self):
         """returns next game_id available"""
         self.clean_up()
-        game_id = 0
         while True:
-            game_id += 1
+            chars = string.ascii_uppercase
+            for i in range(0, 10):
+                chars += str(i)
+            game_id = "".join(random.choice(chars) for i in range(6))
             if game_id not in self.games:
                 return game_id
 

@@ -35,8 +35,8 @@ class SystemtestBase:
 
     def __verify_essage(self, game_id, from_id):
         """verifies to the server that a message was received"""
-        self.__server_conn.send_json({"commandType": "feedback", "feedback":
-            {"success": 1, "messageId": self.message_id}, "fromId": from_id, "gameId": game_id})
+        self.__server_conn.send_json({"commandType": "feedback", "feedback": {
+            "success": 1, "messageId": self.message_id}, "fromId": from_id, "gameId": game_id})
         self.message_id += 1
 
     def dict_compare(self, expected, actual):
@@ -69,15 +69,15 @@ class SystemtestBase:
                         "fromId": 42, "gameId": game_id})
         self.assert_any_message()
         self.assert_any_message()
-        self.assert_receive_dict({"eventType": "choiceField", "choiceField":
-            {"text": "Hier k\u00f6nnen Rollen hinzugef\u00fcgt oder entfernt werden",
-             "options": ['Harter\xa0Bursche hinzufügen', 'Berserker hinzufügen', 'Amor hinzufügen',
-                         'Jäger deaktivieren', 'Psychopath hinzufügen', 'Rotkäppchen hinzufügen',
-                         'Superschurke hinzufügen', 'Seherin deaktivieren',
-                         'Terrorwolf deaktivieren', 'Weißer\xa0Wolf hinzufügen',
-                         'Hexe deaktivieren', 'Wolfshund deaktivieren'],
-             "messageId": 0}, "mode": "write", "target": 42, "highlight": False, "gameId": game_id,
-            "lang": "DE"})
+        self.assert_receive_dict({"eventType": "choiceField", "choiceField": {
+            "text": "Hier k\u00f6nnen Rollen hinzugef\u00fcgt oder entfernt werden",
+            "options": ['Harter\xa0Bursche hinzufügen', 'Berserker hinzufügen', 'Amor hinzufügen',
+                        'Jäger deaktivieren', 'Psychopath hinzufügen', 'Rotkäppchen hinzufügen',
+                        'Superschurke hinzufügen', 'Seherin deaktivieren',
+                        'Terrorwolf deaktivieren', 'Weißer\xa0Wolf hinzufügen',
+                        'Hexe deaktivieren', 'Wolfshund deaktivieren'],
+            "messageId": 0}, "mode": "write", "target": 42, "highlight": False, "gameId": game_id,
+                                  "lang": "DE"})
         for role in rem_list:
             self.send_json({"commandType": "remove", "remove": {"role": role}, "fromId": 42,
                             "gameId": game_id})
@@ -87,8 +87,8 @@ class SystemtestBase:
                             "fromId": 42, "gameId": game_id})
             self.assert_any_message()
         for i in range(1, number_of_players + 1):
-            self.send_json({"commandType": "register", "register":
-                {"name": "Player " + str(i)}, "fromId": i, "gameId": game_id})
+            self.send_json({"commandType": "register", "register": {
+                "name": "Player " + str(i)}, "fromId": i, "gameId": game_id})
             for _ in range(0, 3):
                 self.assert_any_message()
         self.send_json({"commandType": "startGame", "fromId": admin, "gameId": game_id})
@@ -114,10 +114,10 @@ class Systemtest(SystemtestBase):
     def village_win_1(self, game_id):
         """assert that village wins scenario 1"""
         self.assert_any_message()
-        self.assert_receive_dict({'eventType': 'message', 'message':
-            {'text': 'Mit dem Tod des letzten Werwolfes haben die Dorfbewohner jetzt ihre Ruhe.',
-             'messageId': 0}, 'mode': 'write', 'target': 0, 'highlight': True, 'gameId': game_id,
-            'lang': 'DE'})
+        self.assert_receive_dict({'eventType': 'message', 'message': {
+            'text': 'Mit dem Tod des letzten Werwolfes haben die Dorfbewohner jetzt ihre Ruhe.',
+            'messageId': 0}, 'mode': 'write', 'target': 0, 'highlight': True, 'gameId': game_id,
+                                  'lang': 'DE'})
 
     def amor_couple_one_three(self):
         """method to couple players 1 and 3"""
@@ -129,9 +129,9 @@ class Systemtest(SystemtestBase):
                         "gameId": game_id})
         self.assert_any_message()
         self.assert_any_message()
-        self.assert_receive_dict({'eventType': 'message', 'message':
-            {'text': 'Du hast dich in Player 1 verliebt.', 'messageId': 0}, 'mode': 'write',
-            'target': 3, 'highlight': False, 'gameId': game_id, 'lang': 'DE'})
+        self.assert_receive_dict({'eventType': 'message', 'message': {
+            'text': 'Du hast dich in Player 1 verliebt.', 'messageId': 0}, 'mode': 'write',
+                                  'target': 3, 'highlight': False, 'gameId': game_id, 'lang': 'DE'})
         self.assert_any_message()
 
         return game_id

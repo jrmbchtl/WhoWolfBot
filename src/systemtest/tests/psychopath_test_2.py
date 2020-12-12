@@ -17,9 +17,10 @@ class PsychopathTest2(Systemtest):
         self.send_json({"commandType": "reply", "reply": {"choiceIndex": 1}, "fromId": 3,
                         "gameId": game_id})
         self.assert_any_message()
-        self.assert_receive_dict({'eventType': 'message', 'message':
-            {'text': 'Player 2 ist diese Nacht leider gestorben.', 'messageId': 0},
-            'mode': 'write', 'target': 0, 'highlight': True, 'gameId': game_id, 'lang': 'DE'})
+        self.assert_receive_dict({'eventType': 'message', 'message': {
+            'text': 'Player 2 ist diese Nacht leider gestorben.', 'messageId': 0},
+                                  'mode': 'write', 'target': 0, 'highlight': True,
+                                  'gameId': game_id, 'lang': 'DE'})
 
         self.send_json({"commandType": "terminate", "fromId": 42, "gameId": game_id})
         self.clear_rec_buffer()

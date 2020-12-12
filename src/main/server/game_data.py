@@ -76,12 +76,12 @@ class GameData:
             self.__get_delete_queue().put(i)
         if not in_list:
             self.__get_delete_queue().put({"target": data["fromId"],
-                                   "messageId": data["feedback"]["messageId"]})
+                                           "messageId": data["feedback"]["messageId"]})
 
     def __append_to_rec_list(self, item):
         """remember data for restoration after crash"""
         self.__check_or_create()
-        file_path = "games/" + str(self.get_game_id()) + ".game"
+        file_path = "games/" + str(self.__get_game_id()) + ".game"
         with open(file_path, "r") as json_file:
             data = json.load(json_file)
         data["recList"].append(item)
@@ -90,7 +90,7 @@ class GameData:
 
     def __check_or_create(self):
         """check if game file exists, if not create it"""
-        file_path = "games/" + str(self.get_game_id()) + ".game"
+        file_path = "games/" + str(self.__get_game_id()) + ".game"
         if not os.path.isfile(file_path):
             dic = {"seed": self.__get_seed(), "recList": [], "numberSent": 0,
                    "admin": self.get_admin(), "chatId": self.get_origin()}
@@ -149,7 +149,7 @@ class GameData:
         if self.number_sent > 0:
             self.number_sent -= 1
         else:
-            dic["gameId"] = self.get_game_id()
+            dic["gameId"] = self.__get_game_id()
             dic["lang"] = self.lang
             self.__get_server_conn().send_json(dic)
             self.__inc_number_sent()
@@ -157,7 +157,7 @@ class GameData:
     def __inc_number_sent(self):
         """increment number sent for restoration after crash"""
         self.__check_or_create()
-        file_path = "games/" + str(self.get_game_id()) + ".game"
+        file_path = "games/" + str(self.__get_game_id()) + ".game"
         with open(file_path, "r") as json_file:
             data = json.load(json_file)
         data["numberSent"] += 1
@@ -172,11 +172,18 @@ class GameData:
         """returns group chat of game"""
         return self.dic["newGame"]["origin"]
 
+    def add_origin(self, client):
+        """adds a client to the origin"""
+        if isinstance(self.dic["newGame"]["origin"], list):
+            self.dic["newGame"]["origin"].append(client)
+        else:
+            self.dic["newGame"]["origin"] = [self.dic["newGame"]["origin"], client]
+
     def __get_seed(self):
         """returns the seed of the game"""
         return self.dic["newGame"]["seed"]
 
-    def get_game_id(self):
+    def __get_game_id(self):
         """returns the game_id of the game"""
         return self.dic["game_id"]
 

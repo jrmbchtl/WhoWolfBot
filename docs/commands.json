@@ -40,6 +40,17 @@ Register:
 	"gameId": 12345
 }
 
+Join:
+{
+	"commandType": "join",
+	"register":{
+		"name": "test Player",
+		"origin": 1234
+	},
+	"fromId": 12345678,
+	"gameId": 12345
+}
+
 StartGame:
 {
 	"commandType": "startGame",

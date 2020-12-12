@@ -4,6 +4,7 @@ import json
 import logging
 import os
 import random
+import re
 import time
 from multiprocessing import Process
 
@@ -54,6 +55,7 @@ class TelegramClient:
         self.dispatcher.add_handler(CommandHandler('new', self.new))
         self.dispatcher.add_handler(CommandHandler('changelog', self.changelog))
         self.dispatcher.add_handler(CommandHandler('roles', self.roles))
+        self.dispatcher.add_handler(CommandHandler('join', self.join))
         self.dispatcher.add_handler(CallbackQueryHandler(self.button_handler))
         self.updater.start_polling()
         self.updater.idle()
@@ -122,16 +124,18 @@ class TelegramClient:
                 self.send_to_bot(dic)
         return False
 
-    def start(self, update):
+    def start(self, update, context):
         """handles start command"""
+        check_context(context)
         if self.is_spam(update):
             return
         self.bot_send_loop(update.message.chat_id,
                            text=loc(LANG, "welcome"),
                            parse_mode=ParseMode.MARKDOWN_V2)
 
-    def new(self, update):
+    def new(self, update, context):
         """handles new command"""
+        check_context(context)
         if self.is_spam(update):
             return
         from_id = update.message.from_user.id
@@ -141,14 +145,16 @@ class TelegramClient:
             {"commandType": "newGame", "newGame": {"seed": seed, "origin": origin},
              "fromId": from_id})
 
-    def changelog(self, update):
+    def changelog(self, update, context):
         """handles changelog command"""
+        check_context(context)
         if self.is_spam(update):
             return
         self.server_conn.send_json({"commandType": "changelog", "fromId": update.message.chat_id})
 
-    def roles(self, update):
+    def roles(self, update, context):
         """handles roles command"""
+        check_context(context)
         if self.is_spam(update):
             return
         role_dict = loc(LANG, "roles")
@@ -160,17 +166,41 @@ class TelegramClient:
         self.bot_send_loop(update.message.chat_id, text=escape_text(roles),
                            parse_mode=ParseMode.MARKDOWN_V2)
 
-    def button_handler(self, update):
+    def join(self, update, context):
+        """function used to join a game in a different chat"""
+        check_context(context)
+        if self.is_spam(update):
+            return
+        from_id = update.message.from_user.id
+        origin = update.message.chat_id
+        name = update.message.from_user.first_name
+        game_id = re.sub(r"\W", "", update.message.text[5:]).upper()
+        if from_id != origin:
+            text = loc(LANG, "sensitiveLeak")
+            self.send_to_bot({'eventType': 'message', 'message': {
+                'text': text, 'messageId': 0}, 'mode': 'write', 'target': origin,
+                              'highlight': False, 'gameId': game_id, 'lang': 'DE'})
+        if len(game_id) != 6:
+            text = loc(LANG, "invalidIdPre") + game_id + loc(LANG, "invalidIdPost")
+            self.send_to_bot({'eventType': 'message', 'message': {
+                'text': text, 'messageId': 0}, 'mode': 'write', 'target': origin,
+                              'highlight': False, 'gameId': game_id, 'lang': 'DE'})
+        dic = {"commandType": "join", "register": {"name": name, "origin": origin},
+               "fromId": from_id, "gameId": game_id}
+        self.server_conn.send_json(dic)
+
+    def button_handler(self, update, context):
         """handles button presses"""
+        check_context(context)
         if self.is_spam(update):
             return
         callback_data = update.callback_query.data
-        game_id = int(callback_data.split("_")[1])
+        game_id = callback_data.split("_")[1]
         name = update.callback_query.from_user.first_name
         player_id = update.callback_query.from_user.id
         if callback_data.startswith("register_"):
-            self.server_conn.send_json({"commandType": "register", "register":
-                {"name": name}, "fromId": player_id, "gameId": game_id})
+            self.server_conn.send_json({"commandType": "register", "register": {
+                "name": name}, "fromId": player_id, "gameId": game_id})
         elif callback_data.startswith("add"):
             role = callback_data.split("_")[2]
             self.server_conn.send_json(
@@ -189,8 +219,8 @@ class TelegramClient:
                 {"commandType": "terminate", "fromId": player_id, "gameId": game_id})
         else:
             choice_index = int(callback_data.split("_")[2])
-            self.server_conn.send_json({"commandType": "reply", "reply":
-                {"choiceIndex": choice_index}, "fromId": player_id, "gameId": game_id})
+            self.server_conn.send_json({"commandType": "reply", "reply": {
+                "choiceIndex": choice_index}, "fromId": player_id, "gameId": game_id})
 
     def send_to_bot(self, dic):
         """send message to bot"""
@@ -220,7 +250,7 @@ class TelegramClient:
             message_id = self.bot_send_loop(target, text, reply_markup, parse_mode)
         elif mode == "edit":
             config = {"reply_markup": reply_markup, "parse_mode": parse_mode}
-            self.bot_edit_loop(target, text, message_id, config)
+            message_id = self.bot_edit_loop(target, text, message_id, config)
         return message_id
 
     def bot_send_loop(self, chat_id, text, reply_markup=InlineKeyboardMarkup([]), parse_mode=None):
@@ -257,7 +287,8 @@ class TelegramClient:
             time.sleep(15)
             self.bot_edit_loop(chat_id, text, message_id, config)
         except BadRequest:
-            return
+            pass
+        return message_id
 
     def bot_delete_loop(self, chat_id, message_id):
         """deletes message till done"""
@@ -279,12 +310,26 @@ class TelegramClient:
             game_id = rec["gameId"]
             target = rec["target"]
             try:
-                message_id = self.send_to_bot(rec)
-                self.server_conn.send_json({"commandType": "feedback", "feedback":
-                    {"success": 1, "messageId": message_id}, "fromId": target, "gameId": game_id})
+                if isinstance(target, list):
+                    message_id = []
+                    for index, target_id in enumerate(target):
+                        rec2 = copy_dict(rec)
+                        rec2["target"] = target_id
+                        if isinstance(rec2[rec2["eventType"]]["messageId"], list) \
+                                and index < len(rec2[rec2["eventType"]]["messageId"]):
+                            rec2[rec2["eventType"]]["messageId"] = \
+                                rec2[rec2["eventType"]]["messageId"][index]
+                        elif isinstance(rec2[rec2["eventType"]]["messageId"], list) or index != 0:
+                            rec2["mode"] = "write"
+                        m_id = self.send_to_bot(rec2)
+                        message_id.append(m_id)
+                else:
+                    message_id = self.send_to_bot(rec)
+                self.server_conn.send_json({"commandType": "feedback", "feedback": {
+                    "success": 1, "messageId": message_id}, "fromId": target, "gameId": game_id})
             except Unauthorized:
-                self.server_conn.send_json({"commandType": "feedback", "feedback":
-                    {"success": 0, "messageId": 0}, "fromId": target, "gameId": game_id})
+                self.server_conn.send_json({"commandType": "feedback", "feedback": {
+                    "success": 0, "messageId": 0}, "fromId": target, "gameId": game_id})
 
 
 def escape_text(text):
@@ -334,3 +379,20 @@ def generate_keyboard(dic, game_id):
             keyboard.append([InlineKeyboardButton(
                 option, callback_data="reply_" + str(game_id) + "_" + str(i))])
     return keyboard
+
+
+def check_context(context):
+    """dummy function to make context used"""
+    if context is None:
+        raise ValueError("context should not be None")
+
+
+def copy_dict(dic):
+    """recursively copies a dict"""
+    res = {}
+    for key in dic:
+        if isinstance(dic[key], dict):
+            res[key] = copy_dict(dic[key])
+        else:
+            res[key] = dic[key]
+    return res

@@ -20,13 +20,14 @@ class LoveWinTest(Systemtest):
                             "gameId": game_id})
             self.assert_any_message()
         self.assert_any_message()
-        self.assert_receive_dict({'eventType': 'message', 'message':
-            {'text': 'Player 4 wurde gevierteilt.', 'messageId': 0},
-            'mode': 'write', 'target': 0, 'highlight': True, 'gameId': game_id, 'lang': 'DE'})
+        self.assert_receive_dict({'eventType': 'message', 'message': {
+            'text': 'Player 4 wurde gevierteilt.', 'messageId': 0},
+                                  'mode': 'write', 'target': 0, 'highlight': True,
+                                  'gameId': game_id, 'lang': 'DE'})
         self.assert_any_message()
-        self.assert_receive_dict({'eventType': 'message', 'message':
-            {'text': 'Liebe überwindet alles.', 'messageId': 0}, 'mode': 'write',
-            'target': 0, 'highlight': True, 'gameId': game_id, 'lang': 'DE'})
+        self.assert_receive_dict({'eventType': 'message', 'message': {
+            'text': 'Liebe überwindet alles.', 'messageId': 0}, 'mode': 'write',
+                                  'target': 0, 'highlight': True, 'gameId': game_id, 'lang': 'DE'})
 
         self.send_json({"commandType": "terminate", "fromId": 42, "gameId": game_id})
         self.clear_rec_buffer()
