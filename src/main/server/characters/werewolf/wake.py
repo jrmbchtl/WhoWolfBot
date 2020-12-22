@@ -1,11 +1,11 @@
 """module for waking werewolves"""
-from src.main.localization import get_localization as loc
+from src.main.common.localization import get_localization as loc
 from src.main.server import factory
 from src.main.server.characters.character import Character
 from src.main.server.characters.types import CharacterType
 from src.main.server.characters.types import TeamType
 from src.main.server.factory import EditMode
-from src.main.server.utils import Utils
+from src.main.common.utils import Utils
 
 
 def wake(game_data):

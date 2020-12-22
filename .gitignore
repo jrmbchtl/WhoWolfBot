@@ -140,3 +140,4 @@ flake-report/
 games/
 src/systemtest/games
 banList.json
+lang.json

@@ -2,9 +2,10 @@
 import json
 import os
 
-from src.main.localization import get_localization as loc
+from src.main.common import utils
+from src.main.common.localization import get_localization as loc
 from src.main.server.characters.types import CharacterType
-from src.main.server.utils import Utils
+from src.main.common.utils import Utils
 
 
 class GameData:
@@ -18,7 +19,7 @@ class GameData:
         self.players = {}
         self.conn = {"server_conn": server_conn, "game_queue": game_queue,
                      "delete_queue": delete_queue}
-        self.lang = "EN"
+        self.lang = utils.get_lang(self.get_admin())
         self.nightly_target = {}  # holds id -> from role
         self.rec_list = []
         self.number_sent = 0

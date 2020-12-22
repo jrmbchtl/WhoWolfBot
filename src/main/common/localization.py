@@ -5,12 +5,14 @@ import os
 
 def get_localization(lang=None, primary_key=None, index=None):
     """returns the quote for a specific key in a language"""
-    if os.path.isfile("src/main/localization.json"):
-        path = "src/main/localization.json"
-    elif os.path.isfile("../localization.json"):
-        path = "../localization.json"
+    if os.path.isfile("src/main/common/localization.json"):
+        path = "src/main/common/localization.json"
+    elif os.path.isfile("../common/localization.json"):
+        path = "../common/localization.json"
+    elif os.path.isfile("../main/common/localization.json"):
+        path = "../main/common/localization.json"
     else:
-        path = "../main/localization.json"
+        path = "localization.json"
     with open(path, "r") as file:
         dic = json.load(file)
         if lang is None:

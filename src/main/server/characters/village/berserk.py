@@ -1,5 +1,5 @@
 """module for the berserk"""
-from src.main.localization import get_localization as loc
+from src.main.common.localization import get_localization as loc
 from src.main.server import factory
 from src.main.server.characters.teams import VillagerTeam
 from src.main.server.characters.types import CharacterType

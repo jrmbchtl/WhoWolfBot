@@ -3,7 +3,7 @@ import json
 import os
 import time
 
-from src.main.server.conn.server_connection import ServerConnection
+from src.main.common.server_connection import ServerConnection
 from src.systemtest.system_test_registration import SystemTestRegistration
 
 

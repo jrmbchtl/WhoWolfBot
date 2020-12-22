@@ -1,7 +1,7 @@
 """module for an abstract character"""
-from src.main.localization import get_localization as loc
+from src.main.common.localization import get_localization as loc
 from src.main.server import factory
-from src.main.server.utils import Utils
+from src.main.common.utils import Utils
 
 
 class Character:
@@ -62,9 +62,10 @@ class Character:
             factory.create_message_event(game_data.get_origin(), death_message,
                                          config={"highlight": True}))
         game_data.dump_next_message(command_type="feedback")
-        game_data.send_json(factory.create_message_event(player_id, death_message,
-                                                         config={"highlight": True}))
-        game_data.dump_next_message(command_type="feedback")
+        if not isinstance(game_data.get_origin(), list) or player_id not in game_data.get_origin():
+            game_data.send_json(factory.create_message_event(player_id, death_message,
+                                                             config={"highlight": True}))
+            game_data.dump_next_message(command_type="feedback")
         if self.beloved is not None and self.beloved in game_data.get_alive_players():
             beloved_name = game_data.get_alive_players()[self.beloved].get_name()
             love_dm = beloved_name + game_data.get_message("lovedOneKilled", config={"rndm": True})

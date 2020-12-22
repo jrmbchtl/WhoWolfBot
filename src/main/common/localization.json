@@ -1,6 +1,6 @@
 {
   "DE": {
-    "languageQuestion": "In welcher Sprache möchten Sie dass Spiel spielen",
+    "languageQuestion": "In welcher Sprache möchten Sie dass Spiel spielen?",
     "warnSpamPre": "",
     "warnSpamPost": [
       ", es wäre nett, wenn du den Gamemaster  nicht so quälen würdest, sonst hat er evtl. keine Lust ",
@@ -15,6 +15,8 @@
     "sensitiveLeak": "Wenn du hier spielst, können alle deine privaten Nachrichten lesen!",
     "noSuchGamePre": "Ein Spiel mit dem Code ",
     "noSuchGamePost": " existiert nicht!",
+    "choose_config":  "Was möchten Sie einstellen?",
+    "config_lang": "Sprache",
     "cancel": "Abbrechen",
     "join": "Mitspielen/Aussteigen",
     "start": "Start",
@@ -1360,7 +1362,7 @@
     ]
   },
   "EN": {
-    "languageQuestion": "Please choose a language",
+    "languageQuestion": "Please choose a language!",
     "warnSpamPre": "Please don't torture the Gamemaster, ",
     "warnSpamPost": ", otherwise he might not want to talk to you again!",
     "banSpamPre": "",
@@ -1372,6 +1374,8 @@
     "sensitiveLeak": "Are you crazy? Joining a game here might leak sensitive information!",
     "noSuchGamePre": "There is no game with the code ",
     "noSuchGamePost": "!",
+    "choose_config":  "What do you want to configure?",
+    "config_lang": "Language",
     "cancel": "Cancel",
     "join": "Join/Leave",
     "start": "Start",

@@ -2,7 +2,7 @@
 import json
 
 FINE = True
-with open("src/main/localization.json") as js:
+with open("src/main/common/localization.json") as js:
     dc = json.load(js)
 for lang in dc:
     if not isinstance(lang, str) or len(lang) != 2:

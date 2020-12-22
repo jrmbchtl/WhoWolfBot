@@ -4,7 +4,7 @@ import os
 
 import requests
 
-from src.main.localization import get_localization as loc
+from src.main.common.localization import get_localization as loc
 from src.main.server import factory
 from src.main.server.characters import teams
 from src.main.server.characters.types import CharacterType
@@ -27,7 +27,7 @@ from src.main.server.characters.werewolf.wolfdog import Wolfdog
 from src.main.server.factory import EditMode
 from src.main.server.game_data import GameData
 from src.main.server.player import Player
-from src.main.server.utils import Utils
+from src.main.common.utils import Utils
 
 
 class Server:

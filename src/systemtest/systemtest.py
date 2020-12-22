@@ -2,7 +2,7 @@
 import time
 from multiprocessing import Process
 
-from src.main.server.conn.server_connection import ServerConnection
+from src.main.common.server_connection import ServerConnection
 
 
 class SystemtestBase:

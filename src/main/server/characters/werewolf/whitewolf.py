@@ -3,7 +3,7 @@ from src.main.server import factory
 from src.main.server.characters.teams import WhitewolfTeam
 from src.main.server.characters.types import CharacterType
 from src.main.server.characters.types import TeamType
-from src.main.localization import get_localization as loc
+from src.main.common.localization import get_localization as loc
 from src.main.server.factory import EditMode
 
 

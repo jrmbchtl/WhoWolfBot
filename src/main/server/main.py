@@ -9,13 +9,12 @@ from multiprocessing import Process
 from multiprocessing import Queue
 
 from src.main.client.telegram_client import TelegramClient
-from src.main.localization import get_localization as loc
+from src.main.common import utils
+from src.main.common.localization import get_localization as loc
+from src.main.common.server_connection import ServerConnection
 from src.main.server import factory
-from src.main.server.conn.server_connection import ServerConnection
 from src.main.server.server import Server
 from src.systemtest.system_test_main import SystemTestMain
-
-LANG = "EN"
 
 
 class Main:
@@ -54,12 +53,6 @@ class Main:
         """handling commands from  clients"""
         dic = self.server_conn.receive_json()
         command_type = dic["commandType"]
-        # if command_type == "newGame" and dic["newGame"]["origin"] == dic["fromId"]:
-        #     send = factory.create_message_event(
-        #         dic["fromId"], loc(LANG, "privateNotAllowed"))
-        #     send["gameId"] = 0
-        #     self.server_conn.send_json(send)
-        #     self.server_conn.receive_json()
         if command_type == "newGame":
             if "seed" not in dic["newGame"]:
                 dic["newGame"]["seed"] = seed
@@ -73,14 +66,16 @@ class Main:
         elif command_type == "close":
             self.close_server()
         elif command_type == "changelog":
-            send = factory.create_message_event(dic["fromId"], loc(LANG, "changelog"))
+            lang = utils.get_lang(dic["fromId"])
+            send = factory.create_message_event(dic["fromId"], loc(lang, "changelog"))
             send["gameId"] = 0
             self.server_conn.send_json(send)
             self.server_conn.receive_json()
         elif dic["gameId"] in self.games:
             self.games[dic["gameId"]]["toProcessQueue"].put(dic)
         elif command_type == "join":
-            text = loc(LANG, "noSuchGamePre") + dic["gameId"] + loc(LANG, "noSuchGamePost")
+            lang = utils.get_lang(dic["fromId"])
+            text = loc(lang, "noSuchGamePre") + dic["gameId"] + loc(lang, "noSuchGamePost")
             self.server_conn.send_json({'eventType': 'message', 'message': {
                 'text': text, 'messageId': 0}, 'mode': 'write', 'target': dic["fromId"],
                                         'highlight': False, 'gameId': dic["gameId"],

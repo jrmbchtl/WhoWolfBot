@@ -7,6 +7,7 @@ import random
 import re
 import time
 from multiprocessing import Process
+from multiprocessing import Queue
 
 from telegram import Bot
 from telegram import InlineKeyboardButton
@@ -20,13 +21,12 @@ from telegram.ext import CallbackQueryHandler
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
 
-from src.main.localization import get_localization as loc
-from src.main.server.conn.server_connection import ServerConnection
+from src.main.common import utils
+from src.main.common.localization import get_localization as loc
+from src.main.common.server_connection import ServerConnection
 
 illegal_chars = ['.', '!', '#', '(', ')', '-', '=', '+', ']', '[', '{', '}', '>', '<', '|', '_',
                  '*', '`', '~']
-
-LANG = "EN"
 
 
 class TelegramClient:
@@ -40,9 +40,9 @@ class TelegramClient:
         self.token = self.token[0:46]
         self.bot = Bot(self.token)
         self.updater = Updater(self.token, use_context=True)
-        self.dispatcher = self.updater.dispatcher
         self.spam_dict = {}
         self.ban_list = self.get_ban_list()
+        self.config_queue = Queue()
 
         logging.basicConfig(level=logging.INFO,
                             format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -51,14 +51,18 @@ class TelegramClient:
         """main thread for telegram client"""
         process = Process(target=self.rec_process)
         process.start()
-        self.dispatcher.add_handler(CommandHandler('start', self.start))
-        self.dispatcher.add_handler(CommandHandler('new', self.new))
-        self.dispatcher.add_handler(CommandHandler('changelog', self.changelog))
-        self.dispatcher.add_handler(CommandHandler('roles', self.roles))
-        self.dispatcher.add_handler(CommandHandler('join', self.join))
-        self.dispatcher.add_handler(CallbackQueryHandler(self.button_handler))
+        self.__dispatcher().add_handler(CommandHandler('start', self.start))
+        self.__dispatcher().add_handler(CommandHandler('new', self.new))
+        self.__dispatcher().add_handler(CommandHandler('changelog', self.changelog))
+        self.__dispatcher().add_handler(CommandHandler('roles', self.roles))
+        self.__dispatcher().add_handler(CommandHandler('join', self.join))
+        self.__dispatcher().add_handler(CommandHandler('config', self.config))
+        self.__dispatcher().add_handler(CallbackQueryHandler(self.button_handler))
         self.updater.start_polling()
         self.updater.idle()
+
+    def __dispatcher(self):
+        return self.updater.dispatcher
 
     @staticmethod
     def get_ban_list():
@@ -91,6 +95,7 @@ class TelegramClient:
             return True
 
         now = datetime.datetime.now()
+        lang = utils.get_lang(user_id)
         if user_id not in self.spam_dict:
             self.spam_dict[user_id] = [now]
         else:
@@ -102,24 +107,24 @@ class TelegramClient:
                 else:
                     i += 1
             if len(self.spam_dict[user_id]) > 15:
-                pre = loc(LANG, "banSpamPre")
-                post = loc(LANG, "banSpamPost")
+                pre = loc(lang, "banSpamPre")
+                post = loc(lang, "banSpamPost")
                 text = pre + name + post
                 dic = {
                     "eventType": "message", "message": {"text": text, "messageId": 0},
-                    "target": chat_id, "mode": "write", "gameId": 0, "lang": LANG, "highlight": True
+                    "target": chat_id, "mode": "write", "gameId": 0, "lang": lang, "highlight": True
                 }
                 self.send_to_bot(dic)
                 self.ban_list.append(user_id)
                 self.write_ban_list()
                 return True
             if len(self.spam_dict[user_id]) > 13:
-                pre = loc(LANG, "warnSpamPre")
-                post = loc(LANG, "warnSpamPost")
+                pre = loc(lang, "warnSpamPre")
+                post = loc(lang, "warnSpamPost")
                 text = pre + name + post
                 dic = {
                     "eventType": "message", "message": {"text": text, "messageId": 0},
-                    "target": chat_id, "mode": "write", "gameId": 0, "lang": LANG, "highlight": True
+                    "target": chat_id, "mode": "write", "gameId": 0, "lang": lang, "highlight": True
                 }
                 self.send_to_bot(dic)
         return False
@@ -129,8 +134,9 @@ class TelegramClient:
         check_context(context)
         if self.is_spam(update):
             return
+        lang = utils.get_lang(update.message.from_user.id)
         self.bot_send_loop(update.message.chat_id,
-                           text=loc(LANG, "welcome"),
+                           text=loc(lang, "welcome"),
                            parse_mode=ParseMode.MARKDOWN_V2)
 
     def new(self, update, context):
@@ -157,7 +163,8 @@ class TelegramClient:
         check_context(context)
         if self.is_spam(update):
             return
-        role_dict = loc(LANG, "roles")
+        lang = utils.get_lang(update.message.from_user.id)
+        role_dict = loc(lang, "roles")
         roles = ""
         for index, role in enumerate(role_dict):
             roles += role_dict[role]
@@ -175,19 +182,74 @@ class TelegramClient:
         origin = update.message.chat_id
         name = update.message.from_user.first_name
         game_id = re.sub(r"\W", "", update.message.text[5:]).upper()
+        lang = utils.get_lang(update.message.from_user.id)
         if from_id != origin:
-            text = loc(LANG, "sensitiveLeak")
+            text = loc(lang, "sensitiveLeak")
             self.send_to_bot({'eventType': 'message', 'message': {
                 'text': text, 'messageId': 0}, 'mode': 'write', 'target': origin,
                               'highlight': False, 'gameId': game_id, 'lang': 'DE'})
         if len(game_id) != 6:
-            text = loc(LANG, "invalidIdPre") + game_id + loc(LANG, "invalidIdPost")
+            text = loc(lang, "invalidIdPre") + game_id + loc(lang, "invalidIdPost")
             self.send_to_bot({'eventType': 'message', 'message': {
                 'text': text, 'messageId': 0}, 'mode': 'write', 'target': origin,
                               'highlight': False, 'gameId': game_id, 'lang': 'DE'})
         dic = {"commandType": "join", "register": {"name": name, "origin": origin},
                "fromId": from_id, "gameId": game_id}
         self.server_conn.send_json(dic)
+
+    def config(self, update, context):
+        """set the config"""
+        check_context(context)
+        if self.is_spam(update):
+            return
+        from_id = update.message.from_user.id
+        chat_id = update.message.chat_id
+        message_id = update.message.message_id
+        if from_id != chat_id:
+            self.send_to_bot({'eventType': 'message', 'message': {
+                'text': " ", 'messageId': message_id}, 'mode': 'delete', 'target': chat_id,
+                              'highlight': False, 'gameId': "conf", 'lang': 'DE'})
+            return
+        process = Process(target=self.config_process, args=(update, self.config_queue,))
+        process.start()
+
+    def config_process(self, update, config_queue):
+        """process for handling the config"""
+        from_id = update.message.from_user.id
+        lang = utils.get_lang(from_id)
+        text = loc(lang, "choose_config")
+        options = [loc(lang, "config_lang")]
+        message_id = self.send_to_bot({"eventType": "choiceField", "choiceField": {
+            "text": text, "options": options, "messageId": 0}, "target": from_id, "mode": "write",
+                                       "gameId": "conf", "lang": "DE", "highlight": False})
+        choice = self.config_get_option(config_queue, from_id)
+        if choice == 0:
+            text = loc(lang, "config_lang")
+            options = []
+            for lang in loc():
+                options.append(lang)
+            self.send_to_bot({"eventType": "choiceField", "choiceField": {
+                "text": text, "options": options, "messageId": message_id}, "target": from_id,
+                              "mode": "edit", "gameId": "conf", "lang": "DE", "highlight": False})
+            utils.set_lang(from_id, options[self.config_get_option(config_queue, from_id)])
+        self.send_to_bot({"eventType": "choiceField", "choiceField": {
+            "text": text, "options": options, "messageId": message_id}, "target": from_id,
+                          "mode": "delete", "gameId": "conf", "lang": "DE", "highlight": False})
+        self.send_to_bot({'eventType': 'message', 'message': {
+            'text': " ", 'messageId': update.message.message_id}, 'mode': 'delete',
+                          'target': from_id, 'highlight': False, 'gameId': "conf", 'lang': 'DE'})
+
+    @staticmethod
+    def config_get_option(config_queue, from_id):
+        """returns the next message sent by from_id"""
+        while True:
+            while config_queue.empty():
+                pass
+            dic = config_queue.get()
+            if from_id in dic:
+                return dic[from_id]
+            config_queue.put(dic)
+            time.sleep(1)
 
     def button_handler(self, update, context):
         """handles button presses"""
@@ -217,6 +279,9 @@ class TelegramClient:
         elif callback_data.startswith("terminate_"):
             self.server_conn.send_json(
                 {"commandType": "terminate", "fromId": player_id, "gameId": game_id})
+        elif callback_data.split("_")[1] == "conf":
+            choice_index = int(callback_data.split("_")[2])
+            self.config_queue.put({player_id: choice_index})
         else:
             choice_index = int(callback_data.split("_")[2])
             self.server_conn.send_json({"commandType": "reply", "reply": {
