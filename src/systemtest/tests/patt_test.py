@@ -71,7 +71,7 @@ class PattTest(DrawTest):
                      'Meinung ändern!\n\nPlayer 1 will Player 2 auf dem Scheiterhaufen sehen!\n'
                      'Player 2 will Player 2 auf dem Scheiterhaufen sehen!\nPlayer 3 will Player '
                      '2 auf dem Scheiterhaufen sehen!\nPlayer 4 will Player 2 auf dem '
-                     'Scheiterhaufen sehen!'), 'messageId': 42}, 'mode': 'edit', 'target': 0,
+                     'Scheiterhaufen sehen!'), 'messageId': 19}, 'mode': 'edit', 'target': 0,
                                   'highlight': False, 'gameId': game_id, 'lang': 'DE'})
         self.assert_any_message()
 

@@ -23,7 +23,7 @@ class TerrorwolfTest(Systemtest):
         self.assert_receive_dict({"eventType": "message", "message": {
             "text": ("Welche Gene setzen sich in dir durch?\n\n"
                      "Du hast dem Dorf den Rücken zugewendet."),
-            "messageId": 32}, "mode": "edit", "target": 3, "highlight": False, "gameId": game_id,
+            "messageId": 17}, "mode": "edit", "target": 3, "highlight": False, "gameId": game_id,
                                   'lang': 'DE'})
         self.assert_receive_dict({"eventType": "choiceField", "choiceField": {
             "text": "Frischer Mensch - kommt auf den Tisch - so saftig süüüüüüüüüüüüüüüß!",
@@ -49,7 +49,7 @@ class TerrorwolfTest(Systemtest):
                          'Player 1 durch den Fleischwolf jagen', 'Player 2 zu Salami verarbeiten',
                          'Player 3 zu Gulasch verarbeiten', 'Player 4 versnacken',
                          'Player 5 reißen', 'Player 6 reißen', 'niemanden reißen'],
-            "messageId": 34}, "mode": "edit", "target": 3, "highlight": False, "gameId": game_id,
+            "messageId": 18}, "mode": "edit", "target": 3, "highlight": False, "gameId": game_id,
                                   'lang': 'DE'})
         self.assert_receive_dict({"eventType": "choiceField", "choiceField": {
             "text": ("Frischer Mensch - kommt auf den Tisch - so saftig süüüüüüüüüüüüüüüß!\n\n"
@@ -57,7 +57,7 @@ class TerrorwolfTest(Systemtest):
                          'Player 1 durch den Fleischwolf jagen', 'Player 2 zu Salami verarbeiten',
                          'Player 3 zu Gulasch verarbeiten', 'Player 4 versnacken',
                          'Player 5 reißen', 'Player 6 reißen', 'niemanden reißen'],
-            "messageId": 35}, "mode": "edit", "target": 4, "highlight": False, "gameId": game_id,
+            "messageId": 19}, "mode": "edit", "target": 4, "highlight": False, "gameId": game_id,
                                   'lang': 'DE'})
         self.send_json({"commandType": "reply", "reply": {"choiceIndex": 3},
                         "fromId": 4, "gameId": game_id})
@@ -65,13 +65,13 @@ class TerrorwolfTest(Systemtest):
             "text": ("Frischer Mensch - kommt auf den Tisch - so saftig süüüüüüüüüüüüüüüß!\n\n"
                      "Player 3 schlägt vor Player 4 zu versnacken.\nPlayer 4 schlägt vor Player 4 "
                      "zu versnacken.\n\nDie Werwölfe haben beschlossen, Player 4 zu versnacken."),
-            "messageId": 34}, "mode": "edit", "target": 3, "highlight": False, "gameId": game_id,
+            "messageId": 18}, "mode": "edit", "target": 3, "highlight": False, "gameId": game_id,
                                   'lang': 'DE'})
         self.assert_receive_dict({"eventType": "message", "message": {
             "text": ("Frischer Mensch - kommt auf den Tisch - so saftig süüüüüüüüüüüüüüüß!\n\n"
                      "Player 3 schlägt vor Player 4 zu versnacken.\nPlayer 4 schlägt vor Player 4 "
                      "zu versnacken.\n\nDie Werwölfe haben beschlossen, Player 4 zu versnacken."),
-            "messageId": 35}, "mode": "edit", "target": 4, "highlight": False, "gameId": game_id,
+            "messageId": 19}, "mode": "edit", "target": 4, "highlight": False, "gameId": game_id,
                                   'lang': 'DE'})
         self.assert_receive_dict({"eventType": "choiceField", "choiceField": {
             "text": ("Player 4 wurde diese Nacht von den Werw\u00f6lfen erwischt. M\u00f6chtest "

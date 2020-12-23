@@ -23,7 +23,7 @@ class ScallywagTest(Systemtest):
         self.assert_receive_dict({'eventType': 'message', 'message': {
             'text': ('Wem willst du die herzförmige Bombe geben?\n\n'
                      'Du hast Player 2 die Bombe gegeben.'),
-            'messageId': 32}, 'mode': 'edit', 'target': 4, 'highlight': False, 'gameId': game_id,
+            'messageId': 14}, 'mode': 'edit', 'target': 4, 'highlight': False, 'gameId': game_id,
                                   'lang': 'DE'})
         self.assert_any_message()
         for i in range(1, 4):

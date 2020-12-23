@@ -193,7 +193,7 @@ class TelegramClient:
             self.send_to_bot({'eventType': 'message', 'message': {
                 'text': text, 'messageId': 0}, 'mode': 'write', 'target': origin,
                               'highlight': False, 'gameId': game_id, 'lang': 'DE'})
-        dic = {"commandType": "join", "register": {"name": name, "origin": origin},
+        dic = {"commandType": "join", "join": {"name": name, "origin": origin},
                "fromId": from_id, "gameId": game_id}
         self.server_conn.send_json(dic)
 

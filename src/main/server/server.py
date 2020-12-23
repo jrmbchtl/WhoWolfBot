@@ -129,7 +129,7 @@ class Server:
             if rec["commandType"] == "register":
                 self.__handle_register(rec)
             elif rec["commandType"] == "join":
-                player = Player(rec["register"]["name"])
+                player = Player(rec["join"]["name"])
                 self.game_data.get_players()[rec["fromId"]] = player
                 self.game_data.add_origin(rec["fromId"])
                 self.update_register_menu()

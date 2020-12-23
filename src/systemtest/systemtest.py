@@ -25,19 +25,44 @@ class SystemtestBase:
         """assert that the next received message is equal to the one provided"""
         rec = self.__server_conn.receive_json()
         self.dict_compare(dic, rec)
-        self.__verify_essage(rec["gameId"], rec["target"])
+        self.__verify_message(rec)
 
     def assert_any_message(self):
         """assert that the server gets any message"""
         rec = self.__server_conn.receive_json()
-        self.__verify_essage(rec["gameId"], rec["target"])
+        self.__verify_message(rec)
         return rec
 
-    def __verify_essage(self, game_id, from_id):
+    def __verify_message(self, rec):
         """verifies to the server that a message was received"""
+        game_id = rec["gameId"]
+        from_id = rec["target"]
+        orig_message_id = rec[rec["eventType"]]["messageId"]
+        if rec["mode"] == "edit" or rec["mode"] == "delete":
+            if isinstance(from_id, list):
+                if isinstance(orig_message_id, list):
+                    message_id = orig_message_id
+                    for _ in range(len(from_id) - len(orig_message_id)):
+                        message_id.append(self.message_id)
+                        self.message_id += 1
+                else:
+                    message_id = [orig_message_id]
+                    for _ in range(1, len(from_id)):
+                        message_id.append(self.message_id)
+                        self.message_id += 1
+            else:
+                message_id = orig_message_id
+        else:
+            if isinstance(from_id, list):
+                message_id = []
+                for _ in from_id:
+                    message_id.append(self.message_id)
+                    self.message_id += 1
+            else:
+                message_id = self.message_id
+                self.message_id += 1
         self.__server_conn.send_json({"commandType": "feedback", "feedback": {
-            "success": 1, "messageId": self.message_id}, "fromId": from_id, "gameId": game_id})
-        self.message_id += 1
+            "success": 1, "messageId": message_id}, "fromId": from_id, "gameId": game_id})
 
     def dict_compare(self, expected, actual):
         """compares two dicts"""
@@ -64,7 +89,7 @@ class SystemtestBase:
                         "fromId": admin})
         rec = self.__server_conn.receive_json()
         game_id = rec["gameId"]
-        self.__verify_essage(game_id, rec["target"])
+        self.__verify_message(rec)
         self.send_json({"commandType": "reply", "reply": {"choiceIndex": 0},
                         "fromId": 42, "gameId": game_id})
         self.assert_any_message()

@@ -7,6 +7,7 @@ from src.systemtest.tests.crash_test import CrashTest
 from src.systemtest.tests.cupid_test import CupidTest
 from src.systemtest.tests.example_test import Exampletest
 from src.systemtest.tests.fast_death_test import FastDeath
+from src.systemtest.tests.join_test import JoinTest
 from src.systemtest.tests.love_win_test import LoveWinTest
 from src.systemtest.tests.patt_test import DoublePattTest
 from src.systemtest.tests.patt_test import PattTest
@@ -45,6 +46,7 @@ class SystemTestRegistration:
         self.main.register(PsychopathTest)
         self.main.register(PsychopathTest2)
         self.main.register(ScallywagTest)
+        self.main.register(JoinTest)
 
     def get_main(self):
         """dummy method to fill publics"""

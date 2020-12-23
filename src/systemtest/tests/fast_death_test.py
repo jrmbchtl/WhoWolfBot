@@ -27,7 +27,7 @@ class FastDeath(Systemtest):
             "text": ("Die Werwolfsmägen knurren vor Hunger - Zeit, sich etwas zu Essen zu suchen!"
                      "\n\nPlayer 3 schlägt vor Player 1 zu reißen.\n\n"
                      "Die Werwölfe haben beschlossen, Player 1 zu reißen."),
-            "messageId": 24}, "mode": "edit", "target": 3, "highlight": False, "gameId": game_id,
+            "messageId": 13}, "mode": "edit", "target": 3, "highlight": False, "gameId": game_id,
                                   'lang': 'DE'})
 
         self.assert_receive_dict({"eventType": "choiceField", "choiceField": {
@@ -41,7 +41,7 @@ class FastDeath(Systemtest):
                         "fromId": 4, "gameId": game_id})
         self.assert_receive_dict({"eventType": "message", "message": {
             "text": ("Player 1 wurde diese Nacht von den Werw\u00f6lfen erwischt. M\u00f6chtest "
-                     "du diese Person retten?"), "messageId": 26}, "mode": "edit", "target": 4,
+                     "du diese Person retten?"), "messageId": 14}, "mode": "edit", "target": 4,
                                   "highlight": False, "gameId": game_id, 'lang': 'DE'})
 
         self.assert_receive_dict({"eventType": "message", "message": {
@@ -63,7 +63,7 @@ class FastDeath(Systemtest):
 
         self.assert_receive_dict({"eventType": "message", "message": {
             "text": ("Willst du noch jemanden t\u00f6ten?\n\nDu hast Player 3 eine Überdosis "
-                     "Morphium verabreicht."), "messageId": 29},
+                     "Morphium verabreicht."), "messageId": 16},
                                   "mode": "edit", "target": 4, "highlight": False,
                                   "gameId": game_id, 'lang': 'DE'})
 
@@ -93,7 +93,7 @@ class FastDeath(Systemtest):
                         "fromId": 1, "gameId": game_id})
 
         self.assert_receive_dict({"eventType": "message", "message": {
-            "text": "Wen möchtest du mit ins Grab nehmen?", "messageId": 34},
+            "text": "Wen möchtest du mit ins Grab nehmen?", "messageId": 20},
                                   "mode": "edit", "target": 1, "highlight": False,
                                   "gameId": game_id, 'lang': 'DE'})
 
