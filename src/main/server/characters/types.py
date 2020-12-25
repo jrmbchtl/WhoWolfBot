@@ -7,6 +7,7 @@ class TeamType(Enum):
     WEREWOLF = 1
     VILLAGER = 2
     WHITEWOLF = 3
+    PARASITE = 4
     NONE = 0
 
 
@@ -19,8 +20,9 @@ class CharacterType(Enum):
     WEREWOLF = 1
     WHITEWOLF = 2
     WITCH = 3
-    SEER = 4
-    BERSERK = 5
+    PARASITE = 4
+    SEER = 5
+    BERSERK = 6
     SCALLYWAG = 10
     PSYCHOPATH = 99
     VILLAGER = 100

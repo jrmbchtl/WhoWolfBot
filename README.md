@@ -16,7 +16,8 @@ Harter Bursche\
 Amor\
 Berserker\
 Psychopath\
-Superschurke
+Superschurke\
+Parasit
 
 Testing:
 
@@ -25,6 +26,5 @@ WIP:
 Planned:\
 Terrorist\
 Kerkermeister\
-Parasit\
 Flittchen\
 Bürgermeister

@@ -7,6 +7,7 @@ import requests
 from src.main.common.localization import get_localization as loc
 from src.main.server import factory
 from src.main.server.characters import teams
+from src.main.server.characters.parasite import Parasite
 from src.main.server.characters.types import CharacterType
 from src.main.server.characters.village.badass_bastard import BadassBastard
 from src.main.server.characters.village.berserk import Berserk
@@ -43,8 +44,7 @@ class Server:
                                   delete_queue=delete_queue)
         self.accused_dict = {}
         self.enabled_roles = ["wolfdog", "terrorwolf", "seer", "witch", "hunter"]
-        self.disabled_roles = ["badassbastard", "redhat", "whitewolf", "cupid", "berserk", "psycho",
-                               "scallywag"]
+        self.disabled_roles = []
         self.settings_message_id = None
         self.menu_message_id = None
         self.game_id = game_id
@@ -92,6 +92,11 @@ class Server:
                                                               {"mode": factory.EditMode.DELETE}))
         self.game_data.dump_next_message(command_type="feedback",
                                          from_id=self.game_data.get_admin())
+        roles = self.game_data.get_message("roles")
+        skip_roles = ["werewolf", "villager"]
+        for role in roles:
+            if role not in self.enabled_roles and role not in skip_roles:
+                self.disabled_roles.append(role)
 
     def update_register_menu(self, disable=False):
         """send updated register-menu to client"""
@@ -219,7 +224,7 @@ class Server:
         unique = [CharacterType.HUNTER, CharacterType.SEER, CharacterType.WITCH,
                   CharacterType.WOLFDOG, CharacterType.TERRORWOLF, CharacterType.BADDASSBASTARD,
                   CharacterType.REDHAT, CharacterType.CUPID, CharacterType.BERSERK,
-                  CharacterType.PSYCHOPATH, CharacterType.SCALLYWAG]
+                  CharacterType.PSYCHOPATH, CharacterType.SCALLYWAG, CharacterType.PARASITE]
 
         group_mod = Utils.random() * 0.2 + 0.9
         werewolf_amount = int(round(len(player_list) * (1.0 / 3.5) * group_mod, 0))
@@ -480,6 +485,11 @@ class Server:
                 factory.create_message_event(self.game_data.get_origin(),
                                              self.__whitewolf_win(),
                                              config={"highlight": True}))
+        elif team == teams.TeamType.PARASITE:
+            self.game_data.send_json(
+                factory.create_message_event(self.game_data.get_origin(),
+                                             self.__parasite_win(),
+                                             config={"highlight": True}))
         else:
             self.game_data.send_json(
                 factory.create_message_event(self.game_data.get_origin(), self.__village_win(),
@@ -524,6 +534,12 @@ class Server:
         choice = Utils.randrange(0, len(dic))
         return dic[str(choice)]
 
+    def __parasite_win(self):
+        """parasite won"""
+        dic = loc(self.game_data.get_lang(), "parasiteWin")
+        choice = Utils.randrange(0, len(dic))
+        return dic[str(choice)]
+
     def __get_werewolf_role_list(self, amount_of_players):
         """adding werewolves to tole list"""
         werewolf_role_list = []
@@ -548,7 +564,7 @@ class Server:
             village_role_list.append(Villagerf())
         role_dict = {"hunter": Hunter, "seer": Seer, "witch": Witch, "badassbastard": BadassBastard,
                      "cupid": Cupid, "berserk": Berserk, "psycho": Psychopath,
-                     "scallywag": Scallywag}
+                     "scallywag": Scallywag, "parasite": Parasite}
         for key in role_dict:
             if key in self.enabled_roles:
                 for _ in range(0, 28):

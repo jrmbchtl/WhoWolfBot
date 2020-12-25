@@ -14,6 +14,7 @@ class Character:
         self.team = team
         self.beloved = None
         self.desc_string = desc_string
+        self.parasite = None
 
     def is_alive(self):
         """returns if character is alive"""
@@ -52,6 +53,10 @@ class Character:
         """for berserk"""
         return self.role is None
 
+    def set_parasite(self, parasite):
+        """sets the parasite of the character"""
+        self.parasite = parasite
+
     def kill(self, game_data, player_id, death_message=None):
         """kill the character"""
         self.alive = False
@@ -71,6 +76,9 @@ class Character:
             love_dm = beloved_name + game_data.get_message("lovedOneKilled", config={"rndm": True})
             game_data.get_alive_players()[self.beloved].get_character() \
                 .kill(game_data, self.beloved, love_dm)
+        if self.parasite is not None and self.parasite in game_data.get_alive_players():
+            parasite = game_data.get_alive_players()[self.parasite].get_character()
+            parasite.kill(game_data, self.parasite)
 
     def wake_up(self, game_data, player_id):
         """wakes up character"""

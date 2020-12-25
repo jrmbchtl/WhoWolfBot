@@ -97,10 +97,10 @@ class SystemtestBase:
         self.assert_receive_dict({"eventType": "choiceField", "choiceField": {
             "text": "Hier k\u00f6nnen Rollen hinzugef\u00fcgt oder entfernt werden",
             "options": ['Harter\xa0Bursche hinzufügen', 'Berserker hinzufügen', 'Amor hinzufügen',
-                        'Jäger deaktivieren', 'Psychopath hinzufügen', 'Rotkäppchen hinzufügen',
-                        'Superschurke hinzufügen', 'Seherin deaktivieren',
-                        'Terrorwolf deaktivieren', 'Weißer\xa0Wolf hinzufügen',
-                        'Hexe deaktivieren', 'Wolfshund deaktivieren'],
+                        'Jäger deaktivieren', 'Parasit hinzufügen', 'Psychopath hinzufügen',
+                        'Rotkäppchen hinzufügen', 'Superschurke hinzufügen', 'Seherin deaktivieren',
+                        'Terrorwolf deaktivieren', 'Weißer\xa0Wolf hinzufügen', 'Hexe deaktivieren',
+                        'Wolfshund deaktivieren'],
             "messageId": 0}, "mode": "write", "target": 42, "highlight": False, "gameId": game_id,
                                   "lang": "DE"})
         for role in rem_list:

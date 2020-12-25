@@ -15,7 +15,7 @@
     "sensitiveLeak": "Wenn du hier spielst, können alle deine privaten Nachrichten lesen!",
     "noSuchGamePre": "Ein Spiel mit dem Code ",
     "noSuchGamePost": " existiert nicht!",
-    "choose_config":  "Was möchten Sie einstellen?",
+    "choose_config": "Was möchten Sie einstellen?",
     "config_lang": "Sprache",
     "cancel": "Abbrechen",
     "join": "Mitspielen/Aussteigen",
@@ -48,7 +48,8 @@
       "cupid": "Amor",
       "berserk": "Berserker",
       "psycho": "Psychopath",
-      "scallywag": "Superschurke"
+      "scallywag": "Superschurke",
+      "parasite": "Parasit"
     },
     "accuseOptionsPre": {
       "0": "",
@@ -320,6 +321,14 @@
         "Die Dorfbewohner veranstalten zur Feier des Tages einen Fest und stopfen den ",
         "letzten Werwolf aus."
       ]
+    },
+    "parasiteWin": {
+      "0": "Der Parasit gewinnt.",
+      "1": "Nach einer anhaltenden Krankheitswelle siegt der Parasit!",
+      "2": "Nur noch der Parasit lebt!",
+      "3": "Der Parasit lebt nun allein und friedlich in Düsterwald.",
+      "4": "Der Parasit hat seine Dominanz bewiesen.",
+      "5": "Der Parasit ist allen anderen Dorfbewohnern überlegen!"
     },
     "loveWin": {
       "0": "Das Liebespaar gewinnt.",
@@ -1343,6 +1352,57 @@
       "8": "s Kissen mit der herzförmigen Bombe ausgetauscht.",
       "9": " die Bombe in die Hand gedrückt."
     },
+    "parasiteDescription": {
+      "0": [
+        "Du bist der Parasit. Der Parasit wählt in der ersten Nacht einen Wirt. Er selbst ist unsterblich, stirbt aber",
+        " sein Wirt, so stirbt auch der Parasit. Ab der zweiten Nacht kann er jede Nacht den Wirt wechseln und tötet ",
+        "damit seinen alten Wirt."
+      ],
+      "1": [
+        "Dein Charakter ist der Parasit. Dieser kann nur alleine gewinnen. Um dies zu erreichen, wählt er sich jede",
+        " Nacht seinen Wirt. Wechselt der Parasit seinen Wirt, so stirbt der alte Wirt. Der Parasit selbst ist",
+        " unsterblich, lediglich der Tod seines Wirts kann ihn töten."
+      ],
+      "2": [
+        "Du bist der Parasit, welcher sich jede Nacht seinen Wirt aussucht. Sollte der Wirt sterben, so stirbt auch",
+        " der Parasit. Sollte jedoch der Parasit angegriffen werden, verstreicht der Angriff ohne Wirkung. Wechselt",
+        " der Parasit deinen Wirt, so stirbt der vorige Wirt. Ziel des Parasits ist es, als einziger zu überleben."
+      ],
+      "3": [
+        "Dein Character ist der Parasit, welcher sich jede Nacht bei einem Wirt einnistet und seinen alten Wirt tötet.",
+        " Der Parasit kann nur sterben, wenn sein Wirt stirbt. Der Parasit gewinnt, wenn er als Einziger am Leben ",
+        "bleibt."
+      ],
+      "4": [
+        "Du bist der Parasit, welcher alleine gewinnen will. Um dies zu schaffen, sucht er sich jede Nacht einen Wirt",
+        " aus. Wechselt er den Wirt, so stirb der alte. Du kannst nur sterben, wenn dein Wirt stirbt."
+      ],
+      "5": [
+        "Dein Charakter ist der Parasit, welcher der letzte Überlebende sein möchte. Dies kann er schaffen, indem",
+        " er sich jede Nacht einen neuen Wirt sucht und den alten tötet. Der Parasit stirbt mit dem Wirt, kann aber ",
+        "nicht direkt getötet werden."
+      ]
+    },
+    "noDeathMessage": {
+      "0": " konnte dem Tod entkommen!",
+      "1": " wollte noch nicht sterben.",
+      "2": " konnte sein Leben gerade noch retten.",
+      "3": " ist zu jung zum sterben!",
+      "4": " bekommt eine neue Chance, weiter zu leben.",
+      "5": " wird heute nicht sterben.",
+      "6": " kann schneller rennen als der Tod!",
+      "7": " will noch nicht sterben. Er will noch ein bisschen tanzen!",
+      "8": " hat erfolgreich ein Veto gegen seinen Tod eingelegt!",
+      "9": " schaut dem Tod in die Augen, dreht sich um und geht weg."
+    },
+    "parasiteQuestion": {
+      "0": "Wer soll heute Nacht dein Wirt werden?",
+      "1": "Bei wem willst du dich einnisten?",
+      "2": "Wer soll dein neues zuhause werden?",
+      "3": "Wen willst du befallen?",
+      "4": "Bei wem fühlst du dich sicher?",
+      "5": "Wen willst du mit dir selbst infizieren?"
+    },
     "changelog": [
       "Version 2.1.1\n- Neue Rollen: Amor, Berserker, Psychopath und Superschurke\n\n",
       "Version 2.1.0\n- Neue Rollen: Weißer Wolf, Rotkäppchen und Harter Bursche\n\n",
@@ -1374,7 +1434,7 @@
     "sensitiveLeak": "Are you crazy? Joining a game here might leak sensitive information!",
     "noSuchGamePre": "There is no game with the code ",
     "noSuchGamePost": "!",
-    "choose_config":  "What do you want to configure?",
+    "choose_config": "What do you want to configure?",
     "config_lang": "Language",
     "cancel": "Cancel",
     "join": "Join/Leave",
@@ -1407,7 +1467,8 @@
       "cupid": "Cupid",
       "berserk": "Berserk",
       "psycho": "Psychopath",
-      "scallywag": "Scallywag"
+      "scallywag": "Scallywag",
+      "parasite": "Parasite"
     },
     "accuseOptionsPre": {
       "0": "accuse ",
@@ -1654,6 +1715,14 @@
       "7": "The werewolves were apparently the weaker race in town.",
       "8": "After the death of the last werewolf the villagers now have peace.",
       "9": "The villagers organize a feast to celebrate the day and stuff the last werewolf."
+    },
+     "parasiteWin": {
+      "0": "The parasite wins!",
+      "1": "After a sustained wave of disease, the parasite wins!",
+      "2": "Only the parasite is left alive!",
+      "3": "The parasite now lives alone and peacefully in town.",
+      "4": "The parasite has proven its dominance.",
+      "5": "The parasite is superior to all other villagers!"
     },
     "loveWin": {
       "0": "The loving couple wins.",
@@ -2559,6 +2628,54 @@
       "5": " to be the proud owner os his creation.",
       "6": "s pillow with a lovely heart-shaped bomb.",
       "7": "."
+    },
+    "parasiteDescription": {
+      "0": [
+        "You are the parasite. The parasite chooses a host on the first night. he himself is immortal, but if his host",
+        " dies, so does the parasite. From the second night on, he can change the host every night and thus kills his",
+        " old host."
+      ],
+      "1": [
+        "Your character is the parasite. He can only win alone. To achieve this, he chooses his host every night. If",
+        " the parasite changes his host, the old one dies. The parasite himself is immortal, only the death of his",
+        " host can kill him."
+      ],
+      "2": [
+        "You are the parasite who chooses his host every night. If the host dies, so does the parasite. However, if",
+        " the parasite is attacked, the attack passes without effect. If the parasite changes his host, the previous",
+        " host dies. The goal of the parasite is to be the only one standing."
+      ],
+      "3": [
+        "Your character is the parasite who nests in a host every night and kills its old host. The parasite can only ",
+        "die if its host dies. He wins if he is the only one to stay alive."
+      ],
+      "4": [
+        "You are the parasite who wants to win alone. To accomplish this, he chooses a host every night. If he changes",
+        " the host, the old one dies. You can only die when your host dies."
+      ],
+      "5": [
+        "Your character is the parasite who wants to be the last survivor. He can do this by choosing a new host each",
+        " night and killing the old one. The parasite dies with the host, but cannot be killed directly."
+      ]
+    },
+    "noDeathMessage": {
+      "0": " was able to escape death!",
+      "1": " didn't want to die.",
+      "2": " could save his life.",
+      "3": " is too young to die!",
+      "4": " gets another chance to continue his life.",
+      "5": " won't die today.",
+      "6": " can run faster than death!",
+      "7": " successfully vetoed his death!",
+      "8": " meets death face to face, turns around and walks away."
+    },
+    "parasiteQuestion": {
+      "0": "Who do you choose as host?",
+      "1": "Where do you want to nest yourself?",
+      "2": "Where do you want to make yourself home?",
+      "3": "Who do you want to visit?",
+      "4": "Who makes you feel safe?",
+      "5": "Who do you want to infect?"
     },
     "changelog": [
       "Version 2.1.1\n- New characters: Psychopath, Berserk, Scallywag and Cupid\n\n",
