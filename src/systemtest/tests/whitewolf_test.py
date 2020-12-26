@@ -11,7 +11,7 @@ class WhiteWolfTest(Systemtest):
     def run(self):
         game_id = self.role_setup()
         self.send_json({"commandType": "startGame", "fromId": 42, "gameId": game_id})
-        for _ in range(0, 11):
+        for _ in range(0, 12):
             self.assert_any_message()
         self.send_json({"commandType": "reply", "reply": {"choiceIndex": 0},
                         "fromId": 5, "gameId": game_id})

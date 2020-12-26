@@ -24,7 +24,7 @@ class PsychopathTest(Systemtest):
                         "gameId": game_id})
         self.assert_receive_dict({'eventType': 'message', 'message': {
             'text': ('Es ist bisher niemand gestorben. Das wird sich jetzt ändern...\n\n'
-                     'Du hast Player 1 mit einem Löffel erschlagen.'), 'messageId': 14},
+                     'Du hast Player 1 mit einem Löffel erschlagen.'), 'messageId': 15},
                                   'mode': 'edit', 'target': 4, 'highlight': False,
                                   'gameId': game_id, 'lang': 'DE'})
         self.assert_receive_dict({'eventType': 'message', 'message': {

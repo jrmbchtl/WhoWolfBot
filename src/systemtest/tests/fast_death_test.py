@@ -27,7 +27,7 @@ class FastDeath(Systemtest):
             "text": ("Die Werwolfsmägen knurren vor Hunger - Zeit, sich etwas zu Essen zu suchen!"
                      "\n\nPlayer 3 schlägt vor Player 1 zu reißen.\n\n"
                      "Die Werwölfe haben beschlossen, Player 1 zu reißen."),
-            "messageId": 13}, "mode": "edit", "target": 3, "highlight": False, "gameId": game_id,
+            "messageId": 14}, "mode": "edit", "target": 3, "highlight": False, "gameId": game_id,
                                   'lang': 'DE'})
 
         self.assert_receive_dict({"eventType": "choiceField", "choiceField": {
@@ -93,7 +93,7 @@ class FastDeath(Systemtest):
                         "fromId": 1, "gameId": game_id})
 
         self.assert_receive_dict({"eventType": "message", "message": {
-            "text": "Wen möchtest du mit ins Grab nehmen?", "messageId": 20},
+            "text": "Wen möchtest du mit ins Grab nehmen?", "messageId": 19},
                                   "mode": "edit", "target": 1, "highlight": False,
                                   "gameId": game_id, 'lang': 'DE'})
 

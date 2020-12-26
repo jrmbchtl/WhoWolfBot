@@ -248,6 +248,10 @@ class Server:
                     player, self.game_data.get_players()[player].get_character().get_description(
                         self.game_data)))
             self.game_data.dump_next_message(command_type="feedback")
+        text_dict = loc(self.game_data.get_lang(), "startingLore")
+        index = str(ord(self.game_id[0]) % len(text_dict))
+        text = text_dict[index]
+        self.game_data.send_json(factory.create_message_event(self.game_data.get_origin(), text))
 
     def night(self):
         """its night"""

@@ -21,10 +21,10 @@ Parasit
 
 Testing:
 
-WIP:
+WIP:\
+Terrorist
 
 Planned:\
-Terrorist\
 Kerkermeister\
 Flittchen\
 Bürgermeister

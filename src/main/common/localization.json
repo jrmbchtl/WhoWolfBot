@@ -51,6 +51,38 @@
       "scallywag": "Superschurke",
       "parasite": "Parasit"
     },
+    "startingLore": {
+      "0": [
+        "Ein kleines Dorf in einem Wald wird unerwartet von Werwölfen heimgesucht. \nDie Dorfbewohner versuchen, ",
+        "die als Menschen getarnten Wölfe zu entlarven und aufzuhalten. \nWährenddessen wollen die Wölfe als einzige ",
+        "überleben und nachts einen Dorfbewohner nach dem anderen fressen."
+      ],
+      "1": [
+        "Wir befinden uns in dem malerischen Dörfchen Düsterwald. Doch die Idylle trügt.\nSeit geraumer Zeit treibt ",
+        "ein Rudel Werwölfe sein Unwesen und jede Nacht fällt seinem unstillbaren Hunger ein Dorfbewohner zum Opfer.\n",
+        "In dem Bestreben, das Übel auszurotten, greifen die Dorfbewohner ihrerseits zur Selbsthilfe und der einst ",
+        "beschauliche Ort wird zur Bühne für ein erbittert geführten Kampf ums nackte Sein."
+      ],
+      "2": [
+        "Es war einmal ein kleines Dorf namens Düsterwald. \nFür den Außenstehenden scheint hier alles in Ordnung zu ",
+        "sein. Doch sobald die Nacht hereinbricht, wird es gefährlich auf den Straßen von Düsterwald und nicht mal in ",
+        "seinem eigenen Haus ist man sicher: Ein halbblinder Jäger liegt auf der Lauer, eine Hexe braut unbekannte ",
+        "Tränke und darüber hinaus treiben gefährliche Werwölfe ihr unwesen. \nEs geht ums reine Überleben. \nSelbst ",
+        "tagsüber findet das Dorf keine Ruhe: Um dem nächtlichen Spuk ein Ende zu bereiten, wird ein Bewohner nach dem",
+        " anderen gelyncht und auch manch Unschuldiger findet dadurch seine letzte Ruhe..."
+      ],
+      "3": "Ein Ort: Düsterwald. Zwei Teams: Werwölfe und Dorfbewohner. Eine Mission: Als Gruppe zu überleben.",
+      "4": [
+        "Der Ort ist unwichtig. Die Zeit: irrelevant. Die Realität: vollständig subjektiv. Die Deduktionsfähigkeit: ",
+        "unabdingbar. Verluste: an der Tagesordnung. Das Ende: unausweichlich. Der Sieger: offen."
+      ],
+      "5": [
+        "Wir befinden uns im märchenhaften Dorf Düsterwald. \nNormale Dorfbewohner liefern sich erbitterte Kämpfe ",
+        "mit den sagenumwobenen Werwölfen, während sie Unterstützung von magischen Figuren wie der Hexe erhalten. \nEs",
+        " geht nur um eines: nicht in die ewigen Jagdgründe einzugehen, sondern der eigenen Spezies zum Überleben zu ",
+        "verhelfen."
+      ]
+    },
     "accuseOptionsPre": {
       "0": "",
       "1": "",
@@ -1470,6 +1502,38 @@
       "scallywag": "Scallywag",
       "parasite": "Parasite"
     },
+    "startingLore": {
+      "0": [
+        "A small village in a forest is unexpectedly haunted by werewolves. \nThe villagers try to expose and stop the",
+        " wolves disguised as humans. \nMeanwhile, the werewolves want to survive and eat one villager after the other."
+      ],
+      "1": [
+        "We are in a little village in the middle of nowhere. But the idyll is deceptive.\nFor some time, a pack of ",
+        "werewolves has been wreaking havoc. Every night a villager falls victim to their insatiable hunger.\nIn their",
+        " quest to eradicate the evil, the villagers resort to self-help and the once tranquil place becomes the stage",
+        "for a fierce battle of surviving."
+      ],
+      "2": [
+        "Once upon a time there was a small village in the middle of nowhere. \nTo the outsider, everything seems ",
+        "fine. But as soon as night falls, it becomes dangerous on the streets; you're not even safe in your own ",
+        "house: a half-blind hunter lies in wait, a witch brews unknown potions, and beyond that, dangerous werewolves",
+        " are up to no good.\nIt is a matter of pure survival.\nTo put an end to the nocturnal haunting, one ",
+        "inhabitant after another is lynched and many innocent find their final rest..."
+      ],
+      "3": [
+        "One place: A town in the middle of nowhere. Two teams: werewolves and villagers. One mission: to survive as ",
+        "a group."
+      ],
+      "4": [
+        "The place is not important. The time: irrelevant. The reality: completely subjective. The ability to deduce: ",
+        "indispensable. Losses: commonplace. The end: inevitable. The winner: undetermined."
+      ],
+      "5": [
+        "We are in a fairy-tale village in the middle of nowhere. \nNormal villagers engage in fierce battles with ",
+        "the legendary werewolves, while receiving support from magical characters like the witch.\nThere is only ",
+        "one thing at stake: survival."
+      ]
+    },
     "accuseOptionsPre": {
       "0": "accuse ",
       "1": "declare ",
@@ -1716,7 +1780,7 @@
       "8": "After the death of the last werewolf the villagers now have peace.",
       "9": "The villagers organize a feast to celebrate the day and stuff the last werewolf."
     },
-     "parasiteWin": {
+    "parasiteWin": {
       "0": "The parasite wins!",
       "1": "After a sustained wave of disease, the parasite wins!",
       "2": "Only the parasite is left alive!",

@@ -117,7 +117,7 @@ class SystemtestBase:
             for _ in range(0, 3):
                 self.assert_any_message()
         self.send_json({"commandType": "startGame", "fromId": admin, "gameId": game_id})
-        for _ in range(0, number_of_players + 3):
+        for _ in range(0, number_of_players + 4):
             self.assert_any_message()
         return game_id
 

@@ -59,7 +59,8 @@ class Exampletest(Systemtest):
                      'seiner Wahl in den Tod mitnehmen.'), 'messageId': 0},
                                   "mode": "write", "target": 1, "highlight": False,
                                   "gameId": game_id, 'lang': 'DE'})
-        self.assert_any_message()
+        for _ in range(3):
+            self.assert_any_message()
 
         self.send_json({"commandType": "terminate", "fromId": 42, "gameId": game_id})
         self.clear_rec_buffer()
