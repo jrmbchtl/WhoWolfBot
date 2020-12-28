@@ -279,6 +279,9 @@ class TelegramClient:
         elif callback_data.startswith("terminate_"):
             self.server_conn.send_json(
                 {"commandType": "terminate", "fromId": player_id, "gameId": game_id})
+        elif callback_data.startswith("terrorist"):
+            self.server_conn.send_json(
+                {"commandType": "terrorist", "fromId": player_id, "gameId": game_id})
         elif callback_data.split("_")[1] == "conf":
             choice_index = int(callback_data.split("_")[2])
             self.config_queue.put({player_id: choice_index})
@@ -438,6 +441,9 @@ def generate_keyboard(dic, game_id):
             else:
                 keyboard.append([InlineKeyboardButton(
                     option, callback_data="add_" + str(game_id) + "_" + role)])
+    elif dic[dic["eventType"]]["text"] in loc(lang, "terroristOption").values():
+        keyboard = [[InlineKeyboardButton(dic[dic["eventType"]]["text"],
+                                          callback_data='terrorist_' + str(game_id))]]
     else:
         for i, option in enumerate(dic["choiceField"]["options"]):
             option = escape_text(option)

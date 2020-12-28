@@ -79,6 +79,13 @@ Feedback: (success can be 0 = False or 1 = True)
 	"gameId": 12345	
 }
 
+Terrorist:
+{
+	"commandType": "terrorist",
+	"fromId": 12345678,
+	"gameId": 1234
+}
+
 Terminate:
 {
 	"commandType": "terminate",

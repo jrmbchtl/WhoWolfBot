@@ -6,9 +6,9 @@ import requests
 
 from src.main.common.localization import get_localization as loc
 from src.main.server import factory
-from src.main.server.characters import teams
 from src.main.server.characters.parasite import Parasite
 from src.main.server.characters.types import CharacterType
+from src.main.server.characters.types import TeamType
 from src.main.server.characters.village.badass_bastard import BadassBastard
 from src.main.server.characters.village.berserk import Berserk
 from src.main.server.characters.village.cupid import Cupid
@@ -17,6 +17,7 @@ from src.main.server.characters.village.psychopath import Psychopath
 from src.main.server.characters.village.redhat import Redhat
 from src.main.server.characters.village.scallywag import Scallywag
 from src.main.server.characters.village.seer import Seer
+from src.main.server.characters.village.terrorist import Terrorist
 from src.main.server.characters.village.villager import Villager
 from src.main.server.characters.village.villager import Villagerf
 from src.main.server.characters.village.witch import Witch
@@ -62,6 +63,8 @@ class Server:
                 self.accuse_all()
             else:
                 self.accuse()
+            if self.check_game_over():
+                break
             self.vote()
         message_id = self.menu_message_id
         target = self.game_data.get_origin()
@@ -224,7 +227,8 @@ class Server:
         unique = [CharacterType.HUNTER, CharacterType.SEER, CharacterType.WITCH,
                   CharacterType.WOLFDOG, CharacterType.TERRORWOLF, CharacterType.BADDASSBASTARD,
                   CharacterType.REDHAT, CharacterType.CUPID, CharacterType.BERSERK,
-                  CharacterType.PSYCHOPATH, CharacterType.SCALLYWAG, CharacterType.PARASITE]
+                  CharacterType.PSYCHOPATH, CharacterType.SCALLYWAG, CharacterType.PARASITE,
+                  CharacterType.TERRORIST]
 
         group_mod = Utils.random() * 0.2 + 0.9
         werewolf_amount = int(round(len(player_list) * (1.0 / 3.5) * group_mod, 0))
@@ -255,6 +259,13 @@ class Server:
 
     def night(self):
         """its night"""
+        # remove terrorist text
+        for player_id in self.game_data.get_alive_players():
+            player = self.game_data.get_players()[player_id]
+            if player.get_character().get_role() == CharacterType.TERRORIST:
+                player.get_character().remove_message(self.game_data, player_id)
+
+        # standard night
         self.game_data.send_json(factory.create_message_event(
             self.game_data.get_origin(), self.__nightfall()))
         self.game_data.dump_next_message(command_type="feedback")
@@ -310,12 +321,14 @@ class Server:
             "messageId"]
 
         new_text = ""
-        while len(self.accused_dict) < 3:
+        while len(self.accused_dict) < 3 < len(self.game_data.get_alive_players()):
             rec = self.game_data.get_next_message(command_type="reply")
-            if rec["fromId"] not in self.game_data.get_alive_players():
-                continue
-            self.accused_dict[rec["fromId"]] = \
-                self.game_data.get_alive_player_list()[rec["reply"]["choiceIndex"]]
+            self.accused_dict = self.clean_dict(self.accused_dict)
+            if rec is not None:
+                if rec["fromId"] not in self.game_data.get_alive_players():
+                    continue
+                self.accused_dict[rec["fromId"]] = \
+                    self.game_data.get_alive_player_list()[rec["reply"]["choiceIndex"]]
             new_text = text + "\n\n"
             for entry in self.accused_dict:
                 target = self.accused_dict[entry]
@@ -327,6 +340,9 @@ class Server:
                 self.game_data.get_origin(), new_text, options, message_id,
                 {"mode": EditMode.EDIT}))
             self.game_data.dump_next_message(command_type="feedback")
+
+        if len(self.game_data.get_alive_players()) <= 3:
+            self.accuse_all()
 
         self.game_data.send_json(factory.create_message_event(
             self.game_data.get_origin(), new_text, message_id, {"mode": factory.EditMode.EDIT}))
@@ -354,6 +370,8 @@ class Server:
     def vote(self):
         """voting time"""
         id_to_choice, vote_dict = self.get_vote_dict()
+        if self.is_game_over() is not None:
+            return
         if Utils.unique_decision(vote_dict):
             victim_id = Utils.get_decision(vote_dict)
             death_message = self.game_data.id_to_name(victim_id) + self.__vote_judgement(
@@ -363,6 +381,8 @@ class Server:
         else:
             text = self.__patt_revote()
             id_to_choice, vote_dict = self.get_vote_dict(text)
+            if self.is_game_over() is not None:
+                return
             if Utils.unique_decision(vote_dict):
                 victim_id = Utils.get_decision(vote_dict)
                 death_message = self.game_data.id_to_name(victim_id) + self.__vote_judgement(
@@ -395,23 +415,24 @@ class Server:
             "messageId"]
 
         new_text = ""
-        while len(vote_dict) < len(self.game_data.get_alive_players()):
+        while len(vote_dict) < len(self.game_data.get_alive_players()) and not self.is_game_over():
             rec = self.game_data.get_next_message(command_type="reply")
-            if rec["commandType"] == "reply":
+            self.clean_dict_translated(vote_dict, index_to_id)
+            if rec is not None:
                 if rec["fromId"] not in self.game_data.get_alive_players():
                     continue
                 vote_dict[rec["fromId"]] = rec["reply"]["choiceIndex"]
-                new_text = text + "\n"
-                for key in vote_dict:
-                    target_id = index_to_id[vote_dict[key]]
-                    new_text += "\n" + self.game_data.id_to_name(key)
-                    new_text += self.__voted_for(id_to_choice[target_id],
-                                                 self.game_data.id_to_name(target_id))
+            new_text = text + "\n"
+            for key in vote_dict:
+                target_id = index_to_id[vote_dict[key]]
+                new_text += "\n" + self.game_data.id_to_name(key)
+                new_text += self.__voted_for(id_to_choice[target_id],
+                                             self.game_data.id_to_name(target_id))
 
-                self.game_data.send_json(factory.create_choice_field_event(
-                    self.game_data.get_origin(), new_text, options, message_id,
-                    config={"mode": factory.EditMode.EDIT}))
-                self.game_data.dump_next_message(command_type="feedback")
+            self.game_data.send_json(factory.create_choice_field_event(
+                self.game_data.get_origin(), new_text, options, message_id,
+                config={"mode": factory.EditMode.EDIT}))
+            self.game_data.dump_next_message(command_type="feedback")
 
         self.game_data.send_json(factory.create_message_event(
             self.game_data.get_origin(), new_text, message_id, {"mode": factory.EditMode.EDIT}))
@@ -459,13 +480,10 @@ class Server:
         dic = loc(self.game_data.get_lang(), "nightfall")
         return dic[str(Utils.randrange(0, len(dic)))]
 
-    def check_game_over(self):
+    def is_game_over(self):
         """check if game is over"""
         if len(self.game_data.get_alive_players()) == 0:
-            self.game_data.send_json(factory.create_message_event(
-                self.game_data.get_origin(), self.__all_dead(), config={"highlight": True}))
-            self.game_data.dump_next_message(command_type="feedback")
-            return True
+            return "Noone"
         if len(self.game_data.get_alive_players()) == 2:
             ids = self.game_data.get_alive_player_list()
             if self.game_data.get_alive_players()[ids[0]].get_character().get_beloved() == ids[1]:
@@ -473,31 +491,38 @@ class Server:
                     factory.create_message_event(self.game_data.get_origin(), self.__love_win(),
                                                  config={"highlight": True}))
                 self.game_data.dump_next_message()
-                return True
+                return "beloved"
         first_player_id = self.game_data.get_alive_player_list()[0]
         team = self.game_data.get_alive_players()[first_player_id].get_character().get_team()
         for player in self.game_data.get_alive_players():
             if self.game_data.get_alive_players()[player].get_character().get_team() == team:
                 continue
+            return None
+        return team
+
+    def check_game_over(self):
+        """handle game over"""
+        won = self.is_game_over()
+        if won is None:
             return False
-        if team == teams.TeamType.WEREWOLF:
-            self.game_data.send_json(
-                factory.create_message_event(self.game_data.get_origin(), self.__werewolf_win(),
-                                             config={"highlight": True}))
-        elif team == teams.TeamType.WHITEWOLF:
-            self.game_data.send_json(
-                factory.create_message_event(self.game_data.get_origin(),
-                                             self.__whitewolf_win(),
-                                             config={"highlight": True}))
-        elif team == teams.TeamType.PARASITE:
-            self.game_data.send_json(
-                factory.create_message_event(self.game_data.get_origin(),
-                                             self.__parasite_win(),
-                                             config={"highlight": True}))
-        else:
-            self.game_data.send_json(
-                factory.create_message_event(self.game_data.get_origin(), self.__village_win(),
-                                             config={"highlight": True}))
+        if won == "Noone":
+            self.game_data.send_json(factory.create_message_event(
+                self.game_data.get_origin(), self.__all_dead(), config={"highlight": True}))
+        elif won == "beloved":
+            self.game_data.send_json(factory.create_message_event(
+                self.game_data.get_origin(), self.__love_win(), config={"highlight": True}))
+        elif won == TeamType.WEREWOLF:
+            self.game_data.send_json(factory.create_message_event(
+                self.game_data.get_origin(), self.__werewolf_win(), config={"highlight": True}))
+        elif won == TeamType.WHITEWOLF:
+            self.game_data.send_json(factory.create_message_event(
+                self.game_data.get_origin(), self.__whitewolf_win(), config={"highlight": True}))
+        elif won == TeamType.PARASITE:
+            self.game_data.send_json(factory.create_message_event(
+                self.game_data.get_origin(), self.__parasite_win(), config={"highlight": True}))
+        elif won == TeamType.VILLAGER:
+            self.game_data.send_json(factory.create_message_event(
+                self.game_data.get_origin(), self.__village_win(), config={"highlight": True}))
         self.game_data.dump_next_message(command_type="feedback")
         return True
 
@@ -568,12 +593,37 @@ class Server:
             village_role_list.append(Villagerf())
         role_dict = {"hunter": Hunter, "seer": Seer, "witch": Witch, "badassbastard": BadassBastard,
                      "cupid": Cupid, "berserk": Berserk, "psycho": Psychopath,
-                     "scallywag": Scallywag, "parasite": Parasite}
+                     "scallywag": Scallywag, "parasite": Parasite, "terrorist": Terrorist}
         for key in role_dict:
             if key in self.enabled_roles:
                 for _ in range(0, 28):
                     village_role_list.append(role_dict[key]())
         return village_role_list
+
+    def clean_dict_translated(self, dic, trans):
+        """uses clean_dict with an extra translator level"""
+        trans_back = {}
+        for key in trans:
+            trans_back[trans[key]] = key
+        tmp_dict = {}
+        for key in dic:
+            tmp_dict[key] = trans[dic[key]]
+        tmp_dict = self.clean_dict(tmp_dict)
+        dic = {}
+        for key in tmp_dict:
+            dic[key] = trans_back[tmp_dict[key]]
+        return dic
+
+    def clean_dict(self, dic):
+        """removes all players from dict that aren't alive"""
+        rem_list = []
+        for key in dic:
+            if key not in self.game_data.get_alive_players() \
+                    or dic[key] not in self.game_data.get_alive_players():
+                rem_list.append(key)
+        for entry in rem_list:
+            dic.pop(entry, None)
+        return dic
 
 
 def remove_character_type_from_list(lis, character):

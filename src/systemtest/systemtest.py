@@ -99,8 +99,8 @@ class SystemtestBase:
             "options": ['Harter\xa0Bursche hinzufügen', 'Berserker hinzufügen', 'Amor hinzufügen',
                         'Jäger deaktivieren', 'Parasit hinzufügen', 'Psychopath hinzufügen',
                         'Rotkäppchen hinzufügen', 'Superschurke hinzufügen', 'Seherin deaktivieren',
-                        'Terrorwolf deaktivieren', 'Weißer\xa0Wolf hinzufügen', 'Hexe deaktivieren',
-                        'Wolfshund deaktivieren'],
+                        'Terrorist hinzufügen', 'Terrorwolf deaktivieren',
+                        'Weißer\xa0Wolf hinzufügen', 'Hexe deaktivieren', 'Wolfshund deaktivieren'],
             "messageId": 0}, "mode": "write", "target": 42, "highlight": False, "gameId": game_id,
                                   "lang": "DE"})
         for role in rem_list:

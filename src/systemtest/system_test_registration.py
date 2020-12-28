@@ -19,6 +19,8 @@ from src.systemtest.tests.psychopath_test_2 import PsychopathTest2
 from src.systemtest.tests.redhat_test import RedhatTest
 from src.systemtest.tests.scallywag_test import ScallywagTest
 from src.systemtest.tests.seherin_test import SeherinTest
+from src.systemtest.tests.terrorist_test import TerroristAccuseTest
+from src.systemtest.tests.terrorist_test import TerroristVoteTest
 from src.systemtest.tests.terrorwolf_test import TerrorwolfTest
 from src.systemtest.tests.whitewolf_test import WhiteWolfTest
 
@@ -53,6 +55,8 @@ class SystemTestRegistration:
         self.main.register(ParasiteTryKillTest)
         self.main.register(HostKillTest)
         self.main.register(ParasiteWinTest)
+        self.main.register(TerroristAccuseTest)
+        self.main.register(TerroristVoteTest)
 
     def get_main(self):
         """dummy method to fill publics"""

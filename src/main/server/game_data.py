@@ -37,6 +37,10 @@ class GameData:
                 if (command_type is None or command_type == self.rec_list[index]["commandType"]) \
                         and (from_id is None or from_id == self.rec_list[index]["fromId"]):
                     data = self.rec_list.pop(index)
+                elif self.rec_list[index]["commandType"] == "terrorist":
+                    player_id = self.rec_list[index]["fromId"]
+                    self.players[player_id].explode(self, player_id)
+                    index += 1
                 else:
                     index += 1
             else:
@@ -45,11 +49,18 @@ class GameData:
                         and (from_id is None or from_id == tmp["fromId"]):
                     data = tmp
                     self.__append_to_rec_list(data)
+                elif tmp["commandType"] == "terrorist":
+                    player_id = tmp["fromId"]
+                    data = tmp
+                    self.__append_to_rec_list(data)
+                    self.players[player_id].get_character().explode(self, player_id)
                 else:
                     write_back.append(tmp)
         self.__add_to_delete_queue(data)
         for i in write_back:
             self.__get_game_queue().put(i)
+        if data["commandType"] == "terrorist":
+            return None
         return data
 
     def dump_next_message(self, command_type=None, from_id=None):

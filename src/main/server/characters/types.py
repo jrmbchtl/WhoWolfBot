@@ -31,3 +31,4 @@ class CharacterType(Enum):
     BADDASSBASTARD = 103
     TERRORWOLF = 104
     REDHAT = 105
+    TERRORIST = 999
