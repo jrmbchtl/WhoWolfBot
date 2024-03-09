@@ -9,11 +9,11 @@ from multiprocessing import Process
 from telegram import Bot
 from telegram import InlineKeyboardButton
 from telegram import InlineKeyboardMarkup
-from telegram import ParseMode
+from telegram.constants import ParseMode
 from telegram.error import BadRequest
 from telegram.error import RetryAfter
 from telegram.error import TimedOut
-from telegram.error import Unauthorized
+from telegram.error import Forbidden
 from telegram.ext import CallbackQueryHandler
 from telegram.ext import CommandHandler
 from telegram.ext import Updater
@@ -259,7 +259,7 @@ class TelegramClient(object):
                 self.sc.sendJSON({"commandType": "feedback", "feedback":
                                  {"success": 1, "messageId": messageId}, "fromId": target,
                                   "gameId": gameId})
-            except Unauthorized:
+            except Forbidden:
                 self.sc.sendJSON({"commandType": "feedback", "feedback":
                                  {"success": 0, "messageId": 0}, "fromId": target,
                                   "gameId": gameId})
