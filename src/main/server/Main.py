@@ -4,12 +4,14 @@ import os
 import json
 from multiprocessing import Process, Queue
 
-from src.main.client.TelegramClient import TelegramClient
-from src.main.server import Factory
-from src.main.server.conn.ServerConnection import ServerConnection
-from src.main.server.Server import Server
-from src.systemtest.SystemTestMain import SystemTestMain
-from src.main.localization import getLocalization as loc
+sys.path.insert(0, 'src')
+
+from main.client.TelegramClient import TelegramClient
+from main.server import Factory
+from main.server.conn.ServerConnection import ServerConnection
+from main.server.Server import Server
+from systemtest.SystemTestMain import SystemTestMain
+from main.localization import getLocalization as loc
 
 lang = "EN"
 
