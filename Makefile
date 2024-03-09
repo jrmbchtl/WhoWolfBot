@@ -7,6 +7,7 @@ test:
 	pymake analyze
 	python3 src/main/server/Main.py --systemtest
 server:
+	export PYTHONPATH="${PYTHONPATH}:./"
 	python3 src/main/server/Main.py --telegram
 analyze:
 	pymake flake
